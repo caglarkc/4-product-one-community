@@ -16,12 +16,14 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 ## Repo ilanı ve keşif
 
 - Public ve private repolar bağlanabilir.
+- Repo içeriği yazılımla sınırlı değildir; tasarım, dokümantasyon, araştırma veya yalnızca fikir aşamasındaki projeler de kapsamda olabilir. Çalışan kod veya geliştirilmiş ürün şartı yoktur; repo bağlama şartı korunur.
 - Repo bağlantısı, başlık ve kategori zorunludur. Açıklama ve diğer tanıtım bilgileri isteğe bağlıdır.
 - Repolar gezilebilir; kategori ve filtrelerle aranabilir. Kesin filtre listesi açık konudur.
 - Her repo için tek aktif ilan bulunabilir.
 - Proje sahibi ilanı silmeden yeni başvurulara kapatabilir ve sonra tekrar açabilir; katılım yöntemi değişmez.
 - Başvuruya kapalı ilanlar keşifte gösterilmez. Kapatılmadan önce alınmış başvurular değerlendirilmeye devam edebilir.
 - Kapalı ilanın görüntülenme erişimini ilan sahibi ayrı olarak seçer: “Bağlantıya sahip herkes” veya “Yalnızca seçilen kişiler”. Kaydetmiş olmak tek başına erişim hakkı vermez; görüntüleme izni yeni başvuru açmaz.
+- Bu görüntüleme seçenekleri başvuruya açık ilanlarda da kullanılabilir. İlanın kimlere göründüğü ve yeni başvuru kabul edip etmediği ayrı ayarlardır. Keşifte herkese açık ilanlar ile bağlantı/seçili kişi görünürlüğünün tam seçenek seti ve filtreleme davranışı ayrıca netleştirilecek.
 - Kullanıcı proje ve ekipleri kaydedip daha sonra bulabilir.
 - Başlık, kategori, açıklama ve ihtiyaçlar sonradan düzenlenebilir; katılım yönteminin değiştirilememesi kuralı korunur.
 - Repo ilanını yalnızca repo sahibi veya yetkili yöneticisi açabilir.
@@ -107,11 +109,17 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 - Proje grup sohbeti, ekip grup sohbeti ve genel akan sohbet sonra değerlendirilecek.
 - Önceki “birebir mesajlaşmayla başlayalım” yaklaşımının yerini bu erteleme kararı alır.
 
+## Bildirimler
+
+- Başvuru, davet ve bunların sonuçları için site içi bildirimler bulunur.
+- Bildirimler mesajlaşmadan ayrı kapsamdır; mesajlaşma ve sohbetin askıya alınması bildirimleri kapsamaz.
+- E-posta veya diğer bildirim kanalları henüz kararlaştırılmadı.
+
 ## Açık konular
 
 - Öğrenci doğrulama yöntemi ve doğrulama sonrası sunulacak avantajlar (ileriki kapsam).
 - Kategori/filtre listesi.
-- İlan görüntüleme seçeneklerinin aktif ilanlara da uygulanıp uygulanmayacağı; şikâyet değerlendirme süreci.
+- İlan görünürlüğünün tam seçenek seti ve keşif davranışı; şikâyet değerlendirme süreci.
 - Ekip rol yetkileri, sahip ayrıldığında sahiplik işlemleri, proje–ekip bağlantısının yönetimi ve organization eşlemesi.
 - GitHub izinleri, PR kabul/merge davranışı, otomatik kabul ve iki sistemin senkronizasyonu.
 - Private dosya sınırı, desteklenen dosyalar ve yayımlanmış kopyanın elle güncellenmesi.
