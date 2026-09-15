@@ -20,7 +20,8 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 - Repolar gezilebilir; kategori ve filtrelerle aranabilir. Kesin filtre listesi açık konudur.
 - Her repo için tek aktif ilan bulunabilir.
 - Proje sahibi ilanı silmeden yeni başvurulara kapatabilir ve sonra tekrar açabilir; katılım yöntemi değişmez.
-- Başvuruya kapalı ilanlar keşifte gösterilmez. Kapatılmadan önce alınmış başvurular değerlendirilmeye devam edebilir. Doğrudan bağlantı ve kaydedilenler üzerinden erişim henüz belirlenmedi.
+- Başvuruya kapalı ilanlar keşifte gösterilmez. Kapatılmadan önce alınmış başvurular değerlendirilmeye devam edebilir.
+- Kapalı ilanın görüntülenme erişimini ilan sahibi ayrı olarak seçer: “Bağlantıya sahip herkes” veya “Yalnızca seçilen kişiler”. Kaydetmiş olmak tek başına erişim hakkı vermez; görüntüleme izni yeni başvuru açmaz.
 - Kullanıcı proje ve ekipleri kaydedip daha sonra bulabilir.
 - Başlık, kategori, açıklama ve ihtiyaçlar sonradan düzenlenebilir; katılım yönteminin değiştirilememesi kuralı korunur.
 - Repo ilanını yalnızca repo sahibi veya yetkili yöneticisi açabilir.
@@ -66,6 +67,9 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 - Ekip, tek seferlik katkıdan ayrı, GitHub organization benzeri bir yapıdır; birden fazla projeyi barındırabilir.
 - Ekip kurmak için mevcut proje gerekmez.
 - Bir kişi birden fazla ekibe katılabilir.
+- Bir proje birden fazla ekibe bağlanamaz; ekip bağlantısı varsa tek ekibe aittir.
+- Ekipten ayrılmak serbesttir. Sahip ayrılırken sahiplik devrinin nasıl yapılacağı ayrıca netleştirilecek; “serbest” yanıtı zorunlu devir kararı olarak yorumlanmaz.
+- Ekip üyeliği, ekibin repolarına otomatik erişim vermez; repo erişimleri ayrı yönetilir.
 - Roller: sahip, yönetici, üye. Ayrıntılı rol yetkileri açık konudur.
 - Katılım başvuru veya davet ile mümkündür.
 - GitHub organization bağlantısı isteğe bağlıdır.
@@ -107,8 +111,8 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 
 - Öğrenci doğrulama yöntemi ve doğrulama sonrası sunulacak avantajlar (ileriki kapsam).
 - Kategori/filtre listesi.
-- Başvuruya kapalı ilanlara doğrudan bağlantı/kaydedilenler üzerinden erişim; şikâyet değerlendirme süreci.
-- Ekip rol yetkileri, proje–ekip ilişkisinin yönetimi ve organization eşlemesi.
+- İlan görüntüleme seçeneklerinin aktif ilanlara da uygulanıp uygulanmayacağı; şikâyet değerlendirme süreci.
+- Ekip rol yetkileri, sahip ayrıldığında sahiplik işlemleri, proje–ekip bağlantısının yönetimi ve organization eşlemesi.
 - GitHub izinleri, PR kabul/merge davranışı, otomatik kabul ve iki sistemin senkronizasyonu.
 - Private dosya sınırı, desteklenen dosyalar ve yayımlanmış kopyanın elle güncellenmesi.
 - Profil metrikleri ve davete açıklık ayarının kapsamı.
