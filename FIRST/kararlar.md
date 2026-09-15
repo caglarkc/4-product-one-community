@@ -7,8 +7,9 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 
 - Dört ürünün ortak amacı üniversite öğrencisini ekosisteme katıp sektöre hazır hâle getirmektir.
 - FIRST insanları projelerde bir araya getirir: repo keşfi, katkı, ekip kurma ve insan bulma.
+- FIRST ücretsiz kullanılacaktır.
 - Ana sorumluluk insanları buluşturmaktır. Sonrasındaki işi yürütme, koordinasyon ve tamamlama kullanıcılara aittir; FIRST görev dağıtan veya teslimatı yöneten bir sistem değildir.
-- Buluşma sonrasında sınırlı katkı takibi hedeflenir. Kullanıcı istediğinde repodaki katkı geçmişini çekip FIRST istatistiklerine ekleyebilir; takip süresi ve otomatik yenileme kapsamı henüz belirlenmedi.
+- Buluşma sonrasında sınırlı katkı takibi hedeflenir. Kullanıcı istediğinde repodaki katkı geçmişini çekip FIRST istatistiklerine ekleyebilir; otomatik yenileme yapılmaz, takip süresi henüz belirlenmedi.
 - Kod, fork ve PR üretimi GitHub üzerinde kalır; FIRST keşif, katılım ve topluluk ilişkisini sağlar.
 - Site üzerinden iletişim ürün niyetinin parçasıdır; mesajlaşma ve sohbet çalışmaları şu an askıdadır.
 - Ücretli iş ilişkileri STEP kapsamındadır; public/private ayrımı bu sınırı değiştirmez.
@@ -23,10 +24,12 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 - Proje sahibi ilanı silmeden yeni başvurulara kapatabilir ve sonra tekrar açabilir; katılım yöntemi değişmez.
 - Başvuruya kapalı ilanlar keşifte gösterilmez. Kapatılmadan önce alınmış başvurular değerlendirilmeye devam edebilir.
 - Kapalı ilanın görüntülenme erişimini ilan sahibi ayrı olarak seçer: “Bağlantıya sahip herkes” veya “Yalnızca seçilen kişiler”. Kaydetmiş olmak tek başına erişim hakkı vermez; görüntüleme izni yeni başvuru açmaz.
-- Bu görüntüleme seçenekleri başvuruya açık ilanlarda da kullanılabilir. İlanın kimlere göründüğü ve yeni başvuru kabul edip etmediği ayrı ayarlardır. Keşifte herkese açık ilanlar ile bağlantı/seçili kişi görünürlüğünün tam seçenek seti ve filtreleme davranışı ayrıca netleştirilecek.
+- İlan görünürlüğünün üç seçeneği vardır: “Herkese açık ve keşifte”, “Yalnızca bağlantıyla”, “Yalnızca seçilen kişiler”. Son iki seçenek keşifte gösterilmez.
+- Görünürlük ayarları başvuruya açık ilanlarda da kullanılabilir. İlanın kimlere göründüğü ve yeni başvuru kabul edip etmediği ayrı ayarlardır. Başvuruya kapalı ilanların keşifte gösterilmeme kuralı korunur.
 - Kullanıcı proje ve ekipleri kaydedip daha sonra bulabilir.
 - Başlık, kategori, açıklama ve ihtiyaçlar sonradan düzenlenebilir; katılım yönteminin değiştirilememesi kuralı korunur.
 - Repo ilanını yalnızca repo sahibi veya yetkili yöneticisi açabilir.
+- İlanlar platformun yayın öncesi onayı beklenmeden doğrudan yayımlanır. Uygunsuz içerik için şikâyet özelliği korunur; değerlendirme süreci ayrıca belirlenecek.
 - Projeler alanına göre kategorilenir; kullanılan teknolojiler ve aranan beceriler ayrı filtrelerdir. Kesin kategori ve filtre değerleri henüz belirlenmedi.
 - Proje sahibi genel destek ihtiyacını ve somut görevlerini yayımlayabilir.
 - İlan silinince başvurular kapanır; mesajlar ve geçmiş katkılar korunur. Mesaj geçmişini koruma kararı, askıdaki mesajlaşma kapsamını yeniden açmaz.
@@ -119,7 +122,7 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 
 - Öğrenci doğrulama yöntemi ve doğrulama sonrası sunulacak avantajlar (ileriki kapsam).
 - Kategori/filtre listesi.
-- İlan görünürlüğünün tam seçenek seti ve keşif davranışı; şikâyet değerlendirme süreci.
+- Şikâyet değerlendirme süreci.
 - Ekip rol yetkileri, sahip ayrıldığında sahiplik işlemleri, proje–ekip bağlantısının yönetimi ve organization eşlemesi.
 - GitHub izinleri, PR kabul/merge davranışı, otomatik kabul ve iki sistemin senkronizasyonu.
 - Private dosya sınırı, desteklenen dosyalar ve yayımlanmış kopyanın elle güncellenmesi.
