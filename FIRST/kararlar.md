@@ -19,7 +19,9 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 - Repo bağlantısı, başlık ve kategori zorunludur. Açıklama ve diğer tanıtım bilgileri isteğe bağlıdır.
 - Repolar gezilebilir; kategori ve filtrelerle aranabilir. Kesin filtre listesi açık konudur.
 - Her repo için tek aktif ilan bulunabilir.
-- Proje sahibi ilanı silmeden yeni başvurulara kapatabilir ve sonra tekrar açabilir; katılım yöntemi değişmez. Kapalı ilanın keşifte görünürlüğü ve mevcut başvuruların durumu henüz belirlenmedi.
+- Proje sahibi ilanı silmeden yeni başvurulara kapatabilir ve sonra tekrar açabilir; katılım yöntemi değişmez.
+- Başvuruya kapalı ilanlar keşifte gösterilmez. Kapatılmadan önce alınmış başvurular değerlendirilmeye devam edebilir. Doğrudan bağlantı ve kaydedilenler üzerinden erişim henüz belirlenmedi.
+- Kullanıcı proje ve ekipleri kaydedip daha sonra bulabilir.
 - Başlık, kategori, açıklama ve ihtiyaçlar sonradan düzenlenebilir; katılım yönteminin değiştirilememesi kuralı korunur.
 - Repo ilanını yalnızca repo sahibi veya yetkili yöneticisi açabilir.
 - Projeler alanına göre kategorilenir; kullanılan teknolojiler ve aranan beceriler ayrı filtrelerdir. Kesin kategori ve filtre değerleri henüz belirlenmedi.
@@ -44,6 +46,7 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 3. Otomatik kabul: Katılım isteği için tek tek sahip onayı gerektirmeyen seçenek. Kesin GitHub yetkileri ve davet akışı henüz belirlenmedi.
 
 - İlanın katılım yöntemi sonradan değiştirilemez. Farklı yöntem için mevcut ilan silinip yenisi açılır.
+- Kullanıcı gönderdiği başvuruyu geri çekebilir. Bunun GitHub'daki PR veya mevcut erişimi geri alma anlamına geldiği kararlaştırılmadı.
 - PR değerlendirmesinde “Kabul et” ve “Kabul et ve repoya ekle” seçenekleri bulunur. İkincisi repo erişim davetini de başlatır; katkı kabulü ve erişim ayrı işlemlerdir.
 - GitHub'da gerçekleşen ilgili PR, davet ve kabul durumlarının FIRST'te takip edilip güncellenmesi istenir. FIRST üzerinden de yetki dahilinde işlem yapılması hedeflenir.
 - Açık kaynak katkısı için ekip üyeliği şart değildir. Contributor geçmişi, repo erişimi (collaborator) ve FIRST ekip üyeliği aynı statü değildir.
@@ -104,7 +107,7 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 
 - Öğrenci doğrulama yöntemi ve doğrulama sonrası sunulacak avantajlar (ileriki kapsam).
 - Kategori/filtre listesi.
-- Başvuruya kapalı ilanların keşifte görünürlüğü ve mevcut başvuruların durumu; şikâyet değerlendirme süreci.
+- Başvuruya kapalı ilanlara doğrudan bağlantı/kaydedilenler üzerinden erişim; şikâyet değerlendirme süreci.
 - Ekip rol yetkileri, proje–ekip ilişkisinin yönetimi ve organization eşlemesi.
 - GitHub izinleri, PR kabul/merge davranışı, otomatik kabul ve iki sistemin senkronizasyonu.
 - Private dosya sınırı, desteklenen dosyalar ve yayımlanmış kopyanın elle güncellenmesi.
