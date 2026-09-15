@@ -2,7 +2,7 @@
 
 Proje ve açık kaynak topluluğu.
 
-Durum: Genel fikir ve kapsam netleştirildi. Ayrıntılı özellikler sonraki aşamada kararlaştırılacak.
+Durum: Genel kapsam ve temel ürün akışları görüşmeyle netleştiriliyor. Güncel kabul edilmiş kararlar, açık konular ve askıya alınan mesajlaşma kapsamı [kararlar.md](kararlar.md) dosyasındadır. Aşağıdaki özellik önerileri bu güncel kayıtla birlikte okunmalıdır; uygulama henüz başlamadı.
 
 ## Amaç
 

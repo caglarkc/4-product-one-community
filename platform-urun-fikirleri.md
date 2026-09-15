@@ -2,6 +2,8 @@
 
 ## Dört ürün
 
+Ortak amaç: Bir üniversite öğrencisini ekosisteme katıp sektöre hazır hâle getirmek.
+
 1. **FIRST — Future Innovators Research & Source Team** — Proje ve açık kaynak topluluğu
 2. **STEP — Student Talent Entry Platform** — Freelance pazarı
 3. **INTO — Industry Navigation & Talent Orientation** — Mentorluk
@@ -11,7 +13,7 @@
 
 Proje ve açık kaynak topluluğu.
 
-Durum: Genel fikir ve kapsam netleştirildi. Ayrıntılı özellikler sonraki aşamada kararlaştırılacak.
+Durum: Genel kapsam ve temel akışlar netleştiriliyor. FIRST için güncel kabul edilmiş kararlar ve açık konular [FIRST/kararlar.md](FIRST/kararlar.md) dosyasında tutulur. Mesajlaşma ve sohbet çalışmaları şimdilik askıdadır; aşağıdaki ilk kapsam özeti güncel karar kaydıyla birlikte okunmalıdır.
 
 ### Amaç
 
