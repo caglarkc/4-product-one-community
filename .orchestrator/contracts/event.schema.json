@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://son-immense.local/orchestrator/event.schema.json",
+  "title": "Project Orchestrator Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "eventId", "timestamp", "type", "actor", "runId", "itemId", "payload"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "eventId": {"type": "string", "minLength": 1},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "type": {
+      "enum": [
+        "run-created",
+        "item-ready",
+        "status-transition",
+        "result-recorded",
+        "decision-recorded"
+      ]
+    },
+    "actor": {"type": "string", "minLength": 1},
+    "runId": {"type": "string", "minLength": 1},
+    "itemId": {"type": ["string", "null"]},
+    "payload": {"type": "object"},
+    "extensions": {"type": "object"}
+  }
+}

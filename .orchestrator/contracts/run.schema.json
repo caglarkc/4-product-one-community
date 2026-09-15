@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://son-immense.local/orchestrator/run.schema.json",
+  "title": "Project Orchestrator Run",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "runId",
+    "title",
+    "goal",
+    "createdAt",
+    "updatedAt",
+    "context",
+    "constraints",
+    "policy",
+    "decisions",
+    "items"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "runId": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,62}$"},
+    "title": {"type": "string", "minLength": 1},
+    "goal": {"type": "string", "minLength": 1},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "updatedAt": {"type": "string", "format": "date-time"},
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiredPaths", "optionalPaths", "catalogSnapshot", "assumptions"],
+      "properties": {
+        "requiredPaths": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "optionalPaths": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "catalogSnapshot": {"type": ["string", "null"]},
+        "assumptions": {"type": "array", "items": {"type": "string"}},
+        "extensions": {"type": "object"}
+      }
+    },
+    "constraints": {"type": "array", "items": {"type": "string"}},
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiresIntegration"],
+      "properties": {
+        "requiresIntegration": {"type": "boolean"},
+        "extensions": {"type": "object"}
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "summary", "reason", "decidedAt", "actor"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+          "summary": {"type": "string", "minLength": 1},
+          "reason": {"type": "string", "minLength": 1},
+          "decidedAt": {"type": "string", "format": "date-time"},
+          "actor": {"type": "string", "minLength": 1},
+          "extensions": {"type": "object"}
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/workItem"}
+    },
+    "extensions": {"type": "object"}
+  },
+  "$defs": {
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "value"],
+      "properties": {
+        "type": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+        "value": {"type": "string", "minLength": 1},
+        "description": {"type": "string"},
+        "extensions": {"type": "object"}
+      }
+    },
+    "relations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dependsOn", "reviews", "verifies", "revises", "integrates"],
+      "properties": {
+        "dependsOn": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "reviews": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "verifies": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "revises": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "integrates": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "extensions": {"type": "object"}
+      }
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "reasons", "approvalBoundaries"],
+      "properties": {
+        "level": {"enum": ["low", "medium", "high", "critical"]},
+        "reasons": {"type": "array", "items": {"type": "string"}},
+        "approvalBoundaries": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "extensions": {"type": "object"}
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "isolation", "readOnly", "independent", "writeScopes", "preferredPlatforms"],
+      "properties": {
+        "mode": {"enum": ["inline", "delegate"]},
+        "isolation": {"enum": ["platform-default", "shared", "worktree"]},
+        "readOnly": {"type": "boolean"},
+        "independent": {"type": "boolean"},
+        "writeScopes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "preferredPlatforms": {
+          "type": "array",
+          "items": {"enum": ["codex", "cursor", "claude-code"]},
+          "uniqueItems": true
+        },
+        "owner": {"type": ["string", "null"]},
+        "extensions": {"type": "object"}
+      }
+    },
+    "workItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "kind",
+        "domains",
+        "objective",
+        "responsibility",
+        "inputs",
+        "outputs",
+        "acceptanceCriteria",
+        "capabilities",
+        "relations",
+        "risk",
+        "execution",
+        "status",
+        "attempt",
+        "resultRef"
+      ],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,62}$"},
+        "title": {"type": "string", "minLength": 1},
+        "kind": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+        "domains": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "objective": {"type": "string", "minLength": 1},
+        "responsibility": {"type": "string", "minLength": 1},
+        "inputs": {"type": "array", "items": {"$ref": "#/$defs/input"}},
+        "outputs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "acceptanceCriteria": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "relations": {"$ref": "#/$defs/relations"},
+        "risk": {"$ref": "#/$defs/risk"},
+        "execution": {"$ref": "#/$defs/execution"},
+        "status": {"enum": ["draft", "ready", "active", "blocked", "done", "failed", "cancelled"]},
+        "attempt": {"type": "integer", "minimum": 0},
+        "resultRef": {"type": ["string", "null"]},
+        "extensions": {"type": "object"}
+      }
+    }
+  }
+}

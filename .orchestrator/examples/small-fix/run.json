@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "example-small-fix",
+  "title": "Tek dosyalı küçük düzeltme",
+  "goal": "Açık pattern'e sahip düşük riskli bir metin hatasını gereksiz agent oluşturmadan düzeltmek.",
+  "createdAt": "2026-07-16T08:00:00.000Z",
+  "updatedAt": "2026-07-16T08:00:00.000Z",
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/code-implementation-mode/SKILL.md",
+      ".agent/rules.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": null,
+    "assumptions": [
+      "Mevcut kod pattern'i açık ve ürün kararı gerekmiyor.",
+      "Sentetik örnek: uygulama yolları temsili, teknoloji ve ürün uygulama kararı değildir."
+    ]
+  },
+  "constraints": [
+    "Yalnız hedef dosyayı değiştir.",
+    "Commit veya push yapma."
+  ],
+  "policy": {
+    "requiresIntegration": false
+  },
+  "decisions": [
+    {
+      "id": "inline-low-risk",
+      "summary": "Dedicated agent kullanılmayacak.",
+      "reason": "Tek dosya, düşük risk ve açık pattern için delegation overhead'i değersiz.",
+      "decidedAt": "2026-07-16T08:00:00.000Z",
+      "actor": "manager"
+    }
+  ],
+  "items": [
+    {
+      "id": "fix-copy",
+      "title": "Hedef metin hatasını düzelt",
+      "kind": "implement",
+      "domains": [
+        "documentation"
+      ],
+      "objective": "Belirtilen dosyadaki yanlış metni mevcut stile uygun düzelt.",
+      "responsibility": "Yalnız hedef metni değiştir; çevre içeriğini refactor etme.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "docs/example.md",
+          "description": "Örnek hedef; gerçek görevde doğrulanmış path kullanılır."
+        }
+      ],
+      "outputs": [
+        "Minimal diff",
+        "Manuel kontrol notu"
+      ],
+      "acceptanceCriteria": [
+        "Yanlış metin düzeltilmiş olmalı.",
+        "Hedef dışı satır değişmemiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Tek dosya ve davranışsal etkisi yok."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "docs/example.md"
+        ],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": "manager"
+      },
+      "status": "ready",
+      "attempt": 0,
+      "resultRef": null
+    }
+  ]
+}

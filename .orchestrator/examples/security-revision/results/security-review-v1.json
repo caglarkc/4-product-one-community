@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "example-security-revision",
+  "itemId": "security-review-v1",
+  "agent": {
+    "platform": "manual",
+    "identity": "security-reviewer",
+    "sessionRef": "example-security-review-v1"
+  },
+  "outcome": "pass",
+  "summary": "Review tamamlandı ve v1 için kritik reuse bulgusu doğrulandı.",
+  "artifacts": [
+    {
+      "type": "finding",
+      "path": null,
+      "change": "reported",
+      "description": "Kritik reuse bulgusu."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Revision gerektiren bulgu kanıtlı olmalı.",
+      "status": "passed",
+      "evidence": "İkinci kullanımın reddedilmediği akış ve etkilenen kontrol sırası belirlendi."
+    }
+  ],
+  "checks": [
+    {
+      "name": "independent-security-review",
+      "status": "passed",
+      "evidence": "Implementer beyanından bağımsız source-flow incelemesi yapıldı."
+    }
+  ],
+  "risks": ["v1 deploy edilmemeli."],
+  "followUps": ["auth-revision-v2 item'ını çalıştır."],
+  "completedAt": "2026-07-16T10:45:00.000Z"
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "replace-run-id",
+  "title": "Replace title",
+  "goal": "Replace goal",
+  "createdAt": "2026-07-16T00:00:00.000Z",
+  "updatedAt": "2026-07-16T00:00:00.000Z",
+  "revision": 0,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": null,
+    "assumptions": []
+  },
+  "constraints": [
+    "Orchestrator proje kökünde ortaktır; ürün klasörlerinde ayrı agent sistemi oluşturma.",
+    "Kesinleşmemiş ürün ve teknoloji kararlarını varsayım olarak belirt.",
+    "Dosya değişen görev sonunda ana agent .agent/rules.md Git Teslim Protokolü ile anlamlı commit ve push yapar; açık kullanıcı istisnası korunur, alt writerlar bağımsız push yapmaz."
+  ],
+  "policy": {
+    "requiresIntegration": false
+  },
+  "decisions": [],
+  "items": []
+}

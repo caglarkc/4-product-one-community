@@ -1,0 +1,460 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "example-security-revision",
+  "title": "Kritik auth revision ve resume örneği",
+  "goal": "Başarısız auth denemesini silmeden, bağımsız review bulgusundan revision üretip güvenli biçimde devam etmek.",
+  "createdAt": "2026-07-16T10:00:00.000Z",
+  "updatedAt": "2026-07-16T11:00:00.000Z",
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/rules.md",
+      ".cursor/maps/stack-shared-ai/products.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": null,
+    "assumptions": [
+      "Sentetik örnek: uygulama yolları temsili, teknoloji ve ürün uygulama kararı değildir."
+    ]
+  },
+  "constraints": [
+    "Secret veya token değerini run/result dosyasına yazma.",
+    "Canlı auth servisini agent makinesinde başlatma."
+  ],
+  "policy": {
+    "requiresIntegration": false
+  },
+  "decisions": [
+    {
+      "id": "preserve-failed-attempt",
+      "summary": "İlk auth implementasyonu failed olarak korunacak.",
+      "reason": "Revision nedenini ve önceki güvenlik bulgusunu audit edebilmek.",
+      "decidedAt": "2026-07-16T10:45:00.000Z",
+      "actor": "manager"
+    }
+  ],
+  "items": [
+    {
+      "id": "threat-model",
+      "title": "Auth threat model",
+      "kind": "security-analysis",
+      "domains": [
+        "security",
+        "authentication"
+      ],
+      "objective": "Token refresh sınırlarını ve tehditleri çıkar.",
+      "responsibility": "Read-only analiz.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/access"
+        }
+      ],
+      "outputs": [
+        "Threat model"
+      ],
+      "acceptanceCriteria": [
+        "Trust boundary ve abuse case'ler listelenmiş olmalı."
+      ],
+      "capabilities": [
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Security analysis."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": "security-analysis-agent"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/threat-model.json"
+    },
+    {
+      "id": "auth-implement-v1",
+      "title": "Auth refresh implementasyonu v1",
+      "kind": "authentication",
+      "domains": [
+        "first",
+        "security"
+      ],
+      "objective": "Threat model'e göre refresh akışını uygula.",
+      "responsibility": "Auth service scope'u.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "threat-model"
+        }
+      ],
+      "outputs": [
+        "Auth source changes"
+      ],
+      "acceptanceCriteria": [
+        "Refresh token reuse engellenmeli.",
+        "Standard error response korunmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "threat-model"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "critical",
+        "reasons": [
+          "Kimlik doğrulama ve token güvenliği."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/access"
+        ],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": "auth-worker-v1"
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/auth-implement-v1.json"
+    },
+    {
+      "id": "security-review-v1",
+      "title": "Auth v1 bağımsız security review",
+      "kind": "review",
+      "domains": [
+        "security",
+        "authentication"
+      ],
+      "objective": "İlk implementasyondaki token reuse riskini doğrula.",
+      "responsibility": "Read-only bağımsız review.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "auth-implement-v1"
+        }
+      ],
+      "outputs": [
+        "Security finding"
+      ],
+      "acceptanceCriteria": [
+        "Revision gerektiren bulgu kanıtlı olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "auth-implement-v1"
+        ],
+        "reviews": [
+          "auth-implement-v1"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Bağımsız gate."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": "security-reviewer"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/security-review-v1.json"
+    },
+    {
+      "id": "verify-auth-v1",
+      "title": "Auth v1 verification",
+      "kind": "verify",
+      "domains": [
+        "security",
+        "first"
+      ],
+      "objective": "Review fail verdiği için ilk doğrulamayı iptal kayıtlı tut.",
+      "responsibility": "İlk denemenin verify gate'i.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "security-review-v1"
+        }
+      ],
+      "outputs": [
+        "Cancelled verification record"
+      ],
+      "acceptanceCriteria": [
+        "İptal nedeni audit trail'de görünmeli."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "security-review-v1"
+        ],
+        "reviews": [],
+        "verifies": [
+          "auth-implement-v1"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Terminal gate kaydı."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "cancelled",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "auth-revision-v2",
+      "title": "Auth refresh revision v2",
+      "kind": "authentication",
+      "domains": [
+        "first",
+        "security"
+      ],
+      "objective": "Security review bulgusunu dar kapsamlı revision ile düzelt.",
+      "responsibility": "Yalnız bulgudaki token rotation/reuse akışını düzelt; yeni refactor ekleme.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "security-review-v1"
+        }
+      ],
+      "outputs": [
+        "Revised auth source changes",
+        "Uzak smoke planı"
+      ],
+      "acceptanceCriteria": [
+        "Refresh token reuse engellenmeli.",
+        "Önceki valid token rotation davranışı korunmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode",
+        "shared-integration"
+      ],
+      "relations": {
+        "dependsOn": [
+          "security-review-v1"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "auth-implement-v1"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "critical",
+        "reasons": [
+          "Kimlik doğrulama revision'ı."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/access"
+        ],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "ready",
+      "attempt": 2,
+      "resultRef": null
+    },
+    {
+      "id": "security-review-v2",
+      "title": "Auth v2 bağımsız security review",
+      "kind": "review",
+      "domains": [
+        "security",
+        "authentication"
+      ],
+      "objective": "Revision'ın bulguyu kapattığını bağımsız doğrula.",
+      "responsibility": "Read-only; v1 reviewer veya fresh thread kullanılabilir.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "auth-revision-v2"
+        }
+      ],
+      "outputs": [
+        "Security review v2"
+      ],
+      "acceptanceCriteria": [
+        "Token reuse bulgusu kanıtla kapatılmış olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "auth-revision-v2"
+        ],
+        "reviews": [
+          "auth-revision-v2"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Bağımsız gate."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "verify-auth-v2",
+      "title": "Auth v2 verification",
+      "kind": "verify",
+      "domains": [
+        "security",
+        "first"
+      ],
+      "objective": "Revision acceptance ve uzak smoke adımlarını kanıtla doğrula.",
+      "responsibility": "Lokal servis başlatma; pass için bütün acceptance kanıtlarını iste.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "security-review-v2"
+        }
+      ],
+      "outputs": [
+        "Final verification"
+      ],
+      "acceptanceCriteria": [
+        "Bütün auth acceptance maddeleri passed olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "security-review-v2"
+        ],
+        "reviews": [],
+        "verifies": [
+          "auth-revision-v2"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Final gate."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    }
+  ]
+}

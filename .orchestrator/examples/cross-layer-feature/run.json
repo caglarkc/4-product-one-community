@@ -1,0 +1,726 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "example-cross-layer",
+  "title": "FIRST–INTO proje mentorluğu sözleşmesi cross-layer örneği",
+  "goal": "Proje mentorluğu sözleşmesini first ve INTO'da bağımsız scope'larla uygulayıp review, verify ve integration kapılarından geçirmek.",
+  "createdAt": "2026-07-16T09:00:00.000Z",
+  "updatedAt": "2026-07-16T09:00:00.000Z",
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".cursor/maps/stack-shared-ai/products.md",
+      ".cursor/maps/stack-shared-ai/technology.md",
+      ".agent/rules.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": null,
+    "assumptions": [
+      "Sentetik örnek: uygulama yolları temsili, teknoloji ve ürün uygulama kararı değildir."
+    ]
+  },
+  "constraints": [
+    "FIRST ve INTO implement item'ları birbirinin write scope'una dokunmaz.",
+    "API contract doğrulanmadan layer implementasyonları başlamaz.",
+    "Bu sentetik örnek canlı servis başlatmaz.",
+    "Commit veya push yapma."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "contract-first",
+      "summary": "API contract layer kodundan önce sabitlenecek.",
+      "reason": "Paralel FIRST/INTO yazımında response shape drift'ini önlemek.",
+      "decidedAt": "2026-07-16T09:00:00.000Z",
+      "actor": "manager"
+    }
+  ],
+  "items": [
+    {
+      "id": "scope-analysis",
+      "title": "Ürün ve kapsam analizi",
+      "kind": "analysis",
+      "domains": [
+        "product",
+        "mentoring"
+      ],
+      "objective": "İş kuralları, veri tazeliği ve sınırları gerçek kod/map üzerinden çıkar.",
+      "responsibility": "Karar boşluğu bulursa implementasyona geçmeden blocker üret.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".cursor/maps/stack-shared-ai/overview.md"
+        }
+      ],
+      "outputs": [
+        "Doğrulanmış kapsam",
+        "Açık ürün kararları"
+      ],
+      "acceptanceCriteria": [
+        "Etkilenen layer ve gerçek path'ler listelenmiş olmalı.",
+        "Kritik belirsizlikler açık olmalı."
+      ],
+      "capabilities": [
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer ripple riski."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "ready",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "define-api-contract",
+      "title": "API contract'ı tanımla",
+      "kind": "api-contract",
+      "domains": [
+        "api",
+        "first",
+        "into"
+      ],
+      "objective": "Request, response, validation ve error shape'i mevcut standarda göre sabitle.",
+      "responsibility": "Layer implementasyonu yapma; yalnız contract artifact'i üret.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "scope-analysis"
+        },
+        {
+          "type": "path",
+          "value": ".cursor/maps/stack-shared-ai/products.md"
+        }
+      ],
+      "outputs": [
+        "Versiyonlanabilir contract artifact'i"
+      ],
+      "acceptanceCriteria": [
+        "Request ve response alanları açık olmalı.",
+        "Error ve authorization davranışı açık olmalı."
+      ],
+      "capabilities": [
+        "shared-integration"
+      ],
+      "relations": {
+        "dependsOn": [
+          "scope-analysis"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "İki client layer'ını etkileyen API sözleşmesi."
+        ],
+        "approvalBoundaries": [
+          "schema-policy-change"
+        ]
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "docs/contracts/project-mentoring.json"
+        ],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "review-api-contract",
+      "title": "API contract bağımsız review",
+      "kind": "review",
+      "domains": [
+        "api",
+        "security"
+      ],
+      "objective": "Contract bütünlüğü, auth, validation ve backward compatibility risklerini incele.",
+      "responsibility": "Dosya değiştirme; severity ve kanıtla raporla.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "define-api-contract"
+        }
+      ],
+      "outputs": [
+        "Bağımsız review sonucu"
+      ],
+      "acceptanceCriteria": [
+        "P0/P1/P2 bulguları kanıtlı olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "define-api-contract"
+        ],
+        "reviews": [
+          "define-api-contract"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Contract gate."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "verify-api-contract",
+      "title": "API contract doğrulaması",
+      "kind": "verify",
+      "domains": [
+        "api"
+      ],
+      "objective": "Contract'ın first standard response ve INTO tüketim ihtiyaçlarını karşıladığını doğrula.",
+      "responsibility": "Kanıt yoksa pass verme.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "review-api-contract"
+        }
+      ],
+      "outputs": [
+        "Contract verification sonucu"
+      ],
+      "acceptanceCriteria": [
+        "Her contract alanı iki layer ihtiyacıyla eşleşmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "review-api-contract"
+        ],
+        "reviews": [],
+        "verifies": [
+          "define-api-contract"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Contract gate."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "implement-first",
+      "title": "FIRST contract implementasyonu",
+      "kind": "implement",
+      "domains": [
+        "first",
+        "api"
+      ],
+      "objective": "Doğrulanmış contract'ı mevcut proje erişim akışı zincirinde uygula.",
+      "responsibility": "Yalnız mentoring-service ve gerekirse gateway scope'u; INTO'a dokunma.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "verify-api-contract"
+        }
+      ],
+      "outputs": [
+        "FIRST kaynak değişiklikleri",
+        "Sözleşme ve yetki doğrulama adımları"
+      ],
+      "acceptanceCriteria": [
+        "Standard response shape korunmalı.",
+        "Validation ve authorization contract ile eşleşmeli."
+      ],
+      "capabilities": [
+        "code-implementation-mode",
+        "shared-integration"
+      ],
+      "relations": {
+        "dependsOn": [
+          "verify-api-contract"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "API ve authorization davranışı değişiyor."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/project-access",
+          "FIRST/project-contract"
+        ],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "implement-into",
+      "title": "INTO contract entegrasyonu",
+      "kind": "implement",
+      "domains": [
+        "into",
+        "api",
+        "mentoring"
+      ],
+      "objective": "Doğrulanmış contract'ı mevcut mentor arayışı akışı zincirine entegre et.",
+      "responsibility": "Yalnız mentoring modülü ve ortak endpoint/model gereksinimleri; first'e dokunma.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "verify-api-contract"
+        }
+      ],
+      "outputs": [
+        "INTO kaynak değişiklikleri",
+        "Loading/error/empty state davranışı"
+      ],
+      "acceptanceCriteria": [
+        "UI doğrudan API çağırmamalı.",
+        "Storage/freshness kararı açık olmalı.",
+        "Loading/error/empty state bulunmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "verify-api-contract"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "State, cache ve API entegrasyonu değişiyor."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "INTO/modules/mentoring",
+          "INTO/shared/api"
+        ],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "review-first",
+      "title": "FIRST bağımsız review",
+      "kind": "review",
+      "domains": [
+        "first",
+        "security"
+      ],
+      "objective": "FIRST implementasyonunu correctness, auth, contract ve regression açısından incele.",
+      "responsibility": "Implement eden thread'den bağımsız, read-only review.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "implement-first"
+        }
+      ],
+      "outputs": [
+        "Severity bazlı first review"
+      ],
+      "acceptanceCriteria": [
+        "Contract ve auth zinciri kanıtla incelenmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "implement-first"
+        ],
+        "reviews": [
+          "implement-first"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Bağımsız gate."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "verify-first",
+      "title": "FIRST doğrulaması",
+      "kind": "verify",
+      "domains": [
+        "first",
+        "api"
+      ],
+      "objective": "Review sonrası contract, response ve doğrulama planını doğrula.",
+      "responsibility": "Mevcut doğrulama araçlarını kullan; çalıştırılmayanı belirt.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "review-first"
+        }
+      ],
+      "outputs": [
+        "FIRST verification sonucu"
+      ],
+      "acceptanceCriteria": [
+        "Contract acceptance maddeleri kanıtlı olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "review-first"
+        ],
+        "reviews": [],
+        "verifies": [
+          "implement-first"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Bağımsız gate."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "review-into",
+      "title": "INTO bağımsız review",
+      "kind": "review",
+      "domains": [
+        "into",
+        "state"
+      ],
+      "objective": "INTO implementasyonunu architecture, state, cache ve UX açısından incele.",
+      "responsibility": "Implement eden thread'den bağımsız, read-only review.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "implement-into"
+        }
+      ],
+      "outputs": [
+        "Severity bazlı INTO review"
+      ],
+      "acceptanceCriteria": [
+        "Arayüz ve entegrasyon sözleşmesi sınırı ve state'ler incelenmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "implement-into"
+        ],
+        "reviews": [
+          "implement-into"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Bağımsız gate."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "verify-into",
+      "title": "INTO doğrulaması",
+      "kind": "verify",
+      "domains": [
+        "into",
+        "ui-test"
+      ],
+      "objective": "Review sonrası davranış, state ve manuel smoke planını doğrula.",
+      "responsibility": "Repo kuralına göre test komutlarını çalıştırma/çalıştırmama sınırını raporla.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "review-into"
+        }
+      ],
+      "outputs": [
+        "INTO verification sonucu"
+      ],
+      "acceptanceCriteria": [
+        "Loading/error/empty ve storage/freshness davranışı doğrulanmış olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "review-into"
+        ],
+        "reviews": [],
+        "verifies": [
+          "implement-into"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Bağımsız gate."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "integrate-feature",
+      "title": "Cross-layer integration",
+      "kind": "integration",
+      "domains": [
+        "first",
+        "into",
+        "api"
+      ],
+      "objective": "Kabul edilen first ve INTO sonuçlarının aynı contract üzerinde bütünleştiğini doğrula.",
+      "responsibility": "Yeni özellik ekleme; yalnız cross-layer mismatch ve regression kontrolü.",
+      "inputs": [
+        {
+          "type": "item",
+          "value": "verify-first"
+        },
+        {
+          "type": "item",
+          "value": "verify-into"
+        }
+      ],
+      "outputs": [
+        "Integration kabul veya revision kararı"
+      ],
+      "acceptanceCriteria": [
+        "Request/response mapping iki layer'da birebir eşleşmeli.",
+        "FIRST ve INTO doğrulama adımları açık olmalı."
+      ],
+      "capabilities": [
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "verify-first",
+          "verify-into"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "implement-first",
+          "implement-into"
+        ]
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Cross-layer final gate."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex",
+          "cursor",
+          "claude-code"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    }
+  ]
+}

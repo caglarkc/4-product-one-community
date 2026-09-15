@@ -1,0 +1,31 @@
+{
+  "id": "cursor",
+  "displayName": "Cursor",
+  "nativeCapabilities": {
+    "subagents": "foreground/background Task delegation with isolated context",
+    "customAgents": ".cursor/agents/*.md, with compatibility loading for Claude and Codex agent locations",
+    "worktrees": "managed isolated checkouts for parallel/background work",
+    "approvals": "run modes and command/tool approval policies are surface configuration",
+    "resume": "subagent IDs and agent sessions can be resumed when supported"
+  },
+  "dispatchGuidance": [
+    "Use foreground subagents for dependent work and background subagents for independent workstreams.",
+    "Use native worktrees for parallel writers; apply results only after review and verification.",
+    "Use a custom subagent only for a recurring narrow responsibility, not for each domain named in a task.",
+    "Keep platform command syntax outside the vendor-neutral run file.",
+    "If Task or worktree support is unavailable, use the rendered prompt in a separate Cursor session."
+  ],
+  "limitations": [
+    "Subagent model availability can be changed by plan or admin restrictions.",
+    "Parallel contexts increase token use.",
+    "Headless write mode and approvals differ from interactive mode.",
+    "Native feature names and UI entrypoints change across releases."
+  ],
+  "officialSources": [
+    "https://cursor.com/docs/subagents.md",
+    "https://cursor.com/docs/skills.md",
+    "https://cursor.com/docs/configuration/worktrees.md",
+    "https://cursor.com/docs/hooks.md",
+    "https://cursor.com/docs/cli/headless.md"
+  ]
+}

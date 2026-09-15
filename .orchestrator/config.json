@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "1.0.0",
+  "systemName": "4-product-one-community-orchestrator",
+  "paths": {
+    "entrypoints": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      ".agents/skills/orchestrate-project/SKILL.md"
+    ],
+    "skillRoots": [
+      ".agents/skills",
+      ".agent/skills",
+      ".cursor/skills",
+      ".claude/skills",
+      ".codex/skills"
+    ],
+    "mapRoots": [
+      ".cursor/maps/stack-shared-ai"
+    ],
+    "sourceRoots": [
+      "FIRST",
+      "STEP",
+      "INTO",
+      "PATH"
+    ],
+    "requiredContext": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "runs": ".orchestrator/runs",
+    "catalog": ".orchestrator/catalog/repo-context.json",
+    "adapters": ".orchestrator/adapters"
+  },
+  "lifecycle": {
+    "statuses": [
+      "draft",
+      "ready",
+      "active",
+      "blocked",
+      "done",
+      "failed",
+      "cancelled"
+    ],
+    "terminalStatuses": [
+      "done",
+      "failed",
+      "cancelled"
+    ],
+    "transitions": {
+      "draft": [
+        "ready",
+        "cancelled"
+      ],
+      "ready": [
+        "active",
+        "blocked",
+        "cancelled"
+      ],
+      "active": [
+        "done",
+        "blocked",
+        "failed",
+        "cancelled"
+      ],
+      "blocked": [
+        "ready",
+        "cancelled"
+      ],
+      "done": [],
+      "failed": [],
+      "cancelled": []
+    }
+  },
+  "riskPolicy": {
+    "levels": [
+      "low",
+      "medium",
+      "high",
+      "critical"
+    ],
+    "independentGateKinds": [
+      "implement",
+      "api-contract",
+      "authentication",
+      "authorization",
+      "payment",
+      "data-storage",
+      "migration",
+      "security",
+      "deployment"
+    ],
+    "requireIndependentReviewAt": [
+      "high",
+      "critical"
+    ],
+    "requireVerificationAt": [
+      "high",
+      "critical"
+    ],
+    "requireHumanDecisionFor": [
+      "production-write",
+      "destructive-operation",
+      "secret-access",
+      "external-message",
+      "schema-policy-change"
+    ],
+    "forceQualityGateKinds": [
+      "authentication",
+      "authorization",
+      "security",
+      "api-contract",
+      "data-storage",
+      "migration"
+    ]
+  },
+  "authorityPolicy": {
+    "managerHasDelegatedProjectAuthority": true,
+    "managerMayApproveBoundaries": true,
+    "managerApprovalProvenance": "manager-delegated",
+    "platformApprovalsRemainExternal": true
+  },
+  "parallelPolicy": {
+    "defaultMaxWriters": 2,
+    "serializeUnknownWriteScope": true,
+    "readOnlyItemsMayShareBatch": true,
+    "preferWorktreeForParallelWriters": true
+  },
+  "historyPolicy": {
+    "format": "jsonl",
+    "appendOnly": true,
+    "storeRawPrompts": false,
+    "redactKeyFragments": [
+      "authorization",
+      "cookie",
+      "password",
+      "secret",
+      "token",
+      "apiKey",
+      "privateKey"
+    ],
+    "commitGeneratedRunsByDefault": true
+  },
+  "repoGuardrails": {
+    "protectedPrefixes": [
+      ".git/"
+    ],
+    "doNotTouch": [
+      ".github/"
+    ],
+    "controlledWritePaths": [
+      ".github/workflows/orchestrator.yml"
+    ],
+    "localCommandsForbiddenUnlessExplicitlyRequested": [],
+    "commitRequiresExplicitRequest": false,
+    "pushRequiresExplicitRequest": false,
+    "defaultTargetBranch": "main",
+    "atomicCommitsRequired": true,
+    "pushAcceptedIntegrationOnly": true,
+    "forcePushAllowed": false
+  }
+}

@@ -1,0 +1,42 @@
+name: Orchestrator Control Plane
+
+on:
+  push:
+    paths:
+      - '.orchestrator/**'
+      - '.agents/**'
+      - '.agent/**'
+      - '.cursor/**'
+      - 'FIRST/**'
+      - 'STEP/**'
+      - 'INTO/**'
+      - 'PATH/**'
+      - 'platform-urun-fikirleri.md'
+      - 'AGENTS.md'
+      - 'CLAUDE.md'
+      - '.github/workflows/orchestrator.yml'
+  pull_request:
+    paths:
+      - '.orchestrator/**'
+      - '.agents/**'
+      - '.agent/**'
+      - '.cursor/**'
+      - 'FIRST/**'
+      - 'STEP/**'
+      - 'INTO/**'
+      - 'PATH/**'
+      - 'platform-urun-fikirleri.md'
+      - 'AGENTS.md'
+      - 'CLAUDE.md'
+      - '.github/workflows/orchestrator.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node .orchestrator/bin/orchestrator.mjs verify-system
+      - run: node --test .orchestrator/test/orchestrator.test.mjs

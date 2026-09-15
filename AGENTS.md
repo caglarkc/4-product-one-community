@@ -1,0 +1,36 @@
+# Agent Entry — 4-product-one-community
+
+Bu repo FIRST, STEP, INTO ve PATH ürünlerini tek topluluk bağlamında yönetir. Orchestrator ve bütün skill/PM girişleri **proje kökündedir**; ürün klasörlerine kopyalanmaz.
+
+## İlk okuma
+
+1. `.agent/skills/meta/repo-context/SKILL.md`
+2. `.agent/skills/SKILL-MAP.md`
+3. `.cursor/maps/stack-shared-ai/overview.md`
+4. Görevle ilgili ürün README'si ve `.cursor/maps/stack-shared-ai/products.md`
+5. `.agent/rules.md`; teknoloji işi varsa `.cursor/maps/stack-shared-ai/technology.md`
+
+Ürün kapsamının kaynağı `platform-urun-fikirleri.md` ve `FIRST/README.md`, `STEP/README.md`, `INTO/README.md`, `PATH/README.md` dosyalarıdır. Haritalar başlangıç bağlamıdır; değişiklikten önce gerçek dosyayı doğrula.
+
+## Rol ve PM seçimi
+
+Varsayılan rol uygulayıcı/reviewer/verify'dir. Kullanıcı PM/yönetici istediğinde `.cursor/PM_GIRIS.md` ve `.cursor/skills/project-manager-mode/SKILL.md` okunur.
+
+Tek ürünlü, düşük riskli, açık pattern'li yönetim işi hafif PM akışını kullanır. Ürünler/katmanlar arası, high/critical risk, auth/security/API contract/storage/migration, paralel yazım veya resume işi `.agents/skills/orchestrate-project/SKILL.md` + `.orchestrator/SYSTEM.md` run graph'ını kullanır.
+
+Yönetici hedef, sorumluluk, bağımlılık, kabul kriteri ve dosya sahipliğini belirler. Bağımsız ve sınırları belli işleri native alt agentlara devret; aynı dosyaya paralel yazma. Native imkan yoksa render edilmiş handoff kullan. Sabit ürün başına agent kadrosu oluşturma.
+
+Yönetici yetkisi kullanıcının verdiği görev kapsamındadır; geçmiş projedeki yetkiler bu repoya taşınmaz. Platform izinleri ayrı kalır. Dosya değişen her görev sonunda anlamlı commit ve push varsayılandır; kullanıcı istisnası dışında tekrar izin isteme. Ayrıntılar `.agent/rules.md` → Git Teslim Protokolü.
+
+## Skill seçimi
+
+- Implement / review / verify: `.agent/skills/meta/code-implementation-mode/SKILL.md`
+- Ürün kapsamı ve FIRST–STEP–INTO–PATH bağlantıları: `.agent/skills/cross/product-boundaries/SKILL.md`
+- API, ortak kimlik, yetki ve veri paylaşımı: `.agent/skills/cross/shared-integration/SKILL.md`
+- Teknoloji/entegrasyon kararlarının keşfi: `.agent/skills/meta/repo-context/SKILL.md` + teknoloji haritası.
+
+Framework veya servis stack'i henüz seçilmedi. Immense'in Flutter/Node/admin varsayımları burada geçerli değildir. Uygulama kodu geldiğinde gerçek manifest ve kaynakları temel al.
+
+## Teslim
+
+`.agent/skills/meta/code-implementation-mode/SKILL.md` içindeki beş başlık: yapılan iş, değişen dosyalar, aktif davranışlar, beklenen eklemeler, manuel kontrol. Çalıştırılan kontrolleri ve doğrulanamayan noktaları belirt.

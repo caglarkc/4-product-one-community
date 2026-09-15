@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://son-immense.local/orchestrator/result.schema.json",
+  "title": "Project Orchestrator Work Item Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "runId",
+    "itemId",
+    "agent",
+    "outcome",
+    "summary",
+    "artifacts",
+    "acceptance",
+    "checks",
+    "risks",
+    "followUps",
+    "completedAt"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "runId": {"type": "string", "minLength": 1},
+    "itemId": {"type": "string", "minLength": 1},
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["platform", "identity", "sessionRef"],
+      "properties": {
+        "platform": {"enum": ["codex", "cursor", "claude-code", "manual"]},
+        "identity": {"type": "string", "minLength": 1},
+        "sessionRef": {"type": ["string", "null"]},
+        "extensions": {"type": "object"}
+      }
+    },
+    "outcome": {"enum": ["pass", "revise", "blocked", "fail"]},
+    "summary": {"type": "string", "minLength": 1},
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "path", "change", "description"],
+        "properties": {
+          "type": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+          "path": {"type": ["string", "null"]},
+          "change": {"enum": ["none", "created", "modified", "deleted", "reported"]},
+          "description": {"type": "string", "minLength": 1},
+          "extensions": {"type": "object"}
+        }
+      }
+    },
+    "acceptance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["criterion", "status", "evidence"],
+        "properties": {
+          "criterion": {"type": "string", "minLength": 1},
+          "status": {"enum": ["passed", "failed", "not_verified"]},
+          "evidence": {"type": "string", "minLength": 1},
+          "extensions": {"type": "object"}
+        }
+      }
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "status", "evidence"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "status": {"enum": ["passed", "failed", "not_run"]},
+          "evidence": {"type": "string", "minLength": 1},
+          "extensions": {"type": "object"}
+        }
+      }
+    },
+    "risks": {"type": "array", "items": {"type": "string"}},
+    "followUps": {"type": "array", "items": {"type": "string"}},
+    "completedAt": {"type": "string", "format": "date-time"},
+    "extensions": {"type": "object"}
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "example-security-revision",
+  "itemId": "auth-implement-v1",
+  "agent": {
+    "platform": "manual",
+    "identity": "auth-worker-v1",
+    "sessionRef": "example-auth-v1"
+  },
+  "outcome": "revise",
+  "summary": "Standart response korundu fakat reuse engeli eksik kaldı.",
+  "artifacts": [
+    {
+      "type": "diff",
+      "path": "FIRST/access",
+      "change": "modified",
+      "description": "Örnek başarısız deneme; gerçek source değişikliği bu fixture'a dahil değildir."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Refresh token reuse engellenmeli.",
+      "status": "failed",
+      "evidence": "Aynı credential ikinci istekte reddedilmiyor."
+    },
+    {
+      "criterion": "Standard error response korunmalı.",
+      "status": "passed",
+      "evidence": "Hata şekli success/customMessage/errorMessage standardında."
+    }
+  ],
+  "checks": [
+    {
+      "name": "static-auth-flow-review",
+      "status": "failed",
+      "evidence": "Reuse kontrolü persistence güncellemesinden önce uygulanmıyor."
+    }
+  ],
+  "risks": ["Credential replay yetkisiz oturum yenilemeye yol açabilir."],
+  "followUps": ["Dar kapsamlı v2 revision oluştur."],
+  "completedAt": "2026-07-16T10:20:00.000Z"
+}

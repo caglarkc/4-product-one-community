@@ -1,0 +1,8 @@
+---
+description: Project manager routing for FIRST, STEP, INTO, PATH and shared integration.
+alwaysApply: false
+---
+
+PM/yönetici isteğinde `.cursor/PM_GIRIS.md` ve `.cursor/skills/project-manager-mode/SKILL.md` oku. Ürünler/katmanlar arası veya riskli/paralel/resume işte `.agents/skills/orchestrate-project/SKILL.md` ve `.orchestrator/SYSTEM.md` kullan.
+
+Ürün ve teknoloji bağlamı `.cursor/maps/stack-shared-ai/`; rol ve görev skill'leri `.agent/skills/SKILL-MAP.md`. Handoff tek amaç, dosya sahipliği, girdi, çıktı ve kabul kriterlerini taşır. Alt AI sonucunu kabul/revizyon ile değerlendir. Yönetici modunda açık uygulama isteği dışında kod yazma.

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "example-security-revision",
+  "itemId": "threat-model",
+  "agent": {
+    "platform": "manual",
+    "identity": "security-analysis-agent",
+    "sessionRef": "example-threat-model"
+  },
+  "outcome": "pass",
+  "summary": "Refresh akışının trust boundary ve abuse case'leri çıkarıldı.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Örnek threat model özeti run girdisine aktarıldı."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Trust boundary ve abuse case'ler listelenmiş olmalı.",
+      "status": "passed",
+      "evidence": "Client, gateway, auth service ve persistence sınırları; reuse ve replay abuse case'leri raporlandı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "threat-model-review",
+      "status": "passed",
+      "evidence": "Kapsam auth refresh zincirinin bütün trust boundary'lerini içeriyor."
+    }
+  ],
+  "risks": ["Rotation sırasındaki yarış koşulu implementasyonda ayrıca doğrulanmalı."],
+  "followUps": ["Auth implement item'ında reuse test senaryosu ekle."],
+  "completedAt": "2026-07-16T10:10:00.000Z"
+}
