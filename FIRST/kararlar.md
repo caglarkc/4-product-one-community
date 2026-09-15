@@ -7,6 +7,8 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 
 - Dört ürünün ortak amacı üniversite öğrencisini ekosisteme katıp sektöre hazır hâle getirmektir.
 - FIRST insanları projelerde bir araya getirir: repo keşfi, katkı, ekip kurma ve insan bulma.
+- Ana sorumluluk insanları buluşturmaktır. Sonrasındaki işi yürütme, koordinasyon ve tamamlama kullanıcılara aittir; FIRST görev dağıtan veya teslimatı yöneten bir sistem değildir.
+- Buluşma sonrasında sınırlı katkı takibi hedeflenir. Kullanıcı istediğinde repodaki katkı geçmişini çekip FIRST istatistiklerine ekleyebilir; takip süresi ve otomatik yenileme kapsamı henüz belirlenmedi.
 - Kod, fork ve PR üretimi GitHub üzerinde kalır; FIRST keşif, katılım ve topluluk ilişkisini sağlar.
 - Site üzerinden iletişim ürün niyetinin parçasıdır; mesajlaşma ve sohbet çalışmaları şu an askıdadır.
 - Ücretli iş ilişkileri STEP kapsamındadır; public/private ayrımı bu sınırı değiştirmez.
@@ -24,7 +26,10 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 
 - Görevler GitHub Issues ile bağlantılıdır.
 - FIRST içinden görev açılabilir; bu işlem GitHub'da da issue oluşturur.
-- Görevlerin atanması, durumları ve senkronizasyon ayrıntıları henüz belirlenmedi.
+- FIRST'te görev verme/atama yoktur. Kullanıcı ön onay beklemeden çalışmaya başlayabilir; private repo erişimi için mevcut izin koşulları geçerlidir.
+- Aynı görev üzerinde birden fazla kişi bağımsız çalışabilir; görev bir kişiye ayrılıp diğerlerine kapatılmaz.
+- Bu karar katılım politikası veya katkının kabul koşulunu değiştirmez; işe başlamak ve katkının kabulü ayrı aşamalardır.
+- Görev durumlarının gösterimi ve GitHub senkronizasyon ayrıntıları henüz belirlenmedi.
 
 ## Katılım yöntemleri
 
@@ -61,10 +66,15 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 
 ## Kişi keşfi ve profil
 
+- FIRST'e katılım öğrenci olmakla sınırlı değildir; mezunlar ve sektörde çalışanlar da katılabilir.
+- Projeler hesap açmadan gezilebilir. Başvuru, katkı ve repo ilanı oluşturma aşamalarında GitHub hesabı bağlantısı zorunludur.
+- Üniversite öğrencileri öncelikli hedef kitledir. İleride öğrenci hesabı doğrulamasından sonra profili öne çıkarma ve öğrencilere özel site içi özellikler sağlanması hedeflenir; doğrulama yöntemi, avantajlar ve takvim henüz belirlenmedi.
+
 - Kişiler beceri ve ilgi alanına göre keşfedilebilir; projeye veya ekibe davet edilebilir.
 - Profilde “Katılım davetlerine açığım” seçeneği bulunur.
 - Public repo katkıları, kabul edilen katkılar, proje rolleri ve ekip geçmişi görünür olur.
 - Katkı verilen farklı projeler ve eklenen kod satırı gibi ölçütler konuşuldu; kesin metrikler ve sunum biçimleri sonraya bırakıldı. Kod satırı sayısı tek başına başarı ölçütü olarak kararlaştırılmadı.
+- Kullanıcı “repodaki bilgilerimi çek” talebiyle o repodaki kendi katkı geçmişinin sisteme istatistik olarak alınmasını isteyebilir. Hedef katkıların kapsamlı aktarımıdır; erişilebilir veri türleri ve eksiksizlik teknik keşifle doğrulanacak, henüz tüm etkinlikleri çekme garantisi verilmez.
 
 ## Askıya alınan kapsam: mesajlaşma ve sohbet
 
@@ -75,12 +85,13 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 
 ## Açık konular
 
-- Platforma kimler katılabilir; öğrenci olmak veya GitHub hesabı bağlamak hangi aşamada gerekir?
-- Kategori/filtre listesi, görev sahiplenme ve bir göreve birden fazla kişinin katılımı.
+- Öğrenci doğrulama yöntemi ve doğrulama sonrası sunulacak avantajlar (ileriki kapsam).
+- Kategori/filtre listesi.
 - Ekip rol yetkileri, proje–ekip ilişkisinin yönetimi ve organization eşlemesi.
 - GitHub izinleri, PR kabul/merge davranışı, otomatik kabul ve iki sistemin senkronizasyonu.
 - Private dosya sınırı, desteklenen dosyalar ve yayımlanmış kopyanın elle güncellenmesi.
 - Profil metrikleri ve davete açıklık ayarının kapsamı.
+- Katkı aktarımının FIRST öncesi geçmişi kapsaması, private katkıların görünürlüğü ve otomatik güncelleme/takip süresi.
 - İlan silmenin bağlı GitHub issue, PR ve repo erişimlerine etkisi; bunları silme veya erişimi kaldırma kararı alınmadı.
 
 ## Teknik referans
