@@ -75,6 +75,11 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 - Public repo katkıları, kabul edilen katkılar, proje rolleri ve ekip geçmişi görünür olur.
 - Katkı verilen farklı projeler ve eklenen kod satırı gibi ölçütler konuşuldu; kesin metrikler ve sunum biçimleri sonraya bırakıldı. Kod satırı sayısı tek başına başarı ölçütü olarak kararlaştırılmadı.
 - Kullanıcı “repodaki bilgilerimi çek” talebiyle o repodaki kendi katkı geçmişinin sisteme istatistik olarak alınmasını isteyebilir. Hedef katkıların kapsamlı aktarımıdır; erişilebilir veri türleri ve eksiksizlik teknik keşifle doğrulanacak, henüz tüm etkinlikleri çekme garantisi verilmez.
+- FIRST öncesindeki repo katkı geçmişi ayrı katkı kayıtları olarak aktarılmaz. Buna karşılık GitHub profil bazlı genel istatistikler vitrinde gösterilebilir; bu istatistiklerin geçmiş etkinliği içermesi ayrı repo katkısı aktarımı sayılmaz.
+- Profil vitrinine belge ve sertifika eklenebilir; türler, sınırlar ve doğrulama biçimi henüz belirlenmedi.
+- FIRST'te ilanı olmayan public repolar da vitrine eklenebilir, ancak sınırsız ve koşulsuz değildir. Ekleme çerçevesi henüz belirlenmedi; geçmiş katkı kayıtlarını aktarmama kararı korunur.
+- Katkı/istatistik verileri yalnızca kullanıcı “Güncelle” dediğinde çekilir; otomatik yenileme yapılmaz. Bu karar önceki PR/davet durumlarını takip etme hedefinden ayrıdır; o entegrasyonun işleyişi açık konudur.
+- Private repo katkıları için repo detaylarını göstermeden yalnızca istatistik sunma yaklaşımı değerlendirilecek. Henüz kesinleşmiş özellik değildir; gösterilecek veriler ve görünürlük koşulları açık konudur.
 
 ## Askıya alınan kapsam: mesajlaşma ve sohbet
 
@@ -91,7 +96,8 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 - GitHub izinleri, PR kabul/merge davranışı, otomatik kabul ve iki sistemin senkronizasyonu.
 - Private dosya sınırı, desteklenen dosyalar ve yayımlanmış kopyanın elle güncellenmesi.
 - Profil metrikleri ve davete açıklık ayarının kapsamı.
-- Katkı aktarımının FIRST öncesi geçmişi kapsaması, private katkıların görünürlüğü ve otomatik güncelleme/takip süresi.
+- İlanı olmayan public repoları vitrine ekleme koşulları; belge/sertifika türleri, sınırları ve doğrulaması.
+- FIRST sonrası katkı kayıtlarının başlangıç sınırı ve buluşma sonrası takip süresi; private repo detaylarını göstermeden istatistik sunmanın kapsamı ve görünürlük koşulları.
 - İlan silmenin bağlı GitHub issue, PR ve repo erişimlerine etkisi; bunları silme veya erişimi kaldırma kararı alınmadı.
 
 ## Teknik referans
