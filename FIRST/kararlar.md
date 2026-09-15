@@ -14,6 +14,14 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 - Site üzerinden iletişim ürün niyetinin parçasıdır; mesajlaşma ve sohbet çalışmaları şu an askıdadır.
 - Ücretli iş ilişkileri STEP kapsamındadır; public/private ayrımı bu sınırı değiştirmez.
 
+## İlk sürüm kapsamı
+
+- Repo keşfi, ilanlar, görevler ve katılım başvuruları birlikte ilk sürüme dahildir.
+- Ekip kurma ve kişi keşfi ilk sürüme dahildir.
+- Private repo ilanları ve seçili dosyaların gösterimi ilk sürüme dahildir.
+- Bu kapsam onayı önceki ertelemeleri kaldırmaz: mesajlaşma/sohbet askıdadır; vitrin ayrıntıları, öğrenci doğrulama avantajları ve private katkı istatistikleri daha sonra değerlendirilecektir.
+- Görüşmede kabul edilen diğer özellikler korunur; yeni kapsam daraltması yapılmadı.
+
 ## Repo ilanı ve keşif
 
 - Public ve private repolar bağlanabilir.
@@ -137,3 +145,14 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 - [GitHub repository invitations API](https://docs.github.com/en/rest/collaborators/invitations)
 
 Teknik referanslar ürün kararlarının uygulanabilirliğini araştırmak içindir; entegrasyon henüz uygulanmadı.
+
+## Genel kapsam incelemesi — 15 Eylül 2026
+
+Kararlar görüşmenin bütünüyle karşılaştırıldı. Keşif, repo ilanı, görev, başvuru/davet, ekip, kişi profili, görünürlük, bildirim ve şikâyet alanları genel kapsam seviyesinde tanımlıdır. Yeni bir ana özellik ihtiyacı saptanmadı. Ertelenmiş alanlar eksik özellik diye yeniden kapsama alınmadı.
+
+Akış tasarımında çözülmesi gereken iki bağlantı:
+
+1. Private repo ile “önce katkını göster” yönteminin birleşimi: Aday henüz repo erişimine sahip değilken kabul edilecek PR'ı nasıl hazırlayacak? Ön erişim, dışarıda hazırlanmış örnek katkı veya bu birleşimi kısıtlama seçeneklerinden hiçbiri henüz kararlaştırılmadı. Seçili dosya vitrini tek başına bu erişim akışını tanımlamaz.
+2. Kabul işleminin anlamı: “Kabul et” / “Kabul et ve repoya ekle” seçeneklerinin FIRST başvurusunu kabul etme ve GitHub PR'ını birleştirme ile ilişkisi kesinleştirilmeli. Önceki notlarda bunların PR değerlendirmesi altında yazılmış olması, bütün başvuruların PR içerdiği veya FIRST onayının otomatik merge olduğu anlamına gelmez. Doğrudan başvuruda PR bulunmayabilir; erişim ekleyen seçenek davet akışını ayrıca başlatır.
+
+Dosya limitleri, rol yetkileri, sahiplik devri, şikâyet işleyişi ve senkronizasyon gibi kayıtlı açık konular uygulama öncesi ayrıntılandırılacaktır. Bu inceleme teknik entegrasyon doğrulaması veya uygulamaya hazır ayrıntılı şartname değildir.
