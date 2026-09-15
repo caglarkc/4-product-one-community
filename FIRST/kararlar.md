@@ -19,6 +19,8 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 - Repo bağlantısı, başlık ve kategori zorunludur. Açıklama ve diğer tanıtım bilgileri isteğe bağlıdır.
 - Repolar gezilebilir; kategori ve filtrelerle aranabilir. Kesin filtre listesi açık konudur.
 - Her repo için tek aktif ilan bulunabilir.
+- Proje sahibi ilanı silmeden yeni başvurulara kapatabilir ve sonra tekrar açabilir; katılım yöntemi değişmez. Kapalı ilanın keşifte görünürlüğü ve mevcut başvuruların durumu henüz belirlenmedi.
+- Başlık, kategori, açıklama ve ihtiyaçlar sonradan düzenlenebilir; katılım yönteminin değiştirilememesi kuralı korunur.
 - Repo ilanını yalnızca repo sahibi veya yetkili yöneticisi açabilir.
 - Projeler alanına göre kategorilenir; kullanılan teknolojiler ve aranan beceriler ayrı filtrelerdir. Kesin kategori ve filtre değerleri henüz belirlenmedi.
 - Proje sahibi genel destek ihtiyacını ve somut görevlerini yayımlayabilir.
@@ -65,6 +67,12 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 - Katılım başvuru veya davet ile mümkündür.
 - GitHub organization bağlantısı isteğe bağlıdır.
 - Ekibin keşfedilebilir sayfası ve “üye arıyoruz” ilanı bulunur.
+- Ekip üye arama ilanında aranan roller ve beceriler belirtilebilir.
+
+## Şikâyet
+
+- Kullanıcılar uygunsuz ilanları ve profilleri şikâyet edebilir.
+- Şikâyetlerin değerlendirilmesi, yetkili roller ve uygulanacak işlemler henüz belirlenmedi.
 
 ## Kişi keşfi ve profil
 
@@ -96,6 +104,7 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 
 - Öğrenci doğrulama yöntemi ve doğrulama sonrası sunulacak avantajlar (ileriki kapsam).
 - Kategori/filtre listesi.
+- Başvuruya kapalı ilanların keşifte görünürlüğü ve mevcut başvuruların durumu; şikâyet değerlendirme süreci.
 - Ekip rol yetkileri, proje–ekip ilişkisinin yönetimi ve organization eşlemesi.
 - GitHub izinleri, PR kabul/merge davranışı, otomatik kabul ve iki sistemin senkronizasyonu.
 - Private dosya sınırı, desteklenen dosyalar ve yayımlanmış kopyanın elle güncellenmesi.
