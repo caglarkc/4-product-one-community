@@ -1,6 +1,6 @@
 # FIRST — Ürün kararları
 
-Son güncelleme: 15 Eylül 2026. Kaynak: kullanıcıyla ürün kapsamı görüşmesi.
+Son güncelleme: 16 Eylül 2026. Kaynak: kullanıcıyla ürün kapsamı görüşmesi.
 Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ayırır; uygulanmış özellik veya teknik sözleşme değildir.
 
 ## Amaç ve sınır
@@ -53,7 +53,7 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 
 ## Katılım yöntemleri
 
-İlanda aynı anda yalnızca bir yöntem aktif olabilir:
+Public repo ilanında aynı anda yalnızca bir yöntem aktif olabilir. Private repo katılımı yalnızca davetle olur; aşağıdaki yöntemler private ilanlarda sunulmaz:
 
 1. Önce katkını göster: Aday yaptığı değişikliği PR üzerinden sunar. Yalnızca PR açılması yeterli değildir; PR'ın kabul edilmesi gerekir.
 2. Doğrudan başvuru: Aday önceden katkı sunmadan katılım isteği gönderir; proje sahibi değerlendirir. Mesaj gereksinimi ve iletişim arayüzü askıdaki kapsamla birlikte netleştirilecek.
@@ -61,14 +61,16 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 
 - İlanın katılım yöntemi sonradan değiştirilemez. Farklı yöntem için mevcut ilan silinip yenisi açılır.
 - Kullanıcı gönderdiği başvuruyu geri çekebilir. Bunun GitHub'daki PR veya mevcut erişimi geri alma anlamına geldiği kararlaştırılmadı.
-- PR değerlendirmesinde “Kabul et” ve “Kabul et ve repoya ekle” seçenekleri bulunur. İkincisi repo erişim davetini de başlatır; katkı kabulü ve erişim ayrı işlemlerdir.
+- PR değerlendirmesinde “Kabul et”, PR'daki değişiklikleri projeye birleştirmek (merge) anlamına gelir. “Kabul et ve repoya ekle” aynı birleştirme işlemine ek olarak katkı sahibine repo erişim daveti gönderir. PR'ın birleştirilmesi tek başına repo yazma yetkisi vermez; erişim davetinin kabulü ayrı aşamadır.
+- Bu iki düğme PR değerlendirmesine aittir; PR içermeyen doğrudan katılım başvurusunun onayıyla karıştırılmaz.
 - GitHub'da gerçekleşen ilgili PR, davet ve kabul durumlarının FIRST'te takip edilip güncellenmesi istenir. FIRST üzerinden de yetki dahilinde işlem yapılması hedeflenir.
 - Açık kaynak katkısı için ekip üyeliği şart değildir. Contributor geçmişi, repo erişimi (collaborator) ve FIRST ekip üyeliği aynı statü değildir.
 - Teknik keşif notu: GitHub repo erişimi, yetkilinin daveti ve davet edilen kullanıcının kabulü modeline dayanır. FIRST başvurusunun bu modele bağlanması gerekir; aday adına GitHub'da doğrudan bir “contributor başvurusu” nesnesi varmış gibi tasarlanmaz.
-- “Kabul et” eyleminin PR review/merge karşılığı, otomatik kabulün verdiği erişim ve main branch koruması teknik keşifte netleştirilecek. Branch açabilip main'e merge edememe kullanıcının örneğidir; kesin yetki sözleşmesi değildir.
+- Otomatik kabulün verdiği erişim ve main branch koruması teknik keşifte netleştirilecek. Branch açabilip main'e merge edememe kullanıcının örneğidir; kesin yetki sözleşmesi değildir.
 
 ## Private repo vitrini
 
+- Private repolarda “önce katkını göster” veya doğrudan başvuru yöntemi bulunmaz; katılım yalnızca doğrudan davetle olur. Bu kural katılım öncesi akışa aittir; erişim kazandıktan sonraki geliştirme sürecini değiştirmez.
 - Proje sahibi yalnızca seçtiği bilgileri ve dosyaları ilanda gösterebilir.
 - Gösterilen dosya yayımlandığı andaki kopyadır; repo değişince otomatik güncellenmez.
 - Dosya sayısına sınır düşünülüyor; en fazla 3 dosya önerisi henüz kesinleşmedi.
@@ -132,7 +134,7 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 - Kategori/filtre listesi.
 - Şikâyet değerlendirme süreci.
 - Ekip rol yetkileri, sahip ayrıldığında sahiplik işlemleri, proje–ekip bağlantısının yönetimi ve organization eşlemesi.
-- GitHub izinleri, PR kabul/merge davranışı, otomatik kabul ve iki sistemin senkronizasyonu.
+- GitHub izinleri, merge işleminin teknik koşulları, otomatik kabul ve iki sistemin senkronizasyonu.
 - Private dosya sınırı, desteklenen dosyalar ve yayımlanmış kopyanın elle güncellenmesi.
 - Profil metrikleri ve davete açıklık ayarının kapsamı.
 - Vitrin ayrıntıları ve ilanı olmayan public repoları ekleme koşulları (sonraya bırakıldı); belge/sertifika türleri ve yükleme sınırları.
@@ -150,9 +152,9 @@ Teknik referanslar ürün kararlarının uygulanabilirliğini araştırmak için
 
 Kararlar görüşmenin bütünüyle karşılaştırıldı. Keşif, repo ilanı, görev, başvuru/davet, ekip, kişi profili, görünürlük, bildirim ve şikâyet alanları genel kapsam seviyesinde tanımlıdır. Yeni bir ana özellik ihtiyacı saptanmadı. Ertelenmiş alanlar eksik özellik diye yeniden kapsama alınmadı.
 
-Akış tasarımında çözülmesi gereken iki bağlantı:
+İncelemede bulunan iki bağlantı 16 Eylül 2026'da kullanıcı tarafından netleştirildi:
 
-1. Private repo ile “önce katkını göster” yönteminin birleşimi: Aday henüz repo erişimine sahip değilken kabul edilecek PR'ı nasıl hazırlayacak? Ön erişim, dışarıda hazırlanmış örnek katkı veya bu birleşimi kısıtlama seçeneklerinden hiçbiri henüz kararlaştırılmadı. Seçili dosya vitrini tek başına bu erişim akışını tanımlamaz.
-2. Kabul işleminin anlamı: “Kabul et” / “Kabul et ve repoya ekle” seçeneklerinin FIRST başvurusunu kabul etme ve GitHub PR'ını birleştirme ile ilişkisi kesinleştirilmeli. Önceki notlarda bunların PR değerlendirmesi altında yazılmış olması, bütün başvuruların PR içerdiği veya FIRST onayının otomatik merge olduğu anlamına gelmez. Doğrudan başvuruda PR bulunmayabilir; erişim ekleyen seçenek davet akışını ayrıca başlatır.
+1. Private repoda “önce katkını göster” olmayacak; katılım yalnızca davetle sağlanacak.
+2. PR değerlendirmesindeki “Kabul et” değişiklikleri merge edecek; “Kabul et ve repoya ekle” ayrıca repo erişim daveti gönderecek. Bu onay, yalnızca FIRST katılım başvurusunu onaylamak anlamına gelmiyor.
 
 Dosya limitleri, rol yetkileri, sahiplik devri, şikâyet işleyişi ve senkronizasyon gibi kayıtlı açık konular uygulama öncesi ayrıntılandırılacaktır. Bu inceleme teknik entegrasyon doğrulaması veya uygulamaya hazır ayrıntılı şartname değildir.
