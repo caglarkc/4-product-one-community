@@ -1,7 +1,9 @@
 # FIRST — Ürün kararları
 
-Son güncelleme: 16 Eylül 2026. Kaynak: kullanıcıyla ürün kapsamı görüşmesi.
+Son güncelleme: 17 Eylül 2026. Kaynak: kullanıcıyla ürün kapsamı görüşmesi.
 Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ayırır; uygulanmış özellik veya teknik sözleşme değildir.
+
+Tamamlayıcı kayıtlar: [teknoloji ve yayın kararları](teknik-kararlar.md), [kayıt/giriş ve hesap bağlantısı](auth-kararlari.md), [öğrenci doğrulaması araştırması](ogrenci-dogrulama-arastirmasi.md).
 
 ## Amaç ve sınır
 
@@ -37,6 +39,7 @@ Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ay�
 - Kullanıcı proje ve ekipleri kaydedip daha sonra bulabilir.
 - Başlık, kategori, açıklama ve ihtiyaçlar sonradan düzenlenebilir; katılım yönteminin değiştirilememesi kuralı korunur.
 - Repo ilanını yalnızca repo sahibi veya yetkili yöneticisi açabilir.
+- İlan oluşturmak için bağlı GitHub hesabı, doğrulanmış e-posta ve doğrulanmış telefon zorunludur; aynı telefon yalnızca tek hesapta kullanılabilir.
 - İlanlar platformun yayın öncesi onayı beklenmeden doğrudan yayımlanır. Uygunsuz içerik için şikâyet özelliği korunur; değerlendirme süreci ayrıca belirlenecek.
 - Projeler alanına göre kategorilenir; kullanılan teknolojiler ve aranan beceriler ayrı filtrelerdir. Kesin kategori ve filtre değerleri henüz belirlenmedi.
 - Proje sahibi genel destek ihtiyacını ve somut görevlerini yayımlayabilir.
@@ -99,6 +102,8 @@ Public repo ilanında aynı anda yalnızca bir yöntem aktif olabilir. Private r
 ## Kişi keşfi ve profil
 
 - FIRST'e katılım öğrenci olmakla sınırlı değildir; mezunlar ve sektörde çalışanlar da katılabilir.
+- Kayıt için en az 13 yaş gerekir. Google, GitHub ve e-posta/şifre yöntemleri vardır. E-posta kaydında ad soyad, kullanıcı adı, e-posta, şifre, doğum tarihi ve cinsiyet zorunlu; telefon isteğe bağlıdır. Cinsiyette “Belirtmek istemiyorum” seçilebilir; sosyal kayıtta eksik zorunlu profil alanları tamamlanır.
+- Normal kayıt sonrası e-posta doğrulama bağlantısı ve üstte hatırlatma gösterilir; kullanıcı hemen doğrulamadan giriş yapabilir. Repo başvurusu ve ilan oluşturma için doğrulanmış e-posta gerekir. Sosyal sağlayıcıdan doğrulanmış e-posta alınırsa yeniden doğrulama gönderilmez; ayrıntılar auth kararlarındadır.
 - Projeler hesap açmadan gezilebilir. Başvuru, katkı ve repo ilanı oluşturma aşamalarında GitHub hesabı bağlantısı zorunludur.
 - Üniversite öğrencileri öncelikli hedef kitledir. İleride öğrenci hesabı doğrulamasından sonra profili öne çıkarma ve öğrencilere özel site içi özellikler sağlanması hedeflenir; doğrulama yöntemi, avantajlar ve takvim henüz belirlenmedi.
 
@@ -128,18 +133,27 @@ Public repo ilanında aynı anda yalnızca bir yöntem aktif olabilir. Private r
 - Bildirimler mesajlaşmadan ayrı kapsamdır; mesajlaşma ve sohbetin askıya alınması bildirimleri kapsamaz.
 - E-posta veya diğer bildirim kanalları henüz kararlaştırılmadı.
 
-## Açık konular
+## Proje entegrasyonu aşamasında sorulacaklar
+
+17 Eylül 2026 kararı: Aşağıdaki açık ayrıntılar bilerek ertelenen özellikler olarak sınıflandırılmaz. İlgili proje entegrasyonu yapılırken kullanıcıya sorulup netleştirilecektir; cevapları varsayılarak uygulama yapılmaz. İlk çalışma auth (giriş, kayıt ve hesap bağlantısı) akışlarıdır. Giriş yöntemleri ve teknoloji seçilmiştir; kabul edilmiş kurallar [auth-kararlari.md](auth-kararlari.md) ve [teknik-kararlar.md](teknik-kararlar.md) belgelerindedir. Uygulama henüz yapılmadı.
+
+- Ekip rol yetkileri, sahip ayrıldığında sahiplik işlemleri, proje–ekip bağlantısının yönetimi ve organization eşlemesi.
+- GitHub izinleri, merge işleminin teknik koşulları, otomatik kabul ve iki sistemde PR/davet durumlarının senkronizasyonu.
+- Görev durumlarının gösterimi ve GitHub Issues senkronizasyonu.
+- Private dosya sınırı, desteklenen dosyalar ve yayımlanmış kopyanın elle güncellenmesi.
+- Kategori/filtre listesi.
+- Şikâyet değerlendirme süreci, yetkili roller ve uygulanacak işlemler.
+- Profil metrikleri ve davete açıklık ayarının kapsamı.
+- FIRST sonrası katkı kayıtlarının başlangıç sınırı ve buluşma sonrası takip süresi.
+- İlan silmenin bağlı GitHub issue, PR ve repo erişimlerine etkisi; bunları silme veya erişimi kaldırma kararı alınmadı.
+
+## Önceden sonraya bırakılmış diğer konular
+
+Bu bölümdeki mevcut erteleme kararları korunur; yukarıdaki entegrasyon soruları bu gruba eklenmez. Mesajlaşma ve sohbet için ayrı askı kararı da geçerlidir.
 
 - Öğrenci doğrulama yöntemi ve doğrulama sonrası sunulacak avantajlar (ileriki kapsam).
-- Kategori/filtre listesi.
-- Şikâyet değerlendirme süreci.
-- Ekip rol yetkileri, sahip ayrıldığında sahiplik işlemleri, proje–ekip bağlantısının yönetimi ve organization eşlemesi.
-- GitHub izinleri, merge işleminin teknik koşulları, otomatik kabul ve iki sistemin senkronizasyonu.
-- Private dosya sınırı, desteklenen dosyalar ve yayımlanmış kopyanın elle güncellenmesi.
-- Profil metrikleri ve davete açıklık ayarının kapsamı.
 - Vitrin ayrıntıları ve ilanı olmayan public repoları ekleme koşulları (sonraya bırakıldı); belge/sertifika türleri ve yükleme sınırları.
-- FIRST sonrası katkı kayıtlarının başlangıç sınırı ve buluşma sonrası takip süresi; private repo detaylarını göstermeden istatistik sunmanın kapsamı ve görünürlük koşulları.
-- İlan silmenin bağlı GitHub issue, PR ve repo erişimlerine etkisi; bunları silme veya erişimi kaldırma kararı alınmadı.
+- Private repo detaylarını göstermeden istatistik sunmanın kapsamı ve görünürlük koşulları.
 
 ## Teknik referans
 

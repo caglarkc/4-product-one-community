@@ -6,6 +6,8 @@ Durum: Genel kapsam ve temel ürün akışları görüşmeyle netleştiriliyor. 
 
 ## Amaç
 
+Karar kayıtları: [ürün](kararlar.md), [teknoloji ve yayın](teknik-kararlar.md), [kayıt/giriş](auth-kararlari.md), [öğrenci doğrulaması araştırması](ogrenci-dogrulama-arastirmasi.md).
+
 Başta üniversite öğrencileri olmak üzere, birlikte üretmek isteyen insanların proje keşfetmesini, ekip arkadaşı bulmasını ve mevcut projelere katkı vermesini sağlamak.
 
 ## Temel kullanım biçimleri

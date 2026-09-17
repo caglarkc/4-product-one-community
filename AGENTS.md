@@ -29,7 +29,7 @@ Yönetici yetkisi kullanıcının verdiği görev kapsamındadır; geçmiş proj
 - API, ortak kimlik, yetki ve veri paylaşımı: `.agent/skills/cross/shared-integration/SKILL.md`
 - Teknoloji/entegrasyon kararlarının keşfi: `.agent/skills/meta/repo-context/SKILL.md` + teknoloji haritası.
 
-Framework veya servis stack'i henüz seçilmedi. Immense'in Flutter/Node/admin varsayımları burada geçerli değildir. Uygulama kodu geldiğinde gerçek manifest ve kaynakları temel al.
+FIRST için Python/Django/DRF backend ve TypeScript/React/Next.js frontend seçildi; yayın Hetzner/Docker ve Vercel olacak. Kesin kararlar `FIRST/teknik-kararlar.md` ve `FIRST/auth-kararlari.md` içindedir; henüz uygulama kodu yoktur. Immense'in Flutter/Node/admin varsayımları burada geçerli değildir. Uygulama kodu geldiğinde gerçek manifest ve kaynakları temel al.
 
 ## Teslim
 

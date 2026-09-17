@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-decision-backfill",
+  "title": "FIRST karar kayıtlarının tamamlanması",
+  "goal": "Görüşmede kabul edilmiş teknoloji ve auth kararlarını, öğrenci doğrulama araştırmasını uygulama yapmadan belgelemek",
+  "createdAt": "2026-09-17T11:40:20.254Z",
+  "updatedAt": "2026-09-17T11:40:48.574Z",
+  "revision": 3,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "81a02be6289cc1c370d1ceb249c43cb8bd0096f026ab49c05736eaddc4a2b250",
+    "assumptions": []
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": false
+  },
+  "decisions": [
+    {
+      "id": "stack",
+      "summary": "FIRST: Python/Django/DRF, TypeScript/React/Next.js; Hetzner Docker backend, Vercel frontend; ayrı siteler ve gelecekte ortak hesap.",
+      "reason": "Kullanıcının 16 Eylül görüşmesindeki açık teknoloji ve yayın onayı; FIRST/teknik-kararlar.md.",
+      "decidedAt": "2026-09-17T11:40:48.345Z",
+      "actor": "manager"
+    },
+    {
+      "id": "auth",
+      "summary": "Google, GitHub, e-posta/şifre; zorunlu profil alanları ve 13 yaş sınırı; başvuru için doğrulanmış e-posta ve GitHub; ilan için ayrıca tek hesaba bağlı doğrulanmış telefon.",
+      "reason": "Kullanıcının auth sorularına verdiği açık yanıtlar; FIRST/auth-kararlari.md. SMS/WhatsApp sağlayıcısı seçilmedi.",
+      "decidedAt": "2026-09-17T11:40:48.466Z",
+      "actor": "manager"
+    },
+    {
+      "id": "student-research",
+      "summary": "Ücretli öğrenci doğrulama değerlendirmesi kaydedildi; SheerID dahil hiçbir sağlayıcı seçilmedi.",
+      "reason": "Kullanıcı değerlendirme istedi; satın alma veya entegrasyon onayı vermedi. FIRST/ogrenci-dogrulama-arastirmasi.md.",
+      "decidedAt": "2026-09-17T11:40:48.573Z",
+      "actor": "manager"
+    }
+  ],
+  "items": []
+}

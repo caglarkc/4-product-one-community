@@ -7,7 +7,7 @@ description: Read product scope and repository evidence before planning or imple
 
 `AGENTS.md`, `.agent/skills/SKILL-MAP.md` ve `.cursor/maps/stack-shared-ai/overview.md` oku. Kapsam için yalnız ilgili ürün README'lerini; ürünler arası işte `products.md`; teknoloji işinde `technology.md` haritasını aç.
 
-Şu an uygulama manifesti veya seçilmiş stack yoktur. Orchestrator'ın Node CLI'sı ürün backend'i seçimi değildir. Kaynak kodu geldiğinde manifest, kilit dosyası, mevcut pattern ve test komutlarını doğrula; olmayan yolları görev scope'una koyma.
+Şu an uygulama manifesti yoktur; FIRST teknoloji ve auth seçimleri `FIRST/teknik-kararlar.md` ve `FIRST/auth-kararlari.md` içinde kayıtlıdır. Orchestrator'ın Node CLI'sı ürün backend'i seçimi değildir. Kaynak kodu geldiğinde manifest, kilit dosyası, mevcut pattern ve test komutlarını doğrula; olmayan yolları görev scope'una koyma.
 
 Ürün kararlarını `platform-urun-fikirleri.md` ile karşılaştır. Önerileri kesin gereksinime dönüştürme. Kritik eksik karar için önce keşif/specification düğümü oluştur; bağımsız yapılabilen işi sürdür.
 
