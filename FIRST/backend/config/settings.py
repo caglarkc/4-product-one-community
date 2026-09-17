@@ -15,6 +15,7 @@ INSTALLED_APPS = ["django.contrib.auth", "django.contrib.contenttypes", "django.
 MIDDLEWARE = [
     "accounts.middleware.AuthBoundaryMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "accounts.proxy.TrustedClientIPMiddleware",
     "accounts.middleware.RedisSessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "accounts.middleware.RegistryMiddleware",
@@ -63,3 +64,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Optional curated production corpus: invalid explicit configuration fails startup.
 from accounts.password_corpus import load_corpus
 AUTH_BREACHED_PASSWORD_HASHES = load_corpus(os.environ.get('AUTH_BREACHED_PASSWORD_FILE', ''))
+
+from accounts.proxy import validate_proxy_secret
+AUTH_PROXY_SECRET = validate_proxy_secret(os.environ.get('AUTH_PROXY_SECRET', ''))

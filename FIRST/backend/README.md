@@ -23,8 +23,25 @@ before hashing. Concurrent proof requests return 429 while the lock is held (30s
 lease); failures remain counted for 15 minutes and success clears the counter.
 The IP budget is 30 requests/15m, account budget is 5 failed attempts/15m. Expensive
 hash operations must complete within the lease; real Redis concurrency remains a
-required environment check. Only REMOTE_ADDR is trusted. The target reverse proxy
-must preserve a trustworthy client address; arbitrary X-Forwarded-For is ignored.
+required environment check. By default only REMOTE_ADDR is trusted; arbitrary
+X-Forwarded-For and X-First-Client-* assertions are ignored.
+
+Optional per-client proxy attribution requires the same `AUTH_PROXY_SECRET` on
+backend and frontend (at least 32 characters). Frontend also configures
+`AUTH_CLIENT_IP_HEADER` to a single IP header that its trusted ingress always
+replaces. Backend then requires every `/api/auth/` request to carry
+`X-First-Client-IP`, `X-First-Client-Time`, `X-First-Client-Signature`.
+The signature is HMAC-SHA256 hex over exact UTF-8 text:
+`ip + "\n" + unix_seconds + "\n" + HTTP_METHOD + "\n" + request.path`.
+The backend validates a single IP, integer timestamp within 60 seconds, and the
+signature with constant-time comparison. It canonicalizes the verified IP before
+rate counting so equivalent IPv6 representations share a budget. Missing, invalid,
+stale or method/path-mismatched assertions return 403 `invalid_proxy_assertion`.
+A configured short secret fails startup. Assertions cannot substitute for CSRF;
+the usual cookie/origin/token checks still apply. Requests within the 60-second
+window can be replayed, so HTTPS and ingress access controls remain required.
+Trusted ingress header replacement and matching deployed configuration have not
+been verified in this task. Never expose the shared key to browser code.
 
 ## Password corpus
 

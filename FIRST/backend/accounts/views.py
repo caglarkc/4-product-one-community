@@ -17,6 +17,7 @@ from rest_framework.views import APIView, exception_handler
 from . import security
 from .authentication import DjangoSessionAuthentication
 from .models import User, SessionRecord
+from .proxy import client_ip
 from .serializers import RegisterSerializer, LoginSerializer, StrictSerializer, user_data
 
 
@@ -84,7 +85,7 @@ def start_session(request, user, remember=False):
 
 def check_password_proof(request, email, password, user=None):
     """Shared limiter for login, reauthentication and password change."""
-    if security.count('password-ip', request.META.get('REMOTE_ADDR', '')) > settings.AUTH_IP_ATTEMPTS:
+    if security.count('password-ip', client_ip(request)) > settings.AUTH_IP_ATTEMPTS:
         raise RateLimited()
     owner = security.acquire_password_lock(email)
     if not owner:
@@ -126,7 +127,7 @@ def send_verification(user):
 
 class RegisterView(AuthView):
     def post(self, request):
-        if security.count('register-ip', request.META.get('REMOTE_ADDR', '')) > settings.AUTH_IP_ATTEMPTS:
+        if security.count('register-ip', client_ip(request)) > settings.AUTH_IP_ATTEMPTS:
             raise RateLimited()
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
