@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-deploy",
+  "itemId": "deploy-tooling",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "blocked",
+  "summary": "TEMPLATE ONLY — replace with actual result before recording.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "send-machine transfers only the authorized backend payload and handles configuration without committing secrets.",
+      "status": "not_verified",
+      "evidence": "TEMPLATE ONLY — insert actual observed evidence."
+    },
+    {
+      "criterion": "FIRST Compose, persistent storage, health checks and ingress configuration preserve existing host services.",
+      "status": "not_verified",
+      "evidence": "TEMPLATE ONLY — insert actual observed evidence."
+    },
+    {
+      "criterion": "Local syntax/configuration checks pass; unavailable runtime checks are explicitly deferred.",
+      "status": "not_verified",
+      "evidence": "TEMPLATE ONLY — insert actual observed evidence."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-17T16:20:10.823717+00:00"
+}

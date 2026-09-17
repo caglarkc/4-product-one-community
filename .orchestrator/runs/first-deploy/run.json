@@ -1,0 +1,959 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-deploy",
+  "title": "FIRST backend deployment",
+  "goal": "Deploy only FIRST backend to existing Hetzner host, provide send-machine, configure frontend and verify live auth safely",
+  "createdAt": "2026-09-17T16:13:41.347Z",
+  "updatedAt": "2026-09-17T16:19:30.988Z",
+  "revision": 16,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "FIRST/README.md",
+      "FIRST/auth-kararlari.md",
+      "FIRST/teknik-kararlar.md",
+      "FIRST/contracts/auth-api.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "dcdf2f611eb4a6dfffe14e6f524c5451dc4e67697d0f04a0b4e0fd8cbf39d0db",
+    "assumptions": [
+      "FIRST-only scope; other products and existing remote applications remain untouched.",
+      "Map snapshot is stale; actual source files and observed remote configuration govern decisions.",
+      "Completed discovery/fix results are backfilled from actual parent and independent-agent reports; this ledger does not claim to have performed SSH itself."
+    ]
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz.",
+    "User authorized remote deployment and backend-only ./send-machine transfer. No redundant approval gates; platform permissions remain external.",
+    "Never record raw credentials, private host address, SMTP password, auth cookie or token in run artifacts.",
+    "Transfer only FIRST backend application payload; exclude root credentials, frontend, virtualenv, tests/cache and unrelated products.",
+    "Use isolated FIRST resources and the selected free loopback port 18081; preserve existing applications, certificates, ports and data.",
+    "Independent review and verification remain required; runtime and SMTP outcomes must not be inferred from local tests."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "authorized-deployment",
+      "summary": "User authorized FIRST remote deployment and backend-only send-machine transfer.",
+      "reason": "Explicit user instruction reported by parent; no additional user approval required within this scope.",
+      "decidedAt": "2026-09-17T16:18:51.251Z",
+      "actor": "manager"
+    },
+    {
+      "id": "isolated-first-port",
+      "summary": "Use free loopback port 18081 and dedicated FIRST resources.",
+      "reason": "Parent SSH discovery identified existing occupied listeners; preserve all other applications and existing certificates.",
+      "decidedAt": "2026-09-17T16:18:51.369Z",
+      "actor": "manager"
+    },
+    {
+      "id": "evidence-backfill",
+      "summary": "Record completed discovery and SMTP fix review/test evidence from actual agent reports.",
+      "reason": "Ledger creation follows completed bounded work; timestamps reflect record time, not invented historical execution time.",
+      "decidedAt": "2026-09-17T16:18:51.485Z",
+      "actor": "manager"
+    }
+  ],
+  "items": [
+    {
+      "id": "discovery",
+      "title": "Prepare FIRST-only host and deployment plan",
+      "kind": "discovery",
+      "domains": [
+        "first"
+      ],
+      "objective": "Prepare FIRST-only host and deployment plan",
+      "responsibility": "Read-only independent evidence review.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/discovery-*.json"
+      ],
+      "acceptanceCriteria": [
+        "Authorization and backend-only transfer scope are recorded.",
+        "Existing host resources and a free isolated FIRST loopback port are identified without changing other applications."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/discovery-2026-09-17T16-19-29-596Z.json"
+    },
+    {
+      "id": "smtp-fix",
+      "title": "Bound email-change SMTP usage across varying destinations",
+      "kind": "security",
+      "domains": [
+        "first"
+      ],
+      "objective": "Bound email-change SMTP usage across varying destinations",
+      "responsibility": "Modify only declared scopes; coordinate all delivery through parent.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/smtp-fix-*.json",
+        "FIRST/backend/accounts/security.py",
+        "FIRST/backend/accounts/account_views.py",
+        "FIRST/backend/accounts/tests/fakes.py",
+        "FIRST/backend/accounts/tests/test_account.py"
+      ],
+      "acceptanceCriteria": [
+        "Account and IP email-change budgets are reserved atomically before token creation or SMTP; destination admission is retained.",
+        "Regression coverage proves varying destinations and Redis failure cannot bypass admission."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "discovery"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/accounts/security.py",
+          "FIRST/backend/accounts/account_views.py",
+          "FIRST/backend/accounts/tests/fakes.py",
+          "FIRST/backend/accounts/tests/test_account.py"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/review_backend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/smtp-fix-2026-09-17T16-19-29-948Z.json"
+    },
+    {
+      "id": "smtp-review",
+      "title": "Independently review SMTP admission fix",
+      "kind": "review",
+      "domains": [
+        "first"
+      ],
+      "objective": "Independently review SMTP admission fix",
+      "responsibility": "Read-only independent evidence review.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/smtp-review-*.json"
+      ],
+      "acceptanceCriteria": [
+        "Independent source review checks atomic account/IP limits, ordering and fail-closed behavior; no blocking finding remains."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "smtp-fix"
+        ],
+        "reviews": [
+          "smtp-fix"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/security_verify"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/smtp-review-2026-09-17T16-19-30-306Z.json"
+    },
+    {
+      "id": "smtp-verify",
+      "title": "Independently verify SMTP admission tests",
+      "kind": "verify",
+      "domains": [
+        "first"
+      ],
+      "objective": "Independently verify SMTP admission tests",
+      "responsibility": "Read-only independent evidence review.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/smtp-verify-*.json"
+      ],
+      "acceptanceCriteria": [
+        "Independent in-process backend test run passes all 69 tests without real services."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "smtp-fix"
+        ],
+        "reviews": [],
+        "verifies": [
+          "smtp-fix"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/security_verify"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/smtp-verify-2026-09-17T16-19-30-653Z.json"
+    },
+    {
+      "id": "deploy-tooling",
+      "title": "Implement isolated FIRST deployment and backend-only send-machine",
+      "kind": "deployment",
+      "domains": [
+        "first"
+      ],
+      "objective": "Implement isolated FIRST deployment and backend-only send-machine",
+      "responsibility": "Modify only declared scopes; coordinate all delivery through parent.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/deploy-tooling-*.json",
+        "send-machine",
+        "FIRST/backend/compose.yaml",
+        "FIRST/backend/Dockerfile",
+        "FIRST/backend/deploy",
+        "FIRST/backend/config/settings.py",
+        "FIRST/backend/.env.example",
+        "FIRST/backend/README.md"
+      ],
+      "acceptanceCriteria": [
+        "send-machine transfers only the authorized backend payload and handles configuration without committing secrets.",
+        "FIRST Compose, persistent storage, health checks and ingress configuration preserve existing host services.",
+        "Local syntax/configuration checks pass; unavailable runtime checks are explicitly deferred."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "discovery",
+          "smtp-review",
+          "smtp-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "send-machine",
+          "FIRST/backend/compose.yaml",
+          "FIRST/backend/Dockerfile",
+          "FIRST/backend/deploy",
+          "FIRST/backend/config/settings.py",
+          "FIRST/backend/.env.example",
+          "FIRST/backend/README.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root"
+      },
+      "status": "active",
+      "attempt": 1,
+      "resultRef": null
+    },
+    {
+      "id": "deploy-review",
+      "title": "Independently review deployment tooling before execution",
+      "kind": "review",
+      "domains": [
+        "first"
+      ],
+      "objective": "Independently review deployment tooling before execution",
+      "responsibility": "Read-only independent evidence review.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/deploy-review-*.json"
+      ],
+      "acceptanceCriteria": [
+        "Independent review checks transfer scope, quoting, permissions, rollback and host isolation; no blocking finding remains."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "deploy-tooling"
+        ],
+        "reviews": [
+          "deploy-tooling"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/security_verify"
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "deploy-verify",
+      "title": "Independently verify deployment tooling checks",
+      "kind": "verify",
+      "domains": [
+        "first"
+      ],
+      "objective": "Independently verify deployment tooling checks",
+      "responsibility": "Read-only independent evidence review.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/deploy-verify-*.json"
+      ],
+      "acceptanceCriteria": [
+        "Shell/Python/Compose configuration checks appropriate to the changed tooling pass without launching local services."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "deploy-revision"
+        ],
+        "reviews": [],
+        "verifies": [
+          "deploy-tooling",
+          "deploy-revision"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/security_verify"
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "remote-deploy",
+      "title": "Deploy FIRST backend to the authorized host",
+      "kind": "deployment",
+      "domains": [
+        "first"
+      ],
+      "objective": "Deploy FIRST backend to the authorized host",
+      "responsibility": "Modify only declared scopes; coordinate all delivery through parent.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/remote-deploy-*.json",
+        "remote:FIRST-application",
+        "remote:FIRST-compose-resources",
+        "remote:FIRST-ingress"
+      ],
+      "acceptanceCriteria": [
+        "Backend-only payload is transferred and FIRST isolated services start with required migrations.",
+        "FIRST health and HTTPS ingress work and existing applications are preserved.",
+        "Runtime settings and secrets are configured securely; evidence contains no secret values."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "deploy-rereview",
+          "deploy-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "remote:FIRST-application",
+          "remote:FIRST-compose-resources",
+          "remote:FIRST-ingress"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root"
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "frontend-integration",
+      "title": "Connect existing FIRST Vercel frontend to live backend",
+      "kind": "integration",
+      "domains": [
+        "first"
+      ],
+      "objective": "Connect existing FIRST Vercel frontend to live backend",
+      "responsibility": "Modify only declared scopes; coordinate all delivery through parent.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/frontend-integration-*.json",
+        "vercel:FIRST-environment-and-deployment"
+      ],
+      "acceptanceCriteria": [
+        "FIRST frontend targets the deployed backend with consistent public origin, CSRF and trusted-IP proxy configuration.",
+        "Public browser/proxy auth routes reach the backend without exposing credentials."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "remote-deploy"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "deploy-tooling",
+          "remote-deploy",
+          "smtp-fix"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "vercel:FIRST-environment-and-deployment"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root"
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "runtime-review",
+      "title": "Independently review deployed FIRST isolation and configuration",
+      "kind": "review",
+      "domains": [
+        "first"
+      ],
+      "objective": "Independently review deployed FIRST isolation and configuration",
+      "responsibility": "Read-only independent evidence review.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/runtime-review-*.json"
+      ],
+      "acceptanceCriteria": [
+        "Independent review of remote deployment evidence confirms isolated FIRST resources and no unresolved deployment blocker."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "remote-deploy"
+        ],
+        "reviews": [
+          "remote-deploy"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/security_verify"
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "runtime-verify",
+      "title": "Independently verify live FIRST auth integration",
+      "kind": "verify",
+      "domains": [
+        "first"
+      ],
+      "objective": "Independently verify live FIRST auth integration",
+      "responsibility": "Execute authorized bounded runtime checks using safe test data; do not mutate unrelated applications or record secret values.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/runtime-verify-*.json"
+      ],
+      "acceptanceCriteria": [
+        "Verify HTTPS health, proxy CSRF and session behavior against the live deployment.",
+        "Verify real PostgreSQL/Redis behavior and report actual SMTP/account-flow results without claiming unperformed checks.",
+        "Existing applications remain reachable and no private credential or token is written to evidence."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "frontend-integration",
+          "runtime-review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "remote-deploy",
+          "frontend-integration"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": true,
+        "writeScopes": [
+          "remote:FIRST-runtime-test-data"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/security_verify"
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "delivery",
+      "title": "Record accepted deployment and Git delivery",
+      "kind": "documentation",
+      "domains": [
+        "first"
+      ],
+      "objective": "Record accepted deployment and Git delivery",
+      "responsibility": "Modify only declared scopes; coordinate all delivery through parent.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/delivery-*.json",
+        ".orchestrator/runs/first-deploy"
+      ],
+      "acceptanceCriteria": [
+        "Record accepted deployment scope, runtime verification, remaining limitations and operational handoff.",
+        "Commit/push accepted task-owned changes and verify upstream hash; report any real blocker truthfully."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "runtime-verify",
+          "smtp-review",
+          "smtp-verify",
+          "deploy-rereview",
+          "deploy-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          ".orchestrator/runs/first-deploy"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root"
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "deploy-revision",
+      "title": "Resolve independent deployment review findings",
+      "kind": "revision",
+      "domains": [
+        "first"
+      ],
+      "objective": "Resolve independent deployment review findings before remote execution",
+      "responsibility": "Modify only declared scopes; coordinate all delivery through parent.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/deploy-revision-*.json",
+        "send-machine",
+        "FIRST/backend/compose.yaml",
+        "FIRST/backend/Dockerfile",
+        "FIRST/backend/deploy",
+        "FIRST/backend/config/settings.py",
+        "FIRST/backend/.env.example",
+        "FIRST/backend/README.md"
+      ],
+      "acceptanceCriteria": [
+        "Resolve first-install detection, locking, ownership checks, service preflight, failure rollback, dotenv parsing and owned-port retry findings.",
+        "Final shell/Python syntax and backend-only payload checks pass."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "deploy-tooling",
+          "deploy-review"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "deploy-review"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "send-machine",
+          "FIRST/backend/compose.yaml",
+          "FIRST/backend/Dockerfile",
+          "FIRST/backend/deploy",
+          "FIRST/backend/config/settings.py",
+          "FIRST/backend/.env.example",
+          "FIRST/backend/README.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root"
+      },
+      "status": "draft",
+      "attempt": 2,
+      "resultRef": null
+    },
+    {
+      "id": "deploy-rereview",
+      "title": "Independently re-review corrected deployment tooling",
+      "kind": "review",
+      "domains": [
+        "first"
+      ],
+      "objective": "Confirm requested deployment corrections are resolved",
+      "responsibility": "Read-only independent evidence review.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/first-deploy/results/deploy-rereview-*.json"
+      ],
+      "acceptanceCriteria": [
+        "Independent review checks transfer scope, quoting, permissions, rollback and host isolation; no blocking finding remains."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "deploy-revision"
+        ],
+        "reviews": [
+          "deploy-tooling",
+          "deploy-revision"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authentication and shared-host deployment require bounded ownership and evidence."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/security_verify"
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    }
+  ]
+}

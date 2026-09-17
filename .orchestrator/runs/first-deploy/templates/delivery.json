@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-deploy",
+  "itemId": "delivery",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "blocked",
+  "summary": "TEMPLATE ONLY — replace with actual result before recording.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Record accepted deployment scope, runtime verification, remaining limitations and operational handoff.",
+      "status": "not_verified",
+      "evidence": "TEMPLATE ONLY — insert actual observed evidence."
+    },
+    {
+      "criterion": "Commit/push accepted task-owned changes and verify upstream hash; report any real blocker truthfully.",
+      "status": "not_verified",
+      "evidence": "TEMPLATE ONLY — insert actual observed evidence."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-17T16:20:10.824874+00:00"
+}

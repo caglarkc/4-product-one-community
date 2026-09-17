@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-deploy",
+  "itemId": "smtp-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/security_verify",
+    "sessionRef": "/root/security_verify"
+  },
+  "outcome": "pass",
+  "summary": "Independent source review reports no blocking finding; account/IP budget and fail-closed ordering verified.",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": null,
+      "change": "reported",
+      "description": ".orchestrator/runs/first-deploy/evidence/smtp-fix.md — Independent source review reports no blocking finding; account/IP budget and fail-closed ordering verified."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Independent source review checks atomic account/IP limits, ordering and fail-closed behavior; no blocking finding remains.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-deploy/evidence/smtp-fix.md — Independent source review reports no blocking finding; account/IP budget and fail-closed ordering verified."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Read-only review of Lua admission, call ordering, budget isolation and new regression assertions.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-deploy/evidence/smtp-fix.md"
+    }
+  ],
+  "risks": [
+    "Real deployment and actual service integration are not verified by these process-local/source checks."
+  ],
+  "followUps": [
+    "Complete deployment tooling, independent gates, remote deployment, integration and runtime verification."
+  ],
+  "completedAt": "2026-09-17T16:19:30.306758+00:00"
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-deploy",
+  "itemId": "frontend-integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "blocked",
+  "summary": "TEMPLATE ONLY — replace with actual result before recording.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "FIRST frontend targets the deployed backend with consistent public origin, CSRF and trusted-IP proxy configuration.",
+      "status": "not_verified",
+      "evidence": "TEMPLATE ONLY — insert actual observed evidence."
+    },
+    {
+      "criterion": "Public browser/proxy auth routes reach the backend without exposing credentials.",
+      "status": "not_verified",
+      "evidence": "TEMPLATE ONLY — insert actual observed evidence."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-17T16:20:10.824497+00:00"
+}

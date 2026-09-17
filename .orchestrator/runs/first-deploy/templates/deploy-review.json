@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-deploy",
+  "itemId": "deploy-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/deploy_review",
+    "sessionRef": "/root/deploy_review"
+  },
+  "outcome": "blocked",
+  "summary": "TEMPLATE ONLY — replace with actual result before recording.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Independent review checks transfer scope, quoting, permissions, rollback and host isolation; no blocking finding remains.",
+      "status": "not_verified",
+      "evidence": "TEMPLATE ONLY — insert actual observed evidence."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-17T16:20:10.824056+00:00"
+}

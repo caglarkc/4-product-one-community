@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-deploy",
+  "itemId": "runtime-verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/deploy_verify",
+    "sessionRef": "/root/deploy_verify"
+  },
+  "outcome": "blocked",
+  "summary": "TEMPLATE ONLY — replace with actual result before recording.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Verify HTTPS health, proxy CSRF and session behavior against the live deployment.",
+      "status": "not_verified",
+      "evidence": "TEMPLATE ONLY — insert actual observed evidence."
+    },
+    {
+      "criterion": "Verify real PostgreSQL/Redis behavior and report actual SMTP/account-flow results without claiming unperformed checks.",
+      "status": "not_verified",
+      "evidence": "TEMPLATE ONLY — insert actual observed evidence."
+    },
+    {
+      "criterion": "Existing applications remain reachable and no private credential or token is written to evidence.",
+      "status": "not_verified",
+      "evidence": "TEMPLATE ONLY — insert actual observed evidence."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-17T16:20:10.824754+00:00"
+}

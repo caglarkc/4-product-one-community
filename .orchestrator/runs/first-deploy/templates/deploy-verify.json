@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-deploy",
+  "itemId": "deploy-verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/deploy_verify",
+    "sessionRef": "/root/deploy_verify"
+  },
+  "outcome": "blocked",
+  "summary": "TEMPLATE ONLY — replace with actual result before recording.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Shell/Python/Compose configuration checks appropriate to the changed tooling pass without launching local services.",
+      "status": "not_verified",
+      "evidence": "TEMPLATE ONLY — insert actual observed evidence."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-17T16:20:10.824216+00:00"
+}

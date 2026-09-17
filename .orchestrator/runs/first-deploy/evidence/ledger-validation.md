@@ -1,0 +1,1 @@
+Initial discovery result submission was rejected because its reported evidence path was outside the read-only item writeScopes. No work result was accepted on that attempt. Corrected result artifact metadata to path=null with the evidence reference in description and acceptance; no acceptance claim changed.

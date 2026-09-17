@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-deploy",
+  "itemId": "smtp-verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/security_verify",
+    "sessionRef": "/root/security_verify"
+  },
+  "outcome": "pass",
+  "summary": "Independent process-local backend test run passes all 69 tests.",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": null,
+      "change": "reported",
+      "description": ".orchestrator/runs/first-deploy/evidence/smtp-fix.md — Independent process-local backend test run passes all 69 tests."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Independent in-process backend test run passes all 69 tests without real services.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-deploy/evidence/smtp-fix.md — Independent process-local backend test run passes all 69 tests."
+    }
+  ],
+  "checks": [
+    {
+      "name": "69 tests passed: .venv/bin/python manage.py test accounts --settings=config.test_settings",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-deploy/evidence/smtp-fix.md"
+    }
+  ],
+  "risks": [
+    "Real deployment and actual service integration are not verified by these process-local/source checks."
+  ],
+  "followUps": [
+    "Complete deployment tooling, independent gates, remote deployment, integration and runtime verification."
+  ],
+  "completedAt": "2026-09-17T16:19:30.653876+00:00"
+}

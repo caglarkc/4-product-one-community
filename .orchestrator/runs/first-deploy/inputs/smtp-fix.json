@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-deploy",
+  "itemId": "smtp-fix",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/review_backend",
+    "sessionRef": "/root/review_backend"
+  },
+  "outcome": "pass",
+  "summary": "Atomic per-account/IP admission prevents varying-destination SMTP abuse; four regressions added.",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": null,
+      "change": "reported",
+      "description": ".orchestrator/runs/first-deploy/evidence/smtp-fix.md — Atomic per-account/IP admission prevents varying-destination SMTP abuse; four regressions added."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Account and IP email-change budgets are reserved atomically before token creation or SMTP; destination admission is retained.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-deploy/evidence/smtp-fix.md — Atomic per-account/IP admission prevents varying-destination SMTP abuse; four regressions added."
+    },
+    {
+      "criterion": "Regression coverage proves varying destinations and Redis failure cannot bypass admission.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-deploy/evidence/smtp-fix.md — Atomic per-account/IP admission prevents varying-destination SMTP abuse; four regressions added."
+    }
+  ],
+  "checks": [
+    {
+      "name": "69 tests passed: .venv/bin/python manage.py test accounts.tests --settings=config.test_settings --verbosity=1",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-deploy/evidence/smtp-fix.md"
+    },
+    {
+      "name": "git diff --check passed.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-deploy/evidence/smtp-fix.md"
+    }
+  ],
+  "risks": [
+    "Real deployment and actual service integration are not verified by these process-local/source checks."
+  ],
+  "followUps": [
+    "Complete deployment tooling, independent gates, remote deployment, integration and runtime verification."
+  ],
+  "completedAt": "2026-09-17T16:19:29.948697+00:00"
+}

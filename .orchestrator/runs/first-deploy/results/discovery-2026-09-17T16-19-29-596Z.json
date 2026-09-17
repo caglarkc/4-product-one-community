@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-deploy",
+  "itemId": "discovery",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Parent SSH discovery recorded authorized scope, host isolation and free loopback port; no other application modified.",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": null,
+      "change": "reported",
+      "description": ".orchestrator/runs/first-deploy/evidence/discovery.md — Parent SSH discovery recorded authorized scope, host isolation and free loopback port; no other application modified."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Authorization and backend-only transfer scope are recorded.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-deploy/evidence/discovery.md — Parent SSH discovery recorded authorized scope, host isolation and free loopback port; no other application modified."
+    },
+    {
+      "criterion": "Existing host resources and a free isolated FIRST loopback port are identified without changing other applications.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-deploy/evidence/discovery.md — Parent SSH discovery recorded authorized scope, host isolation and free loopback port; no other application modified."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Parent report: existing ingress/certificate and listeners checked; 18081 free.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-deploy/evidence/discovery.md"
+    }
+  ],
+  "risks": [
+    "Real deployment and actual service integration are not verified by these process-local/source checks."
+  ],
+  "followUps": [
+    "Complete deployment tooling, independent gates, remote deployment, integration and runtime verification."
+  ],
+  "completedAt": "2026-09-17T16:19:29.596054+00:00"
+}
