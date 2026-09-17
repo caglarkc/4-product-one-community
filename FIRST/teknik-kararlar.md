@@ -35,3 +35,7 @@ Kullanıcı, bütün API'leri tek seferde gruplandıran uzun listeyi fazla karma
 ## ADR durumu
 
 Şu aşamada Markdown karar kaydı yeterli kabul edildi. İleride önemli mimari seçimler için gerekçe, alternatif ve sonuç içeren ADR yazılması yaklaşımı benimsendi; her ürün kuralı için ayrı ADR gerekmiyor.
+
+## Backend çalıştırma ortamı — 17 Eylül 2026
+
+Backend uzak sunucuda Docker içinde çalıştırılacak. Bu bilgisayara Docker kurulmaz; backend için yerel `.venv` oluşturulmaz veya Python bağımlılıkları kurulmaz. Container hazırlığı `backend/` altındadır; yalnız sağlık endpoint’i içeren başlangıç iskeletidir. Auth entegrasyonu durdurulmuştur; devam talimatı verilmeden başlatılmaz. Uzak sunucuya aktarım ve çalıştırma henüz yapılmadı.
