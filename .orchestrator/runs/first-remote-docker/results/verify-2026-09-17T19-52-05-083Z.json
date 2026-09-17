@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-remote-docker",
+  "itemId": "verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "docker_verify",
+    "sessionRef": null
+  },
+  "outcome": "blocked",
+  "summary": "Core runtime and public frontend auth API now pass. SMTP remains blocked by shared provider/account login requirement, reproduced in Immense independently with matching settings.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Container health, PostgreSQL, Redis and HTTP connectivity verified; limitations recorded.",
+      "status": "failed",
+      "evidence": "Core runtime and public frontend auth API now pass. SMTP remains blocked by shared provider/account login requirement, reproduced in Immense independently with matching settings."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Core services",
+      "status": "passed",
+      "evidence": "All three containers healthy; migration check, PostgreSQL SELECT1, Redis PING, health JSON passed."
+    },
+    {
+      "name": "Public API",
+      "status": "passed",
+      "evidence": "Config and CSRF HTTP200 valid JSON; token and Secure/SameSite cookie present."
+    },
+    {
+      "name": "SMTP",
+      "status": "failed",
+      "evidence": "Local/server settings identical; 534/5.7.9 requests browser login. No mail sent."
+    },
+    {
+      "name": "Immense comparison",
+      "status": "passed",
+      "evidence": "Auth/notification/user SMTP settings equal FIRST. Nodemailer verify in notification container independently returns EAUTH 534/5.7.9. No Immense changes."
+    }
+  ],
+  "risks": [
+    "Email-dependent flows remain unavailable until SMTP provider access is restored."
+  ],
+  "followUps": [
+    "Account owner completes provider browser login/security step; then retry SMTP."
+  ],
+  "completedAt": "2026-09-17T19:52:05.083170+00:00"
+}

@@ -42,7 +42,7 @@ checks passed, migrations were already current, and independent checks verified 
 real PostgreSQL `SELECT 1`, authenticated Redis `PING`, and JSON HTTP 200 from the
 backend `/health/` endpoint.
 
-Two integration problems remain open:
+Two integration problems were found during the initial verification:
 
 - SMTP authentication returns code **534** (`SMTPAuthenticationError`). No email
   was sent. Testing the separately supplied local SMTP credentials on the server
@@ -57,3 +57,28 @@ Automatic approval review rejected the two proposed actions above. The container
 are running, but email and public frontend auth are **not verified working**.
 Evidence and pending work are recorded in
 [the remote run](../.orchestrator/runs/first-remote-docker/run.json).
+
+
+### Approved integration follow-up
+
+The user subsequently explicitly approved both actions. The HTTPS IP nginx site was
+backed up, the tracked FIRST auth snippet was installed, and a single include was
+added to its HTTPS block. `nginx -t` and reload passed. Independent checks now confirm
+public config and CSRF endpoints return HTTP 200 with valid JSON, and the CSRF token
+and Secure/SameSite cookie are present. Docker health, migration, PostgreSQL and Redis
+checks still pass. The nginx/public frontend routing problem is resolved.
+
+The user-authorized local SMTP test confirmed local and server settings are identical;
+authentication still fails. The provider's precise response is **534 / 5.7.9**, asking
+the account owner to log in through a web browser and retry. No email was sent and no
+unsuccessful SMTP settings were applied. The account owner must complete that provider
+login/security step before SMTP can be rechecked. This is the remaining blocker;
+nginx and credential-transfer permissions are no longer pending.
+
+
+At the user's request, a read-only comparison with the running Immense services
+confirmed the SMTP host, port, username, password and sender settings match FIRST.
+A Nodemailer `verify()` executed inside the Immense notification container also
+failed with **EAUTH 534 / 5.7.9**, requesting browser login. No mail was sent and no
+Immense configuration was modified. This independently reproduces the shared
+account/provider problem outside FIRST's Django implementation.

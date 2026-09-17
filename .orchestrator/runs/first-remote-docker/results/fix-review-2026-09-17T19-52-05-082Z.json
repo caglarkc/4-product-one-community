@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-remote-docker",
+  "itemId": "fix-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "docker_review",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Independent review found no P1/P2 issues: FIRST-only nginx snippet, backup, nginx -t/reload and signed proxy forwarding verified; unsuccessful SMTP config was not applied.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Independent review of FIRST-only nginx change and safe SMTP handling.",
+      "status": "passed",
+      "evidence": "Independent review found no P1/P2 issues: FIRST-only nginx snippet, backup, nginx -t/reload and signed proxy forwarding verified; unsuccessful SMTP config was not applied."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Scoped ingress review",
+      "status": "passed",
+      "evidence": "Tracked snippet limits routing to /api/auth and loopback; independent public API checks pass."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-17T19:52:05.082854+00:00"
+}

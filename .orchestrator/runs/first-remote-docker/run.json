@@ -4,8 +4,8 @@
   "title": "FIRST remote Docker startup verification",
   "goal": "Push remaining safe changes, pull on remote server and start and verify FIRST Docker backend",
   "createdAt": "2026-09-17T19:35:11.721Z",
-  "updatedAt": "2026-09-17T19:42:04.691Z",
-  "revision": 8,
+  "updatedAt": "2026-09-17T19:52:05.314Z",
+  "revision": 18,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -25,7 +25,15 @@
   "policy": {
     "requiresIntegration": false
   },
-  "decisions": [],
+  "decisions": [
+    {
+      "id": "approved-integration-fix",
+      "summary": "User explicitly approved nginx FIRST routing and local SMTP credential test/application",
+      "reason": "User: izin veriyorum bunları da ayarla",
+      "decidedAt": "2026-09-17T19:47:57.210Z",
+      "actor": "user"
+    }
+  ],
   "items": [
     {
       "id": "deploy-review",
@@ -160,11 +168,13 @@
       "capabilities": [],
       "relations": {
         "dependsOn": [
-          "deploy"
+          "deploy",
+          "integration-fix"
         ],
         "reviews": [],
         "verifies": [
-          "deploy"
+          "deploy",
+          "integration-fix"
         ],
         "revises": [],
         "integrates": []
@@ -189,7 +199,118 @@
       },
       "status": "blocked",
       "attempt": 1,
-      "resultRef": "results/verify-2026-09-17T19-42-04-368Z.json"
+      "resultRef": "results/verify-2026-09-17T19-52-05-083Z.json"
+    },
+    {
+      "id": "integration-fix",
+      "title": "Configure approved ingress and test SMTP",
+      "kind": "deployment",
+      "domains": [
+        "first-backend"
+      ],
+      "objective": "Deploy and verify FIRST on user server",
+      "responsibility": "Only FIRST runtime and its checkout",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/backend"
+        }
+      ],
+      "outputs": [
+        "Deployment evidence"
+      ],
+      "acceptanceCriteria": [
+        "Approved FIRST nginx routing installed and local SMTP credentials tested; results and remaining provider requirements recorded."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "deploy"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Authorized remote startup"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST",
+          ".gitignore"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-fix-2026-09-17T19-49-28-983Z.json"
+    },
+    {
+      "id": "fix-review",
+      "title": "Review integration fix",
+      "kind": "review",
+      "domains": [
+        "first-backend"
+      ],
+      "objective": "Deploy and verify FIRST on user server",
+      "responsibility": "Only FIRST runtime and its checkout",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/backend"
+        }
+      ],
+      "outputs": [
+        "Deployment evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent review of FIRST-only nginx change and safe SMTP handling."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration-fix"
+        ],
+        "reviews": [
+          "integration-fix"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Authorized remote startup"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "docker_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/fix-review-2026-09-17T19-52-05-082Z.json"
     }
   ]
 }

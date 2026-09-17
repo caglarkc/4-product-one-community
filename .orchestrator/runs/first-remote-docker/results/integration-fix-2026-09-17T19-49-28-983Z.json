@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-remote-docker",
+  "itemId": "integration-fix",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "User explicitly authorized both changes. Backed up HTTPS IP nginx site, installed tracked FIRST auth snippet and one include, nginx -t/reload passed. Local SMTP credentials identical to server; authentication test failed 534/5.7.9 requiring browser login, so SMTP config preserved. Independent public config and CSRF JSON/cookie checks now pass.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Approved FIRST nginx routing installed and local SMTP credentials tested; results and remaining provider requirements recorded.",
+      "status": "passed",
+      "evidence": "User explicitly authorized both changes. Backed up HTTPS IP nginx site, installed tracked FIRST auth snippet and one include, nginx -t/reload passed. Local SMTP credentials identical to server; authentication test failed 534/5.7.9 requiring browser login, so SMTP config preserved. Independent public config and CSRF JSON/cookie checks now pass."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Approved scoped configuration handling",
+      "status": "passed",
+      "evidence": "Nginx backed up, validated and reloaded; unsuccessful SMTP credentials were not reapplied."
+    }
+  ],
+  "risks": [
+    "SMTP provider rejects current credentials until its requested browser account login is completed."
+  ],
+  "followUps": [
+    "User completes provider account login/security step; recheck SMTP without sending mail."
+  ],
+  "completedAt": "2026-09-17T19:49:28.983825+00:00"
+}
