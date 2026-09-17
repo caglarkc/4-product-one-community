@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-remote-docker",
+  "title": "FIRST remote Docker startup verification",
+  "goal": "Push remaining safe changes, pull on remote server and start and verify FIRST Docker backend",
+  "createdAt": "2026-09-17T19:35:11.721Z",
+  "updatedAt": "2026-09-17T19:36:01.112Z",
+  "revision": 2,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/rules.md",
+      "FIRST/backend/compose.yaml",
+      "FIRST/deployment.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "bd2672e74a452f1580e982152aed28f284772af6e072462d3b7134f0dbc89bed",
+    "assumptions": []
+  },
+  "constraints": [
+    "User authorizes root SSH, git pull and FIRST Docker startup.",
+    "Preserve other projects and existing persistent credentials/data.",
+    "Do not push private env values; runtime checks must not emit credentials."
+  ],
+  "policy": {
+    "requiresIntegration": false
+  },
+  "decisions": [],
+  "items": [
+    {
+      "id": "deploy-review",
+      "title": "deploy-review",
+      "kind": "review",
+      "domains": [
+        "first-backend"
+      ],
+      "objective": "Deploy and verify FIRST on user server",
+      "responsibility": "Only FIRST runtime and its checkout",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/backend"
+        }
+      ],
+      "outputs": [
+        "Deployment evidence"
+      ],
+      "acceptanceCriteria": [
+        "Deployment steps reviewed for data and credential preservation."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "deploy"
+        ],
+        "reviews": [
+          "deploy"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Authorized remote startup"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "docker_review"
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "deploy",
+      "title": "deploy",
+      "kind": "deployment",
+      "domains": [
+        "first-backend"
+      ],
+      "objective": "Deploy and verify FIRST on user server",
+      "responsibility": "Only FIRST runtime and its checkout",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/backend"
+        }
+      ],
+      "outputs": [
+        "Deployment evidence"
+      ],
+      "acceptanceCriteria": [
+        "Safe changes pushed and remote repository updated; FIRST Docker services started."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Authorized remote startup"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST",
+          ".gitignore"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "active",
+      "attempt": 1,
+      "resultRef": null
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "first-backend"
+      ],
+      "objective": "Deploy and verify FIRST on user server",
+      "responsibility": "Only FIRST runtime and its checkout",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/backend"
+        }
+      ],
+      "outputs": [
+        "Deployment evidence"
+      ],
+      "acceptanceCriteria": [
+        "Container health, PostgreSQL, Redis and HTTP connectivity verified; limitations recorded."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "deploy"
+        ],
+        "reviews": [],
+        "verifies": [
+          "deploy"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Authorized remote startup"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "docker_verify"
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    }
+  ]
+}

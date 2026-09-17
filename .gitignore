@@ -18,3 +18,6 @@ playwright-report/
 /FIRST/backend/.env
 /FIRST/backend/.env.*
 !/FIRST/backend/.env.example
+
+# Local Vercel environment contains private proxy configuration
+/FIRST/frontend/.env.vercel.local
