@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-remote-docker",
+  "itemId": "verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "docker_verify",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Independent FIRST SMTP open/close and Immense Nodemailer verify PASS. Runtime credentials match booleans. FIRST config/CSRF200 JSON and secure cookie; three FIRST containers healthy; sixteen Immense apps running, healthchecks healthy; gateway health200 and auth route expected401. No mail sent.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Container health, PostgreSQL, Redis and HTTP connectivity verified; limitations recorded.",
+      "status": "passed",
+      "evidence": "Independent FIRST SMTP open/close and Immense Nodemailer verify PASS. Runtime credentials match booleans. FIRST config/CSRF200 JSON and secure cookie; three FIRST containers healthy; sixteen Immense apps running, healthchecks healthy; gateway health200 and auth route expected401. No mail sent."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Scoped rollout checks",
+      "status": "passed",
+      "evidence": "Independent FIRST SMTP open/close and Immense Nodemailer verify PASS. Runtime credentials match booleans. FIRST config/CSRF200 JSON and secure cookie; three FIRST containers healthy; sixteen Immense apps running, healthchecks healthy; gateway health200 and auth route expected401. No mail sent."
+    }
+  ],
+  "risks": [
+    "Actual email inbox delivery was not tested."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-17T20:06:14.349409+00:00"
+}

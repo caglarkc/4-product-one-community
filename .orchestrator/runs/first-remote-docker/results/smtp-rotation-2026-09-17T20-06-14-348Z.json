@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-remote-docker",
+  "itemId": "smtp-rotation",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Local FIRST env and Immense env/env.docker updated. FIRST env20a6d2b and Immense envd6702f94 pushed to verified private origins under explicit user instruction. Remote SMTP-only config applied with backups; FIRST backend and 16 Immense app services recreated; data services preserved.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Local and remote SMTP credentials rotated, explicit private-repo env push completed and affected remote services recreated.",
+      "status": "passed",
+      "evidence": "Local FIRST env and Immense env/env.docker updated. FIRST env20a6d2b and Immense envd6702f94 pushed to verified private origins under explicit user instruction. Remote SMTP-only config applied with backups; FIRST backend and 16 Immense app services recreated; data services preserved."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Scoped rollout checks",
+      "status": "passed",
+      "evidence": "Local FIRST env and Immense env/env.docker updated. FIRST env20a6d2b and Immense envd6702f94 pushed to verified private origins under explicit user instruction. Remote SMTP-only config applied with backups; FIRST backend and 16 Immense app services recreated; data services preserved."
+    }
+  ],
+  "risks": [
+    "Actual email inbox delivery was not tested."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-17T20:06:14.348982+00:00"
+}

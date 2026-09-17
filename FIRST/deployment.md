@@ -82,3 +82,28 @@ A Nodemailer `verify()` executed inside the Immense notification container also
 failed with **EAUTH 534 / 5.7.9**, requesting browser login. No mail was sent and no
 Immense configuration was modified. This independently reproduces the shared
 account/provider problem outside FIRST's Django implementation.
+
+
+### SMTP account rotation completed
+
+The user supplied a replacement Gmail account/application password and explicitly
+requested actual backend env files be committed to both existing private GitHub
+repositories. Both origin repositories were verified private. FIRST backend `.env`
+was committed as `20a6d2b`; SMTP remains excluded from Docker build context. Immense
+local `.env` and actual Docker source `.env.docker` were updated. Because its local
+history diverged from GitHub, only the SMTP field changes were applied on a separate
+checkout of current origin/main and pushed as `d6702f94`, without a force push or
+unrelated code changes. The original local checkout retains its historical branch.
+
+On the server, FIRST shared env was updated only after successful SMTP login.
+Immense `.env` and `.env.docker` were backed up and only SMTP login/sender fields
+changed. Its 16 environment-consuming application services were recreated using
+existing images, with no builds or pulls; persistent data services were preserved.
+The existing Immense remote source commit was retained (configuration rollout only).
+
+Independent verification now passes: FIRST Django SMTP connection/authentication,
+Immense Nodemailer verify, matching runtime SMTP settings, FIRST config/CSRF JSON
+and secure cookie, all FIRST containers, all 16 Immense application containers,
+Immense gateway health and expected unauthenticated auth-route responses. The SMTP
+534 blocker is resolved. No email was sent; inbox delivery and full user account
+email flows were not tested.
