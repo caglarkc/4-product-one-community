@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth",
+  "itemId": "h-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "backend_review",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": ".orchestrator/runs/first-auth/evidence/h-review.md",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": null,
+      "change": "reported",
+      "description": "Görev/dosya/komut/sonuç ve kapsam dışı kontroller"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/h-review.md"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Aşama kanıtı",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/h-review.md"
+    },
+    {
+      "name": "Gerçek servisler ve E2E",
+      "status": "not_run",
+      "evidence": "Kullanıcı sınırı; not_verified."
+    }
+  ],
+  "risks": [
+    "PostgreSQL/Redis/SMTP çalışma zamanı ve E2E not_verified."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-17T14:47:08.441355+00:00"
+}

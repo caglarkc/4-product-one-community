@@ -1,6 +1,6 @@
 # FIRST — Teknik kararlar
 
-Kayıt tarihi: 17 Eylül 2026. Kaynak: 16–17 Eylül görüşmesi. Bu belge kabul edilmiş seçimleri kaydeder; kurulum veya uygulama yapıldığı anlamına gelmez.
+Kayıt tarihi: 17 Eylül 2026. Kaynak: 16–17 Eylül görüşmesi. Bu belge kabul edilmiş seçimleri ve normal auth uygulamasının test sınırlarını kaydeder; yayın yapıldığı anlamına gelmez.
 
 ## Kesinleşen seçimler
 
@@ -38,4 +38,8 @@ Kullanıcı, bütün API'leri tek seferde gruplandıran uzun listeyi fazla karma
 
 ## Backend çalıştırma ortamı — 17 Eylül 2026
 
-Backend uzak sunucuda Docker içinde çalıştırılacak. Bu bilgisayara Docker kurulmaz; backend için yerel `.venv` oluşturulmaz veya Python bağımlılıkları kurulmaz. Container hazırlığı `backend/` altındadır; yalnız sağlık endpoint’i içeren başlangıç iskeletidir. Auth entegrasyonu henüz başlatılmadı; mevcut çalışma kararları netleştirmektir. Uygulama talimatı verilmeden başlatılmaz. Uzak sunucuya aktarım ve çalıştırma henüz yapılmadı.
+Backend hedef ortamda Docker içinde çalıştırılacak. Bu görevde Docker, dinleyen backend/frontend servisi, yerel PostgreSQL/Redis veya uzak servis başlatılmadı; deploy yapılmadı. Kullanıcı normal auth görevi için önceki yerel bağımlılık yasağını açıkça kaldırdı: Git dışında `.venv` ve Python bağımlılıkları, Django süreç içi API testleri izinlidir. Testler izole SQLite, FakeRedis ve bellek içi e-posta kullanır; production ayarları PostgreSQL/Redis/SMTP gerektirir.
+
+`backend/` normal auth ve hesap yönetimi API'lerini; `frontend/` gerçek API bağlantılı Next.js ekranlarını içerir. Redis'in oturum, sayaç ve geçici token sorumlulukları uygulama öncesi [run teknik kararlarında](../.orchestrator/runs/first-auth/technical-decisions.md) kaydedildi. django-allauth/OAuth bu görevde kurulmadı; kabul edilmiş gelecek entegrasyon kararı korunur. Kalıcı kimlik modeli ileride sağlayıcı bağlantılarının ayrı tutulmasına uygundur.
+
+Gerçek PostgreSQL eşzamanlılık/kilitleri, Redis atomiklik/TTL/arıza, SMTP teslimi, Docker çalışma zamanı, proxy/HTTPS-cookie, tarayıcı E2E ve uzak yayın **not_verified**. Güncel davranış ve rutin teknik tercihler [auth sözleşmesi](contracts/auth-api.md) ve run kaydındadır.

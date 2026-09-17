@@ -1,0 +1,8 @@
+# F backend → hesap web geçişi
+Görev/dosyalar: f-integration; FIRST/backend/accounts/urls.py/account_views.py/views.py/serializers.py; auth-api.md; frontend mevcut api.ts ve proxy route.
+Komutlar: cat/sed gerçek route/view/serializer/README kaynakları; graph gate sonuçları kayıt sırasında kontrol edilir.
+Sözleşme eşleşmesi: profile PATCH user; reauthenticate/password-change/reset/reset-confirm/email-resend/change/verify/sessions-revoke POST detail; sessions GET sessions array; sessions/UUID DELETE detail. Reset uid decimal string. Doğrulama key, reset uid/token/password, password change old_password/password. Tüm mutation explicit CSRF; korumalı anonymous401, reauth403/code, token400/code, field400/errors, quota429, visible service503.
+Geçiş koşulları: G api helper her mutation öncesi taze CSRF; PATCH/DELETE body{} ile; token linkleri sadece kullanıcı form gönderince mutation. Başarılı reset/change/bulk veya current-session revoke sonrası giriş ekranı/anonymous state; verification sonrası me tekrar sorgusu (email change bütün oturumları kapatır). Mevcut adres pending change boyunca gösterilmeye devam eder. Phone false ve normalizasyondan sonraki username sınırı korunur.
+G proxy timeout30s: iki SMTP işlemi10s+10s için mevcut15s değiştirilmelidir. Gerçek SMTP/lock latency doğrulanmış değildir.
+Sonuç: kaynak sözleşmesi uyumlu; f-review/f-verify bağımsız kapıları bitmeden bu düğüm kabul edilmez. Komutlar servis başlatmadı.
+Yapılmayanlar: gerçek PostgreSQL locking/migration, Redis atomicity/TTL/outage, SMTP teslim ve timing, browser/proxy/runtime/deploy not_verified; kullanıcı kapsamı dışında.

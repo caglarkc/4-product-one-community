@@ -1,6 +1,6 @@
 # FIRST — Kayıt, giriş ve hesap bağlantısı kararları
 
-Kayıt tarihi: 17 Eylül 2026. Kaynak: kullanıcının auth görüşmesindeki açık kararları. Kabul edilmiş ürün ve auth tasarım kararlarıdır; henüz uygulanmadı. İlk sözleşme: `contracts/auth-api.md`.
+Kayıt tarihi: 17 Eylül 2026. Kaynak: kullanıcının auth görüşmesindeki açık kararları. Kabul edilmiş ürün ve auth tasarım kararlarıdır. Normal auth ve hesap yönetimi uygulandı; Google/GitHub ve hesap eşleştirme gelecek kapsamdır. Güncel uygulama sözleşmesi: `contracts/auth-api.md`.
 
 ## 1. Giriş ve kayıt yöntemleri
 

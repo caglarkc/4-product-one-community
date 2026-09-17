@@ -4,9 +4,15 @@ root=pathlib.Path(__file__).resolve().parents[3]; folder=pathlib.Path(__file__).
 def cli(*args): subprocess.run(['node',str(root/'.orchestrator/bin/orchestrator.mjs'),*map(str,args)],cwd=root,check=True)
 def checklist():
  r=json.loads(path.read_text()); lines=['# FIRST normal auth checklist','', 'Kaynak gerçek: `run.json`. Kanıtlar: `results/`, `evidence/`; eski başarısız denemeler korunur.','']
+ failed=[i for i in r['items'] if i['status']=='failed']
+ lines += ['Geçmiş başarısız denemeler silinmez. Aşağıdaki `failed` satırları geçmiş kanıttır; düzeltme ve yeni bağımsız kapılar ayrı düğümlerdedir. CLI toplu durumunun blocked kalması bu geçmişten kaynaklanabilir; güncel kabul için revision/review-r2/verify-r2/integration ve H sonuçları okunmalıdır.', '']
+ if failed:
+  lines += ['## Korunan başarısız denemeler', '']
+  lines += [f"- `{i['id']}`: {i['resultRef']}" for i in failed]
+  lines += ['', 'Kapanış eşlemeleri: eski backend/frontend → legacy review + B/D; c-review → c-revision/c-review-r2/c-verify-r2; e-review/e-verify → e-revision/e-review-r2/e-verify-r2; f-review → f-revision/f-review-r2/f-verify-r2.', '']
  for i in r['items']:
   if i['id'] in ['contract','backend','frontend','review','verify','integration']:continue
-  lines.extend(['## '+i['title'], '',f"Düğüm: `{i['id']}` — **{i['status']}**; bağımlılık: {', '.join(i['relations']['dependsOn'])}", ''])
+  lines.extend(['## '+i['title']+(' — geçmiş başarısız deneme' if i['status']=='failed' else ''), '',f"Düğüm: `{i['id']}` — **{i['status']}**; bağımlılık: {', '.join(i['relations']['dependsOn'])}", ''])
   lines += [(' - [x] ' if i['status']=='done' else ' - [ ] ')+a for a in i['acceptanceCriteria']]
   lines += ['', 'Kanıt: '+str(i['resultRef']), '']
  lines+=['## Ortam sınırları','', 'Gerçek PostgreSQL, Redis atomiklik/TTL/arıza, SMTP teslimi, dinleyen uygulama, tarayıcı E2E ve deploy: **not_verified** — kullanıcı kapsamı dışında.']

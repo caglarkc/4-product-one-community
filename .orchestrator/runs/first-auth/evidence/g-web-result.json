@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth",
+  "itemId": "g-web",
+  "agent": {
+    "platform": "codex",
+    "identity": "account_web_writer",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "FIRST/frontend/test-evidence-stage-g.md",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": null,
+      "change": "reported",
+      "description": "Görev/dosya/komut/sonuç ve kapsam dışı kontroller"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Şimdilik boş ana sayfayı oluştur; yalnız gerekli temel gezinme ve oturum kontrollerini ekle.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-g.md"
+    },
+    {
+      "criterion": "Profil sayfasını gerçek kullanıcı verileriyle oluştur.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-g.md"
+    },
+    {
+      "criterion": "Bilgi güncelleme, e-posta değişikliği ve doğrulamasız telefon ekleme/değiştirmeyi bağla.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-g.md"
+    },
+    {
+      "criterion": "Şifremi unuttum, sıfırlama ve değiştirme formlarını/ekranlarını bağla.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-g.md"
+    },
+    {
+      "criterion": "E-posta doğrulama bağlantısı ekranını, hatırlatmayı ve tekrar gönderimi bağla.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-g.md"
+    },
+    {
+      "criterion": "Yeniden doğrulama ve oturum yönetimi arayüzlerini bağla.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-g.md"
+    },
+    {
+      "criterion": "Giriş, çıkış ve kayıt yönlendirmelerini tamamla.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-g.md"
+    },
+    {
+      "criterion": "Doğrulama e-postası bağlantısını açmak tek başına veri değişikliği yapmasın; kullanıcı onay formu göndersin.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-g.md"
+    },
+    {
+      "criterion": "Form, hata, yüklenme, yetkisiz erişim ve süre dolması senaryolarını kod testleriyle doğrula.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-g.md"
+    },
+    {
+      "criterion": "Lint, typecheck ve build kontrollerini tamamla.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-g.md"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Aşama kanıtı",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-g.md"
+    },
+    {
+      "name": "Gerçek servisler ve E2E",
+      "status": "not_run",
+      "evidence": "Kullanıcı sınırı; not_verified."
+    }
+  ],
+  "risks": [
+    "PostgreSQL/Redis/SMTP çalışma zamanı ve E2E not_verified."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-17T14:43:44.625260+00:00"
+}

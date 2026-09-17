@@ -2,7 +2,7 @@
 
 Proje ve açık kaynak topluluğu.
 
-Durum: Genel kapsam ve temel ürün akışları görüşmeyle netleştiriliyor. Güncel kabul edilmiş kararlar, açık konular ve askıya alınan mesajlaşma kapsamı [kararlar.md](kararlar.md) dosyasındadır. Aşağıdaki özellik önerileri bu güncel kayıtla birlikte okunmalıdır; normal kayıt/giriş uygulaması E kontrol kapısına kadar tamamlandı. Hesap yönetimi (F–H) kullanıcı talimatıyla bekliyor.
+Durum: Genel kapsam ve temel ürün akışları görüşmeyle netleştiriliyor. Güncel kabul edilmiş kararlar, açık konular ve askıya alınan mesajlaşma kapsamı [kararlar.md](kararlar.md) dosyasındadır. Aşağıdaki özellik önerileri bu güncel kayıtla birlikte okunmalıdır; normal auth ve hesap yönetimi backend/web uygulaması tamamlandı; son bağımsız kontrol kanıtları aşağıdaki run kaydındadır.
 
 ## Amaç
 
@@ -44,8 +44,8 @@ Aşağıdakiler ürün yönünü destekleyen önerilerdir; kesin özellik listes
 - Projelerin aktifliğinin ve güncel ekip ihtiyaçlarının görünmesi.
 - Kodun GitHub’da kalması; platformun keşif, ekip bulma ve katkıya başlama deneyimine odaklanması.
 
-## Normal auth uygulama durumu — E sonunda bekleme
+## Normal auth uygulama durumu
 
-E-posta/şifre kaydı ve girişi, beni hatırla, oturum sorgulama/çıkış, CSRF ve doğrulama e-postası üretimi backend ile webde uygulandı. [Backend](backend/README.md) ve [web](frontend/README.md) kurulum/test belgeleri; [run checklist](../.orchestrator/runs/first-auth/checklist.md) aşama kanıtlarını içerir.
+E-posta/şifre kaydı ve girişi, beni hatırla, oturum sorgulama/çıkış, profil/telefon güncelleme, parola kurtarma/değiştirme, yeniden doğrulama, e-posta doğrulama/değiştirme ve oturum yönetimi backend ile webde uygulandı. Ana sayfa temel gezinme ve oturum durumuyla boş bırakıldı; `/hesap` gerçek API'ye bağlı işlevsel profil ekranıdır. OAuth, repo/ilan ve öğrenci doğrulama bu teslimin dışındadır.
 
-35 backend ve 35 web testi, lint/typecheck/build ile bağımsız E review/verification/integration geçti. Bu kod kontrolleri canlı ortam doğrulaması değildir. E-posta doğrulama tüketimi, profil, parola kurtarma/değiştirme, e-posta değiştirme ve oturum yönetimi F/G aşamalarında bekliyor. `/hesap` geçici oturum ekranıdır. OAuth kapsam dışıdır. Gerçek PostgreSQL/Redis/SMTP, ingress/proxy/cookie, tarayıcı E2E ve deploy **not_verified**.
+[Backend](backend/README.md), [web](frontend/README.md), [API sözleşmesi](contracts/auth-api.md) ve [run checklist](../.orchestrator/runs/first-auth/checklist.md) uygulama, test ve bağımsız kontrol kanıtlarını içerir. İzole backend/frontend testleri ile lint/typecheck/build çalıştırıldı. Gerçek PostgreSQL/Redis/SMTP, ingress/proxy/HTTPS-cookie, tarayıcı E2E ve deploy **not_verified**; kod kontrolleri canlı ortam doğrulaması değildir.

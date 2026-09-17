@@ -1,78 +1,75 @@
-# FIRST auth — ilk uygulama sözleşmesi
+# FIRST normal auth API sözleşmesi
 
-17 Eylül 2026. Ürün kaynağı: ../auth-kararlari.md. Kullanıcı tarafından onaylanmış başlangıç sözleşmesidir. Güncel normal auth ekleri aşağıdadır; A–E uygulandı, F–H kullanıcı talimatıyla bekliyor. Backend uzak sunucuda Docker içinde çalışacaktır; bu görevde yerel .venv ve izole kod/API testleri açıkça yetkilendirildi, dinleyen servis kurulmadı. Sonraki kabul edilmiş kurallar `../auth-kararlari.md` içindedir.
+17 Eylül 2026. Ürün kararları: [auth-kararlari.md](../auth-kararlari.md). Bu belge uygulanmış normal auth davranışını tanımlar. Google/GitHub OAuth, bağlantı/eşleştirme, ortak ürün SSO'su, ilan/repo ve öğrenci doğrulama kapsam dışıdır. Sosyal giriş kararları gelecekte uygulanacaktır; aktif sosyal endpoint veya bağlantı kaldırma ekranı yoktur.
 
-## Mimari
+## Taşıma ve kimlik
 
-Django/DRF kimlik ve yetki kaynağı; django-allauth Google/GitHub OAuth işlemlerini yürütür. Tarayıcı HttpOnly Django session cookie + CSRF kullanır; bearer token localStorage'da tutulmaz. Next.js `/api/*` ve `/accounts/*` yollarını sabit `BACKEND_URL` adresine proxy eder. Tarayıcı aynı origin'i kullanır. Ortak dört ürün SSO'su bu ilk entegrasyonda kurulmaz. Kalıcı veritabanı PostgreSQL olacaktır. Auth işlemlerinde Redis kullanılacak; oturum/sayaç/geçici veri sorumlulukları uygulama öncesinde netleştirilecektir. E-posta SMTP üzerinden gönderilir.
+Django + DRF yetki kaynağıdır. Next.js yalnız `/api/auth/*/` yollarını server-only sabit `BACKEND_URL` origin'ine proxy eder. Tarayıcı aynı origin üzerinden HttpOnly session cookie ve CSRF kullanır; bearer token veya localStorage kimliği yoktur. Son slash zorunludur. Bütün mutation'lar anonim kayıt/giriş/reset/doğrulama dahil CSRF cookie ve `X-CSRFToken` gerektirir. Web her mutation öncesi `csrf/` alır. Yanıtlar `Cache-Control: no-store` taşır.
 
-Tüm JSON endpoint'leri `/api/auth/` altında, son slash zorunlu. Başarılı kullanıcı cevabı `{user: User}`; hata `{detail: string, errors?: Record<string,string[]>}`. Kullanıcı: `id, email, username, full_name, birth_date (ISO|null), gender ('female'|'male'|'other'|'unspecified'|''), phone (string), email_verified (bool), phone_verified (bool), profile_complete (bool), providers (string[]), capabilities: {can_apply: bool, can_create_listing: bool}`. `can_create_listing` yalnız hesap önkoşullarını gösterir; seçilen repo yetkisi ilan endpoint'inde ayrıca kontrol edilecektir.
+Production kalıcı veri PostgreSQL'de kullanıcı ve oturum iptal kayıtlarıdır. Redis oturum içeriğini, deneme sayaçlarını ve anahtarı hash'lenmiş süreli token'ları tutar; process-local production fallback yoktur. Normal oturum 24 saat, `remember_me=true` 30 gün; süre mutlak, etkinlikle uzamaz. Her istek kalıcı oturum kaydı, süre ve kullanıcı güvenlik sürümünü kontrol eder. Doğrulanmamış e-postayla giriş serbesttir; web hatırlatma gösterir.
 
-| Metot/yol | Girdi | Sonuç |
+## Yanıt ve alanlar
+
+Kullanıcı yanıtı `{user: User}`; `me/` anonim durumda `{user:null}` döner. `User`:
+
+```text
+id: number; email, username, full_name, phone: string
+birth_date: ISO date | null
+gender: female | male | other | unspecified | ''
+email_verified, phone_verified, profile_complete: boolean
+providers: []
+capabilities: {can_apply:false, can_create_listing:false}
+```
+
+İlan/başvuru henüz uygulanmadığından capabilities false'dur; gelecekteki yetki garantisi değildir. Şifre hash'i, session key, token, security_version ve iç servis bilgileri kullanıcı yanıtına girmez.
+
+Hata biçimi `{detail:string, errors?:Record<string,string[]>, code?:string}`. Alan doğrulaması ve yanlış şifre 400; korumalı oturumsuz istek 401; CSRF 403 `csrf_failed`; son 10 dakikada şifre kanıtı eksikse 403 `reauthentication_required`; geçersiz/eski/kullanılmış token 400 `invalid_token`; yabancı/yok oturum 404; limit 429; Redis/SMTP servis sorunu 503. Reset isteği SMTP istisnası aşağıdadır. Bilinmeyen mutation alanları reddedilir. İç hata ayrıntıları ve secret gönderilmez.
+
+## Endpoint'ler
+
+Tüm yollar `/api/auth/` altındadır. JSON nesnesi gönderilir; boş mutation `{}`. “Yakın kanıt”, mevcut oturumda son 10 dakika içinde şifreyle yeniden doğrulamadır.
+
+| Metot / yol | Girdi | Başarı ve yetki |
 |---|---|---|
-| GET csrf/ | — | `{csrfToken: string}` + CSRF cookie |
-| GET config/ | — | `{providers: {google: bool, github: bool}, phone_verification_available: false}` |
-| GET me/ | — | `{user: User|null}` |
-| POST register/ | email,password,username,full_name,birth_date,gender,phone? | 201 `{user}`; oturum açılır; doğrulama e-postası gönderilir |
-| POST login/ | email,password | 200 `{user}` |
-| POST logout/ | {} | 200 `{detail}`; session sona erer |
-| PATCH profile/ | username,full_name,birth_date,gender,phone? | 200 `{user}`; sosyal kayıt zorunlu alanlarını tamamlar |
-| POST email/resend/ | {} | 200 genel sonuç; authenticated |
-| POST email/verify/ | key | 200 `{detail}`; kullanıcı sayfası yeniden me/ çeker |
-| POST password/reset/ | email | 200 genel cevap; hesap varlığı açıklanmaz |
-| POST password/reset/confirm/ | uid,token,password | 200 `{detail}` |
-| POST password/change/ | old_password,password | 200 `{detail}`; authenticated |
+| GET csrf/ | — | 200 `{csrfToken}` + CSRF cookie; anonim |
+| GET config/ | — | 200 `{providers:{google:false,github:false},phone_verification_available:false}` |
+| GET me/ | — | 200 `{user:User|null}` |
+| POST register/ | email,password,username,full_name,birth_date,gender,phone? | 201 `{user}`; oturum açar, doğrulama e-postası gönderir |
+| POST login/ | email,password,remember_me?:boolean=false | 200 `{user}`; yanlış kimlik için genel hata |
+| POST logout/ | {} | 200 `{detail}`; mevcut oturumu kapatır |
+| PATCH profile/ | username?,full_name?,birth_date?,gender?,phone? | 200 `{user}`; oturum gerekli |
+| POST reauthenticate/ | password | 200 `{detail}`; mevcut oturum için yakın kanıt |
+| POST password/reset/ | email | 200 genel `{detail}`; anonim, hesap varlığı açıklanmaz |
+| POST password/reset/confirm/ | uid,token,password | 200 `{detail}`; anonim, bütün oturumları kapatır |
+| POST password/change/ | old_password,password | 200 `{detail}`; oturum + yakın kanıt; bütün oturumları kapatır |
+| POST email/resend/ | {} | 200 `{detail}`; oturum gerekli |
+| POST email/verify/ | key | 200 `{detail}`; anonim token kanıtı, kayıt veya adres değişikliği onayı |
+| POST email/change/ | email | 200 `{detail}`; oturum + yakın kanıt; eski adres değişmez |
+| GET sessions/ | — | 200 `{sessions:[{id,created_at,expires_at,current}]}`; yalnız kendi aktif oturumları |
+| DELETE sessions/{uuid}/ | {} | 200 `{detail}`; yalnız kendi oturumu; mevcut oturum seçilirse çıkış |
+| POST sessions/revoke/ | {} | 200 `{detail}`; oturum + yakın kanıt; mevcut dahil bütün oturumları kapatır |
 
-Bütün mutation'lar anonim login/register dahil CSRF korumalıdır; backend parola kuralları, yaş ve benzersizlik kontrolünü uygular. Profil tamamlanmadan proje işlemi yetkisi yoktur. Güvenilir biçimde doğrulanmış sağlayıcı e-postası mevcut hesapla eşleşirse otomatik giriş ve sağlayıcı bağlama yapılır; ayrıca mevcut oturumdan connect akışı da korunur. Doğrulanmamış adresle mevcut hesaba erişim verilmez. Sağlayıcı kimliği başka hesaba bağlıysa sessizce taşınmaz. Önceden doğrulanmamış FIRST hesabı eşleştirilirken eski oturumlar kapatılır ve önceki yerel şifre yenilenmeden kullanılamaz. Google/GitHub bağlantısı kaldırma yoktur.
+## Doğrulama ve güvenlik kuralları
 
-Sosyal başlangıç: native POST form `/accounts/google/login/` veya `/accounts/github/login/`, `csrfmiddlewaretoken`, `process=login|connect`, `next=/hesap`. Callback sağlayıcıda frontend origin + `/accounts/{provider}/login/callback/`. Başarı `/hesap`, sosyal hata `/giris?social_error=1`. Eksik profile sahip kullanıcı `/profil-tamamla` akışına yönlenir. Eksik/güvenilmez sağlayıcı e-postası doğrulanmış sayılmaz; kullanıcıdan e-posta alınır ve FIRST doğrulama bağlantısı gönderilir. Doğrulama gerektirmeyen alanlara erişilebilir; mevcut hesaba erişim ancak e-posta sahipliği doğrulandıktan sonra sağlanır. Sağlayıcı credentials yoksa seçenek kapalı ve açıklamalı görünür; sahte sosyal giriş yoktur.
+- Şifre 8–20 Unicode codepoint; boşluk yok; büyük/küçük harf, sayı ve özel karakter zorunlu. Türkçe karakter kabul edilir. Yaygın şifreler Django listesi ve yerel küçük denylist ile reddedilir; ek offline ihlal corpus'u `AUTH_BREACHED_PASSWORD_FILE` ile sağlanabilir. Geniş ihlal corpus kapsamı bu teslimde doğrulanmadı; ayrıntı [backend README](../backend/README.md).
+- Kayıtta ad soyad, kullanıcı adı, e-posta, şifre, doğum tarihi ve cinsiyet zorunlu; telefon isteğe bağlı. En az 13 yaş gün bazında hesaplanır. full_name en fazla150, email254, phone girdi32 karakterdir.
+- Kullanıcı adı NFC sonrası3–30 Unicode harf/rakam/alt çizgi; NFC+casefold benzersiz. E-posta trim+lower normalize edilir, benzersizdir. Cinsiyet female/male/other/unspecified olmalıdır.
+- Profil PATCH yalnız tabloda sayılan profil alanlarını kabul eder; email/verified/provider/capabilities yazılamaz. Telefon boşaltılabilir veya uluslararası `+` ve8–15 rakama normalize edilir. Ekleme/değiştirme her zaman `phone_verified=false` bırakır.
+- Login, reauthenticate ve old_password ortak hesap sayacını kullanır:5 başarısız deneme/15dakika; IP başına30 şifre kanıtı/15dakika. Başarılı kanıt hesap sayacını temizler. Hash öncesi Redis rezervasyonu ve30s kilit vardır; eşzamanlı kanıt429 alabilir.
+- Reset isteği normalize adres başına5/saat ve IP30/15dakika; bilinmeyen adres de aynı bütçeyi tüketir. Bilinen/bilinmeyen/pasif hesap ve SMTP hatası aynı200 yanıtı verir; mail arızası güvenli operasyonel log'a yazılır. Senkron SMTP nedeniyle zamanlama üzerinden hesap varlığını gizleme garantisi yoktur.
+- Doğrulama bağlantısı24saat; adres başına60s aralık ve5/saat bütçe ilk kayıt dahil paylaşılır. Başarısız SMTP denemesi de rezervasyonu tüketir. Kayıt gönderim hatası503 `email_delivery_failed`; hesap/oturum sahte başarı olarak sunulmaz.
+- Reset token'ı30dakika ve tek kullanımdır; kullanıcı/e-posta/güvenlik sürümüne bağlıdır. Linkte uid ondalık kullanıcı kimliğidir. Yeni şifre token tüketilmeden doğrulanır. Başarı kalıcı güvenlik sürümünü artırır ve bütün oturumları iptal eder; yeniden giriş gerekir.
+- E-posta değişimi yeni adrese doğrulama, eski adrese bildirim gönderir. Yeni adres onaylanana kadar eski adres geçerlidir. Başarıyla üretilen sonraki değişiklik isteği önceki bekleyen değişikliği geçersiz kılar. Onayda adres benzersizliği tekrar kontrol edilir; hesap birleştirilmez. Onay bütün oturumları kapatır; eski kayıt token'ı yeni adresi doğrulayamaz.
+- Hassas mutation'lar kullanıcı satırı kilidi altında taze güvenlik sürümü/oturum kaydını tekrar kontrol eder. Redis token tüketimi ile SQL tek dağıtık transaction değildir: tüketim sonrası SQL hatasında yeni bağlantı gerekir. SMTP dış etkisi geri alınamaz; kısmi adres-değişim gönderim hatası503 verir ve yeni token geçersiz kılınır. Gönderilmiş mesaj geri çağrılamaz.
 
-E-posta linki frontend `/eposta-dogrula?key=...`; şifre sıfırlama linki `/sifre-sifirla?uid=...&token=...`. Linkleri açmak tek başına mutation yapmaz, kullanıcı form gönderir.
+## Web ve ortam
 
-Telefon kayıt/profilde isteğe bağlı ve uluslararası formatta normalize edilir; doğrulanmış numara tek hesaba aittir; doğrulanmamış giriş gerçek sahibin doğrulamasını engellemez. Sağlayıcı seçilene kadar `phone_verified=false`; telefonun varlığı doğrulama değildir. UI doğrulanmış gibi göstermez ve ilan önkoşulu kapalı kalır. Gerçek SMS/WhatsApp ve repo yetki entegrasyonu takip işleridir.
+Web rotaları `/`, `/giris`, `/kayit`, `/hesap`, `/sifremi-unuttum`, `/sifre-sifirla?uid=…&token=…`, `/eposta-dogrula?key=…`. Ana sayfa yalnız temel gezinme ve oturum durumunu içerir; profil işlevseldir. Kayıt/giriş ana sayfaya; çıkış, şifre değişimi/reset ve mevcut/toplu oturum kapatma girişe yönlenir. E-posta doğrulama linkini GET ile açmak veri değiştirmez; kullanıcı onay formu gönderir. Doğrulamadan sonra web `me/` sorgular; adres değişimi nedeniyle kapanmış oturumu gösterir. Linkler yalnız `FRONTEND_ORIGIN` üzerinden üretilir, Host başlığına güvenilmez.
 
-## Onaylanan ek kurallar ve tamamlanacak endpoint sözleşmeleri
+Next proxy Cookie/Origin/Referer/X-CSRFToken ve ayrı Set-Cookie başlıklarını korur; backend yönlendirmelerini takip etmez. Upstream timeout30s, SMTP timeout işlem başına10s. HTTPS, Secure cookie ve frontend origin için backend `CSRF_TRUSTED_ORIGINS` gerekir. Secret'lar yalnız ortam değişkenlerindedir; `.env.example` gerçek değer içermez.
 
-- Şifre: 8–20 karakter, boşluksuz; büyük/küçük harf, sayı ve özel karakter zorunlu. Türkçe karakter kabul edilir; yaygın/ele geçirilmiş şifreler reddedilir.
-- Kullanıcı adı: 3–30 karakter, harf/rakam/alt çizgi; büyük/küçük harften bağımsız benzersiz.
-- E-posta doğrulama: 24 saat; yeniden gönderim 60 saniye arayla, adres başına en fazla 5/saat.
-- Şifre sıfırlama: 30 dakika, tek kullanım; başarıda bütün oturumlar kapatılır ve yeniden giriş gerekir.
-- Oturum: normal 24 saat, beni hatırla 30 gün. Login girdisine beni hatırla seçimi eklenecektir; kesin alan sözleşmesi henüz tanımlanmadı.
-- Hassas hesap değişiklikleri: son 10 dakika içinde yeniden doğrulama.
-- Hesap başına 15 dakikada 5 başarısız şifre denemesi sonrası geçici bekleme; ayrıca IP sınırı. IP eşiği ve bekleme süresi henüz belirlenmedi.
-- Oturum listeleme/tekil veya toplu kapatma, yeniden doğrulama, e-posta değiştirme ve sosyal kullanıcıya şifre oluşturma endpoint'leri uygulama öncesinde tanımlanacaktır. Mevcut tablo bu yeni akışları henüz kapsamaz.
-- E-posta değişiminde eski adres yeni adres doğrulanana kadar geçerlidir; eski adrese bildirim gider. Başka hesaba ait adresle değişiklik, hesap birleştirme yapmaz.
-- Google/GitHub bağlantısı kaldırma endpoint'i olmayacaktır.
+Varsayılan IP kaynağı backend REMOTE_ADDR'dır; proxy arkasında ortak IP bütçesi oluşur. İsteğe bağlı per-client modda iki tarafta aynı server-only `AUTH_PROXY_SECRET` (en az32 karakter), frontend'de trusted ingress'in overwrite ettiği `AUTH_CLIENT_IP_HEADER` gerekir. Next tek IP için `ip\nseconds\nMETHOD\n/api/auth/path/` üzerinde HMAC-SHA256 üretir; X-First-Client-IP/Time/Signature gönderir. Backend ±60s ve imzayı denetler; uygunsuz istek403 `invalid_proxy_assertion`. Secret yoksa gelen assertion başlıkları yok sayılır. Gerçek ingress güveni ve saat uyumu ayrıca doğrulanmalıdır.
 
-## Normal auth uygulama sözleşmesi — bu görevde geçerli ek
+## Test sınırı
 
-OAuth/connect ve sosyal UI bu teslimin dışındadır; config iki sağlayıcı için de false döner. Gelecekte django-allauth bağlanabilir; provider kimliği kullanıcı modelindeki e-postaya gömülmez. Aşağıdaki alanlar önceki tabloda belirsiz alanları kesinleştirir:
-
-| Metot/yol | Girdi | Sonuç |
-|---|---|---|
-| POST register/ | Yukarıdaki alanlar | 201 `{user}`; SMTP hatası 503 `{detail, code: 'email_delivery_failed'}`; hesap/oturum başarı olarak sunulmaz |
-| POST login/ | email,password,remember_me (boolean, varsayılan false) | 200 `{user}`; geçersiz kimlik 400 genel hata; limit 429 |
-| POST reauthenticate/ | password | 200 `{detail}`; mevcut oturumda 10 dakika yetki |
-| POST email/change/ | email | authenticated + yakın yeniden doğrulama; 200 `{detail}`; eski adres korunur, yeni adres doğrulama bağlantısı ve eski adrese bildirim |
-| GET sessions/ | — | `{sessions: [{id, created_at, expires_at, current}]}`; opaque id; ham session key/IP yok |
-| DELETE sessions/{id}/ | — | 200 `{detail}`; sadece kendi oturumu; yabancı/yok 404 |
-| POST sessions/revoke/ | {} | 200 `{detail}`; mevcut dahil bütün oturumları kapatır; yakın yeniden doğrulama |
-| POST password/change/ | old_password,password | authenticated + yakın yeniden doğrulama; başarı bütün oturumları kapatır |
-
-Korumalı isteklerde oturum yoksa 401; CSRF hatası 403 `{detail, code:'csrf_failed'}`. Yakın yeniden doğrulama eksikse 403 `{detail, code:'reauthentication_required'}`. Doğrulama hataları 400 `{detail,errors}`; token yok/geçersiz/eskimiş/kullanılmış 400 `{detail,code:'invalid_token'}`. Rate limit 429; Redis/SMTP kullanılamadığında 503; iç servis hata ayrıntısı ve secret sızdırılmaz. Tüm yanıtlar `Cache-Control: no-store` taşır. Bilinmeyen mutation alanları reddedilir.
-
-Profil PATCH yalnız username/full_name/birth_date/gender/phone kabul eder; e-posta/verified/capabilities/providera yazılamaz. Telefon uluslararası `+` ve 8–15 rakam biçimine normalize edilir; doğrulanmış sayılmaz. Kullanıcı adı Unicode harf/rakam/alt çizgi, NFC + casefold benzersizlik; e-posta trim + lower ile normalize edilir. Tarih sunucuda gün bazında 13. doğum gününü tamamlamalıdır. Alan uzunlukları: full_name 150, email 254, phone 32 girdi karakteri. Kayıt ve profil cinsiyeti female/male/other/unspecified olmalıdır.
-
-POST email/verify/ hem kayıt hem değişiklik bağlantısını onaylar. E-posta değişiklik token'ı kullanıcı ve mevcut eski adrese bağlıdır; yeni istek önceki bekleyen değişikliği geçersiz kılar; doğrulamada yeni adresin benzersizliği tekrar kontrol edilir, hesap birleştirilmez. Değişiklik onayında oturumlar kapatılır. GET bağlantı açılışı sadece formu gösterir.
-
-POST password/reset/ her hesap durumu için aynı genel cevap; SMTP kesintisinde hesap varlığı açıklanmaması için gönderim sonucu cevap biçimini değiştirmez ve operasyonel hata kaydı tutulur. Sıfırlama token'ı 30 dakika/tek kullanım; yalnız sahipliği e-posta ile kanıtlayan kullanıcı yerel şifre oluşturabilir. Yanıtta uid/token bulunmaz. Linkler yalnız yapılandırılmış frontend origin'inden üretilir; Host başlığı kullanılmaz.
-
-Test sınırı: süreç içi Django client `enforce_csrf_checks=True`, izole SQLite, Redis test double ve locmem mail; web bileşen/sözleşme/lint/typecheck/build. Gerçek PostgreSQL, Redis atomiklik/TTL/arıza, SMTP teslim, tarayıcı E2E, sunucu ve deploy `not_verified`.
-
-Limit ayrıntısı: login, reauthenticate ve old_password denetimi aynı hesap-başına başarısız şifre sayacını paylaşır (5/15 dakika); IP başına tüm şifre kanıtı denemeleri 30/15 dakika. Reset isteği normalize adres başına 5/saat, IP başına 30/15 dakika; sayaç bilinmeyen adresler için de aynı şekilde işler, limitte aynı 429 hata döner. E-posta varlığı, doğrulanma durumu veya SMTP sonucu bu yanıtları ayırt ettirmez. E-posta yeniden gönderimde mevcut adres başına 60 saniye aralık ve saatte en fazla 5 gönderim kuralı korunur.
-
-Proxy istemci IP sözleşmesi: varsayılan backend REMOTE_ADDR; production per-client mode için server-only AUTH_PROXY_SECRET (iki tarafta aynı, en az32 karakter) ve frontend AUTH_CLIENT_IP_HEADER yapılandırılır. Header yalnız trusted ingress tarafından overwrite edilmelidir; gerçek ortam doğrulaması ayrı. Next canonical tek IP'yi `ip\nseconds\nMETHOD\n/api/auth/path/` üzerinde HMAC-SHA256 imzalar; X-First-Client-IP/Time/Signature. Secret aktif backend tüm auth isteklerinde geçerli ±60s assertion ister (403 invalid_proxy_assertion); secret yokken kullanıcı assertion başlıkları yok sayılır. Hiçbir key/credential browser bundle'a girmez.
-
-### E teslimindeki uygulanan kapsam
-
-Yalnız csrf/config/register/login/me/logout endpoint’leri aktiftir. Bu sözleşmedeki hesap yönetimi endpoint’leri F/G için tanımlıdır, henüz uygulanmadı. Web `/giris`, `/kayit`, geçici `/hesap` ve aynı-origin auth proxy içerir. E bağımsız kapıları geçti; kullanıcı F öncesinde bekleme istedi. Önceki paragraflardaki gelecekte tamamlanacak alan notlarını normal auth eki kesinleştirir.
+Django süreç içi client, `enforce_csrf_checks=True`, izole SQLite, FakeRedis ve locmem mail; frontend bileşen/sözleşme/lint/typecheck/build kullanılır. Mock'lar yalnız testtedir. Gerçek PostgreSQL kilit/eşzamanlılık, Redis Lua/TTL/arıza, SMTP teslim/zamanlama, proxy-ingress/HTTPS-cookie, tarayıcı E2E/görsel kullanım, Docker/uzak servis/deploy **not_verified**. Kod testlerinin geçmesi canlı ortamın çalıştığı anlamına gelmez. Kanıt ve korunmuş başarısız denemeler: [run checklist](../../.orchestrator/runs/first-auth/checklist.md).

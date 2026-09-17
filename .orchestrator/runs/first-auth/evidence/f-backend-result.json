@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth",
+  "itemId": "f-backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "backend_writer",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "FIRST/backend/test-evidence-stage-f.md",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": null,
+      "change": "reported",
+      "description": "Görev/dosya/komut/sonuç ve kapsam dışı kontroller"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Şifremi unuttum ve şifre sıfırlama API’lerini uygula.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-f.md"
+    },
+    {
+      "criterion": "Şifre değiştirme ve hassas işlemlerde yeniden doğrulamayı uygula.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-f.md"
+    },
+    {
+      "criterion": "Profil bilgilerini güncelleme API’sini uygula.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-f.md"
+    },
+    {
+      "criterion": "E-posta doğrulama ve tekrar gönderim API’lerini tamamla.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-f.md"
+    },
+    {
+      "criterion": "E-posta değiştirmede eski/yeni adres ve doğrulama kurallarını uygula.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-f.md"
+    },
+    {
+      "criterion": "Telefon ekleme/değiştirmeyi doğrulamasız uygula.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-f.md"
+    },
+    {
+      "criterion": "Oturum listeleme ve tekil/toplu sonlandırmayı uygula.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-f.md"
+    },
+    {
+      "criterion": "Süre aşımı, tekrar kullanılan token, başka kullanıcının verisine erişim, limitler ve oturum iptallerini test et.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-f.md"
+    },
+    {
+      "criterion": "SMTP mesaj içeriğini ve bağlantıları bellek içi e-posta testleriyle kontrol et.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-f.md"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Aşama kanıtı",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-f.md"
+    },
+    {
+      "name": "Gerçek servisler ve E2E",
+      "status": "not_run",
+      "evidence": "Kullanıcı sınırı; not_verified."
+    }
+  ],
+  "risks": [
+    "PostgreSQL/Redis/SMTP çalışma zamanı ve E2E not_verified."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-17T14:30:11.560965+00:00"
+}

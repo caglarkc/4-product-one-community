@@ -4,8 +4,8 @@
   "title": "FIRST auth akışları",
   "goal": "FIRST normal auth akışları backend → test → web → test sırasıyla; sosyal giriş kapsam dışı.",
   "createdAt": "2026-09-17T11:33:44.706Z",
-  "updatedAt": "2026-09-17T12:52:35.293Z",
-  "revision": 71,
+  "updatedAt": "2026-09-17T14:48:06.962Z",
+  "revision": 108,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -89,6 +89,20 @@
       "summary": "E kabul edilmiş uygulama e7b001b commit; ilk backend 3c303c6. Kullanıcı E sonunda bekleme istedi. Git hedefi origin/main.",
       "reason": "A–E kabul edildi; sonraki faz uygulanmadı.",
       "decidedAt": "2026-09-17T12:52:35.292Z",
+      "actor": "manager"
+    },
+    {
+      "id": "resume-f-through-h",
+      "summary": "Kullanıcı E sonrası beklemeyi kaldırdı ve F–H tamamlanmasını istedi.",
+      "reason": "Güncel uygulama talimatı; önceki yerel servis ve test sınırları korunur.",
+      "decidedAt": "2026-09-17T14:22:26.802Z",
+      "actor": "user"
+    },
+    {
+      "id": "final-scope-and-history",
+      "summary": "A–H normal auth kod kapıları tamamlandı; H belge/Git teslimi aktif.",
+      "reason": "Bağımsız H review/verify ve integration geçti. Tarihsel failed düğümler düzeltilmiş r2 kapılarıyla korunur; core CLI tarihsel failed durumunu blocked sayabilir. Güncel qualityGateBlockers boş. H belge sahipliği contract/kararlar/run kayıtlarını kapsar; yeni ürün kapsamı yok.",
+      "decidedAt": "2026-09-17T14:48:06.961Z",
       "actor": "manager"
     }
   ],
@@ -1247,11 +1261,11 @@
         "preferredPlatforms": [
           "codex"
         ],
-        "owner": null
+        "owner": "backend_writer"
       },
-      "status": "blocked",
+      "status": "done",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/f-backend-2026-09-17T14-30-11-560Z.json"
     },
     {
       "id": "f-review",
@@ -1311,9 +1325,9 @@
         ],
         "owner": null
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/f-review-2026-09-17T14-32-12-534Z.json"
     },
     {
       "id": "f-verify",
@@ -1373,9 +1387,9 @@
         ],
         "owner": null
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/f-verify-2026-09-17T14-32-12-819Z.json"
     },
     {
       "id": "f-integration",
@@ -1408,7 +1422,8 @@
       ],
       "relations": {
         "dependsOn": [
-          "f-review",
+          "f-review-r2",
+          "f-verify-r2",
           "f-verify"
         ],
         "reviews": [],
@@ -1436,9 +1451,9 @@
         ],
         "owner": null
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/f-integration-2026-09-17T14-34-31-773Z.json"
     },
     {
       "id": "g-web",
@@ -1505,11 +1520,11 @@
         "preferredPlatforms": [
           "codex"
         ],
-        "owner": null
+        "owner": "account_web_writer"
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/g-web-2026-09-17T14-43-44-625Z.json"
     },
     {
       "id": "h-regression",
@@ -1568,9 +1583,9 @@
         ],
         "owner": null
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/h-regression-2026-09-17T14-44-35-081Z.json"
     },
     {
       "id": "h-review",
@@ -1633,9 +1648,9 @@
         ],
         "owner": null
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/h-review-2026-09-17T14-47-08-441Z.json"
     },
     {
       "id": "h-verify",
@@ -1698,9 +1713,9 @@
         ],
         "owner": null
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/h-verify-2026-09-17T14-47-08-644Z.json"
     },
     {
       "id": "h-integration",
@@ -1764,9 +1779,9 @@
         ],
         "owner": null
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/h-integration-2026-09-17T14-47-37-273Z.json"
     },
     {
       "id": "h-delivery",
@@ -1829,15 +1844,19 @@
         "writeScopes": [
           "FIRST/README.md",
           "FIRST/backend/README.md",
-          "FIRST/frontend/README.md"
+          "FIRST/frontend/README.md",
+          "FIRST/contracts/auth-api.md",
+          "FIRST/auth-kararlari.md",
+          "FIRST/teknik-kararlar.md",
+          ".orchestrator/runs/first-auth/**"
         ],
         "preferredPlatforms": [
           "codex"
         ],
-        "owner": null
+        "owner": "manager"
       },
-      "status": "draft",
-      "attempt": 0,
+      "status": "active",
+      "attempt": 1,
       "resultRef": null
     },
     {
@@ -2356,6 +2375,197 @@
       "status": "done",
       "attempt": 1,
       "resultRef": "results/e-verify-r2-2026-09-17T12-50-44-148Z.json"
+    },
+    {
+      "id": "f-revision",
+      "title": "F stale partial-save güvenlik düzeltmesi",
+      "kind": "revision",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "Partial User.save sadece talep edilen alanları yazsın; login signal race regression.",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/backend/"
+      ],
+      "acceptanceCriteria": [
+        "Partial saves eski email/username ile yeni doğrulanmış veriyi ezmez; actual login signal regression ve auth suite geçer."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "f-review",
+          "f-backend"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "f-review"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "backend_writer"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/f-revision-2026-09-17T14-33-17-608Z.json"
+    },
+    {
+      "id": "f-review-r2",
+      "title": "F düzeltme sonrası bağımsız review",
+      "kind": "review",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "F bağımsız review",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "f-revision"
+        ],
+        "reviews": [
+          "f-backend",
+          "f-revision"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/f-review-r2-2026-09-17T14-33-56-072Z.json"
+    },
+    {
+      "id": "f-verify-r2",
+      "title": "F düzeltme sonrası bağımsız verify",
+      "kind": "verify",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "F bağımsız verify",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız verify kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "f-revision"
+        ],
+        "reviews": [],
+        "verifies": [
+          "f-backend",
+          "f-revision"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/f-verify-r2-2026-09-17T14-34-31-208Z.json"
     }
   ]
 }

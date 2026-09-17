@@ -2,6 +2,19 @@
 
 Kaynak gerçek: `run.json`. Kanıtlar: `results/`, `evidence/`; eski başarısız denemeler korunur.
 
+Geçmiş başarısız denemeler silinmez. Aşağıdaki `failed` satırları geçmiş kanıttır; düzeltme ve yeni bağımsız kapılar ayrı düğümlerdedir. CLI toplu durumunun blocked kalması bu geçmişten kaynaklanabilir; güncel kabul için revision/review-r2/verify-r2/integration ve H sonuçları okunmalıdır.
+
+## Korunan başarısız denemeler
+
+- `backend`: results/backend-resume-audit.json
+- `frontend`: results/frontend-resume-audit.json
+- `c-review`: results/c-review-2026-09-17T12-35-00-681Z.json
+- `e-review`: results/e-review-2026-09-17T12-45-24-543Z.json
+- `e-verify`: results/e-verify-2026-09-17T12-45-55-263Z.json
+- `f-review`: results/f-review-2026-09-17T14-32-12-534Z.json
+
+Kapanış eşlemeleri: eski backend/frontend → legacy review + B/D; c-review → c-revision/c-review-r2/c-verify-r2; e-review/e-verify → e-revision/e-review-r2/e-verify-r2; f-review → f-revision/f-review-r2/f-verify-r2.
+
 ## A — Hazırlık
 
 Düğüm: `a-preparation` — **done**; bağımlılık: contract
@@ -41,7 +54,7 @@ Düğüm: `c-test` — **done**; bağımlılık: b-backend
 
 Kanıt: results/c-test-2026-09-17T12-33-14-473Z.json
 
-## C bağımsız review
+## C bağımsız review — geçmiş başarısız deneme
 
 Düğüm: `c-review` — **failed**; bağımlılık: c-test
 
@@ -89,7 +102,7 @@ Düğüm: `e-test` — **done**; bağımlılık: d-web
 
 Kanıt: results/e-test-2026-09-17T12-43-48-523Z.json
 
-## E bağımsız review
+## E bağımsız review — geçmiş başarısız deneme
 
 Düğüm: `e-review` — **failed**; bağımlılık: e-test
 
@@ -97,7 +110,7 @@ Düğüm: `e-review` — **failed**; bağımlılık: e-test
 
 Kanıt: results/e-review-2026-09-17T12-45-24-543Z.json
 
-## E bağımsız verify
+## E bağımsız verify — geçmiş başarısız deneme
 
 Düğüm: `e-verify` — **failed**; bağımlılık: e-test
 
@@ -115,97 +128,97 @@ Kanıt: results/e-integration-2026-09-17T12-50-44-593Z.json
 
 ## F — Hesap yönetimi backend
 
-Düğüm: `f-backend` — **blocked**; bağımlılık: e-integration
+Düğüm: `f-backend` — **done**; bağımlılık: e-integration
 
- - [ ] Şifremi unuttum ve şifre sıfırlama API’lerini uygula.
- - [ ] Şifre değiştirme ve hassas işlemlerde yeniden doğrulamayı uygula.
- - [ ] Profil bilgilerini güncelleme API’sini uygula.
- - [ ] E-posta doğrulama ve tekrar gönderim API’lerini tamamla.
- - [ ] E-posta değiştirmede eski/yeni adres ve doğrulama kurallarını uygula.
- - [ ] Telefon ekleme/değiştirmeyi doğrulamasız uygula.
- - [ ] Oturum listeleme ve tekil/toplu sonlandırmayı uygula.
- - [ ] Süre aşımı, tekrar kullanılan token, başka kullanıcının verisine erişim, limitler ve oturum iptallerini test et.
- - [ ] SMTP mesaj içeriğini ve bağlantıları bellek içi e-posta testleriyle kontrol et.
+ - [x] Şifremi unuttum ve şifre sıfırlama API’lerini uygula.
+ - [x] Şifre değiştirme ve hassas işlemlerde yeniden doğrulamayı uygula.
+ - [x] Profil bilgilerini güncelleme API’sini uygula.
+ - [x] E-posta doğrulama ve tekrar gönderim API’lerini tamamla.
+ - [x] E-posta değiştirmede eski/yeni adres ve doğrulama kurallarını uygula.
+ - [x] Telefon ekleme/değiştirmeyi doğrulamasız uygula.
+ - [x] Oturum listeleme ve tekil/toplu sonlandırmayı uygula.
+ - [x] Süre aşımı, tekrar kullanılan token, başka kullanıcının verisine erişim, limitler ve oturum iptallerini test et.
+ - [x] SMTP mesaj içeriğini ve bağlantıları bellek içi e-posta testleriyle kontrol et.
 
-Kanıt: None
+Kanıt: results/f-backend-2026-09-17T14-30-11-560Z.json
 
-## F bağımsız review
+## F bağımsız review — geçmiş başarısız deneme
 
-Düğüm: `f-review` — **draft**; bağımlılık: f-backend
+Düğüm: `f-review` — **failed**; bağımlılık: f-backend
 
  - [ ] İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı.
 
-Kanıt: None
+Kanıt: results/f-review-2026-09-17T14-32-12-534Z.json
 
 ## F bağımsız verify
 
-Düğüm: `f-verify` — **draft**; bağımlılık: f-backend
+Düğüm: `f-verify` — **done**; bağımlılık: f-backend
 
- - [ ] İlgili aşamanın bağımsız verify kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı.
+ - [x] İlgili aşamanın bağımsız verify kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı.
 
-Kanıt: None
+Kanıt: results/f-verify-2026-09-17T14-32-12-819Z.json
 
 ## F backend–web geçiş sözleşmesi
 
-Düğüm: `f-integration` — **draft**; bağımlılık: f-review, f-verify
+Düğüm: `f-integration` — **done**; bağımlılık: f-review-r2, f-verify-r2, f-verify
 
- - [ ] Alanlar, rotalar, hata/CSRF/session sözleşmesi sonraki aşamaya uyumlu; önceki kapılar geçti.
+ - [x] Alanlar, rotalar, hata/CSRF/session sözleşmesi sonraki aşamaya uyumlu; önceki kapılar geçti.
 
-Kanıt: None
+Kanıt: results/f-integration-2026-09-17T14-34-31-773Z.json
 
 ## G — Ana sayfa, profil ve ilgili web akışları
 
-Düğüm: `g-web` — **draft**; bağımlılık: f-integration
+Düğüm: `g-web` — **done**; bağımlılık: f-integration
 
- - [ ] Şimdilik boş ana sayfayı oluştur; yalnız gerekli temel gezinme ve oturum kontrollerini ekle.
- - [ ] Profil sayfasını gerçek kullanıcı verileriyle oluştur.
- - [ ] Bilgi güncelleme, e-posta değişikliği ve doğrulamasız telefon ekleme/değiştirmeyi bağla.
- - [ ] Şifremi unuttum, sıfırlama ve değiştirme formlarını/ekranlarını bağla.
- - [ ] E-posta doğrulama bağlantısı ekranını, hatırlatmayı ve tekrar gönderimi bağla.
- - [ ] Yeniden doğrulama ve oturum yönetimi arayüzlerini bağla.
- - [ ] Giriş, çıkış ve kayıt yönlendirmelerini tamamla.
- - [ ] Doğrulama e-postası bağlantısını açmak tek başına veri değişikliği yapmasın; kullanıcı onay formu göndersin.
- - [ ] Form, hata, yüklenme, yetkisiz erişim ve süre dolması senaryolarını kod testleriyle doğrula.
- - [ ] Lint, typecheck ve build kontrollerini tamamla.
+ - [x] Şimdilik boş ana sayfayı oluştur; yalnız gerekli temel gezinme ve oturum kontrollerini ekle.
+ - [x] Profil sayfasını gerçek kullanıcı verileriyle oluştur.
+ - [x] Bilgi güncelleme, e-posta değişikliği ve doğrulamasız telefon ekleme/değiştirmeyi bağla.
+ - [x] Şifremi unuttum, sıfırlama ve değiştirme formlarını/ekranlarını bağla.
+ - [x] E-posta doğrulama bağlantısı ekranını, hatırlatmayı ve tekrar gönderimi bağla.
+ - [x] Yeniden doğrulama ve oturum yönetimi arayüzlerini bağla.
+ - [x] Giriş, çıkış ve kayıt yönlendirmelerini tamamla.
+ - [x] Doğrulama e-postası bağlantısını açmak tek başına veri değişikliği yapmasın; kullanıcı onay formu göndersin.
+ - [x] Form, hata, yüklenme, yetkisiz erişim ve süre dolması senaryolarını kod testleriyle doğrula.
+ - [x] Lint, typecheck ve build kontrollerini tamamla.
 
-Kanıt: None
+Kanıt: results/g-web-2026-09-17T14-43-44-625Z.json
 
 ## H — Toplu kontrol ve teslim
 
-Düğüm: `h-regression` — **draft**; bağımlılık: g-web
+Düğüm: `h-regression` — **done**; bağımlılık: g-web
 
- - [ ] Bütün auth kapsamı için son regresyon kontrollerini çalıştır.
- - [ ] Backend–web sözleşmeleri, route’lar, CSRF, session, izinler ve hata biçimlerini birlikte incele.
+ - [x] Bütün auth kapsamı için son regresyon kontrollerini çalıştır.
+ - [x] Backend–web sözleşmeleri, route’lar, CSRF, session, izinler ve hata biçimlerini birlikte incele.
 
-Kanıt: None
+Kanıt: results/h-regression-2026-09-17T14-44-35-081Z.json
 
 ## H bağımsız review
 
-Düğüm: `h-review` — **draft**; bağımlılık: h-regression
+Düğüm: `h-review` — **done**; bağımlılık: h-regression
 
- - [ ] İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı.
+ - [x] İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı.
 
-Kanıt: None
+Kanıt: results/h-review-2026-09-17T14-47-08-441Z.json
 
 ## H bağımsız verify
 
-Düğüm: `h-verify` — **draft**; bağımlılık: h-regression
+Düğüm: `h-verify` — **done**; bağımlılık: h-regression
 
- - [ ] İlgili aşamanın bağımsız verify kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı.
+ - [x] İlgili aşamanın bağımsız verify kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı.
 
-Kanıt: None
+Kanıt: results/h-verify-2026-09-17T14-47-08-644Z.json
 
 ## H backend–web geçiş sözleşmesi
 
-Düğüm: `h-integration` — **draft**; bağımlılık: h-review, h-verify
+Düğüm: `h-integration` — **done**; bağımlılık: h-review, h-verify
 
- - [ ] Alanlar, rotalar, hata/CSRF/session sözleşmesi sonraki aşamaya uyumlu; önceki kapılar geçti.
+ - [x] Alanlar, rotalar, hata/CSRF/session sözleşmesi sonraki aşamaya uyumlu; önceki kapılar geçti.
 
-Kanıt: None
+Kanıt: results/h-integration-2026-09-17T14-47-37-273Z.json
 
 ## H — Belgeler ve Git teslimi
 
-Düğüm: `h-delivery` — **draft**; bağımlılık: h-integration
+Düğüm: `h-delivery` — **active**; bağımlılık: h-integration
 
  - [ ] Bağımsız son review, verification ve integration sonuçlarını kaydet.
  - [ ] Başarısız kontrolleri düzelt; ilgili testleri yeniden çalıştır.
@@ -281,6 +294,30 @@ Düğüm: `e-verify-r2` — **done**; bağımlılık: e-revision
  - [x] İlgili aşamanın bağımsız verify kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı.
 
 Kanıt: results/e-verify-r2-2026-09-17T12-50-44-148Z.json
+
+## F stale partial-save güvenlik düzeltmesi
+
+Düğüm: `f-revision` — **done**; bağımlılık: f-review, f-backend
+
+ - [x] Partial saves eski email/username ile yeni doğrulanmış veriyi ezmez; actual login signal regression ve auth suite geçer.
+
+Kanıt: results/f-revision-2026-09-17T14-33-17-608Z.json
+
+## F düzeltme sonrası bağımsız review
+
+Düğüm: `f-review-r2` — **done**; bağımlılık: f-revision
+
+ - [x] İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı.
+
+Kanıt: results/f-review-r2-2026-09-17T14-33-56-072Z.json
+
+## F düzeltme sonrası bağımsız verify
+
+Düğüm: `f-verify-r2` — **done**; bağımlılık: f-revision
+
+ - [x] İlgili aşamanın bağımsız verify kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı.
+
+Kanıt: results/f-verify-r2-2026-09-17T14-34-31-208Z.json
 
 ## Ortam sınırları
 
