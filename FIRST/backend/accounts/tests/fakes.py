@@ -34,6 +34,16 @@ class FakeRedis:
         return value
 
     def eval(self, script, n, key, ttl):
+        if 'mail-admission' in script:
+            if self.exists(key) or int(self.get(ttl) or 0) >= 5:
+                return 0
+            self.set(key, '1', ex=60)
+            count = int(self.get(ttl) or 0) + 1
+            if count == 1:
+                self.set(ttl, count, ex=3600)
+            else:
+                self.values[ttl] = str(count)
+            return 1
         if "redis.call('DEL'" in script:
             if self.get(key) == ttl:
                 self.delete(key)

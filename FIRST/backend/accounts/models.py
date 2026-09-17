@@ -31,6 +31,7 @@ class User(AbstractUser):
     email_verified = models.BooleanField(default=False)
     phone_verified = models.BooleanField(default=False)
     security_version = models.PositiveIntegerField(default=1)
+    email_change_nonce = models.CharField(max_length=64, blank=True, editable=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
     objects = UserManager()
@@ -39,11 +40,17 @@ class User(AbstractUser):
         constraints = [models.UniqueConstraint(Lower('email'), name='account_email_case_insensitive')]
 
     def save(self, *args, **kwargs):
-        self.email = self.email.strip().lower()
-        self.username = unicodedata.normalize('NFC', self.username)
-        self.username_normalized = username_key(self.username)
-        if kwargs.get('update_fields'):
-            kwargs['update_fields'] = set(kwargs['update_fields']) | {'email', 'username', 'username_normalized'}
+        fields = kwargs.get('update_fields')
+        if fields is not None:
+            fields = set(fields)
+            kwargs['update_fields'] = fields
+        if fields is None or 'email' in fields:
+            self.email = self.email.strip().lower()
+        if fields is None or 'username' in fields:
+            self.username = unicodedata.normalize('NFC', self.username)
+            self.username_normalized = username_key(self.username)
+            if fields is not None:
+                fields.add('username_normalized')
         super().save(*args, **kwargs)
 
 

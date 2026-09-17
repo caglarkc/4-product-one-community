@@ -83,3 +83,18 @@ def acquire_password_lock(email):
 
 def release_password_lock(email, owner):
     execute('eval', RELEASE_SCRIPT, 1, key('password-lock', email), owner)
+
+MAIL_SCRIPT = """
+-- mail-admission: atomic interval and hourly budget
+if redis.call('EXISTS', KEYS[1]) == 1 then return 0 end
+local n = tonumber(redis.call('GET', KEYS[2]) or '0')
+if n >= 5 then return 0 end
+redis.call('SET', KEYS[1], '1', 'EX', 60)
+n = redis.call('INCR', KEYS[2])
+if n == 1 then redis.call('EXPIRE', KEYS[2], 3600) end
+return 1
+"""
+
+
+def reserve_verification_email(email):
+    return bool(execute('eval', MAIL_SCRIPT, 2, key('mail-interval', email), key('mail-hour', email)))

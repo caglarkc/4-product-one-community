@@ -6,8 +6,11 @@ Use `.env.example` for required names. The container reads `.env`; PostgreSQL,
 Redis and SMTP must be supplied by the target environment. The compose file does
 not provision those services or run migrations automatically.
 
-Implemented initial endpoints: `/api/auth/csrf/`, `config/`, `register/`, `login/`,
-`me/`, `logout/`. See `../contracts/auth-api.md` for the complete staged contract.
+Implemented normal-auth endpoints under `/api/auth/`: `csrf/`, `config/`,
+`register/`, `login/`, `me/`, `logout/`, `profile/`, `reauthenticate/`,
+`password/reset/`, `password/reset/confirm/`, `password/change/`, `email/resend/`,
+`email/verify/`, `email/change/`, `sessions/`, `sessions/<uuid>/`,
+`sessions/revoke/`. See `../contracts/auth-api.md` for request and response shapes.
 OAuth and provider connection are not implemented. Config reports both unavailable.
 
 ## Security storage
@@ -81,3 +84,48 @@ Not verified here: real PostgreSQL constraints/locking/concurrency, Redis Lua
 atomicity/TTL/network outages, SMTP delivery, proxy and cookie behavior in a browser,
 container runtime, production migration, deployment and browser end-to-end flows.
 No backend/frontend service, Docker or local DB/Redis process was started.
+
+
+## Account management and operational boundaries
+
+Password reset requests use the same generic response for known, unknown, inactive
+accounts and SMTP delivery failures, with a sanitized operational warning on mail
+failure. Admission limits count every normalized address (5/hour) and trusted client
+IP (30/15m). Sending is synchronous: response timing is not claimed to hide account
+existence. Reset links use decimal user ID `uid` plus a random Redis token, expire
+in 30 minutes, and can be consumed once. Password validation runs before consumption.
+A token binds user, email and security version. Reset succeeds for unusable local
+passwords as well, allowing email ownership proof to establish a local password.
+
+Verification messages share an atomic address budget of 60 seconds between attempts
+and at most 5/hour, including initial registration. Failed SMTP attempts consume the
+reservation to prevent rapid retries flooding the SMTP provider. Verification links
+last 24 hours and only POST confirmation changes data; GET is not a mutation.
+
+Email change keeps the original address until confirmation, sends a confirmation
+to the proposed address and a notice to the original address, and stores a durable
+nonce that supersedes earlier pending changes. The token binds that nonce, original
+address, user and security version. Confirmation rechecks address uniqueness inside
+the user transaction; it never merges accounts. Password reset/change and confirmed
+email change increment security version and durably revoke all session records.
+Session listings contain opaque IDs, timestamps and the current-session indicator.
+
+Sensitive mutations require password proof within 10 minutes. The user row is locked
+and its fresh version/current session registry are checked again inside transactions,
+so a request authenticated before a concurrent revocation cannot mint new authority.
+Password proof across login, reauthentication and old-password change shares limits.
+The user can revoke their own individual sessions; revoking all also requires recent
+proof. Profile PATCH is limited to profile fields, and supplied phones remain
+unverified. A late request after revocation is rejected even if Redis session content
+has not been cleaned up; no Redis deletion is required to persist revocation.
+
+SMTP submission is an external side effect and cannot be rolled back with SQL.
+Email change performs two bounded SMTP submissions (10-second timeout each) while
+holding the user lock. The frontend proxy must allow at least 30 seconds. If one
+submission fails, the nonce change rolls back and the new token is deleted, but an
+already delivered email cannot be recalled. Such partial failure is reported as 503;
+the delivered new link is invalidated. Real network timing, delivery and transaction
+contention remain unverified. A worker/outbox design is future operational work.
+
+Migrate the new schema in the target environment before deployment; migrations have
+only been applied against isolated SQLite during this task, never production data.

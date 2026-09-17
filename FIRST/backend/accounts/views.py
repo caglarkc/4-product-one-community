@@ -109,6 +109,8 @@ def check_password_proof(request, email, password, user=None):
 
 
 def send_verification(user):
+    if not security.reserve_verification_email(user.email):
+        raise RateLimited()
     token = security.issue_token('email-verify', {'user_id': user.pk, 'email': user.email,
         'security_version': user.security_version, 'purpose': 'registration'}, 86400)
     link = settings.FRONTEND_ORIGIN + '/eposta-dogrula?' + urlencode({'key': token})
