@@ -21,7 +21,7 @@ Kullanıcı “bu dillere ve frameworklere karar verdik” diyerek seçimi onayl
 
 - Next.js arayüzü ve sayfaların hazırlanmasını, Django iş kurallarını, yetkilendirmeyi, veri işlemlerini ve GitHub entegrasyonunu üstlenecek şekilde ilerlenmesi önerildi.
 - Ayrı siteler ve ortak hesap kararı, ortak veritabanı veya tek backend kararı değildir. Ürünler arası oturum/SSO, servis sınırları ve domain yapısı henüz tasarlanmadı.
-- Veritabanı, dosya saklama, iş kuyruğu, önbellek, arama altyapısı, sürümler, auth kütüphanesi ve session/JWT seçimi kesinleşmedi.
+- PostgreSQL kalıcı veritabanı olarak seçildi. Auth işlemlerinde Redis kullanılacak; kesin sorumlulukları teknik tasarımda netleştirilecek. django-allauth, HttpOnly Django session cookie + CSRF ve Next.js aynı origin proxy yaklaşımı onaylandı. E-posta SMTP üzerinden gönderilecek; hizmet ve gönderen domain henüz seçilmedi. Dosya saklama, iş kuyruğu, arama altyapısı ve sürümler henüz kesinleşmedi.
 - Hiçbir sağlayıcı hesabı açılmadı veya ücretli abonelik başlatılmadı.
 
 ## API tasarımının ilerleme biçimi
@@ -38,4 +38,4 @@ Kullanıcı, bütün API'leri tek seferde gruplandıran uzun listeyi fazla karma
 
 ## Backend çalıştırma ortamı — 17 Eylül 2026
 
-Backend uzak sunucuda Docker içinde çalıştırılacak. Bu bilgisayara Docker kurulmaz; backend için yerel `.venv` oluşturulmaz veya Python bağımlılıkları kurulmaz. Container hazırlığı `backend/` altındadır; yalnız sağlık endpoint’i içeren başlangıç iskeletidir. Auth entegrasyonu durdurulmuştur; devam talimatı verilmeden başlatılmaz. Uzak sunucuya aktarım ve çalıştırma henüz yapılmadı.
+Backend uzak sunucuda Docker içinde çalıştırılacak. Bu bilgisayara Docker kurulmaz; backend için yerel `.venv` oluşturulmaz veya Python bağımlılıkları kurulmaz. Container hazırlığı `backend/` altındadır; yalnız sağlık endpoint’i içeren başlangıç iskeletidir. Auth entegrasyonu henüz başlatılmadı; mevcut çalışma kararları netleştirmektir. Uygulama talimatı verilmeden başlatılmaz. Uzak sunucuya aktarım ve çalıştırma henüz yapılmadı.

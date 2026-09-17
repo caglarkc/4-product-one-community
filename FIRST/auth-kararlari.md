@@ -1,6 +1,6 @@
 # FIRST — Kayıt, giriş ve hesap bağlantısı kararları
 
-Kayıt tarihi: 17 Eylül 2026. Kaynak: kullanıcının auth görüşmesindeki açık kararları. Ürün kurallarıdır; henüz uygulanmış API veya güvenlik tasarımı değildir.
+Kayıt tarihi: 17 Eylül 2026. Kaynak: kullanıcının auth görüşmesindeki açık kararları. Kabul edilmiş ürün ve auth tasarım kararlarıdır; henüz uygulanmadı. İlk sözleşme: `contracts/auth-api.md`.
 
 ## 1. Giriş ve kayıt yöntemleri
 
@@ -29,7 +29,7 @@ Google/GitHub kaydında sağlayıcıdan gelmeyen zorunlu profil bilgileri ilk gi
 - Kullanıcı hemen doğrulamak zorunda değildir; giriş yapabilir ve üstte doğrulama hatırlatması görür.
 - Repo başvurusu yapmak ve repo ilanı oluşturmak için e-posta doğrulanmış olmalıdır.
 - Kullanıcı Google/GitHub girişinde tekrar doğrulama e-postası istemiyor.
-- Teknik koşul olarak görüşmede şu ayrım belirtildi: sağlayıcıdan güvenilir biçimde doğrulanmış e-posta alınmışsa tekrar doğrulama yapılmaz. Adres gelmezse veya doğrulanmış olduğu teyit edilemezse bu istisna uygulanamaz; eksik durumun ekran akışı uygulama öncesinde belirlenir. Yalnızca sosyal giriş yapılmış olması her adresi otomatik doğrulanmış saydırmaz.
+- Teknik koşul olarak görüşmede şu ayrım belirtildi: sağlayıcıdan güvenilir biçimde doğrulanmış e-posta alınmışsa tekrar doğrulama yapılmaz. Adres gelmezse veya doğrulanmış olduğu teyit edilemezse bu istisna uygulanamaz; kullanıcıdan e-posta alınır ve FIRST doğrulama bağlantısı gönderilir. Kullanıcı bu sırada normal kayıttaki gibi doğrulama gerektirmeyen alanlara erişebilir; mevcut hesapla eşleşen adres doğrulanmadan o hesaba erişim verilmez. Yalnızca sosyal giriş yapılmış olması her adresi otomatik doğrulanmış saydırmaz.
 
 ## 4. İşlem koşulları
 
@@ -44,15 +44,20 @@ Telefon doğrulaması normal kullanıcının başvuru yapması için şart deği
 
 ## 5. Telefon
 
-- Aynı telefon numarası iki hesapta kullanılamaz; tek hesaba bağlanabilir.
+- Aynı telefon numarası iki hesapta doğrulanmış olarak kullanılamaz; tek hesaba bağlanabilir. Doğrulanmadan girilen numara, gerçek sahibinin ileride doğrulayarak kullanmasını engellemez.
 - Doğrulama SMS veya WhatsApp olabilir. Kanal ve sağlayıcı seçilmedi; uygunluk ve maliyet değerlendirilecek.
-- Telefon değiştirme, numara devri ve hesap kurtarma ayrıntıları henüz belirlenmedi.
+- Telefon değişince doğrulama durumu sıfırlanır. Numara devri ve kurtarma ayrıntıları sağlayıcı entegrasyonunda netleştirilecektir.
 
 ## 6. Hesap bağlama
 
 - E-postayla veya Google ile kayıt olan kullanıcı, repo başvurusu/ilan oluşturma öncesinde GitHub'ı bağlamalıdır.
 - Google/GitHub hesabını mevcut oturumdan aynı kullanıcı hesabına bağlama kabul edildi.
-- Aynı e-posta nedeniyle hesapları otomatik birleştirmeme, mevcut hesaba giriş yaparak bağlama yaklaşımı önerildi ve görüşme özetinde yer aldı. Hesap çakışması ve kurtarma prosedürü henüz ayrıntılandırılmadı.
+- Google/GitHub tarafından güvenilir biçimde doğrulanmış e-posta mevcut FIRST hesabıyla eşleşirse otomatik giriş ve sağlayıcı bağlama yapılır. Önce mevcut hesaba ayrıca giriş istenmez. Önceki otomatik eşleştirmeme önerisi geçersizdir.
+- Sağlayıcı e-postası eksik veya doğrulanmamışsa FIRST e-posta doğrulaması tamamlanmadan mevcut hesaba erişim verilmez.
+- Sonraki sosyal girişlerde sağlayıcının değişmeyen kullanıcı ID'si esas alınır.
+- Bir Google/GitHub hesabı yalnızca bir FIRST hesabına bağlı olabilir; başka hesaba bağlı kimlik sessizce taşınmaz.
+- Önceden doğrulanmamış FIRST hesabına otomatik eşleştirme yapılınca eski oturumlar kapatılır; önceki yerel şifre yenilenmeden kullanılamaz.
+- Kullanıcı Google/GitHub bağlantısını kaldıramaz; bağlantı kaldırma ekranı ve endpoint'i olmayacaktır.
 - GitHub ile giriş ve repo üzerinde işlem yapma izinlerinin kapsamı ayrı tasarlanacak; girişin tek başına tüm repolarda yetki verdiği varsayılmaz.
 
 ## 7. GitHub'dan alınabilecek bilgiler — araştırma notu
@@ -71,6 +76,41 @@ Kaynaklar: [GitHub kullanıcı API'si](https://docs.github.com/en/rest/users/use
 
 Hesap e-postası doğrulaması, telefon doğrulaması ve aktif öğrenci doğrulaması ayrı şeylerdir. Öğrencilik temel kayıt veya repo katılımı şartı yapılmadı. Sağlayıcı araştırması [ayrı nottadır](ogrenci-dogrulama-arastirmasi.md); SheerID satın alma/entegrasyon kararı yoktur.
 
-## 9. Henüz seçilmeyen teknik ayrıntılar
+## 9. Şifre ve kurtarma
 
-Session/JWT ve ortak hesap mimarisi, auth kütüphanesi, şifre kuralları, bağlantı/kod süreleri, deneme limitleri, şifre sıfırlama ve oturum yönetimi ayrıntıları, e-posta/telefon değişiklikleri, sağlayıcı bağlantısını kaldırma ve endpoint/veri sözleşmeleri henüz kararlaştırılmadı. Önceki uzun API öneri listesinin tamamı kabul edilmiş kapsam olarak alınmaz.
+- Şifre en az 8, en fazla 20 karakterdir. Boşluk kabul edilmez; büyük harf, küçük harf, sayı ve özel karakter zorunludur.
+- Türkçe karakterler kabul edilir. Yaygın ve ele geçirilmiş şifreler reddedilir; periyodik zorunlu şifre değişimi yoktur.
+- Şifre sıfırlama bağlantısı 30 dakika geçerli ve tek kullanımlıktır. Başarılı sıfırlama bütün oturumları kapatır; yeniden giriş gerekir.
+- Sıfırlama isteği hesap varlığını açıklamayan genel cevap döndürür.
+- Sosyal kayıtla başlayan kullanıcı doğrulanmış e-postası üzerinden yerel şifre oluşturabilir.
+
+## 10. E-posta gönderimi ve değişikliği
+
+- Doğrulama bağlantısı 24 saat geçerlidir. Yeniden gönderimler arasında 60 saniye beklenir; adres başına saatte en fazla 5 gönderim yapılır.
+- Süresi dolan bağlantı ekranında yenisini isteme seçeneği bulunur.
+- E-posta SMTP üzerinden gönderilir. SMTP hizmeti, gönderen domain, kota ve maliyet koşulları henüz doğrulanmadı; ücretli hizmet satın alma kararı yoktur.
+- E-posta değişikliğinde yeni adres doğrulanana kadar eski adres geçerlidir; eski adrese değişiklik bildirimi gönderilir.
+- Yeni adres başka hesaptaysa e-posta değiştirme işlemi hesapları birleştirmez. Bu işlem sosyal girişte otomatik eşleştirmeden ayrıdır.
+
+## 11. Oturum ve deneme sınırları
+
+- Normal oturum 24 saat; “Beni hatırla” ile 30 gündür.
+- Kullanıcı açık oturumlarını görebilir, tek tek veya topluca kapatabilir.
+- E-posta ve şifre değişikliği gibi hassas işlemler için son 10 dakika içinde şifre veya sosyal sağlayıcıyla yeniden doğrulama gerekir. Sağlayıcı bağlantısı kaldırma kapsamda değildir.
+- Hesap başına 15 dakikada 5 başarısız şifre denemesinden sonra geçici bekleme uygulanır; ayrıca IP bazlı hız sınırı bulunur. Kalıcı hesap kilidi yoktur; eşikler ayarlanabilir olacaktır.
+- IP eşiği ve geçici beklemenin süresi teknik uygulamada netleştirilecektir.
+
+## 12. Profil tamamlama
+
+- Kullanıcı adı 3–30 karakterdir; harf, rakam ve alt çizgi içerir. Büyük/küçük harften bağımsız benzersizdir.
+- Sosyal sağlayıcıdaki isim öneri olarak doldurulur; zorunlu alanlar tamamlanmadan başvuru ve ilan işlemleri açılamaz.
+- En az 13 yaş koşulu hem normal hem sosyal kayıtta uygulanır.
+
+## 13. Onaylanan mimari ve kalan ayrıntılar
+
+- `contracts/auth-api.md` onaylanmış başlangıç sözleşmesidir; bu belgedeki sonraki kararlarla birlikte uygulanır. Önceki uzun API öneri listesinin tamamı onaylanmış kapsam değildir.
+- Django/DRF kimlik ve yetki kaynağıdır; django-allauth sosyal girişleri yönetir. HttpOnly session cookie + CSRF ve Next.js üzerinden aynı origin proxy yaklaşımı kabul edildi.
+- Kalıcı veriler PostgreSQL'de tutulacaktır. Auth işlemlerinde Redis kullanılacaktır; oturum, sayaç ve geçici veri sorumlulukları ile kalıcılık/arıza davranışı teknik uygulamada netleştirilecektir.
+- Backend uzak sunucuda Docker içinde çalıştırılır. İlk aşama FIRST oturumudur; dört ürünün ortak oturum/SSO tasarımı ayrıdır.
+- Telefon doğrulama kanalı/sağlayıcısı ilan akışından önce seçilecektir. İlk auth aşamasında telefon isteğe bağlıdır ve doğrulanmış sayılmaz.
+- Yeni kabul edilen oturum listeleme/sonlandırma, yeniden doğrulama, e-posta değiştirme ve sosyal kullanıcıya şifre oluşturma akışlarının endpoint/veri sözleşmeleri uygulama öncesinde tamamlanacaktır.
