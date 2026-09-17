@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-09-17T11:33:36.180Z",
+  "generatedAt": "2026-09-17T11:57:20.772Z",
   "repository": {
     "root": ".",
     "name": "4-product-one-community",
-    "commit": "a1bd21364e9ea32ecc258ad0611ab843bd6415c3",
+    "commit": "0f57fef6073c3121760b7d4f518b41497cd94451",
     "layers": {
       "FIRST": true,
       "STEP": true,
@@ -30,12 +30,20 @@
       "fingerprint": "e451854770489e1bf752ed6b9df4ea0d2244c9a0510c3b5110c6fc346730fc6d"
     },
     {
+      "name": "frontend-implementation",
+      "description": "Implement or review frontend pages and forms in FIRST, STEP, INTO and PATH using the current functional, minimal layout phase. Apply to frontend work in this repository.",
+      "path": ".agent/skills/frontend/frontend-implementation/SKILL.md",
+      "root": ".agent/skills",
+      "disableModelInvocation": false,
+      "fingerprint": "c1c1c6b280e02402efcce297a32e713a971df667d9d17d595b8fbec0ead78583"
+    },
+    {
       "name": "code-implementation-mode",
       "description": "Implement, review, or verify scoped changes in the four-product repository using product evidence and the established run result contract.",
       "path": ".agent/skills/meta/code-implementation-mode/SKILL.md",
       "root": ".agent/skills",
       "disableModelInvocation": false,
-      "fingerprint": "bcfa4ad38750fe59527b5d2d14b2735531d39bda78f04ee26b1e3e59350ecd2f"
+      "fingerprint": "54272e524b0bcc570179307a199d98fa310b4e7571020ea41f59d83198e03e59"
     },
     {
       "name": "repo-context",
@@ -43,7 +51,7 @@
       "path": ".agent/skills/meta/repo-context/SKILL.md",
       "root": ".agent/skills",
       "disableModelInvocation": false,
-      "fingerprint": "8c9ca59289dc3d37549bb95961517950d1b330a54b83ec6b72614305bd37ac14"
+      "fingerprint": "3a89df6e5017d19e02a7e298964284ac096783704b389f4b0747e8b90f34480f"
     },
     {
       "name": "orchestrate-project",
@@ -55,15 +63,16 @@
     },
     {
       "name": "project-manager-mode",
-      "description": "Manage scoped FIRST, STEP, INTO, and PATH work with paste-ready implement, review, and verify handoffs when the user requests PM mode; route complex work to the shared run graph.",
+      "description": "Manage requested product work in PM mode, including a FIRST-only (1st product) start with scoped context; route complex work to the shared run graph.",
       "path": ".cursor/skills/project-manager-mode/SKILL.md",
       "root": ".cursor/skills",
       "disableModelInvocation": true,
-      "fingerprint": "795b7442b88d819800425d954f6800e7398ddc9d21892b99f3171ff78a3dcebd"
+      "fingerprint": "92ec60ae8aa168116c2da94448d7b2b88f5b10f61171a200e2a0e7d57b349c65"
     }
   ],
   "capabilities": [
     "code-implementation-mode",
+    "frontend-implementation",
     "orchestrate-project",
     "product-boundaries",
     "project-manager-mode",
@@ -82,15 +91,15 @@
       },
       {
         "path": ".cursor/maps/stack-shared-ai/technology.md",
-        "fingerprint": "bb43a8b0bf6415797e27e17bfd8f4485dc88184450043b7410a0a88e8b2964b9"
+        "fingerprint": "8627acac9b93207fafe34dd58cc5cb07668a67ed6703692dc076ec3ceac63bb8"
       }
     ],
     "dependency": null
   },
   "mapHealth": {
     "stale": true,
-    "sourceFingerprint": "d7163f9618c16250335e80706748667b54b977c5e1f2ca6c6316896fd15c912f",
-    "mapSourceFingerprint": "bf4db785f462c8538851086a4d15e107192fdd6606d8e07c9909ba1476c5594f",
+    "sourceFingerprint": "a8c33ab24f3a4664aa951cf53d1c9123357d883b308d08b8f0a031984e242878",
+    "mapSourceFingerprint": "9748310452121736b3bcfed61ab28fdadd48fd0546cca8edbb539fa646385c77",
     "dependencyMapGeneratedAt": null,
     "note": "Tazelik, checkout mtime yerine deterministik kaynak ağacı fingerprint’i ile ölçülür."
   },
@@ -129,5 +138,5 @@
       }
     }
   ],
-  "snapshot": "81a02be6289cc1c370d1ceb249c43cb8bd0096f026ab49c05736eaddc4a2b250"
+  "snapshot": "fc8ed78bc926406637d8e754ae7e298f64da9def69b60c13437f08a7ebe97c0c"
 }

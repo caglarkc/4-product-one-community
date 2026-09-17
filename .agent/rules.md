@@ -2,7 +2,7 @@
 
 - Ürün fikri, özellik önerisi ve kesin uygulama kararını ayır. PATH son ürün ve kapsamı belirsizdir.
 - Mevcut ürün belgelerini kullanıcı istemeden genişletme. Yeni teknik kararları ilgili run'ın `decisions`/`assumptions` alanlarında kaydet.
-- Ortak proje, katkı, ücretli iş ve mentorluk ilişkilerini `.agent/skills/cross/product-boundaries/SKILL.md` ile kontrol et.
+- Tek ürün odağında sınırları o ürünün README ve karar belgelerinden kontrol et. Ürünler arası proje, katkı, ücretli iş ve mentorluk ilişkileri göreve dahilse `.agent/skills/cross/product-boundaries/SKILL.md` kullan.
 - Ortak dosyaları tek writer yönetir. Ürünler arası işlerde integration düğümü oluştur; veri/API/auth işleri mevcut kalite kapılarını kullanır.
 - Orchestrator mekanizmasını geliştirme, yeni framework veya sabit agent kadrosu ekleme. Yapı Immense'den uyarlanmıştır.
 - Repo şu anda fikir belgelerinden oluşur. Olmayan API, veritabanı, UI, deploy veya test komutlarını mevcutmuş gibi yazma.

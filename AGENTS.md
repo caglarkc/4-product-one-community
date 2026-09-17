@@ -7,14 +7,16 @@ Bu repo FIRST, STEP, INTO ve PATH ürünlerini tek topluluk bağlamında yöneti
 1. `.agent/skills/meta/repo-context/SKILL.md`
 2. `.agent/skills/SKILL-MAP.md`
 3. `.cursor/maps/stack-shared-ai/overview.md`
-4. Görevle ilgili ürün README'si ve `.cursor/maps/stack-shared-ai/products.md`
-5. `.agent/rules.md`; teknoloji işi varsa `.cursor/maps/stack-shared-ai/technology.md`
+4. Yalnız görevle ilgili ürün README'si ve karar belgeleri; `.cursor/maps/stack-shared-ai/products.md` yalnız ürünler arası işte okunur.
+5. `.agent/rules.md`; teknoloji işinde seçilen ürünün teknik kararları ve gerçek kaynakları; ortak teknoloji haritası yalnız görev gerektiriyorsa okunur.
 
 Ürün kapsamının kaynağı `platform-urun-fikirleri.md` ve `FIRST/README.md`, `STEP/README.md`, `INTO/README.md`, `PATH/README.md` dosyalarıdır. Haritalar başlangıç bağlamıdır; değişiklikten önce gerçek dosyayı doğrula.
 
 ## Rol ve PM seçimi
 
 Varsayılan rol uygulayıcı/reviewer/verify'dir. Kullanıcı PM/yönetici istediğinde `.cursor/PM_GIRIS.md` ve `.cursor/skills/project-manager-mode/SKILL.md` okunur.
+
+“PM'yi yalnız FIRST / 1. ürün odaklı başlat” seçimi, okuma ve çalışma kapsamını FIRST ile sınırlar. Ayrıntılı başlangıç kuralları PM skill'indedir; diğer ürünlerin gereksinimlerini otomatik yükleme. Yalnız “öğren ve bekle” isteğinde görev, run veya agent başlatma.
 
 Tek ürünlü, düşük riskli, açık pattern'li yönetim işi hafif PM akışını kullanır. Ürünler/katmanlar arası, high/critical risk, auth/security/API contract/storage/migration, paralel yazım veya resume işi `.agents/skills/orchestrate-project/SKILL.md` + `.orchestrator/SYSTEM.md` run graph'ını kullanır.
 
