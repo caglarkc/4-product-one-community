@@ -25,3 +25,35 @@ Paths: `releases/<timestamp>-<hash>`, `shared/.env`, `current`, `backups/` below
 ## Verification
 
 Initial remote release: `20260917T162358-8c182665a5e4`. All three FIRST containers became healthy; production migrations and PostgreSQL/Redis connectivity checks passed. nginx configuration validation and reload passed. Runtime and frontend integration verification results will be recorded below when completed. No local backend, database, Redis or Docker service was started.
+
+## Remote restart verification — 17 September 2026
+
+The latest observed state supersedes the initial-release notes above. Root SSH found
+this repository's clean sparse checkout at `/root/first-backend` on `main`; it was
+updated with `git pull --ff-only` to `591b5f8`. No FIRST containers or `current`
+symlink existed, while the managed PostgreSQL/Redis volumes and private server env
+were retained. A Git archive of that checkout produced release
+`20260917T193755-591b5f8c93fe`. Before startup, the server env and PostgreSQL database
+were backed up below `/opt/first/backend/backups`. Existing Django, database, Redis,
+proxy and SMTP credentials were preserved; the server env remains mode `600`.
+
+The image built successfully. Backend, PostgreSQL and Redis became healthy. Django
+checks passed, migrations were already current, and independent checks verified a
+real PostgreSQL `SELECT 1`, authenticated Redis `PING`, and JSON HTTP 200 from the
+backend `/health/` endpoint.
+
+Two integration problems remain open:
+
+- SMTP authentication returns code **534** (`SMTPAuthenticationError`). No email
+  was sent. Testing the separately supplied local SMTP credentials on the server
+  awaits explicit user approval; no credentials were transferred by that attempt.
+- Public frontend `/api/auth/config/` and `/api/auth/csrf/` return another app's
+  HTML instead of JSON. The existing HTTPS IP virtual host lacks the FIRST nginx
+  include, and `/etc/nginx/snippets/first-auth.conf` is absent. Installing the
+  repository's `backend/deploy/nginx.conf` snippet and reloading the shared nginx
+  service awaits explicit user approval; no nginx change was executed.
+
+Automatic approval review rejected the two proposed actions above. The containers
+are running, but email and public frontend auth are **not verified working**.
+Evidence and pending work are recorded in
+[the remote run](../.orchestrator/runs/first-remote-docker/run.json).

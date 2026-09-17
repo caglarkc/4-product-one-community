@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-remote-docker",
+  "itemId": "deploy-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "docker_review",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Independent review confirms safe FF-only checkout update, release from Git archive, preserved server credentials, env mode 600, database backup and isolated FIRST volumes. Public integration tracked separately.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Deployment steps reviewed for data and credential preservation.",
+      "status": "passed",
+      "evidence": "Independent review confirms safe FF-only checkout update, release from Git archive, preserved server credentials, env mode 600, database backup and isolated FIRST volumes. Public integration tracked separately."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Rollout review",
+      "status": "passed",
+      "evidence": "No material deployment findings."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-17T19:42:04.368466+00:00"
+}

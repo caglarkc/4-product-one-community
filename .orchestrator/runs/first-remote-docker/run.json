@@ -4,8 +4,8 @@
   "title": "FIRST remote Docker startup verification",
   "goal": "Push remaining safe changes, pull on remote server and start and verify FIRST Docker backend",
   "createdAt": "2026-09-17T19:35:11.721Z",
-  "updatedAt": "2026-09-17T19:36:01.112Z",
-  "revision": 2,
+  "updatedAt": "2026-09-17T19:42:04.691Z",
+  "revision": 8,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -78,9 +78,9 @@
         ],
         "owner": "docker_review"
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/deploy-review-2026-09-17T19-42-04-368Z.json"
     },
     {
       "id": "deploy",
@@ -132,9 +132,9 @@
         ],
         "owner": "manager"
       },
-      "status": "active",
+      "status": "done",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/deploy-2026-09-17T19-39-07-343Z.json"
     },
     {
       "id": "verify",
@@ -187,9 +187,9 @@
         ],
         "owner": "docker_verify"
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "blocked",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-17T19-42-04-368Z.json"
     }
   ]
 }

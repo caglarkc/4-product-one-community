@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-remote-docker",
+  "itemId": "verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "docker_verify",
+    "sessionRef": null
+  },
+  "outcome": "blocked",
+  "summary": "Core Docker backend checks passed. SMTP authentication fails with code 534; public config/CSRF return HTML instead of JSON because FIRST nginx include is absent. Fix attempts were rejected by automatic approval review; explicit user approval requested.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Container health, PostgreSQL, Redis and HTTP connectivity verified; limitations recorded.",
+      "status": "failed",
+      "evidence": "Core Docker backend checks passed. SMTP authentication fails with code 534; public config/CSRF return HTML instead of JSON because FIRST nginx include is absent. Fix attempts were rejected by automatic approval review; explicit user approval requested."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Containers, migration, database, Redis, backend health",
+      "status": "passed",
+      "evidence": "Independent first backend/db/redis healthy; migrate --check exit 0; SELECT 1, Redis PING, health JSON HTTP 200 passed."
+    },
+    {
+      "name": "SMTP authentication",
+      "status": "failed",
+      "evidence": "SMTPAuthenticationError code 534; no email sent."
+    },
+    {
+      "name": "Public frontend API",
+      "status": "failed",
+      "evidence": "config and csrf HTTP 200 claim JSON but body is Ev Karnesi HTML, no CSRF cookie."
+    },
+    {
+      "name": "Nginx diagnosis",
+      "status": "passed",
+      "evidence": "HTTPS IP virtual host lacks first-auth.conf include; snippet absent. No nginx mutation was executed."
+    }
+  ],
+  "risks": [
+    "Email-dependent auth and frontend API remain unavailable."
+  ],
+  "followUps": [
+    "Await explicit user authorization for shared nginx change and local SMTP credential test."
+  ],
+  "completedAt": "2026-09-17T19:42:04.368880+00:00"
+}
