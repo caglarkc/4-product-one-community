@@ -1,0 +1,429 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth",
+  "title": "FIRST auth akışları",
+  "goal": "FIRST giriş, kayıt ve GitHub bağlantısı akışlarını netleştirip seçilen uygulama yapısına entegre etmek",
+  "createdAt": "2026-09-17T11:33:44.706Z",
+  "updatedAt": "2026-09-17T11:46:51.160Z",
+  "revision": 6,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md",
+      "FIRST/auth-kararlari.md",
+      "FIRST/teknik-kararlar.md",
+      "FIRST/contracts/auth-api.md",
+      ".agent/skills/frontend/frontend-implementation/SKILL.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "81a02be6289cc1c370d1ceb249c43cb8bd0096f026ab49c05736eaddc4a2b250",
+    "assumptions": []
+  },
+  "constraints": [
+    "Görev-owned değişiklikleri kontrol edip mevcut branch üzerinde commit/push yap; alt agent push yapmaz.",
+    "Secret değerlerini kayıt veya repoya yazma.",
+    "Üretim sağlayıcıları seçilmedikçe canlı entegrasyonu tamamlanmış gösterme.",
+    "Frontend işlev ve sade yerleşim önceliğini korur."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "initial-auth-architecture",
+      "summary": "İlk entegrasyon Django session + CSRF, django-allauth sosyal giriş ve sabit backend Next.js proxy kullanır; SQLite yalnız yerel geliştirme/test içindir.",
+      "reason": "Mevcut web stack içinde kimlik güvenliğini Django üzerinde tutmak; ortak SSO ve production DB kararlarını varsaymamak.",
+      "decidedAt": "2026-09-17T12:00:00Z",
+      "actor": "manager"
+    },
+    {
+      "id": "minimal-frontend",
+      "summary": "Tüm ürünlerde frontend işlev, sayfa düzeni ve sade görünüm öncelikli; görsel tasarım ayrıntıları sonraki aşamada.",
+      "reason": "Kullanıcının bu görevdeki açık talimatı.",
+      "decidedAt": "2026-09-17T12:00:00Z",
+      "actor": "user"
+    }
+  ],
+  "items": [
+    {
+      "id": "contract",
+      "title": "Auth ürün kararlarını ilk API ve frontend sözleşmesine bağla",
+      "kind": "specification",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "Auth ürün kararlarını ilk API ve frontend sözleşmesine bağla",
+      "responsibility": "Yalnız belirtilen scope içinde çalış; kabul edilmiş ürün kurallarını koru.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/contracts/auth-api.md"
+      ],
+      "acceptanceCriteria": [
+        "Auth ürün kararlarını ilk API ve frontend sözleşmesine bağla; sonuç kaynak/çalıştırma kanıtıyla desteklenir."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth entegrasyonu"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/contracts/auth-api.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/contract-2026-09-17T11-46-50-700Z.json"
+    },
+    {
+      "id": "backend",
+      "title": "Kayıt giriş profil doğrulama ve sosyal bağlantı backend akışlarını testlerle uygula",
+      "kind": "authentication",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "Kayıt giriş profil doğrulama ve sosyal bağlantı backend akışlarını testlerle uygula",
+      "responsibility": "Yalnız belirtilen scope içinde çalış; kabul edilmiş ürün kurallarını koru.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/backend/"
+      ],
+      "acceptanceCriteria": [
+        "Kayıt giriş profil doğrulama ve sosyal bağlantı backend akışlarını testlerle uygula; sonuç kaynak/çalıştırma kanıtıyla desteklenir."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "contract"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth entegrasyonu"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "active",
+      "attempt": 1,
+      "resultRef": null
+    },
+    {
+      "id": "frontend",
+      "title": "Sade Next.js auth ekranlarını backend sözleşmesine bağla",
+      "kind": "implement",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "Sade Next.js auth ekranlarını backend sözleşmesine bağla",
+      "responsibility": "Yalnız belirtilen scope içinde çalış; kabul edilmiş ürün kurallarını koru.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/frontend/"
+      ],
+      "acceptanceCriteria": [
+        "Sade Next.js auth ekranlarını backend sözleşmesine bağla; sonuç kaynak/çalıştırma kanıtıyla desteklenir."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "contract"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth entegrasyonu"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "active",
+      "attempt": 1,
+      "resultRef": null
+    },
+    {
+      "id": "review",
+      "title": "Backend frontend güvenlik ve ürün kurallarını bağımsız incele",
+      "kind": "review",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "Backend frontend güvenlik ve ürün kurallarını bağımsız incele",
+      "responsibility": "Yalnız belirtilen scope içinde çalış; kabul edilmiş ürün kurallarını koru.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bulgular ve çalıştırma kanıtları"
+      ],
+      "acceptanceCriteria": [
+        "Backend frontend güvenlik ve ürün kurallarını bağımsız incele; sonuç kaynak/çalıştırma kanıtıyla desteklenir."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "frontend"
+        ],
+        "reviews": [
+          "backend",
+          "frontend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth entegrasyonu"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "verify",
+      "title": "Auth davranışlarını bağımsız test ve build ile doğrula",
+      "kind": "verify",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "Auth davranışlarını bağımsız test ve build ile doğrula",
+      "responsibility": "Yalnız belirtilen scope içinde çalış; kabul edilmiş ürün kurallarını koru.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bulgular ve çalıştırma kanıtları"
+      ],
+      "acceptanceCriteria": [
+        "Auth davranışlarını bağımsız test ve build ile doğrula; sonuç kaynak/çalıştırma kanıtıyla desteklenir."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth entegrasyonu"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "integration",
+      "title": "Auth frontend backend bütünleşmesini doğrula ve kurulum belgelerini teslim et",
+      "kind": "integration",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "Auth frontend backend bütünleşmesini doğrula ve kurulum belgelerini teslim et",
+      "responsibility": "Yalnız belirtilen scope içinde çalış; kabul edilmiş ürün kurallarını koru.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/README.md"
+      ],
+      "acceptanceCriteria": [
+        "Auth frontend backend bütünleşmesini doğrula ve kurulum belgelerini teslim et; sonuç kaynak/çalıştırma kanıtıyla desteklenir."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "backend",
+          "frontend"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth entegrasyonu"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/README.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    }
+  ]
+}

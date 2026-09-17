@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth",
+  "itemId": "contract",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "FIRST/auth-kararlari.md ile giriş yöntemleri, profil alanları, yaş sınırı, e-posta/telefon ve GitHub önkoşulları karşılaştırıldı. FIRST/contracts/auth-api.md istek/cevap ve hata akışını tanımlar; canlı sağlayıcı ve üretim DB seçilmiş gibi gösterilmez.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/contracts/auth-api.md",
+      "change": "reported",
+      "description": "Görev kapsamı"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Auth ürün kararlarını ilk API ve frontend sözleşmesine bağla; sonuç kaynak/çalıştırma kanıtıyla desteklenir.",
+      "status": "passed",
+      "evidence": "FIRST/auth-kararlari.md ile giriş yöntemleri, profil alanları, yaş sınırı, e-posta/telefon ve GitHub önkoşulları karşılaştırıldı. FIRST/contracts/auth-api.md istek/cevap ve hata akışını tanımlar; canlı sağlayıcı ve üretim DB seçilmiş gibi gösterilmez."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Görev kontrolü",
+      "status": "passed",
+      "evidence": "FIRST/auth-kararlari.md ile giriş yöntemleri, profil alanları, yaş sınırı, e-posta/telefon ve GitHub önkoşulları karşılaştırıldı. FIRST/contracts/auth-api.md istek/cevap ve hata akışını tanımlar; canlı sağlayıcı ve üretim DB seçilmiş gibi gösterilmez."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-17T11:46:50.700918+00:00"
+}
