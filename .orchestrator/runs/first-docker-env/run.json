@@ -1,0 +1,205 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-docker-env",
+  "title": "FIRST Docker environment readiness",
+  "goal": "Populate private backend environment and prepare Docker-only backend execution",
+  "createdAt": "2026-09-17T19:30:32.962Z",
+  "updatedAt": "2026-09-17T19:33:26.567Z",
+  "revision": 8,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "FIRST/README.md",
+      "FIRST/teknik-kararlar.md",
+      "FIRST/backend/compose.yaml"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "bd2672e74a452f1580e982152aed28f284772af6e072462d3b7134f0dbc89bed",
+    "assumptions": []
+  },
+  "constraints": [
+    "FIRST only; preserve existing credentials and unrelated user edits.",
+    "No remote deployment; no host backend services; Docker runtime unavailable locally.",
+    "Never commit private environment values."
+  ],
+  "policy": {
+    "requiresIntegration": false
+  },
+  "decisions": [],
+  "items": [
+    {
+      "id": "prepare",
+      "title": "prepare",
+      "kind": "implement",
+      "domains": [
+        "first-backend"
+      ],
+      "objective": "Prepare and check Docker backend environment",
+      "responsibility": "Configuration only; no remote writes",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/backend"
+        }
+      ],
+      "outputs": [
+        "FIRST/backend"
+      ],
+      "acceptanceCriteria": [
+        "Private backend env contains required Docker service settings and preserved SMTP credentials.",
+        "Docker build excludes private environment and README describes container-only startup."
+      ],
+      "capabilities": [
+        "configuration"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Deployment configuration"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "docker_prepare"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/prepare-2026-09-17T19-32-48-285Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "first-backend"
+      ],
+      "objective": "Prepare and check Docker backend environment",
+      "responsibility": "Configuration only; no remote writes",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/backend"
+        }
+      ],
+      "outputs": [
+        "review/verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent review finds no unresolved material configuration issues."
+      ],
+      "capabilities": [
+        "configuration"
+      ],
+      "relations": {
+        "dependsOn": [
+          "prepare"
+        ],
+        "reviews": [
+          "prepare"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Deployment configuration"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "docker_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-17T19-33-26-296Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "first-backend"
+      ],
+      "objective": "Prepare and check Docker backend environment",
+      "responsibility": "Configuration only; no remote writes",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/backend"
+        }
+      ],
+      "outputs": [
+        "review/verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Static configuration and Django checks pass; unavailable runtime checks are explicitly recorded."
+      ],
+      "capabilities": [
+        "configuration"
+      ],
+      "relations": {
+        "dependsOn": [
+          "prepare"
+        ],
+        "reviews": [],
+        "verifies": [
+          "prepare"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Deployment configuration"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-17T19-33-26-296Z.json"
+    }
+  ]
+}

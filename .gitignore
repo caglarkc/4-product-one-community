@@ -12,3 +12,9 @@ coverage/
 test-results/
 playwright-report/
 *.tsbuildinfo
+
+# Private FIRST backend and deployment configuration
+/.env
+/FIRST/backend/.env
+/FIRST/backend/.env.*
+!/FIRST/backend/.env.example

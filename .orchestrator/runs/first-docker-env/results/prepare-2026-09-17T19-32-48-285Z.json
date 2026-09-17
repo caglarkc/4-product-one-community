@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-docker-env",
+  "itemId": "prepare",
+  "agent": {
+    "platform": "codex",
+    "identity": "docker_prepare",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Docker configuration prepared and static checks recorded.",
+  "artifacts": [
+    {
+      "type": "configuration",
+      "path": "FIRST/backend/.env.example",
+      "change": "modified",
+      "description": "Credential-free Docker settings template; actual environment is private and untracked."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Private backend env contains required Docker service settings and preserved SMTP credentials.",
+      "status": "passed",
+      "evidence": "Private env populated; existing SMTP values preserved and SMTP_FROM mapped; strong local keys and matching proxy config verified without printing values."
+    },
+    {
+      "criterion": "Docker build excludes private environment and README describes container-only startup.",
+      "status": "passed",
+      "evidence": "Build exclusions restored; README documents Docker db/Redis startup, checks, migrations and backend health."
+    }
+  ],
+  "checks": [
+    {
+      "name": "private environment consistency",
+      "status": "passed",
+      "evidence": "Main independently checked required fields, Redis URL credentials, db hostname, frontend proxy agreement and mode 600."
+    }
+  ],
+  "risks": [
+    "Docker build/runtime and live external SMTP delivery not verified in this task."
+  ],
+  "followUps": [
+    "Run documented container checks on a Docker host."
+  ],
+  "completedAt": "2026-09-17T19:32:48.285324+00:00"
+}

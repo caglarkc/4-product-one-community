@@ -2,9 +2,50 @@
 
 Django 5.2 / DRF normal auth API. Production settings require PostgreSQL and Redis;
 SMTP is configured using environment variables. No real credentials belong in Git.
-Use `.env.example` for required names. The container reads `.env`; PostgreSQL,
-Redis and SMTP must be supplied by the target environment. The compose file does
-not provision those services or run migrations automatically.
+Use `.env.example` for required names. Docker Compose runs Django/Gunicorn,
+PostgreSQL and password-protected Redis together; SMTP remains an external service.
+Compose supplies `.env` to the backend at runtime. Migrations run explicitly before
+starting the backend. Database and Redis data persist in named Docker volumes.
+
+## Docker startup
+
+Run these commands from `FIRST/backend` with Docker Engine and Compose available.
+The prepared local `.env` contains private settings and must stay outside Git and
+the Docker image. For a fresh checkout, copy `.env.example` to `.env`, fill every
+blank required credential and replace the example frontend origin before starting.
+Use distinct random hex values for Django (at least 50 characters), PostgreSQL and
+Redis credentials. `AUTH_REDIS_URL` must match `REDIS_PASSWORD` and address service
+`redis`; `POSTGRES_HOST` must be `db`. Existing database volumes retain their original
+password: changing `.env` alone does not rotate a provisioned database credential.
+
+```sh
+chmod 600 .env
+docker compose --env-file .env config --quiet
+docker compose --env-file .env build backend
+docker compose --env-file .env up -d --wait --wait-timeout 120 db redis
+docker compose --env-file .env run --rm --no-deps backend python manage.py check
+docker compose --env-file .env run --rm --no-deps backend python manage.py migrate --noinput
+docker compose --env-file .env run --rm --no-deps backend python manage.py migrate --check
+docker compose --env-file .env run --rm --no-deps backend python manage.py shell -c 'from django.db import connection; from accounts.security import client; connection.ensure_connection(); assert client().ping(); print("PostgreSQL and Redis connections passed")'
+docker compose --env-file .env up -d --wait --wait-timeout 120 --no-deps backend
+curl --fail http://127.0.0.1:18081/health/
+```
+
+The backend is available on host loopback port `FIRST_BACKEND_PORT` (default 18081);
+PostgreSQL and Redis have no published ports. If the port is changed, use that port
+in the health request. `docker compose --env-file .env down` stops the stack while
+retaining data; `down --volumes` deletes its persistent data. Do not source `.env`
+as a shell script or print rendered Compose configuration containing credentials.
+The example Redis URL uses Compose interpolation; a concrete authenticated URL is
+also supported, as in the prepared local file.
+
+The prepared configuration targets the existing HTTPS frontend origin. Browser
+auth requires the Next.js proxy and secure cookies; a successful HTTP health check
+alone does not verify login. Set the backend `AUTH_PROXY_SECRET` to the same secret
+used by the frontend and set its trusted IP header as described below. Local Docker
+startup does not update Vercel or the existing Hetzner environment. For production
+releases, use the existing `send-machine` workflow in [deployment.md](../deployment.md),
+which manages the separate server environment and runs migrations before startup.
 
 Implemented normal-auth endpoints under `/api/auth/`: `csrf/`, `config/`,
 `register/`, `login/`, `me/`, `logout/`, `profile/`, `reauthenticate/`,
