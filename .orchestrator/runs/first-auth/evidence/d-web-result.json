@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth",
+  "itemId": "d-web",
+  "agent": {
+    "platform": "codex",
+    "identity": "frontend_writer",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "FIRST/frontend/test-evidence-stage-d.md",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": null,
+      "change": "reported",
+      "description": "Görev/dosya/komut/sonuç ve kapsam dışı kontroller"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Mevcut frontend yoksa FIRST altında Next.js/TypeScript temelini oluştur.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-d.md"
+    },
+    {
+      "criterion": "Sade, responsive ve erişilebilir login/register sayfalarını oluştur.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-d.md"
+    },
+    {
+      "criterion": "Gerçek API, proxy, CSRF ve cookie akışını bağla.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-d.md"
+    },
+    {
+      "criterion": "Alan hataları, genel hata, yüklenme, çift gönderim engeli ve başarı yönlendirmesini uygula.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-d.md"
+    },
+    {
+      "criterion": "Beni hatırla ve oturum durumunu bağla.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-d.md"
+    },
+    {
+      "criterion": "Sonraki aşamada oluşturulacak ana sayfa/profil hedefleri için geçici ve dürüst geçiş davranışı kullan; sahte tamamlanmış sayfa sunma.",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-d.md"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Aşama kanıtı",
+      "status": "passed",
+      "evidence": "FIRST/frontend/test-evidence-stage-d.md"
+    },
+    {
+      "name": "Gerçek servisler ve E2E",
+      "status": "not_run",
+      "evidence": "Kullanıcı sınırı; not_verified."
+    }
+  ],
+  "risks": [
+    "PostgreSQL/Redis/SMTP çalışma zamanı ve E2E not_verified."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-17T12:43:48.068461+00:00"
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth",
+  "itemId": "c-revision",
+  "agent": {
+    "platform": "codex",
+    "identity": "backend_writer",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "FIRST/backend/test-evidence-stage-b.md",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": null,
+      "change": "reported",
+      "description": "Görev/dosya/komut/sonuç ve kapsam dışı kontroller"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "NFC normalizasyonu uzunluk kontrolünden önce; alt/üst sınır regresyon testleri geçer.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Aşama kanıtı",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "name": "Gerçek servisler ve E2E",
+      "status": "not_run",
+      "evidence": "Kullanıcı sınırı; not_verified."
+    }
+  ],
+  "risks": [
+    "PostgreSQL/Redis/SMTP çalışma zamanı ve E2E not_verified."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-17T12:36:13.863722+00:00"
+}

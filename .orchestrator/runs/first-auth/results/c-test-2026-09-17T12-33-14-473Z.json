@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth",
+  "itemId": "c-test",
+  "agent": {
+    "platform": "codex",
+    "identity": "backend_writer",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "FIRST/backend/test-evidence-stage-b.md",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": null,
+      "change": "reported",
+      "description": "Görev/dosya/komut/sonuç ve kapsam dışı kontroller"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Geçerli kayıt/giriş ve oturum sonlandırmayı test et.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "criterion": "Eksik alan, tekrar eden e-posta/kullanıcı adı ve yaş sınırını test et.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "criterion": "Şifre uzunluk sınırlarını ve her zorunlu karakter koşulunu test et.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "criterion": "Yanlış giriş, genel hata yanıtları ve deneme sınırlarını test et.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "criterion": "Anonim login/register dahil CSRF’nin gerçekten uygulandığını test et; test istemcisinde CSRF kontrolünü açık kullan.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "criterion": "Doğrulanmamış e-postayla izin verilen giriş davranışını test et.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "criterion": "API durum kodlarını, cevap şemalarını ve hassas veri sızıntısını kontrol et.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Aşama kanıtı",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "name": "Gerçek servisler ve E2E",
+      "status": "not_run",
+      "evidence": "Kullanıcı sınırı; not_verified."
+    }
+  ],
+  "risks": [
+    "PostgreSQL/Redis/SMTP çalışma zamanı ve E2E not_verified."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-17T12:33:14.473788+00:00"
+}

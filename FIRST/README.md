@@ -2,7 +2,7 @@
 
 Proje ve açık kaynak topluluğu.
 
-Durum: Genel kapsam ve temel ürün akışları görüşmeyle netleştiriliyor. Güncel kabul edilmiş kararlar, açık konular ve askıya alınan mesajlaşma kapsamı [kararlar.md](kararlar.md) dosyasındadır. Aşağıdaki özellik önerileri bu güncel kayıtla birlikte okunmalıdır; uygulama henüz başlamadı.
+Durum: Genel kapsam ve temel ürün akışları görüşmeyle netleştiriliyor. Güncel kabul edilmiş kararlar, açık konular ve askıya alınan mesajlaşma kapsamı [kararlar.md](kararlar.md) dosyasındadır. Aşağıdaki özellik önerileri bu güncel kayıtla birlikte okunmalıdır; normal kayıt/giriş uygulaması E kontrol kapısına kadar tamamlandı. Hesap yönetimi (F–H) kullanıcı talimatıyla bekliyor.
 
 ## Amaç
 
@@ -43,3 +43,9 @@ Aşağıdakiler ürün yönünü destekleyen önerilerdir; kesin özellik listes
 - Profillerde yapılan ve kabul edilen katkıların görünmesi.
 - Projelerin aktifliğinin ve güncel ekip ihtiyaçlarının görünmesi.
 - Kodun GitHub’da kalması; platformun keşif, ekip bulma ve katkıya başlama deneyimine odaklanması.
+
+## Normal auth uygulama durumu — E sonunda bekleme
+
+E-posta/şifre kaydı ve girişi, beni hatırla, oturum sorgulama/çıkış, CSRF ve doğrulama e-postası üretimi backend ile webde uygulandı. [Backend](backend/README.md) ve [web](frontend/README.md) kurulum/test belgeleri; [run checklist](../.orchestrator/runs/first-auth/checklist.md) aşama kanıtlarını içerir.
+
+35 backend ve 35 web testi, lint/typecheck/build ile bağımsız E review/verification/integration geçti. Bu kod kontrolleri canlı ortam doğrulaması değildir. E-posta doğrulama tüketimi, profil, parola kurtarma/değiştirme, e-posta değiştirme ve oturum yönetimi F/G aşamalarında bekliyor. `/hesap` geçici oturum ekranıdır. OAuth kapsam dışıdır. Gerçek PostgreSQL/Redis/SMTP, ingress/proxy/cookie, tarayıcı E2E ve deploy **not_verified**.

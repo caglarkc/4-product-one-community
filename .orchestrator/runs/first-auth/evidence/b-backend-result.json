@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth",
+  "itemId": "b-backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "backend_writer",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "FIRST/backend/test-evidence-stage-b.md",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": null,
+      "change": "reported",
+      "description": "Görev/dosya/komut/sonuç ve kapsam dışı kontroller"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kullanıcı modeli, migration’lar ve gerekli auth altyapısını kur.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "criterion": "Kayıt API’sini alan doğrulaması, yaş, şifre ve benzersizlik kurallarıyla uygula.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "criterion": "Giriş, beni hatırla, oturum sorgulama ve çıkış API’lerini uygula.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "criterion": "Session, CSRF ve deneme sınırlarını uygula.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "criterion": "Kayıtta doğrulama e-postası üretme/gönderim çağrısını SMTP uyumlu altyapıya bağla.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "criterion": "E-posta doğrulama endpoint’i ve web ekranını sonraki aşamaya bırak; gönderim hatasını sahte başarıyla gizleme.",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Aşama kanıtı",
+      "status": "passed",
+      "evidence": "FIRST/backend/test-evidence-stage-b.md"
+    },
+    {
+      "name": "Gerçek servisler ve E2E",
+      "status": "not_run",
+      "evidence": "Kullanıcı sınırı; not_verified."
+    }
+  ],
+  "risks": [
+    "PostgreSQL/Redis/SMTP çalışma zamanı ve E2E not_verified."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-17T12:33:13.919970+00:00"
+}

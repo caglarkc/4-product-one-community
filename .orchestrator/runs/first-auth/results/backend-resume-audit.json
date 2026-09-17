@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth",
+  "itemId": "backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "legacy-unknown",
+    "sessionRef": null
+  },
+  "outcome": "fail",
+  "summary": "Resume audit: eski denemede auth kaynak veya kontrol sonucu yok; başarısızlık belgesi sonradan arşiv denetimiyle eklendi.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Kayıt giriş profil doğrulama ve sosyal bağlantı backend akışlarını testlerle uygula; sonuç kaynak/çalıştırma kanıtıyla desteklenir.",
+      "status": "not_verified",
+      "evidence": "evidence/legacy-audit.md; HEAD 6ef8ac8 kaynaklarında auth implementasyonu yok."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Eski uygulama sonucu",
+      "status": "not_run",
+      "evidence": "Sonuçsuz geçmiş deneme; yeniden çalıştırıldığı iddia edilmez."
+    }
+  ],
+  "risks": [
+    "Orijinal agent kimliği bilinmiyor."
+  ],
+  "followUps": [
+    "Yeni sıralı revision düğümünde devam."
+  ],
+  "completedAt": "2026-09-17T12:27:46.367553+00:00"
+}

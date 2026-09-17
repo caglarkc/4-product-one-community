@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth",
+  "itemId": "a-preparation",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": ".orchestrator/runs/first-auth/evidence/a-preparation.md",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": ".orchestrator/runs/first-auth/evidence/a-preparation.md",
+      "change": "reported",
+      "description": "Görev/dosya/komut/sonuç ve kapsam dışı kontroller"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kaynak belgeleri, gerçek dosyaları ve mevcut değişiklikleri incele.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/a-preparation.md"
+    },
+    {
+      "criterion": "Run graph, dosya sahiplikleri ve checklist oluştur.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/a-preparation.md"
+    },
+    {
+      "criterion": "Mevcut sözleşmeyle bu görevin kapsamını karşılaştır.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/a-preparation.md"
+    },
+    {
+      "criterion": "Gerekli endpoint/veri ve test sözleşmelerini tamamla.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/a-preparation.md"
+    },
+    {
+      "criterion": "Teknik tercihleri ve test sınırlarını kaydet.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/a-preparation.md"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Aşama kanıtı",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/a-preparation.md"
+    },
+    {
+      "name": "Gerçek servisler ve E2E",
+      "status": "not_run",
+      "evidence": "Kullanıcı sınırı; not_verified."
+    }
+  ],
+  "risks": [
+    "PostgreSQL/Redis/SMTP çalışma zamanı ve E2E not_verified."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-17T12:24:25.790934+00:00"
+}

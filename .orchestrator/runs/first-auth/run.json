@@ -2,10 +2,10 @@
   "schemaVersion": "1.0.0",
   "runId": "first-auth",
   "title": "FIRST auth akışları",
-  "goal": "FIRST giriş, kayıt ve GitHub bağlantısı akışlarını netleştirip seçilen uygulama yapısına entegre etmek",
+  "goal": "FIRST normal auth akışları backend → test → web → test sırasıyla; sosyal giriş kapsam dışı.",
   "createdAt": "2026-09-17T11:33:44.706Z",
-  "updatedAt": "2026-09-17T11:46:51.160Z",
-  "revision": 6,
+  "updatedAt": "2026-09-17T12:52:35.293Z",
+  "revision": 71,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -13,7 +13,6 @@
       ".agent/skills/SKILL-MAP.md",
       ".cursor/maps/stack-shared-ai/overview.md",
       ".agent/rules.md",
-      "platform-urun-fikirleri.md",
       "FIRST/auth-kararlari.md",
       "FIRST/teknik-kararlar.md",
       "FIRST/contracts/auth-api.md",
@@ -27,7 +26,10 @@
     "Görev-owned değişiklikleri kontrol edip mevcut branch üzerinde commit/push yap; alt agent push yapmaz.",
     "Secret değerlerini kayıt veya repoya yazma.",
     "Üretim sağlayıcıları seçilmedikçe canlı entegrasyonu tamamlanmış gösterme.",
-    "Frontend işlev ve sade yerleşim önceliğini korur."
+    "Frontend işlev ve sade yerleşim önceliğini korur.",
+    "Dinleyen servis, Docker, PostgreSQL/Redis servisi, canlı SMTP, deploy ve tarayıcı E2E yok.",
+    "SQLite bellek içi test DB; Redis fake; bellek içi mail. Gerçek servisler not_verified.",
+    "Yerel venv/bağımlılık ve süreç içi test bu görev için açıkça izinli."
   ],
   "policy": {
     "requiresIntegration": true
@@ -46,6 +48,48 @@
       "reason": "Kullanıcının bu görevdeki açık talimatı.",
       "decidedAt": "2026-09-17T12:00:00Z",
       "actor": "user"
+    },
+    {
+      "id": "normal-auth-resume",
+      "summary": "Eski uygulama denemeleri başarısız olarak korundu; normal auth sıralı grafiği yeni kullanıcı talimatıyla eklendi.",
+      "reason": "Kaynaklarda auth uygulaması ve canlı writer yok; OAuth kapsam dışı.",
+      "actor": "manager",
+      "decidedAt": "2026-09-17T12:22:37.585193+00:00"
+    },
+    {
+      "id": "redis-responsibility",
+      "summary": "Kalıcı kullanıcı ve oturum iptal kayıtları PostgreSQL; session içerikleri, atomik limitler ve geçici token verisi Redis. Ayrıntı technical-decisions.md içinde.",
+      "reason": "İptal kararları kalıcı; Redis kaybında fail-closed, gerçek servis testleri ayrı.",
+      "actor": "manager",
+      "decidedAt": "2026-09-17T12:26:00Z"
+    },
+    {
+      "id": "contract-audit-limits",
+      "summary": "Bağımsız hazırlık audit iki limit belirsizliğini saptadı; shared password proof ve reset admission eşikleri sözleşmeye eklendi.",
+      "reason": "Hesap sayımı ve yeniden doğrulama brute-force yollarını kapatmak.",
+      "decidedAt": "2026-09-17T12:26:34.750Z",
+      "actor": "manager"
+    },
+    {
+      "id": "backend-git-checkpoint",
+      "summary": "C kapısından geçen backend 3c303c6 commit ile kaydedildi; push bütün entegrasyon sonunda.",
+      "reason": "Bağımsız incelenebilir Git teslimi.",
+      "decidedAt": "2026-09-17T12:38:17.051Z",
+      "actor": "manager"
+    },
+    {
+      "id": "user-pause-after-e",
+      "summary": "Kullanıcı E tamamlandıktan sonra bekle dedi. F/G/H uygulaması başlamayacak; yalnız A–E kabul edilmiş değişikliklerin Git teslimi yapılır.",
+      "reason": "Güncel kullanıcı talimatı; F graph düğümü açılmış ancak hiçbir implementasyon dispatch edilmemişti.",
+      "decidedAt": "2026-09-17T12:51:01.404Z",
+      "actor": "user"
+    },
+    {
+      "id": "e-git-checkpoint",
+      "summary": "E kabul edilmiş uygulama e7b001b commit; ilk backend 3c303c6. Kullanıcı E sonunda bekleme istedi. Git hedefi origin/main.",
+      "reason": "A–E kabul edildi; sonraki faz uygulanmadı.",
+      "decidedAt": "2026-09-17T12:52:35.292Z",
+      "actor": "manager"
     }
   ],
   "items": [
@@ -167,9 +211,9 @@
         ],
         "owner": null
       },
-      "status": "active",
+      "status": "failed",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/backend-resume-audit.json"
     },
     {
       "id": "frontend",
@@ -229,9 +273,9 @@
         ],
         "owner": null
       },
-      "status": "active",
+      "status": "failed",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/frontend-resume-audit.json"
     },
     {
       "id": "review",
@@ -293,7 +337,7 @@
         ],
         "owner": null
       },
-      "status": "draft",
+      "status": "cancelled",
       "attempt": 0,
       "resultRef": null
     },
@@ -356,7 +400,7 @@
         ],
         "owner": null
       },
-      "status": "draft",
+      "status": "cancelled",
       "attempt": 0,
       "resultRef": null
     },
@@ -421,9 +465,1897 @@
         ],
         "owner": null
       },
+      "status": "cancelled",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "a-preparation",
+      "title": "A — Hazırlık",
+      "kind": "specification",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "A — Hazırlık",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/contracts/auth-api.md",
+        ".orchestrator/runs/first-auth/"
+      ],
+      "acceptanceCriteria": [
+        "Kaynak belgeleri, gerçek dosyaları ve mevcut değişiklikleri incele.",
+        "Run graph, dosya sahiplikleri ve checklist oluştur.",
+        "Mevcut sözleşmeyle bu görevin kapsamını karşılaştır.",
+        "Gerekli endpoint/veri ve test sözleşmelerini tamamla.",
+        "Teknik tercihleri ve test sınırlarını kaydet."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "contract"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/contracts/auth-api.md",
+          ".orchestrator/runs/first-auth/"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/a-preparation-2026-09-17T12-24-25-790Z.json"
+    },
+    {
+      "id": "b-backend",
+      "title": "B — Normal login/register backend",
+      "kind": "authentication",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "B — Normal login/register backend",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/backend/"
+      ],
+      "acceptanceCriteria": [
+        "Kullanıcı modeli, migration’lar ve gerekli auth altyapısını kur.",
+        "Kayıt API’sini alan doğrulaması, yaş, şifre ve benzersizlik kurallarıyla uygula.",
+        "Giriş, beni hatırla, oturum sorgulama ve çıkış API’lerini uygula.",
+        "Session, CSRF ve deneme sınırlarını uygula.",
+        "Kayıtta doğrulama e-postası üretme/gönderim çağrısını SMTP uyumlu altyapıya bağla.",
+        "E-posta doğrulama endpoint’i ve web ekranını sonraki aşamaya bırak; gönderim hatasını sahte başarıyla gizleme."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "a-preparation",
+          "backend"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "backend"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "backend_writer"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/b-backend-2026-09-17T12-33-13-919Z.json"
+    },
+    {
+      "id": "c-test",
+      "title": "C — Backend login/register kontrol kapısı",
+      "kind": "test",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "C — Backend login/register kontrol kapısı",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "Geçerli kayıt/giriş ve oturum sonlandırmayı test et.",
+        "Eksik alan, tekrar eden e-posta/kullanıcı adı ve yaş sınırını test et.",
+        "Şifre uzunluk sınırlarını ve her zorunlu karakter koşulunu test et.",
+        "Yanlış giriş, genel hata yanıtları ve deneme sınırlarını test et.",
+        "Anonim login/register dahil CSRF’nin gerçekten uygulandığını test et; test istemcisinde CSRF kontrolünü açık kullan.",
+        "Doğrulanmamış e-postayla izin verilen giriş davranışını test et.",
+        "API durum kodlarını, cevap şemalarını ve hassas veri sızıntısını kontrol et."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "b-backend"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/c-test-2026-09-17T12-33-14-473Z.json"
+    },
+    {
+      "id": "c-review",
+      "title": "C bağımsız review",
+      "kind": "review",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "C bağımsız review",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "c-test"
+        ],
+        "reviews": [
+          "b-backend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/c-review-2026-09-17T12-35-00-681Z.json"
+    },
+    {
+      "id": "c-verify",
+      "title": "C bağımsız verify",
+      "kind": "verify",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "C bağımsız verify",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız verify kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "c-test"
+        ],
+        "reviews": [],
+        "verifies": [
+          "b-backend"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/c-verify-2026-09-17T12-35-39-823Z.json"
+    },
+    {
+      "id": "c-integration",
+      "title": "C backend–web geçiş sözleşmesi",
+      "kind": "integration",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "C backend–web geçiş sözleşmesi",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "Alanlar, rotalar, hata/CSRF/session sözleşmesi sonraki aşamaya uyumlu; önceki kapılar geçti."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "c-review-r2",
+          "c-verify-r2",
+          "c-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "b-backend"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/c-integration-2026-09-17T12-37-18-205Z.json"
+    },
+    {
+      "id": "d-web",
+      "title": "D — Login/register web",
+      "kind": "implement",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "D — Login/register web",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/frontend/"
+      ],
+      "acceptanceCriteria": [
+        "Mevcut frontend yoksa FIRST altında Next.js/TypeScript temelini oluştur.",
+        "Sade, responsive ve erişilebilir login/register sayfalarını oluştur.",
+        "Gerçek API, proxy, CSRF ve cookie akışını bağla.",
+        "Alan hataları, genel hata, yüklenme, çift gönderim engeli ve başarı yönlendirmesini uygula.",
+        "Beni hatırla ve oturum durumunu bağla.",
+        "Sonraki aşamada oluşturulacak ana sayfa/profil hedefleri için geçici ve dürüst geçiş davranışı kullan; sahte tamamlanmış sayfa sunma."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "c-integration",
+          "frontend"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "frontend"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/d-web-2026-09-17T12-43-48-068Z.json"
+    },
+    {
+      "id": "e-test",
+      "title": "E — Login/register web kontrol kapısı",
+      "kind": "test",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "E — Login/register web kontrol kapısı",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "Form davranışlarını ve API sözleşmesini bileşen/kod testleriyle doğrula.",
+        "Başarı, hata, yüklenme, oturum yokluğu ve CSRF senaryolarını kontrol et.",
+        "Lint, typecheck ve build kontrollerini çalıştır.",
+        "Backend–frontend alan, rota, durum kodu ve cookie/proxy uyumunu incele."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "d-web"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/e-test-2026-09-17T12-43-48-523Z.json"
+    },
+    {
+      "id": "e-review",
+      "title": "E bağımsız review",
+      "kind": "review",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "E bağımsız review",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "e-test"
+        ],
+        "reviews": [
+          "d-web"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/e-review-2026-09-17T12-45-24-543Z.json"
+    },
+    {
+      "id": "e-verify",
+      "title": "E bağımsız verify",
+      "kind": "verify",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "E bağımsız verify",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız verify kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "e-test"
+        ],
+        "reviews": [],
+        "verifies": [
+          "d-web"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/e-verify-2026-09-17T12-45-55-263Z.json"
+    },
+    {
+      "id": "e-integration",
+      "title": "E backend–web geçiş sözleşmesi",
+      "kind": "integration",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "E backend–web geçiş sözleşmesi",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "Alanlar, rotalar, hata/CSRF/session sözleşmesi sonraki aşamaya uyumlu; önceki kapılar geçti."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "e-review-r2",
+          "e-verify-r2"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "b-backend",
+          "d-web",
+          "e-revision"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/e-integration-2026-09-17T12-50-44-593Z.json"
+    },
+    {
+      "id": "f-backend",
+      "title": "F — Hesap yönetimi backend",
+      "kind": "authentication",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "F — Hesap yönetimi backend",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/backend/"
+      ],
+      "acceptanceCriteria": [
+        "Şifremi unuttum ve şifre sıfırlama API’lerini uygula.",
+        "Şifre değiştirme ve hassas işlemlerde yeniden doğrulamayı uygula.",
+        "Profil bilgilerini güncelleme API’sini uygula.",
+        "E-posta doğrulama ve tekrar gönderim API’lerini tamamla.",
+        "E-posta değiştirmede eski/yeni adres ve doğrulama kurallarını uygula.",
+        "Telefon ekleme/değiştirmeyi doğrulamasız uygula.",
+        "Oturum listeleme ve tekil/toplu sonlandırmayı uygula.",
+        "Süre aşımı, tekrar kullanılan token, başka kullanıcının verisine erişim, limitler ve oturum iptallerini test et.",
+        "SMTP mesaj içeriğini ve bağlantıları bellek içi e-posta testleriyle kontrol et."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "e-integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "blocked",
+      "attempt": 1,
+      "resultRef": null
+    },
+    {
+      "id": "f-review",
+      "title": "F bağımsız review",
+      "kind": "review",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "F bağımsız review",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "f-backend"
+        ],
+        "reviews": [
+          "f-backend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
       "status": "draft",
       "attempt": 0,
       "resultRef": null
+    },
+    {
+      "id": "f-verify",
+      "title": "F bağımsız verify",
+      "kind": "verify",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "F bağımsız verify",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız verify kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "f-backend"
+        ],
+        "reviews": [],
+        "verifies": [
+          "f-backend"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "f-integration",
+      "title": "F backend–web geçiş sözleşmesi",
+      "kind": "integration",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "F backend–web geçiş sözleşmesi",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "Alanlar, rotalar, hata/CSRF/session sözleşmesi sonraki aşamaya uyumlu; önceki kapılar geçti."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "f-review",
+          "f-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "f-backend"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "g-web",
+      "title": "G — Ana sayfa, profil ve ilgili web akışları",
+      "kind": "implement",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "G — Ana sayfa, profil ve ilgili web akışları",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/frontend/"
+      ],
+      "acceptanceCriteria": [
+        "Şimdilik boş ana sayfayı oluştur; yalnız gerekli temel gezinme ve oturum kontrollerini ekle.",
+        "Profil sayfasını gerçek kullanıcı verileriyle oluştur.",
+        "Bilgi güncelleme, e-posta değişikliği ve doğrulamasız telefon ekleme/değiştirmeyi bağla.",
+        "Şifremi unuttum, sıfırlama ve değiştirme formlarını/ekranlarını bağla.",
+        "E-posta doğrulama bağlantısı ekranını, hatırlatmayı ve tekrar gönderimi bağla.",
+        "Yeniden doğrulama ve oturum yönetimi arayüzlerini bağla.",
+        "Giriş, çıkış ve kayıt yönlendirmelerini tamamla.",
+        "Doğrulama e-postası bağlantısını açmak tek başına veri değişikliği yapmasın; kullanıcı onay formu göndersin.",
+        "Form, hata, yüklenme, yetkisiz erişim ve süre dolması senaryolarını kod testleriyle doğrula.",
+        "Lint, typecheck ve build kontrollerini tamamla."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "f-integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "h-regression",
+      "title": "H — Toplu kontrol ve teslim",
+      "kind": "test",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "H — Toplu kontrol ve teslim",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "Bütün auth kapsamı için son regresyon kontrollerini çalıştır.",
+        "Backend–web sözleşmeleri, route’lar, CSRF, session, izinler ve hata biçimlerini birlikte incele."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "g-web"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "h-review",
+      "title": "H bağımsız review",
+      "kind": "review",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "H bağımsız review",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "h-regression"
+        ],
+        "reviews": [
+          "g-web",
+          "b-backend",
+          "d-web",
+          "f-backend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "h-verify",
+      "title": "H bağımsız verify",
+      "kind": "verify",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "H bağımsız verify",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız verify kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "h-regression"
+        ],
+        "reviews": [],
+        "verifies": [
+          "g-web",
+          "b-backend",
+          "d-web",
+          "f-backend"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "h-integration",
+      "title": "H backend–web geçiş sözleşmesi",
+      "kind": "integration",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "H backend–web geçiş sözleşmesi",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "Alanlar, rotalar, hata/CSRF/session sözleşmesi sonraki aşamaya uyumlu; önceki kapılar geçti."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "h-review",
+          "h-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "g-web",
+          "b-backend",
+          "d-web",
+          "f-backend"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "h-delivery",
+      "title": "H — Belgeler ve Git teslimi",
+      "kind": "documentation",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "H — Belgeler ve Git teslimi",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/README.md",
+        "FIRST/backend/README.md",
+        "FIRST/frontend/README.md"
+      ],
+      "acceptanceCriteria": [
+        "Bağımsız son review, verification ve integration sonuçlarını kaydet.",
+        "Başarısız kontrolleri düzelt; ilgili testleri yeniden çalıştır.",
+        "README, örnek ortam değişkenleri ve auth sözleşmesini gerçek uygulamayla eşitle.",
+        "Yerel .venv, secret, test verisi ve geçici çıktıları Git dışında tut.",
+        "Yapılmayan gerçek PostgreSQL/Redis/SMTP, tarayıcı E2E ve uzak ortam kontrollerini açıkça listele.",
+        "Checklist ile graph durumlarını eşitle.",
+        "Kabul edilmiş göreve ait değişiklikleri anlamlı commit’lerle teslim et."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "h-integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/README.md",
+          "FIRST/backend/README.md",
+          "FIRST/frontend/README.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "legacy-backend-review",
+      "title": "Eski başarısız denemenin arşiv kapısı",
+      "kind": "review",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "C bağımsız review",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "backend"
+        ],
+        "reviews": [
+          "backend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/legacy-backend-review-2026-09-17T12-27-46-414Z.json"
+    },
+    {
+      "id": "legacy-frontend-review",
+      "title": "Eski başarısız denemenin arşiv kapısı",
+      "kind": "review",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "E bağımsız review",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "frontend"
+        ],
+        "reviews": [
+          "frontend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/legacy-frontend-review-2026-09-17T12-27-46-592Z.json"
+    },
+    {
+      "id": "c-revision",
+      "title": "C Unicode kullanıcı adı uzunluğu düzeltmesi",
+      "kind": "revision",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "NFC normalizasyonundan sonra 3–30 sınırını uygula ve regresyon test et.",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/backend/"
+      ],
+      "acceptanceCriteria": [
+        "NFC normalizasyonu uzunluk kontrolünden önce; alt/üst sınır regresyon testleri geçer."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "c-review",
+          "b-backend"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "c-review"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "backend_writer"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/c-revision-2026-09-17T12-36-13-863Z.json"
+    },
+    {
+      "id": "c-review-r2",
+      "title": "C düzeltme sonrası bağımsız review",
+      "kind": "review",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "C bağımsız review",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "c-revision"
+        ],
+        "reviews": [
+          "b-backend",
+          "c-revision"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/c-review-r2-2026-09-17T12-36-51-435Z.json"
+    },
+    {
+      "id": "c-verify-r2",
+      "title": "C düzeltme sonrası bağımsız verify",
+      "kind": "verify",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "C bağımsız verify",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız verify kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "c-revision"
+        ],
+        "reviews": [],
+        "verifies": [
+          "b-backend",
+          "c-revision"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/c-verify-r2-2026-09-17T12-37-17-762Z.json"
+    },
+    {
+      "id": "e-revision",
+      "title": "E Unicode form ve güvenilir proxy IP düzeltmesi",
+      "kind": "revision",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "Normalizasyon ve proxy IP sınırlamasını backend/web sözleşmesiyle eşleştir.",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/frontend/"
+      ],
+      "acceptanceCriteria": [
+        "NFC kullanıcı girişi backend ile uyumlu; logout UI durumları test edildi.",
+        "Güvenilir ingress IP için imzalı server-to-server aktarım ve spoof/expiry/config tests; varsayılan kullanıcı başlığına güvenilmez."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "e-review",
+          "d-web",
+          "e-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "e-review",
+          "e-verify"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/",
+          "FIRST/backend/"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "integration-writers",
+        "extensions": {
+          "fileOwners": {
+            "FIRST/backend/": "backend_writer",
+            "FIRST/frontend/": "frontend_writer"
+          },
+          "coordination": "Disjoint E integration fixes only; F/G not started."
+        }
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/e-revision-2026-09-17T12-48-47-111Z.json"
+    },
+    {
+      "id": "e-review-r2",
+      "title": "E düzeltme sonrası bağımsız review",
+      "kind": "review",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "E bağımsız review",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız review kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "e-revision"
+        ],
+        "reviews": [
+          "d-web",
+          "e-revision"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/e-review-r2-2026-09-17T12-50-08-087Z.json"
+    },
+    {
+      "id": "e-verify-r2",
+      "title": "E düzeltme sonrası bağımsız verify",
+      "kind": "verify",
+      "domains": [
+        "first",
+        "authentication"
+      ],
+      "objective": "E bağımsız verify",
+      "responsibility": "Yalnız FIRST; kapsam ve sıralı kapılar korunur. Ana agent entegrasyon/Git sahibi.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Bağımsız kontrol kanıtı"
+      ],
+      "acceptanceCriteria": [
+        "İlgili aşamanın bağımsız verify kontrolü; bulgular giderilmiş, kanıt kaydedilmiş olmalı."
+      ],
+      "capabilities": [
+        "code-implementation-mode"
+      ],
+      "relations": {
+        "dependsOn": [
+          "e-revision"
+        ],
+        "reviews": [],
+        "verifies": [
+          "d-web",
+          "e-revision"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth güvenliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/e-verify-r2-2026-09-17T12-50-44-148Z.json"
     }
   ]
 }

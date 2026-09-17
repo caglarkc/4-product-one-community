@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth",
+  "itemId": "e-revision",
+  "agent": {
+    "platform": "codex",
+    "identity": "integration-writers",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": ".orchestrator/runs/first-auth/evidence/e-revision.md",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": null,
+      "change": "reported",
+      "description": "Görev/dosya/komut/sonuç ve kapsam dışı kontroller"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "NFC kullanıcı girişi backend ile uyumlu; logout UI durumları test edildi.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/e-revision.md"
+    },
+    {
+      "criterion": "Güvenilir ingress IP için imzalı server-to-server aktarım ve spoof/expiry/config tests; varsayılan kullanıcı başlığına güvenilmez.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/e-revision.md"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Aşama kanıtı",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/e-revision.md"
+    },
+    {
+      "name": "Gerçek servisler ve E2E",
+      "status": "not_run",
+      "evidence": "Kullanıcı sınırı; not_verified."
+    }
+  ],
+  "risks": [
+    "PostgreSQL/Redis/SMTP çalışma zamanı ve E2E not_verified."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-17T12:48:47.111960+00:00"
+}
