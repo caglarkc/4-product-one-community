@@ -165,6 +165,7 @@ class AccountTests(TestCase):
     def test_f_email_change_superseded_and_taken_address_no_merge(self):
         self.mutate('email/change', {'email':'first-new@example.com'})
         first = self.link(-2)['key']
+        self.fake.expiry[security.key('email-change-interval', str(User.objects.get().pk))] = 0
         self.mutate('email/change', {'email':'second-new@example.com'})
         second = self.link(-2)['key']
         self.assertEqual(self.mutate('email/verify', {'key':first}).json()['code'], 'invalid_token')
@@ -316,3 +317,61 @@ class AccountTests(TestCase):
         self.assertEqual(current.email, 'new@example.com')
         self.assertEqual(current.username, 'Changed')
         self.assertEqual(current.username_normalized, 'changed')
+
+    def test_email_change_varying_destinations_cannot_bypass_requester_interval(self):
+        self.assertEqual(self.mutate('email/change', {'email': 'new0@example.com'}).status_code, 200)
+        for index in range(1, 8):
+            with patch('accounts.security.issue_token') as issue, patch('accounts.account_views.delivery') as send:
+                response = self.mutate('email/change', {'email': f'new{index}@example.com'})
+                self.assertEqual(response.status_code, 429)
+                issue.assert_not_called()
+                send.assert_not_called()
+        self.assertEqual(len(mail.outbox), 3)  # Registration plus one notification pair.
+        self.assertEqual(security.attempts('email-change-hour', str(User.objects.get().pk)), 1)
+        self.assertEqual(security.attempts('email-change-ip', '127.0.0.1'), 1)
+
+    def test_email_change_hour_budget_bounds_old_address_notifications(self):
+        uid = str(User.objects.get().pk)
+        for index in range(5):
+            self.fake.expiry[security.key('email-change-interval', uid)] = 0
+            self.assertEqual(self.mutate('email/change', {'email': f'new{index}@example.com'}).status_code, 200)
+        self.fake.expiry[security.key('email-change-interval', uid)] = 0
+        with patch('accounts.security.issue_token') as issue, patch('accounts.account_views.delivery') as send:
+            self.assertEqual(self.mutate('email/change', {'email': 'sixth@example.com'}).status_code, 429)
+            issue.assert_not_called()
+            send.assert_not_called()
+        self.assertEqual(len(mail.outbox), 11)
+        self.assertEqual(security.attempts('email-change-ip', '127.0.0.1'), 5)
+        self.fake.expiry[security.key('email-change-hour', uid)] = 0
+        self.assertEqual(self.mutate('email/change', {'email': 'sixth@example.com'}).status_code, 200)
+
+    def test_email_change_ip_budget_rejects_without_partial_account_reservation(self):
+        uid = str(User.objects.get().pk)
+        self.fake.set(security.key('email-change-ip', '127.0.0.1'), 30, ex=900)
+        with patch('accounts.security.issue_token') as issue, patch('accounts.account_views.delivery') as send:
+            self.assertEqual(self.mutate('email/change', {'email': 'new@example.com'}).status_code, 429)
+            issue.assert_not_called()
+            send.assert_not_called()
+        self.assertFalse(self.fake.exists(security.key('email-change-interval', uid)))
+        self.assertEqual(security.attempts('email-change-hour', uid), 0)
+        self.fake.expiry[security.key('email-change-ip', '127.0.0.1')] = 0
+        self.assertEqual(self.mutate('email/change', {'email': 'new@example.com'}).status_code, 200)
+
+    def test_email_change_admission_redis_failure_is_closed(self):
+        import redis
+        original_eval = self.fake.eval
+
+        def unavailable(script, *args):
+            if 'email-change-admission' in script:
+                raise redis.ConnectionError('unavailable')
+            return original_eval(script, *args)
+
+        with patch.object(self.fake, 'eval', side_effect=unavailable), \
+                patch('accounts.security.issue_token') as issue, \
+                patch('accounts.account_views.delivery') as send:
+            response = self.mutate('email/change', {'email': 'new@example.com'})
+            self.assertEqual(response.status_code, 503)
+            self.assertEqual(response.json()['code'], 'service_unavailable')
+            issue.assert_not_called()
+            send.assert_not_called()
+        self.assertEqual(User.objects.get().email_change_nonce, '')

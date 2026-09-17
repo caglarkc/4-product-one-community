@@ -129,3 +129,7 @@ contention remain unverified. A worker/outbox design is future operational work.
 
 Migrate the new schema in the target environment before deployment; migrations have
 only been applied against isolated SQLite during this task, never production data.
+
+## Live deployment
+
+Deployment instructions and current verification evidence: [deployment.md](../deployment.md). Email change additionally reserves a stable requester budget (60 seconds between attempts, 5/hour per user, 30/15 minutes per trusted IP) atomically before destination admission and SMTP. Changing destinations cannot bypass the requester limits.

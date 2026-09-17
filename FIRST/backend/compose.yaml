@@ -1,14 +1,22 @@
 services:
   backend:
     build: .
+    image: first-backend:${FIRST_RELEASE:-local}
     restart: unless-stopped
     env_file:
-      - .env
+      - ${FIRST_ENV_FILE:-.env}
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Set DJANGO_SECRET_KEY in the server .env file}
       DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1}
     ports:
-      - "127.0.0.1:8000:8000"
+      - "127.0.0.1:${FIRST_BACKEND_PORT:-18081}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    mem_limit: 512m
+    cpus: 1.0
     read_only: true
     tmpfs:
       - /tmp:size=64m,mode=1777
@@ -16,3 +24,49 @@ services:
       - ALL
     security_opt:
       - no-new-privileges:true
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-first}
+      POSTGRES_USER: ${POSTGRES_USER:-first}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    mem_limit: 512m
+    cpus: 1.0
+    security_opt:
+      - no-new-privileges:true
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Set REDIS_PASSWORD}
+    command: ["sh", "-c", "exec redis-server --appendonly yes --maxmemory 96mb --maxmemory-policy noeviction --requirepass \"$$REDIS_PASSWORD\""]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "REDISCLI_AUTH=$$REDIS_PASSWORD redis-cli ping | grep -q PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    mem_limit: 192m
+    cpus: 0.5
+    security_opt:
+      - no-new-privileges:true
+volumes:
+  postgres-data:
+    labels:
+      io.first.managed: /opt/first/backend
+  redis-data:
+    labels:
+      io.first.managed: /opt/first/backend
+networks:
+  default:
+    labels:
+      io.first.managed: /opt/first/backend

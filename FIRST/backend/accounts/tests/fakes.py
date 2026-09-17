@@ -33,7 +33,21 @@ class FakeRedis:
         self.delete(key)
         return value
 
-    def eval(self, script, n, key, ttl):
+    def eval(self, script, n, *args):
+        if 'email-change-admission' in script:
+            interval, account, ip = args
+            if (self.exists(interval) or int(self.get(account) or 0) >= 5
+                    or int(self.get(ip) or 0) >= 30):
+                return 0
+            self.set(interval, '1', ex=60)
+            for counter, seconds in ((account, 3600), (ip, 900)):
+                value = int(self.get(counter) or 0) + 1
+                if value == 1:
+                    self.set(counter, value, ex=seconds)
+                else:
+                    self.values[counter] = str(value)
+            return 1
+        key, ttl = args
         if 'mail-admission' in script:
             if self.exists(key) or int(self.get(ttl) or 0) >= 5:
                 return 0

@@ -19,3 +19,7 @@ Optional per-client IP mode: configure the same server-only `AUTH_PROXY_SECRET` 
 For an actual Vercel deployment, its documented overwritten `x-forwarded-for` can be configured as `AUTH_CLIENT_IP_HEADER` (https://vercel.com/docs/headers/request-headers). This example is not safe on an unprotected local/self-hosted server accepting that client header directly. Validate ingress behavior before enabling signed mode.
 
 G code evidence: `test-evidence-stage-g.md`. Proxy upstream timeout is 30 seconds to accommodate two SMTP operations with 10-second per-call timeouts; actual transport timing remains not_verified. Run typecheck and build sequentially because Next regenerates `.next/types` during build.
+
+## Production configuration
+
+The private repository intentionally tracks `.env.production`, as requested by the owner. Vercel Git deployments load its server-only BACKEND_URL, AUTH_PROXY_SECRET and AUTH_CLIENT_IP_HEADER during the frontend build/runtime. These are not NEXT_PUBLIC variables. Backend SMTP/database credentials stay only on Hetzner. For a proxy-secret rotation, update root FIRST_AUTH_PROXY_SECRET and frontend AUTH_PROXY_SECRET together, deploy the backend with `./send-machine`, and push the frontend configuration. Any Vercel dashboard variables with the same names override the file and must match. See [deployment.md](../deployment.md) for current verification.

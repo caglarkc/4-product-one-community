@@ -216,6 +216,8 @@ class EmailChangeView(ProtectedView):
             user = locked_user(request, sensitive=True)
             if User.objects.filter(email=email).exists():
                 raise ValidationError({'email': ['Bu e-posta kullanılıyor.']})
+            if not security.reserve_email_change(user.pk, client_ip(request)):
+                raise RateLimited()
             if not security.reserve_verification_email(email):
                 raise RateLimited()
             nonce = secrets.token_hex(16)

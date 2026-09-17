@@ -73,3 +73,5 @@ Varsayılan IP kaynağı backend REMOTE_ADDR'dır; proxy arkasında ortak IP bü
 ## Test sınırı
 
 Django süreç içi client, `enforce_csrf_checks=True`, izole SQLite, FakeRedis ve locmem mail; frontend bileşen/sözleşme/lint/typecheck/build kullanılır. Mock'lar yalnız testtedir. Gerçek PostgreSQL kilit/eşzamanlılık, Redis Lua/TTL/arıza, SMTP teslim/zamanlama, proxy-ingress/HTTPS-cookie, tarayıcı E2E/görsel kullanım, Docker/uzak servis/deploy **not_verified**. Kod testlerinin geçmesi canlı ortamın çalıştığı anlamına gelmez. Kanıt ve korunmuş başarısız denemeler: [run checklist](../../.orchestrator/runs/first-auth/checklist.md).
+
+- E-posta değiştirme: hedef adresten bağımsız kullanıcı başına 60 saniye aralık ve 5/saat, istemci IP başına 30/15 dakika. Redis bu üç bütçeyi atomik ayırır; hedef adres bütçesi ayrıca uygulanır. Hedef/SMTP başarısızlığı rezervasyonu geri almaz.

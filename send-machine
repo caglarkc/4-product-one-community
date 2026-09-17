@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+"""Deploy only FIRST backend via verified SSH. No local backend or Docker process."""
+import argparse
+import datetime
+import hashlib
+import io
+import ipaddress
+import json
+import os
+from pathlib import Path
+import re
+import shlex
+import subprocess
+import sys
+import tarfile
+
+ROOT = Path(__file__).resolve().parent
+BACKEND = ROOT / 'FIRST/backend'
+REMOTE = '/opt/first/backend'
+TOP_FILES = {'manage.py', 'requirements.txt', 'Dockerfile', '.dockerignore', 'compose.yaml'}
+SOURCE_DIRS = {'accounts', 'config', 'deploy'}
+SMTP_KEYS = {'SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM', 'SMTP_TLS', 'SMTP_SSL'}
+
+
+def read_env():
+    values = {}
+    for raw in (ROOT / '.env').read_text().splitlines():
+        raw = raw.strip()
+        if not raw or raw.startswith('#'):
+            continue
+        key, sep, value = raw.partition('=')
+        if not sep or not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*', key.strip()):
+            raise ValueError('Invalid .env assignment (values are never executed).')
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+            value = value[1:-1]
+        values[key.strip()] = value
+    return values
+
+
+def source_files():
+    files = []
+    for path in sorted(BACKEND.rglob('*')):
+        relative = path.relative_to(BACKEND)
+        if path.is_symlink():
+            continue
+        if not path.is_file() or any(part in {'tests', '__pycache__', '.venv', '.git', 'node_modules'} for part in relative.parts):
+            continue
+        if len(relative.parts) == 1 and relative.name in TOP_FILES:
+            files.append(path)
+        elif relative.parts[0] in SOURCE_DIRS and path.suffix in {'.py', '.sh', '.conf'} and relative.name != 'test_settings.py':
+            files.append(path)
+    return files
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--dry-run', action='store_true', help='List exact backend payload without network or writes')
+    parser.add_argument('--check', action='store_true', help='Only inspect deployed FIRST containers and health')
+    args = parser.parse_args()
+    files = source_files()
+    if args.dry_run:
+        print('\n'.join(str(p.relative_to(BACKEND)) for p in files))
+        print(f'{len(files)} backend files; no .env, frontend, tests, venv, Git or other products.')
+        return
+    values = read_env()
+    host = str(ipaddress.IPv4Address(values['hetzner_sunucu_ip']))
+    user = values.get('FIRST_SSH_USER', 'root')
+    if not re.fullmatch(r'[a-z_][a-z0-9_-]*', user):
+        raise ValueError('Invalid FIRST_SSH_USER')
+    ssh = ['ssh', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-o', 'ConnectTimeout=15', f'{user}@{host}']
+    if args.check:
+        subprocess.run(ssh + [f'cd {REMOTE}/current && FIRST_ENV_FILE={REMOTE}/shared/.env docker compose --env-file {REMOTE}/shared/.env -p first ps && curl --fail --silent http://127.0.0.1:18081/health/'], check=True)
+        return
+    secret = values.get('FIRST_AUTH_PROXY_SECRET', '')
+    if len(secret) < 32:
+        raise ValueError('Set FIRST_AUTH_PROXY_SECRET (>=32 random characters) in root .env and matching AUTH_PROXY_SECRET in Vercel.')
+    config = {key: values[key] for key in SMTP_KEYS if key in values}
+    config.update(AUTH_PROXY_SECRET=secret, FRONTEND_ORIGIN='https://first.alicaglarkocer.com',
+                  CSRF_TRUSTED_ORIGINS='https://first.alicaglarkocer.com',
+                  DJANGO_ALLOWED_HOSTS=f'localhost,127.0.0.1,{host}')
+    if any('\n' in value or '\r' in value for value in config.values()):
+        raise ValueError('Multiline configuration values are not supported')
+    fingerprint = hashlib.sha256()
+    for path in files:
+        fingerprint.update(str(path.relative_to(BACKEND)).encode() + b'\0' + path.read_bytes())
+    release = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S') + '-' + fingerprint.hexdigest()[:12]
+    archive = io.BytesIO()
+    with tarfile.open(fileobj=archive, mode='w:gz') as bundle:
+        for path in files:
+            bundle.add(path, arcname=str(path.relative_to(BACKEND)), recursive=False)
+    # Payload is streamed directly; no source tree checkout and no rsync deletion.
+    destination = REMOTE + '/releases/' + release
+    subprocess.run(ssh + [f'umask 077; mkdir -p {destination}; tar -xzf - -C {destination}'], input=archive.getvalue(), check=True)
+    remote_command = f'bash {destination}/deploy/release.sh {shlex.quote(release)}'
+    subprocess.run(ssh + [remote_command], input=json.dumps(config).encode(), check=True)
+    print('FIRST backend deployed. Frontend: https://first.alicaglarkocer.com')
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except (ValueError, KeyError, OSError, subprocess.CalledProcessError) as exc:
+        # Avoid command/config dumps, which may contain secrets.
+        print(f'Deployment stopped: {type(exc).__name__}. Check configuration and preceding non-secret output.', file=sys.stderr)
+        sys.exit(1)

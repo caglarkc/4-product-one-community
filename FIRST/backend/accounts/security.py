@@ -98,3 +98,26 @@ return 1
 
 def reserve_verification_email(email):
     return bool(execute('eval', MAIL_SCRIPT, 2, key('mail-interval', email), key('mail-hour', email)))
+
+
+EMAIL_CHANGE_SCRIPT = """
+-- email-change-admission: reserve the requester and IP budgets together
+if redis.call('EXISTS', KEYS[1]) == 1 then return 0 end
+local account = tonumber(redis.call('GET', KEYS[2]) or '0')
+local ip = tonumber(redis.call('GET', KEYS[3]) or '0')
+if account >= 5 or ip >= 30 then return 0 end
+redis.call('SET', KEYS[1], '1', 'EX', 60)
+account = redis.call('INCR', KEYS[2])
+if account == 1 then redis.call('EXPIRE', KEYS[2], 3600) end
+ip = redis.call('INCR', KEYS[3])
+if ip == 1 then redis.call('EXPIRE', KEYS[3], 900) end
+return 1
+"""
+
+
+def reserve_email_change(user_id, ip):
+    # Stable account identity also bounds notifications to the old address.
+    # Keep reservations on destination/SMTP failure to bound costly retries.
+    return bool(execute('eval', EMAIL_CHANGE_SCRIPT, 3,
+        key('email-change-interval', str(user_id)),
+        key('email-change-hour', str(user_id)), key('email-change-ip', ip)))
