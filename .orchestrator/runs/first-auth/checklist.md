@@ -218,17 +218,17 @@ Kanıt: results/h-integration-2026-09-17T14-47-37-273Z.json
 
 ## H — Belgeler ve Git teslimi
 
-Düğüm: `h-delivery` — **active**; bağımlılık: h-integration
+Düğüm: `h-delivery` — **done**; bağımlılık: h-integration
 
- - [ ] Bağımsız son review, verification ve integration sonuçlarını kaydet.
- - [ ] Başarısız kontrolleri düzelt; ilgili testleri yeniden çalıştır.
- - [ ] README, örnek ortam değişkenleri ve auth sözleşmesini gerçek uygulamayla eşitle.
- - [ ] Yerel .venv, secret, test verisi ve geçici çıktıları Git dışında tut.
- - [ ] Yapılmayan gerçek PostgreSQL/Redis/SMTP, tarayıcı E2E ve uzak ortam kontrollerini açıkça listele.
- - [ ] Checklist ile graph durumlarını eşitle.
- - [ ] Kabul edilmiş göreve ait değişiklikleri anlamlı commit’lerle teslim et.
+ - [x] Bağımsız son review, verification ve integration sonuçlarını kaydet.
+ - [x] Başarısız kontrolleri düzelt; ilgili testleri yeniden çalıştır.
+ - [x] README, örnek ortam değişkenleri ve auth sözleşmesini gerçek uygulamayla eşitle.
+ - [x] Yerel .venv, secret, test verisi ve geçici çıktıları Git dışında tut.
+ - [x] Yapılmayan gerçek PostgreSQL/Redis/SMTP, tarayıcı E2E ve uzak ortam kontrollerini açıkça listele.
+ - [x] Checklist ile graph durumlarını eşitle.
+ - [x] Kabul edilmiş göreve ait değişiklikleri anlamlı commit’lerle teslim et.
 
-Kanıt: None
+Kanıt: results/h-delivery-2026-09-17T14-49-51-658Z.json
 
 ## Eski başarısız denemenin arşiv kapısı
 

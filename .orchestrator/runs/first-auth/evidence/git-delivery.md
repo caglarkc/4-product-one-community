@@ -23,3 +23,7 @@ Komutlar: git diff --check; git status --short FIRST/backend; git diff --stat FI
 Sonuç: 0e036ca commit,65 backend test/migration/check ve bağımsız kapı kanıtları test-evidence-stage-f.md ile run results içinde. Push G/H entegrasyon tesliminde yapılacak; bu checkpoint live deploy değildir.
 
 G accepted frontend checkpoint: `b6790a0` feat(first): complete account and recovery web flows. Independent H review/verify and all source checks passed before commit.
+
+## F–H accepted delivery
+
+Commands: git commit for F `0e036ca`, G `b6790a0`, canonical docs/evidence `77feb3a`; `git push origin main` exit0 updated97cf377..77feb3a. `git rev-parse HEAD` and `git ls-remote origin refs/heads/main` both returned `77feb3a0b85c72e5840b5c536cdaf82614c85dc7`; `git status --short` empty. No force push. Final graph closure receipt is committed/pushed afterwards and its hash verified in the final tool output.

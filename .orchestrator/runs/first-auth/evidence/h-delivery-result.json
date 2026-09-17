@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth",
+  "itemId": "h-delivery",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": ".orchestrator/runs/first-auth/evidence/h-delivery.md",
+  "artifacts": [
+    {
+      "type": "evidence",
+      "path": null,
+      "change": "reported",
+      "description": "Görev/dosya/komut/sonuç ve kapsam dışı kontroller"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Bağımsız son review, verification ve integration sonuçlarını kaydet.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/h-delivery.md"
+    },
+    {
+      "criterion": "Başarısız kontrolleri düzelt; ilgili testleri yeniden çalıştır.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/h-delivery.md"
+    },
+    {
+      "criterion": "README, örnek ortam değişkenleri ve auth sözleşmesini gerçek uygulamayla eşitle.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/h-delivery.md"
+    },
+    {
+      "criterion": "Yerel .venv, secret, test verisi ve geçici çıktıları Git dışında tut.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/h-delivery.md"
+    },
+    {
+      "criterion": "Yapılmayan gerçek PostgreSQL/Redis/SMTP, tarayıcı E2E ve uzak ortam kontrollerini açıkça listele.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/h-delivery.md"
+    },
+    {
+      "criterion": "Checklist ile graph durumlarını eşitle.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/h-delivery.md"
+    },
+    {
+      "criterion": "Kabul edilmiş göreve ait değişiklikleri anlamlı commit’lerle teslim et.",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/h-delivery.md"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Aşama kanıtı",
+      "status": "passed",
+      "evidence": ".orchestrator/runs/first-auth/evidence/h-delivery.md"
+    },
+    {
+      "name": "Gerçek servisler ve E2E",
+      "status": "not_run",
+      "evidence": "Kullanıcı sınırı; not_verified."
+    }
+  ],
+  "risks": [
+    "PostgreSQL/Redis/SMTP çalışma zamanı ve E2E not_verified."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-17T14:49:51.658154+00:00"
+}

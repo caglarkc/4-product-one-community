@@ -4,8 +4,8 @@
   "title": "FIRST auth akışları",
   "goal": "FIRST normal auth akışları backend → test → web → test sırasıyla; sosyal giriş kapsam dışı.",
   "createdAt": "2026-09-17T11:33:44.706Z",
-  "updatedAt": "2026-09-17T14:48:06.962Z",
-  "revision": 108,
+  "updatedAt": "2026-09-17T14:49:51.894Z",
+  "revision": 109,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -1855,9 +1855,9 @@
         ],
         "owner": "manager"
       },
-      "status": "active",
+      "status": "done",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/h-delivery-2026-09-17T14-49-51-658Z.json"
     },
     {
       "id": "legacy-backend-review",
