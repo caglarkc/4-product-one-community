@@ -18,7 +18,7 @@ export function AuthForm({register=false}:{register?:boolean}){
       const payload:Record<string,unknown>=Object.fromEntries(data.entries());
       if(register && typeof payload.username==='string')payload.username=payload.username.normalize('NFC');
       if(!register)payload.remember_me=data.get('remember_me')==='on';
-      try{await api<{user:User}>(register?'register':'login',payload);router.replace('/hesap');router.refresh();}
+      try{await api<{user:User}>(register?'register':'login',payload);router.replace('/');router.refresh();}
       catch(e){setError(e as ApiError);}finally{lock.current=false;setBusy(false);}
     }}>
       {error&&<div role="alert" className="error"><p>{error.message}</p>{error.errors.non_field_errors?.map(text=><p key={text}>{text}</p>)}</div>}
@@ -29,11 +29,11 @@ export function AuthForm({register=false}:{register?:boolean}){
         {register&&field('birth_date','Doğum tarihi','date')}
         {register&&<><p>En az 13 yaşında olmalısınız. Kullanıcı adı 3–30 harf, rakam veya alt çizgi içermelidir.</p><div className="field"><label htmlFor="gender">Cinsiyet</label><select id="gender" name="gender" defaultValue="" required aria-invalid={!!error?.errors.gender} aria-describedby={error?.errors.gender?'gender-error':undefined}><option value="" disabled>Seçiniz</option><option value="female">Kadın</option><option value="male">Erkek</option><option value="other">Diğer</option><option value="unspecified">Belirtmek istemiyorum</option></select>{error?.errors.gender&&<p className="error" id="gender-error">{error.errors.gender.join(' ')}</p>}</div></>}
         {register&&field('phone','Telefon (isteğe bağlı, doğrulanmaz)','tel',{autoComplete:'tel',maxLength:32,placeholder:'+905551234567'})}
-        {field('password','Şifre','password',{autoComplete:register?'new-password':'current-password',...(register?{minLength:8,maxLength:20,'aria-describedby':'password-help'}:{})})}
+        {field('password','Şifre','password',{autoComplete:register?'new-password':'current-password',...(register?{'aria-describedby':'password-help'}:{})})}
         {register&&<p id="password-help">8–20 karakter; boşluk içermemeli. Büyük harf, küçük harf, sayı ve özel karakter zorunludur. Türkçe karakter kullanabilirsiniz.</p>}
         {!register&&<label className="check"><input name="remember_me" type="checkbox"/> Beni hatırla (30 gün)</label>}
         <button type="submit">{busy?'İşlem sürüyor…':register?'Kayıt ol':'Giriş yap'}</button>
       </fieldset>
     </form><p><Link href={register?'/giris':'/kayit'}>{register?'Zaten hesabım var':'Hesap oluştur'}</Link></p>
-  </section>;
+  {!register&&<p><Link href="/sifremi-unuttum">Şifremi unuttum</Link></p>}</section>;
 }

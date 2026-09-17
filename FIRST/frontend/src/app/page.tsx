@@ -1,2 +1,2 @@
-import { redirect } from 'next/navigation';
-export default function Home(){redirect('/hesap');}
+import { AccountStatus } from '../components/account-status';
+export default function Home(){return <AccountStatus/>;}

@@ -1,10 +1,10 @@
 # FIRST web
 
-Next.js 16.3.5 + React 19.3.0 + TypeScript. Node.js 20.9+ is required; this delivery's code checks used Node 25.8.2. Dependencies are pinned in package-lock.json.
+Next.js 16.3.5 + React 19.3.0 + TypeScript. Development and tests require Node.js 20.19+ within 20.x, 22.13+ within 22.x, or 24+ (Next alone has a lower minimum); this delivery's code checks used Node 25.8.2. Dependencies are pinned in package-lock.json.
 
 `npm ci`, `npm test`, `npm run lint`, `npm run typecheck`, `npm run build` run dependency installation and static/in-process checks. This task does not start an application server.
 
-Routes: `/giris`, `/kayit`, `/hesap` (temporary truthful session status). Root redirects to `/hesap`; account management belongs to the next stage. UI calls real `/api/auth/*/` endpoints. No social login or fake backend data is present in product code.
+Routes: `/` (empty home with navigation and session state), `/giris`, `/kayit`, `/hesap` (profile, phone, email/password changes, reauthentication and session management), `/sifremi-unuttum`, `/sifre-sifirla?uid=…&token=…`, `/eposta-dogrula?key=…`. Verification links only mutate after an explicit confirmation form; reset/change/current or all-session revocation returns to login. Email change leaves the old address visible until the new address is confirmed. UI calls real `/api/auth/*/` endpoints. No social login or fake backend data is present in product code.
 
 Set server-only `BACKEND_URL` to the fixed Django HTTP(S) origin, without path, credentials, query or fragment. Missing/invalid config fails closed with 503; builds do not contact Django. `/api/auth/[...path]` preserves the Django-required final slash, forwards Cookie/Origin/Referer/X-CSRFToken, preserves separate Set-Cookie values and disables caching. Client requests fetch a fresh CSRF token before every mutation, including anonymous register/login. Session credentials never enter browser storage.
 
@@ -17,3 +17,5 @@ Proxy implementation reference: https://nextjs.org/docs/app/getting-started/rout
 Optional per-client IP mode: configure the same server-only `AUTH_PROXY_SECRET` (at least 32 characters) on Next and Django, and set `AUTH_CLIENT_IP_HEADER` on Next to the exact header overwritten by the trusted ingress. Configure both frontend variables or neither. Ingress MUST replace any client value and prevent direct untrusted access to Next; merely choosing a header name does not establish trust. Never expose the secret with `NEXT_PUBLIC_`. Missing/invalid configuration or absent/malformed/multiple IP values fails closed with 503. Next generates HMAC-SHA256 assertions bound to IP, timestamp, HTTP method and Django path; incoming assertion headers are never copied. Django checks signatures and timestamp freshness. With neither variable, incoming IP assertion headers are ignored and Django uses REMOTE_ADDR (proxy budget aggregates by egress). Deployment trust, clock sync and real per-client behavior remain not_verified.
 
 For an actual Vercel deployment, its documented overwritten `x-forwarded-for` can be configured as `AUTH_CLIENT_IP_HEADER` (https://vercel.com/docs/headers/request-headers). This example is not safe on an unprotected local/self-hosted server accepting that client header directly. Validate ingress behavior before enabling signed mode.
+
+G code evidence: `test-evidence-stage-g.md`. Proxy upstream timeout is 30 seconds to accommodate two SMTP operations with 10-second per-call timeouts; actual transport timing remains not_verified. Run typecheck and build sequentially because Next regenerates `.next/types` during build.

@@ -27,7 +27,7 @@ export async function proxyAuth(request:Request, path:string[]):Promise<Response
     const response=await fetch(new URL(`/api/auth/${path.join('/')}/`,base),{
       method:request.method,headers,cache:'no-store',redirect:'manual',
       body:['GET','HEAD'].includes(request.method)?undefined:await request.text(),
-      signal:AbortSignal.timeout(15000),
+      signal:AbortSignal.timeout(30000),
     });
     // Auth endpoints never redirect. Do not follow or expose a backend redirect.
     if(response.status>=300 && response.status<400) return reply(502,'Kimlik hizmetinden geçersiz yönlendirme alındı.');
