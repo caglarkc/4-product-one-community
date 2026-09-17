@@ -9,6 +9,10 @@
 - Yerel kontrolleri görev ve platform izinleri kapsamında çalıştır. Immense'in uzak Docker/Flutter çalışma kısıtları burada varsayılmaz.
 - Run/result/event dosyalarına token, kişisel veri veya ekran görüntüsü içeriği koyma; güvenli özet ve referans kullan.
 
+## Frontend geliştirme aşaması
+
+FIRST, STEP, INTO ve PATH için şimdilik işlev, sayfa düzeni ve kontrollerin yerleşimi önceliklidir. Temiz ve sade görünüm yeterlidir; buton rengi/şekli, animasyon ve görsel tasarım ayrıntıları sonraki aşamada değerlendirilir. Frontend işlerinde `.agent/skills/frontend/frontend-implementation/SKILL.md` uygulanır.
+
 ## Git Teslim Protokolü
 
 Kullanıcının kalıcı talimatı: **Dosya değişikliği yapılan her görev sonunda, ilgili kontroller tamamlandıktan sonra değişiklikleri anlamlı commit'lerle kaydet ve pushla.** Her görevde yeniden izin isteme. Kullanıcı o görev için commit/push istemediğini belirtirse veya farklı branch seçerse bu talimatı uygula.
