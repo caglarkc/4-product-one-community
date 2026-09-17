@@ -2,6 +2,8 @@ services:
   backend:
     build: .
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Set DJANGO_SECRET_KEY in the server .env file}
       DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1}

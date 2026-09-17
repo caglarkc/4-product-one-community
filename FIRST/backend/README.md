@@ -1,36 +1,66 @@
-# FIRST backend — uzak sunucuda Docker
+# FIRST backend
 
-Bu dizin Django/DRF backend'in en küçük çalıştırma iskeletidir. Yalnız `GET /health/` süreç sağlık kontrolü vardır; auth, veritabanı, kullanıcı modeli ve ürün API'leri henüz uygulanmadı.
+Django 5.2 / DRF normal auth API. Production settings require PostgreSQL and Redis;
+SMTP is configured using environment variables. No real credentials belong in Git.
+Use `.env.example` for required names. The container reads `.env`; PostgreSQL,
+Redis and SMTP must be supplied by the target environment. The compose file does
+not provision those services or run migrations automatically.
 
-Python bağımlılıkları image içinde kurulur. Geliştirici bilgisayarında `.venv`, pip kurulumu veya Docker kurulumu gerekmiyor. Aşağıdaki komutlar Docker Engine ve Compose bulunan **uzak sunucuda** çalıştırılacaktır. Henüz sunucuya gönderim veya deploy yapılmadı.
+Implemented initial endpoints: `/api/auth/csrf/`, `config/`, `register/`, `login/`,
+`me/`, `logout/`. See `../contracts/auth-api.md` for the complete staged contract.
+OAuth and provider connection are not implemented. Config reports both unavailable.
 
-## Sunucuda hazırlık ve çalıştırma
+## Security storage
 
-Repo sunucuya alındıktan sonra:
+PostgreSQL stores users and session revocation records. Redis stores signed session
+contents, rate counters and hashed-key temporary verification tokens. Session
+contents never fall back to a process-local cache or database. Authentication checks
+persistent registry revocation, expiry and user security version on every request.
+Normal sessions last 24 hours, remembered sessions 30 days; expiry is absolute.
+
+The shared password proof helper reserves an account attempt under a Redis lock
+before hashing. Concurrent proof requests return 429 while the lock is held (30s
+lease); failures remain counted for 15 minutes and success clears the counter.
+The IP budget is 30 requests/15m, account budget is 5 failed attempts/15m. Expensive
+hash operations must complete within the lease; real Redis concurrency remains a
+required environment check. Only REMOTE_ADDR is trusted. The target reverse proxy
+must preserve a trustworthy client address; arbitrary X-Forwarded-For is ignored.
+
+## Password corpus
+
+Django's `CommonPasswordValidator` uses the common-password list shipped in the
+installed Django release (`django/contrib/auth/common-passwords.txt.gz`), with
+upstream provenance in Django's auth password-validation sources. This repository
+also rejects six locally curated obvious variants; that baseline is not represented
+as a comprehensive list of compromised passwords.
+
+For additional compromised-password coverage, a deployment may mount a reviewed
+UTF-8/ASCII file and set `AUTH_BREACHED_PASSWORD_FILE` to its absolute path. Each
+non-comment line must contain one SHA-256 hash of the exact UTF-8 password. Empty,
+missing or malformed explicit files fail startup. No password is sent externally.
+The operator must record corpus publisher, acquisition date, license, checksum and
+update cadence in deployment records, generate hashes offline from a trusted lawful
+corpus, replace the mounted file atomically, and restart workers to load updates.
+An external corpus has not been supplied or validated in this task; broad breach
+coverage is therefore not verified. Hash algorithms cannot be converted from a
+SHA-1-only corpus into SHA-256 without the original values.
+
+## Isolated tests (no listening service)
 
 ```sh
-cd FIRST/backend
-cp .env.example .env
-chmod 600 .env
-openssl rand -hex 32
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python manage.py test accounts --settings=config.test_settings
+.venv/bin/python manage.py makemigrations --check --dry-run --settings=config.test_settings
+.venv/bin/python manage.py check --settings=config.test_settings
 ```
 
-Üretilen rastgele değeri `.env` içindeki `DJANGO_SECRET_KEY` alanına yaz. `.env` dosyasını Git'e ekleme. `DJANGO_ALLOWED_HOSTS` alanına gerçek API domain'ini ekle; container sağlık kontrolü için `localhost,127.0.0.1` değerlerini koru.
+Tests use in-memory SQLite, a Redis test double and Django's memory email backend.
+CSRF tests enable `enforce_csrf_checks=True`. Test settings are exclusively for
+isolated checks and must never be used for serving requests. `.venv`, `.env`, local
+DBs and bytecode are ignored by Git and Docker build context.
 
-```sh
-docker compose config --quiet
-docker compose build --pull
-docker compose run --rm backend python manage.py check
-docker compose up -d
-docker compose ps
-curl --fail http://127.0.0.1:8000/health/
-docker compose logs --tail=100 backend
-```
-
-Beklenen cevap: `{"status": "ok"}`. Port sadece sunucunun loopback adresinde açılır; dış erişim için sunucudaki HTTPS reverse proxy gerçek API domain'ini bu porta yönlendirmelidir. Bu dosyalar proxy/TLS kurmaz. Proxy başka container'daysa ağ bağlantısı ayrıca ayarlanmalıdır; portu doğrudan herkese açma.
-
-Container root olmayan kullanıcıyla, salt okunur dosya sistemiyle çalışır. Yazılabilir `/tmp` geçicidir. Veritabanı seçimi yapılmadığı için migration çalıştırılmaz ve kalıcı veri saklanmaz. Bağımlılık aralıkları kullanılır; üretim tesliminde doğrulanan sürümler kilitlenmelidir.
-
-## Doğrulama sınırı
-
-Yerelde Docker kurulmadı/çalıştırılmadı; image build ve container smoke kontrolü uzak sunucuda yukarıdaki komutlarla yapılacaktır. `/health/` yalnız sürecin cevap verdiğini gösterir; tamamlanmış uygulama veya auth kontrolü değildir.
+Not verified here: real PostgreSQL constraints/locking/concurrency, Redis Lua
+atomicity/TTL/network outages, SMTP delivery, proxy and cookie behavior in a browser,
+container runtime, production migration, deployment and browser end-to-end flows.
+No backend/frontend service, Docker or local DB/Redis process was started.
