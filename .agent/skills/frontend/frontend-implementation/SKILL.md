@@ -1,18 +1,29 @@
 ---
 name: frontend-implementation
-description: Implement or review frontend pages and forms in FIRST, STEP, INTO and PATH using the current functional, minimal layout phase. Apply to frontend work in this repository.
+description: Implement or review frontend pages in this repository using the selected product's design rules, shared tokens and reusable UI components; preserve real workflows and accessibility.
 ---
 
-# Frontend uygulama — mevcut geliştirme aşaması
+# Frontend uygulama ve ortak tasarım dili
 
-Kullanıcının 17 Eylül 2026 kararı dört ürünün tüm frontend çalışmalarında geçerlidir:
+## FIRST — tasarım aşaması açık
 
-- Öncelik işlevlerin çalışması, sayfa düzeni, bilgi sırası ve hangi kontrolün nerede bulunduğudur.
-- Temiz, sade, okunabilir ve tutarlı görünüm kullan. Temel boşluklar, hizalama ve dar ekran düzeni yeterlidir.
-- Buton rengi/şekli, marka dili, dekoratif görseller, animasyon ve görsel ince ayarlar sonraki tasarım aşamasına aittir. Bu aşamada tasarım keşfi, tema alternatifleri veya kapsamlı tasarım sistemi üretme.
-- Sadelik; görünür etiketleri, klavye odağını, yeterli kontrastı, hata/başarı/yüklenme durumlarını ve form doğrulamasını kaldırmak anlamına gelmez. Kullanıcı ne yapacağını ve işlemin sonucunu anlayabilmelidir.
-- Tarayıcının yerleşik kontrolleri ve küçük ortak CSS yeterliyse yeni UI/animasyon bağımlılığı ekleme.
+18 Eylül 2026 kullanıcı kararı önceki tasarım ertelemesini **FIRST için** kaldırır. FIRST frontend işi öncesi repo kökünden `FIRST/tasarim-dili.md` oku. Onaylanan referansın renkleri ve genel hissi temel alınır; görseldeki yerleşim, içerikler ve henüz uygulanmamış özellikler onaylanmış sayılmaz.
+
+- Kırık beyaz, mürekkep, orman yeşili, adaçayı ve ölçülü mercan paletini; ferah, sakin ve okunabilir yaklaşımı koru.
+- Renk, yazı ölçeği, boşluk, kenarlık, köşe, gölge ve odak değerlerini `FIRST/frontend/src/app/tokens.css` içinde semantik CSS değişkenleriyle merkezileştir. Yeni sayfada aynı değerleri tekrar yazma; önce mevcut token'ı kullan, gerçek ihtiyaç varsa ortak tanımı genişlet.
+- Buton, aksiyon bağlantısı, form alanı, select, checkbox, uyarı ve yüzey gibi tekrar eden öğelerde `FIRST/frontend/src/components/ui/` altındaki ortak bileşenleri kullan. Native HTML prop'larını, erişilebilirliği ve form davranışını koru. Buton varyantı ve durumu bir yerde tanımlansın; sayfaya özel buton CSS'i veya kopya bileşen üretme.
+- Sayfalar sadece akışa özgü düzen ve içeriği birleştirir. Ortak görsel değişiklik token/bileşende yapılır. Yeni varyantı benzer öğelerin tümüne uygula; tek bir sayfayı ayrı tema haline getirme.
+- Tasarım mevcut işlevlere uyarlanır: gerçek route, alan, uyarı, validasyon, yüklenme ve başarı/hata durumlarını koru. Sırf referansta var diye proje kartı, arama, keşif, ekip veya diğer yeni ürün işlevlerini ekleme.
+- Mevcut HTML/CSS ve React ile çözülebilen işler için yeni UI, ikon veya animasyon bağımlılığı ekleme. Dekorasyon içerikle yarışmasın; mobilde alan ve okuma sırası korunsun.
+
+## Diğer ürünler
+
+STEP, INTO ve PATH için ayrı tasarım kararı verilene kadar 17 Eylül 2026 işlev ve sade yerleşim önceliği korunur. FIRST paletini veya kapsamını bu ürünlere otomatik taşıma.
+
+## Ortak işlev ve doğrulama
+
+- Görünür etiket, klavye odağı, yeterli kontrast, hata/başarı/yüklenme durumları ve form doğrulaması tasarımın parçasıdır. Kullanıcı ne yapacağını ve işlemin sonucunu anlayabilmelidir.
 - Gerçek API'ye bağlı akışları kullan; mock başarıyı çalışan entegrasyon gibi gösterme. Sağlayıcı ayarı eksikse işlemi başarıyla tamamlanmış gösterme.
 - Teknik altyapıyı ilgili ürünün gerçek manifesti ve karar dosyalarından doğrula. FIRST için `FIRST/teknik-kararlar.md`, auth için `FIRST/auth-kararlari.md` kaynak kabul edilir.
 
-Review/verify: işlev, yerleşim, mobil taşma, etiket/klavye erişimi ve hata durumlarını kontrol et. Görsel süsleme eksikliğini bulgu sayma. Kullanıcı tasarım aşamasını açtığında bu geçici önceliği güncelle.
+Review/verify: FIRST'te token ve bileşen tekrar kullanımı, sayfalar arası tutarlılık, kontrast, odak, disabled/loading/error/success durumları, masaüstü ve dar ekran görünümü ile mevcut işlevleri birlikte kontrol et. Görsel referansı yerleşim şartnamesi olarak kullanma. Diğer ürünlerde henüz açılmamış görsel tasarımı eksik özellik sayma. Çalıştırılan kontroller ile doğrulanamayanları ayır.

@@ -1,7 +1,8 @@
 'use client';
 import Link from 'next/link';
-import { useId, useRef, useState } from 'react';
+import { useId, useRef, useState, type ComponentProps } from 'react';
 import { api, ApiError } from '../lib/api';
+import { Alert, Button, Field as FormField, Input, Select, Surface } from './ui';
 
 export type Field = {
   name: string; label: string; type?: string; value?: string;
@@ -11,7 +12,8 @@ export type Field = {
 export const passwordHelp = '8–20 karakter; boşluk içermemeli. Büyük harf, küçük harf, sayı ve özel karakter zorunludur. Türkçe karakter kullanabilirsiniz.';
 
 /** Every mutation obtains fresh CSRF; a reauth challenge never silently retries it. */
-export function AccountForm<T = {detail: string}>({title, path, method = 'POST', fields = [], extra = {}, submit, children, onSuccess}: {
+export function AccountForm<T = {detail: string}>({title, path, method = 'POST', fields = [], extra = {}, submit, children, onSuccess, variant = 'primary'}: {
+  variant?: ComponentProps<typeof Button>['variant'];
   title: string; path: string; method?: string; fields?: Field[];
   extra?: Record<string, string>; submit: string; children?: React.ReactNode;
   onSuccess?: (result: T) => void | Promise<void>;
@@ -22,7 +24,7 @@ export function AccountForm<T = {detail: string}>({title, path, method = 'POST',
   const [error, setError] = useState<ApiError | null>(null);
   const [message, setMessage] = useState('');
   const [reauth, setReauth] = useState(false);
-  return <section className="account-section" aria-labelledby={`${id}-title`}>
+  return <Surface className="account-section" aria-labelledby={`${id}-title`}>
     <h2 id={`${id}-title`}>{title}</h2>
     {children}
     <form aria-label={title} aria-busy={busy} onSubmit={async event => {
@@ -41,11 +43,11 @@ export function AccountForm<T = {detail: string}>({title, path, method = 'POST',
         if (failure.code === 'reauthentication_required') setReauth(true);
       } finally { lock.current = false; setBusy(false); }
     }}>
-      {error && <div role="alert" className="error"><p>{error.message}</p>
+      {error && <Alert role="alert" tone="error"><p>{error.message}</p>
         {error.errors.non_field_errors?.map(value => <p key={value}>{value}</p>)}
         {error.status === 401 && <Link href="/giris">Oturumunuz sona erdi. Yeniden giriş yapın.</Link>}
-      </div>}
-      {message && <p role="status">{message}</p>}
+      </Alert>}
+      {message && <Alert role="status" tone="success">{message}</Alert>}
       <fieldset disabled={busy || reauth}>
         {fields.map(field => {
           const inputId = `${id}-${field.name}`;
@@ -53,20 +55,17 @@ export function AccountForm<T = {detail: string}>({title, path, method = 'POST',
           const common = {id: inputId, name: field.name, required: !field.optional,
             defaultValue: field.value, 'aria-invalid': !!errors,
             'aria-describedby': [errors ? `${inputId}-error` : '', field.password ? `${inputId}-help` : ''].filter(Boolean).join(' ') || undefined};
-          return <div className="field" key={field.name}>
-            <label htmlFor={inputId}>{field.label}</label>
-            {field.options ? <select {...common}>{field.options.map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select>
-              : <input {...common} type={field.type || 'text'} maxLength={field.maxLength}
+          return <FormField key={field.name} id={inputId} label={field.label} help={field.password ? passwordHelp : undefined} error={errors?.join(' ')}>
+            {field.options ? <Select {...common}>{field.options.map(([value, label]) => <option value={value} key={value}>{label}</option>)}</Select>
+              : <Input {...common} type={field.type || 'text'} maxLength={field.maxLength}
                 autoComplete={field.type === 'password' ? (field.password ? 'new-password' : 'current-password') : undefined}/>}
-            {field.password && <p id={`${inputId}-help`}>{passwordHelp}</p>}
-            {errors && <p className="error" id={`${inputId}-error`}>{errors.join(' ')}</p>}
-          </div>;
+          </FormField>;
         })}
-        <button type="submit">{busy ? 'İşlem sürüyor…' : submit}</button>
+        <Button type="submit" variant={variant} loading={busy}>{busy ? 'İşlem sürüyor…' : submit}</Button>
       </fieldset>
     </form>
     {reauth && <AccountForm title="Kimliğinizi yeniden doğrulayın" path="reauthenticate"
       fields={[{name: 'password', label: 'Mevcut şifreniz', type: 'password'}]} submit="Kimliğimi doğrula"
       onSuccess={() => {setReauth(false); setError(null); setMessage('Kimliğiniz doğrulandı. İşleminizi yeniden gönderin.');}}/>}
-  </section>;
+  </Surface>;
 }

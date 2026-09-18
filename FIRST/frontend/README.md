@@ -2,9 +2,9 @@
 
 Next.js 16.3.5 + React 19.3.0 + TypeScript. Development and tests require Node.js 20.19+ within 20.x, 22.13+ within 22.x, or 24+ (Next alone has a lower minimum); this delivery's code checks used Node 25.8.2. Dependencies are pinned in package-lock.json.
 
-`npm ci`, `npm test`, `npm run lint`, `npm run typecheck`, `npm run build` run dependency installation and static/in-process checks. This task does not start an application server.
+`npm ci`, `npm test`, `npm run lint`, `npm run typecheck`, `npm run build` run dependency installation and static/in-process checks. These commands do not require a running backend. For a local browser preview use `npm run dev`; previewing the UI alone does not verify live backend services.
 
-Routes: `/` (empty home with navigation and session state), `/giris`, `/kayit`, `/hesap` (profile, phone, email/password changes, reauthentication and session management), `/sifremi-unuttum`, `/sifre-sifirla?uid=…&token=…`, `/eposta-dogrula?key=…`. Verification links only mutate after an explicit confirmation form; reset/change/current or all-session revocation returns to login. Email change leaves the old address visible until the new address is confirmed. UI calls real `/api/auth/*/` endpoints. No social login or fake backend data is present in product code.
+Routes: `/` (home with navigation and session state), `/giris`, `/kayit`, `/hesap` (profile, phone, email/password changes, reauthentication and session management), `/sifremi-unuttum`, `/sifre-sifirla?uid=…&token=…`, `/eposta-dogrula?key=…`. Verification links only mutate after an explicit confirmation form; reset/change/current or all-session revocation returns to login. Email change leaves the old address visible until the new address is confirmed. UI calls real `/api/auth/*/` endpoints. No social login or fake backend data is present in product code.
 
 Set server-only `BACKEND_URL` to the fixed Django HTTP(S) origin, without path, credentials, query or fragment. Missing/invalid config fails closed with 503; builds do not contact Django. `/api/auth/[...path]` preserves the Django-required final slash, forwards Cookie/Origin/Referer/X-CSRFToken, preserves separate Set-Cookie values and disables caching. Client requests fetch a fresh CSRF token before every mutation, including anonymous register/login. Session credentials never enter browser storage.
 
@@ -23,3 +23,13 @@ G code evidence: `test-evidence-stage-g.md`. Proxy upstream timeout is 30 second
 ## Production configuration
 
 The private repository intentionally tracks `.env.production`, as requested by the owner. Vercel Git deployments load its server-only BACKEND_URL, AUTH_PROXY_SECRET and AUTH_CLIENT_IP_HEADER during the frontend build/runtime. These are not NEXT_PUBLIC variables. Backend SMTP/database credentials stay only on Hetzner. For a proxy-secret rotation, update root FIRST_AUTH_PROXY_SECRET and frontend AUTH_PROXY_SECRET together, deploy the backend with `./send-machine`, and push the frontend configuration. Any Vercel dashboard variables with the same names override the file and must match. See [deployment.md](../deployment.md) for current verification.
+
+## Shared FIRST design language
+
+[FIRST design language](../tasarim-dili.md) is the visual contract for all current and future screens. The warm off-white, forest green, sage and restrained coral palette is implemented in `src/app/tokens.css`. That file owns semantic colors, typography, spacing, radii, focus and control sizes; `src/app/globals.css` consumes them for shared controls and responsive layouts.
+
+Use the typed primitives in `src/components/ui/index.tsx`: `Button`, `ActionLink`, `Field`, `Input`, `Select`, `Checkbox`, `Alert`, `Surface`, and `PageHeading`. Button and action-link variants share one CSS definition. `Button` defaults to `type="button"`; form submission must explicitly use `type="submit"`. Native attributes remain available and loading disables buttons. Give `Field` and its control the same unique ID and connect help/errors with `aria-describedby`; the auth and account forms demonstrate this pattern. Keep navigation as links and provide `role="alert"` / `role="status"` only for relevant feedback, not every decorative surface.
+
+Pages combine these primitives and layout classes instead of defining their own colors or copies of buttons. The account layout uses two columns on larger screens and preserves reading order in one column on small screens. All seven existing routes and their recovery, validation, session and reauthentication states use this system. No new product routes, OAuth placeholders, project cards or backend behavior were added.
+
+18 September 2026 implementation checks: production build, lint and typecheck passed; component/API/proxy suite passed (64 tests, including shared-control behavior). These are local code checks; production deployment, real email delivery and real-user account changes are not verified by this design task. Browser appearance and interaction checks are recorded separately by the integrating reviewer.
