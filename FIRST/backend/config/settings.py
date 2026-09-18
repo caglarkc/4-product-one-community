@@ -11,7 +11,7 @@ ALLOWED_HOSTS = [host.strip() for host in os.environ.get(
 ).split(",") if host.strip()]
 ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
-INSTALLED_APPS = ["django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "rest_framework", "accounts", "allauth", "allauth.account", "allauth.socialaccount", "allauth.socialaccount.providers.google"]
+INSTALLED_APPS = ["django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "rest_framework", "accounts", "projects", "allauth", "allauth.account", "allauth.socialaccount", "allauth.socialaccount.providers.google"]
 MIDDLEWARE = [
     "accounts.middleware.AuthBoundaryMiddleware",
     "django.middleware.security.SecurityMiddleware",
@@ -88,3 +88,12 @@ GITHUB_CLIENT_ID = os.environ.get("GITHUB_CLIENT_ID", "")
 GITHUB_CLIENT_SECRET = os.environ.get("GITHUB_CLIENT_SECRET", "")
 GITHUB_REDIRECT_URI = os.environ.get("GITHUB_REDIRECT_URI", "")
 GITHUB_ENABLED = os.environ.get("GITHUB_ENABLED", "false").lower() == "true"
+
+# Separate selected-repository GitHub App; login OAuth scopes remain unchanged.
+GITHUB_APP_ENABLED = os.environ.get("GITHUB_APP_ENABLED", "false").lower() == "true"
+GITHUB_APP_ID = os.environ.get("GITHUB_APP_ID", "")
+GITHUB_APP_SLUG = os.environ.get("GITHUB_APP_SLUG", "")
+GITHUB_APP_CLIENT_ID = os.environ.get("GITHUB_APP_CLIENT_ID", "")
+GITHUB_APP_CLIENT_SECRET = os.environ.get("GITHUB_APP_CLIENT_SECRET", "")
+GITHUB_APP_REDIRECT_URI = os.environ.get("GITHUB_APP_REDIRECT_URI", "")
+GITHUB_APP_TOKEN_KEY = os.environ.get("GITHUB_APP_TOKEN_KEY", "")

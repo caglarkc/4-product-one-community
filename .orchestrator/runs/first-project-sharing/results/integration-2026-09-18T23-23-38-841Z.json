@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-sharing",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Frontend/backend paths, callback and DTO contract aligned; title200/description5000 consistent; shared authenticated gateway preserves CSRF/proxy. Browser desktop390px and corrected320px navigation checked. Live App flow remains separate blocked github-live item pending user approval/credentials.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Cross-layer contract and UI behavior verified",
+      "status": "passed",
+      "evidence": "Frontend/backend paths, callback and DTO contract aligned; title200/description5000 consistent; shared authenticated gateway preserves CSRF/proxy. Browser desktop390px and corrected320px navigation checked. Live App flow remains separate blocked github-live item pending user approval/credentials."
+    }
+  ],
+  "checks": [
+    {
+      "name": "integration checks",
+      "status": "passed",
+      "evidence": "Frontend/backend paths, callback and DTO contract aligned; title200/description5000 consistent; shared authenticated gateway preserves CSRF/proxy. Browser desktop390px and corrected320px navigation checked. Live App flow remains separate blocked github-live item pending user approval/credentials."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T23:23:38.841773+00:00"
+}

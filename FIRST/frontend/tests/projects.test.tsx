@@ -1,0 +1,23 @@
+import {render,screen,fireEvent,waitFor} from '@testing-library/react';
+import {beforeEach,expect,it,vi} from 'vitest';
+import {api} from '../src/lib/api';
+import {MyProjects,ProjectDetail,ProjectEditor} from '../src/components/projects';
+const push=vi.fn();vi.mock('next/navigation',()=>({useRouter:()=>({push})}));vi.mock('../src/lib/api',()=>({api:vi.fn()}));
+const project={id:'123',title:'Örnek proje',category:'software',description:'Açıklama',readme_excerpt:'Kısa özet.',is_private:true,repository_url:'https://github.com/owner/secret',repository_name:'owner/secret',is_active:true,created_at:'',updated_at:''};
+const repo={id:1,installation_id:2,full_name:'owner/secret',name:'secret',private:true,description:'',html_url:'https://github.com/owner/secret'};
+const user={email_verified:true,providers:['github']};const config={categories:[{value:'software',label:'Yazılım'}],github_app_enabled:true};
+beforeEach(()=>{vi.mocked(api).mockReset();push.mockReset();});
+it('shows a real empty state',async()=>{vi.mocked(api).mockResolvedValue({projects:[]});render(<MyProjects/>);expect(await screen.findByText('Haydi, ilk reponu paylaş ve ekip arkadaşlarını bul')).toBeInTheDocument();});
+it('never shows private repository URLs even if included in a malformed response',async()=>{vi.mocked(api).mockResolvedValue({project});render(<ProjectDetail id="123"/>);await screen.findByText(project.title);expect(screen.queryByRole('link')).not.toBeInTheDocument();expect(screen.queryByText('owner/secret')).not.toBeInTheDocument();});
+it('shows public continuation link only for a safe GitHub URL',async()=>{vi.mocked(api).mockResolvedValue({project:{...project,is_private:false}});render(<ProjectDetail id="123"/>);expect(await screen.findByRole('link',{name:/Devamını oku/})).toHaveAttribute('href',project.repository_url);});
+it('blocks sharing until verification and linking without requiring a phone',async()=>{vi.mocked(api).mockImplementation(async(path)=>path==='me'?{user:{...user,email_verified:false}}:path==='projects/config'?config:{enabled:true,connected:false});render(<ProjectEditor/>);expect(await screen.findByText(/Telefon doğrulaması gerekmez/)).toBeInTheDocument();expect(screen.queryByRole('button',{name:'GitHub repo erişimini bağla'})).not.toBeInTheDocument();});
+it('clearly reports disabled app instead of a fake connected flow',async()=>{vi.mocked(api).mockImplementation(async(path)=>path==='me'?{user}:path==='projects/config'?config:{enabled:false,connected:false});render(<ProjectEditor/>);expect(await screen.findByText(/henüz kullanıma hazır değil/)).toBeInTheDocument();});
+it('requires preview and explicit confirmation and allows excluding private README excerpt',async()=>{
+ vi.mocked(api).mockImplementation(async(path)=>{if(path==='me')return {user};if(path==='projects/config')return config;if(path==='projects/github/status')return {enabled:true,connected:true};if(path==='projects/github/repositories')return {repositories:[repo]};if(path==='projects/github/preview')return {repository:repo,readme_excerpt:'Kısa özet.'};return {project};});
+ render(<ProjectEditor/>);fireEvent.change(await screen.findByLabelText('GitHub reposu'),{target:{value:'2:1'}});fireEvent.click(screen.getByRole('button',{name:'Paylaşımı hazırla'}));
+ const submit=await screen.findByRole('button',{name:'Projeyi paylaş'});expect(submit).toBeDisabled();fireEvent.change(screen.getByLabelText('Kategori'),{target:{value:'software'}});fireEvent.change(screen.getByLabelText('Açıklama (isteğe bağlı)'),{target:{value:'Yeni açıklama'}});fireEvent.click(screen.getByLabelText('README özetini paylaş'));fireEvent.click(screen.getByLabelText(/Gösterilen bilgileri/));expect(submit).toBeEnabled();fireEvent.click(submit);
+ await waitFor(()=>expect(push).toHaveBeenCalledWith('/projeler/123'));expect(api).toHaveBeenCalledWith('projects',expect.objectContaining({installation_id:2,repository_id:1,readme_excerpt:''}),'POST');
+});
+it('allows archiving without GitHub connection or verified email',async()=>{vi.mocked(api).mockImplementation(async(path)=>path==='me'?{user:{providers:[],email_verified:false}}:path==='projects/config'?config:path==='projects/mine'?{projects:[project]}:{project:{...project,is_active:false}});render(<ProjectEditor id="123"/>);fireEvent.click(await screen.findByRole('button',{name:'Paylaşımı arşivle'}));await waitFor(()=>expect(api).toHaveBeenCalledWith('projects/123',{is_active:false},'PATCH'));});
+
+it.each([401,403])('offers sign-in for expired or missing sessions (%s)',async(status)=>{vi.mocked(api).mockRejectedValue(Object.assign(new Error('Oturum gerekli'),{status}));render(<MyProjects/>);expect(await screen.findByRole('link',{name:'Giriş yap'})).toHaveAttribute('href','/giris');});

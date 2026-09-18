@@ -15,10 +15,12 @@ ROOT = Path(__file__).resolve().parent
 BACKEND = ROOT / 'FIRST/backend'
 REMOTE = '/opt/first/backend'
 TOP_FILES = {'manage.py', 'requirements.txt', 'Dockerfile', '.dockerignore', 'compose.yaml'}
-SOURCE_DIRS = {'accounts', 'config', 'deploy'}
+SOURCE_DIRS = {'accounts', 'projects', 'config', 'deploy'}
 OAUTH_KEYS = {'GOOGLE_ENABLED', 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REDIRECT_URI',
               'GOOGLE_LOCAL_REDIRECT_URI',
-              'GITHUB_ENABLED', 'GITHUB_CLIENT_ID', 'GITHUB_CLIENT_SECRET', 'GITHUB_REDIRECT_URI'}
+              'GITHUB_ENABLED', 'GITHUB_CLIENT_ID', 'GITHUB_CLIENT_SECRET', 'GITHUB_REDIRECT_URI',
+              'GITHUB_APP_ENABLED', 'GITHUB_APP_ID', 'GITHUB_APP_SLUG', 'GITHUB_APP_CLIENT_ID',
+              'GITHUB_APP_CLIENT_SECRET', 'GITHUB_APP_REDIRECT_URI', 'GITHUB_APP_TOKEN_KEY'}
 SMTP_KEYS = {'SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM', 'SMTP_TLS', 'SMTP_SSL'}
 
 
@@ -48,7 +50,8 @@ def source_files():
             continue
         if len(relative.parts) == 1 and relative.name in TOP_FILES:
             files.append(path)
-        elif relative.parts[0] in SOURCE_DIRS and path.suffix in {'.py', '.sh', '.conf'} and relative.name != 'test_settings.py':
+        elif (relative.parts[0] in SOURCE_DIRS and path.suffix in {'.py', '.sh', '.conf'}
+              and not (path.suffix == '.py' and relative.name.startswith('test'))):
             files.append(path)
     return files
 

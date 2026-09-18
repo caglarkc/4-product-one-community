@@ -113,4 +113,4 @@ def user_data(user):
             'phone_verified': user.phone_verified, 'profile_complete': complete,
             'providers': list(user.socialaccount_set.values_list('provider', flat=True).distinct()),
             'connected_accounts': connected_accounts(user),
-            'has_usable_password': user.has_usable_password(), 'capabilities': {'can_apply': False, 'can_create_listing': False}}
+            'has_usable_password': user.has_usable_password(), 'capabilities': {'can_apply': False, 'can_create_listing': bool(user.email_verified and user.socialaccount_set.filter(provider='github').exists())}}

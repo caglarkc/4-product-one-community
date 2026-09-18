@@ -18,6 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </Link>
       <nav className="site-nav" aria-label="Ana gezinme">
         <ActionLink variant="quiet" href="/giris">Giriş</ActionLink>
+        <ActionLink variant="quiet" href="/projelerim">Projelerim</ActionLink>
         <ActionLink variant="quiet" href="/hesap">Hesabım</ActionLink>
         <ActionLink variant="secondary" href="/kayit">Kayıt</ActionLink>
       </nav>
