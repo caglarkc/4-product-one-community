@@ -188,3 +188,22 @@ The command uses fixed HTTPS GitHub API requests, verifies the returned account 
 imports no public email or token, and fills only missing display fields under locks.
 The bound is the first N GitHub identities (1–100), not a paginated bulk migration.
 No provider request is made while rendering `/me/` or the account page.
+
+### Connected-account backend rollout — 18 September 2026
+
+Commit `c35afd388a56510b0b7a9e5391787e2096b84267` was pushed and pulled on the
+server. Release `20260918T201351-c35afd388a56` built successfully; all three FIRST
+containers, Django checks, PostgreSQL/Redis connectivity and migration checks pass.
+119 backend tests and 106 frontend tests plus lint/typecheck pass; independent
+source review has no material findings.
+
+The bounded GitHub profile dry-run reported one eligible identity and zero errors;
+the actual run updated that one display record without changing user ownership or
+email. Real Google login subsequently refreshed the existing Google display data.
+Read-only database checks confirm the original single user, both provider records,
+GitHub name/handle/avatar/profile URL and Google name/email. No raw metadata or
+credentials were written into verification output.
+
+Frontend visual verification remains in the active connected-account run until
+Vercel automatically publishes the pushed frontend. No local production build or
+manual Vercel deployment was initiated.
