@@ -14,6 +14,32 @@ function submit(name: string) {fireEvent.submit(screen.getByRole('button', {name
 function fill(label: string, value: string) {fireEvent.change(screen.getByLabelText(label), {target: {value}});}
 
 describe('account mutations', () => {
+  it('only saves changed profile data, resets after save, and blocks unchanged form submissions', async () => {
+    const fetcher = mockRequests((path, options) => path.endsWith('/sessions/') ? Response.json({sessions: []}) : Response.json({user: path.endsWith('/profile/') ? {...member, ...JSON.parse(options!.body as string)} : member}));
+    render(<AccountStatus profile/>); await screen.findByLabelText('Ad soyad');
+    const button = screen.getByRole('button', {name: 'Profili kaydet'});
+    expect(button).toBeDisabled();
+    submit('Profili kaydet');
+    expect(fetcher.mock.calls.some(([path]) => path.endsWith('/profile/'))).toBe(false);
+    fill('Ad soyad', 'Yeni Üye'); expect(button).toBeEnabled();
+    fill('Ad soyad', member.full_name); expect(button).toBeDisabled();
+    fill('Cinsiyet', 'other'); expect(button).toBeEnabled();
+    fill('Cinsiyet', member.gender); expect(button).toBeDisabled();
+    fill('Ad soyad', 'Yeni Üye'); submit('Profili kaydet');
+    await screen.findByText('Bilgiler güncellendi.');
+    await waitFor(() => expect(button).toBeDisabled());
+    expect(screen.getByLabelText('Ad soyad')).toHaveValue('Yeni Üye');
+    fill('Ad soyad', member.full_name); expect(button).toBeEnabled();
+  });
+  it('keeps unsaved profile changes available after a failed save', async () => {
+    mockRequests(path => path.endsWith('/me/') ? Response.json({user: member}) : path.endsWith('/sessions/') ? Response.json({sessions: []}) : Response.json({detail: 'Kaydedilemedi'}, {status: 503}));
+    render(<AccountStatus profile/>); await screen.findByLabelText('Ad soyad');
+    fill('Ad soyad', 'Yeni Üye'); submit('Profili kaydet');
+    await screen.findByText('Kaydedilemedi');
+    expect(screen.getByLabelText('Ad soyad')).toHaveValue('Yeni Üye');
+    expect(screen.getByRole('button', {name: 'Profili kaydet'})).toBeEnabled();
+  });
+
   it('submits real profile data via PATCH with NFC username and unverified phone', async () => {
     const fetcher = mockRequests(path => path.endsWith('/sessions/') ? Response.json({sessions: []}) : Response.json({user: member}));
     render(<AccountStatus profile/>); await screen.findByLabelText('Ad soyad');

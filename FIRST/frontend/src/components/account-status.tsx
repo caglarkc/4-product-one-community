@@ -68,7 +68,7 @@ export function AccountStatus({profile = false}: {profile?: boolean}) {
       {!profile && <div className="home-actions"><ActionLink href="/hesap">Hesabımı yönet</ActionLink></div>}
       {profile && <>
         <div className="account-grid"><div className="account-column">
-        <AccountForm<{user: User}> title="Profil bilgileri" path="profile" method="PATCH" fields={fields} submit="Profili kaydet" onSuccess={data => setUser(data.user)}>
+        <AccountForm<{user: User}> requireChanges title="Profil bilgileri" path="profile" method="PATCH" fields={fields} submit="Profili kaydet" onSuccess={data => setUser(data.user)}>
           <p>En az 13 yaşında olmalısınız. Kullanıcı adı 3–30 harf, rakam veya alt çizgi içermelidir. Telefon + ile başlayan 8–15 rakam olmalıdır; kaydedilmesi doğrulama sağlamaz.</p>
         </AccountForm>
         </div><div className="account-column"><AccountForm title="E-posta değiştir" path="email/change" fields={[{name: 'email', label: 'Yeni e-posta', type: 'email', maxLength: 254}]} submit="Yeni adrese doğrulama gönder">
