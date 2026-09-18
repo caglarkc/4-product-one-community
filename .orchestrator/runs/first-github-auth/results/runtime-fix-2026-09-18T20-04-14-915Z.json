@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-auth",
+  "itemId": "runtime-fix",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Added --no-control-socket to Gunicorn Docker command after live startup log showed unused management socket could not write /home/app on readonly filesystem. Readonly container remains enforced.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Gunicorn no longer attempts management socket writes on read-only filesystem.",
+      "status": "passed",
+      "evidence": "Added --no-control-socket to Gunicorn Docker command after live startup log showed unused management socket could not write /home/app on readonly filesystem. Readonly container remains enforced."
+    }
+  ],
+  "checks": [
+    {
+      "name": "runtime-fix checks",
+      "status": "passed",
+      "evidence": "Added --no-control-socket to Gunicorn Docker command after live startup log showed unused management socket could not write /home/app on readonly filesystem. Readonly container remains enforced."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T20:04:14.915785+00:00"
+}

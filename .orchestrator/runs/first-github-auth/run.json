@@ -4,8 +4,8 @@
   "title": "FIRST GitHub integration",
   "goal": "Implement GitHub login signup linking and deploy with persistent delivery rules",
   "createdAt": "2026-09-18T19:53:39.848Z",
-  "updatedAt": "2026-09-18T19:59:24.949Z",
-  "revision": 16,
+  "updatedAt": "2026-09-18T20:04:35.481Z",
+  "revision": 24,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -364,6 +364,165 @@
       },
       "status": "active",
       "attempt": 1
+    },
+    {
+      "id": "runtime-fix",
+      "title": "runtime-fix",
+      "kind": "implement",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Gunicorn no longer attempts management socket writes on read-only filesystem.",
+      "responsibility": "Fix observed startup error without changing auth",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Gunicorn no longer attempts management socket writes on read-only filesystem."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/Dockerfile"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/runtime-fix-2026-09-18T20-04-14-915Z.json"
+    },
+    {
+      "id": "runtime-review",
+      "title": "runtime-review",
+      "kind": "review",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Independent review accepts read-only-container startup correction.",
+      "responsibility": "Fix observed startup error without changing auth",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent review accepts read-only-container startup correction."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "runtime-fix"
+        ],
+        "reviews": [
+          "runtime-fix"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "github_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/runtime-review-2026-09-18T20-04-35-214Z.json"
+    },
+    {
+      "id": "runtime-verify",
+      "title": "runtime-verify",
+      "kind": "verify",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Installed Gunicorn accepts disabled control socket and Docker command remains valid.",
+      "responsibility": "Fix observed startup error without changing auth",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Installed Gunicorn accepts disabled control socket and Docker command remains valid."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "runtime-fix"
+        ],
+        "reviews": [],
+        "verifies": [
+          "runtime-fix"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/runtime-verify-2026-09-18T20-04-35-372Z.json"
     }
   ]
 }
