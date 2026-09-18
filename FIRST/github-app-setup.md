@@ -11,16 +11,16 @@ Mevcut GitHub OAuth uygulaması yalnız giriş/hesap bağlama için `user:email`
 - Redirect on update açık, Expire user authorization tokens açık.
 - Request user authorization during installation kapalı; FIRST kendi session/state/PKCE akışını başlatır.
 - Device flow ve webhook kapalı. Bu aşamada yetki her repo işlemi ve ziyaretçi önizlemesinde GitHub API üzerinden tekrar kontrol edilir.
-- Repository permissions: **Contents read-only**, zorunlu **Metadata read-only**. Organization/account/enterprise izni yok.
+- Repository permissions: **Administration, Contents, Issues, Pull requests: read and write**; zorunlu **Metadata read-only**. Organization/account/enterprise izni yok.
 - Any account: başka kullanıcılar da kendi seçtikleri repolara kurabilir. Marketplace yayını yapılmaz.
 
-İlk kurulum formunda Administration yazma izni otomatik güvenlik incelemesince reddedildi: repo silme/ayar değiştirme kapsamı mevcut paylaşım akışından geniş. Bu faz yalnız repo seçimi ve README okuduğu için yazma izinleri kaldırıldı. İleride issue/PR/davet işlevleri eklenirken gereken izinler ayrı ve açık olarak genişletilebilir.
+19 Eylül 2026: Kullanıcı, katkıcı daveti/yetki yönetimi ve ilerideki issue/PR akışları için dört yazma iznini açıklama sonrasında açıkça onayladı. Uygulama bu izinlerle oluşturuldu; mevcut backend yalnız repo ve README okuma işlevlerini uygular. Yazma izinleri bu işlevlerin uygulanmış olduğu anlamına gelmez. Custom properties, hesap ve organizasyon izinleri açılmadı.
 
 ## Backend yapılandırması
 
-`FIRST/backend/.env.example` içindeki `GITHUB_APP_*` alanlarını kullan. `GITHUB_APP_CLIENT_ID` ve `GITHUB_APP_CLIENT_SECRET`, giriş OAuth uygulamasının anahtarları değildir. App ID ve slug da yeni App'e aittir.
+`FIRST/backend/.env` içindeki `GITHUB_APP_*` alanlarını kullan. `GITHUB_APP_CLIENT_ID` ve `GITHUB_APP_CLIENT_SECRET`, giriş OAuth uygulamasının anahtarları değildir. App ID ve slug da yeni App'e aittir.
 
-`GITHUB_APP_TOKEN_KEY` kalıcı, bağımsız bir Fernet anahtarıdır. Kullanıcı access/refresh tokenları veritabanında bu anahtarla şifrelenir. Anahtarı plansız değiştirmek mevcut bağlantıların yeniden yetkilendirilmesini gerektirir. Bu faz App kullanıcı tokenı kullandığı için GitHub App private key gerekmez. İstemciye sağlayıcı tokenı veya secret gönderilmez.
+`GITHUB_APP_TOKEN_KEY` kalıcı, bağımsız bir Fernet anahtarıdır. Kullanıcı access/refresh tokenları veritabanında bu anahtarla şifrelenir. Anahtarı plansız değiştirmek mevcut bağlantıların yeniden yetkilendirilmesini gerektirir. Bu faz App kullanıcı tokenı kullandığı için backend GitHub App private key kullanmaz. GitHub kayıt ekranı, uygulamanın kurulabilmesi için yine de en az bir private key üretilmesini şart koşar; PEM dosyasını bu backend ortamına eklemek gerekmez. İstemciye sağlayıcı tokenı veya secret gönderilmez.
 
 `send-machine`, `projects/` runtime kaynaklarını ve allowlist içindeki App ayarlarını uzak backend'e taşır. Alıcı `deploy/configure.py` aynı anahtarları kabul eder. Ayarlar tamamlanmadan bağlantı başarıyla kurulmuş gibi gösterilmez.
 
