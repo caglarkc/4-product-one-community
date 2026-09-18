@@ -173,7 +173,7 @@ class AuthTests(TestCase):
 
     def test_response_allowlist_and_no_store_and_disabled_social(self):
         response = self.register()
-        self.assertEqual(set(response.json()['user']), {'id', 'email', 'username', 'full_name', 'birth_date', 'gender', 'phone', 'email_verified', 'phone_verified', 'profile_complete', 'providers', 'capabilities', 'has_usable_password'})
+        self.assertEqual(set(response.json()['user']), {'id', 'email', 'username', 'full_name', 'birth_date', 'gender', 'phone', 'email_verified', 'phone_verified', 'profile_complete', 'providers', 'connected_accounts', 'capabilities', 'has_usable_password'})
         for path in ['me', 'csrf', 'config']:
             self.assertEqual(self.client.get('/api/auth/' + path + '/')['Cache-Control'], 'no-store')
         self.assertEqual(self.client.get('/api/auth/config/').json()['providers'], {'google': False, 'github': False})

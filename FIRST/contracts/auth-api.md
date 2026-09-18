@@ -163,3 +163,16 @@ eski bekleyen kayıt `github_signup_expired` ile bildirilir.
 
 Kaynaklar: [GitHub OAuth akışı](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps),
 [e-posta API'si](https://docs.github.com/en/rest/users/emails).
+
+## Bağlı hesap görünümü
+
+`User.connected_accounts`, yalnız mevcut kullanıcının bağlı Google/GitHub
+kimliklerini gösteren bir dizidir. Mevcut `providers` alanı korunur. Her öğe:
+`{provider, display_name, username, email, avatar_url, profile_url}`; görüntüleme
+alanları string olup sağlayıcı verisi yoksa boş olabilir. GitHub kullanıcı adı
+sağlayıcıdaki özgün addır; FIRST kullanıcı adıyla karıştırılmaz. Google e-postası
+sağlayıcıdan alınan adrestir; eski kayıtta eksikse FIRST e-postasından türetilmez.
+
+Bu alanlar yalnız görüntüleme içindir; hesap sahipliği/eşleştirme ve doğrulama
+kararlarında kullanılmaz. Ham sağlayıcı yanıtı, erişim token'ı veya başka kullanıcı
+verisi döndürülmez. Hesap sayfası okunurken harici sağlayıcı isteği yapılmaz.

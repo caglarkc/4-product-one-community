@@ -29,6 +29,33 @@ class GoogleTests(TestCase):
         return {'username': 'google_member', 'full_name': 'Google Member', 'birth_date': '2000-01-01',
                 'gender': 'unspecified', **extra}
 
+    def test_display_metadata_signup_login_and_provider_email_separation(self):
+        claims = {'sub': 'display', 'email': 'provider@gmail.com', 'email_verified': True, 'name': 'Provider Name', 'picture': 'https://lh3.googleusercontent.com/a/photo', 'access_token': 'never-store'}
+        self.callback(self.start(), claims)
+        result = self.post('google/signup', self.signup_data())
+        account = SocialAccount.objects.get()
+        self.assertNotIn('access_token', account.extra_data)
+        self.assertEqual(result.json()['user']['connected_accounts'][0]['display_name'], 'Provider Name')
+        self.assertEqual(account.extra_data['email'], 'provider@gmail.com')
+        self.post('logout')
+        claims['name'] = 'Changed Provider'
+        result = self.callback(self.start(), claims)
+        self.assertEqual(result.json()['user']['connected_accounts'][0]['display_name'], 'Changed Provider')
+        account.refresh_from_db()
+        self.assertEqual(account.extra_data['display_name'], 'Changed Provider')
+
+    def test_mailbox_proof_never_relabels_provider_email(self):
+        self.callback(self.start(), {'sub': 'original-provider', 'email': 'original@example.com',
+                                    'email_verified': True, 'name': 'Provider Name'})
+        self.post('google/email/request', {'email': 'different@example.com'})
+        self.assertEqual(self.post('google/email/verify', {'key': self.email_key()}).status_code, 200)
+        result = self.post('google/signup', self.signup_data(full_name='Edited FIRST Name'))
+        self.assertEqual(result.status_code, 201)
+        self.assertEqual(result.json()['user']['email'], 'different@example.com')
+        display = result.json()['user']['connected_accounts'][0]
+        self.assertEqual(display['email'], 'original@example.com')
+        self.assertEqual(display['display_name'], 'Provider Name')
+
     def test_new_signup_is_pending_then_no_password_and_no_email(self):
         from django.core import mail
         params = self.start(remember_me=True)
@@ -89,6 +116,7 @@ class GoogleTests(TestCase):
         self.assertEqual(result.status_code, 201, result.content)
         self.assertTrue(result.json()['user']['email_verified'])
         self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(SocialAccount.objects.get().extra_data['email'], '')
 
     def test_validation_keeps_pending_and_rejects_password_email_tamper_age(self):
         self.callback(self.start())

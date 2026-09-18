@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-connected-accounts",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Backend connected_accounts contract and frontend cards integrated; existing providers list retained. API/deployment docs updated; auth matching/linking unchanged. Independent review and tests accepted.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Provider metadata contracts and shared design are integrated and documented.",
+      "status": "passed",
+      "evidence": "Backend connected_accounts contract and frontend cards integrated; existing providers list retained. API/deployment docs updated; auth matching/linking unchanged. Independent review and tests accepted."
+    }
+  ],
+  "checks": [
+    {
+      "name": "integration checks",
+      "status": "passed",
+      "evidence": "Backend connected_accounts contract and frontend cards integrated; existing providers list retained. API/deployment docs updated; auth matching/linking unchanged. Independent review and tests accepted."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T20:13:32.804998+00:00"
+}
