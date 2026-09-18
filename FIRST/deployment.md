@@ -231,3 +231,14 @@ Production redirects, CSRF validation, PKCE, browser binding and Secure cookies
 remain enabled. Use the exact loopback address, not another hostname or port.
 GitHub OAuth and email verification links still use their production URLs; this
 local setup currently supports the approved Google/Gmail sign-in workflow.
+
+Local verification (19 September 2026, Turkey time): backend release
+`20260918T212424-b253630ca429` passed Docker health, Django checks, migrations,
+and PostgreSQL/Redis connectivity. Real Google sign-in selected the authorized
+existing account, returned to the loopback frontend, and opened `/hesap` with an
+authenticated session. Google and GitHub connected-account cards, loaded GitHub
+avatar/profile link, and unchanged-profile disabled save were observed in Chrome.
+Desktop width had no horizontal overflow. Mobile viewport was not verified.
+Independent checks: 123 backend tests, 106 frontend tests, lint/typecheck; the
+deployment configuration allowlist was separately tested after a safely rolled
+back first attempt. The local frontend stays bound to 127.0.0.1 only.

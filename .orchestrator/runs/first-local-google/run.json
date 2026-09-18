@@ -4,8 +4,8 @@
   "title": "FIRST local frontend Google login",
   "goal": "Connect local frontend to existing backend and verify Google login without changing production redirect behavior",
   "createdAt": "2026-09-18T21:19:00.500Z",
-  "updatedAt": "2026-09-18T21:23:42.649Z",
-  "revision": 16,
+  "updatedAt": "2026-09-18T21:26:17.570Z",
+  "revision": 17,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -366,8 +366,9 @@
         ],
         "owner": "deploy"
       },
-      "status": "active",
-      "attempt": 1
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/deploy-2026-09-18T21-26-17-457Z.json"
     }
   ]
 }

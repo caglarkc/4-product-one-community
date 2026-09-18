@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-local-google",
+  "itemId": "deploy",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Release 20260918T212424-b253630ca429 healthy; real Google OAuth selected authorized account and returned to loopback with authenticated /hesap, Google/GitHub cards and loaded avatar. Desktop layout and disabled unchanged-profile save verified. No mobile claim.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Remote backend built healthy and real Google login succeeds on localhost",
+      "status": "passed",
+      "evidence": "Release 20260918T212424-b253630ca429 healthy; real Google OAuth selected authorized account and returned to loopback with authenticated /hesap, Google/GitHub cards and loaded avatar. Desktop layout and disabled unchanged-profile save verified. No mobile claim."
+    }
+  ],
+  "checks": [
+    {
+      "name": "deploy checks",
+      "status": "passed",
+      "evidence": "Release 20260918T212424-b253630ca429 healthy; real Google OAuth selected authorized account and returned to loopback with authenticated /hesap, Google/GitHub cards and loaded avatar. Desktop layout and disabled unchanged-profile save verified. No mobile claim."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T21:26:17.457696+00:00"
+}
