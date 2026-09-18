@@ -4,8 +4,8 @@
   "title": "FIRST local frontend Google login",
   "goal": "Connect local frontend to existing backend and verify Google login without changing production redirect behavior",
   "createdAt": "2026-09-18T21:19:00.500Z",
-  "updatedAt": "2026-09-18T21:22:04.531Z",
-  "revision": 9,
+  "updatedAt": "2026-09-18T21:23:42.649Z",
+  "revision": 16,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -26,7 +26,15 @@
   "policy": {
     "requiresIntegration": true
   },
-  "decisions": [],
+  "decisions": [
+    {
+      "id": "deploy-config-retry",
+      "summary": "First deployment attempt stopped before build because configure.py rejected new local OAuth key; prior server configuration restored, existing healthy service retained. Add key to deployment allowlist and independently review before retry.",
+      "reason": "Observed Invalid configuration payload; preserve unsuccessful deployment evidence",
+      "decidedAt": "2026-09-18T21:23:42.648Z",
+      "actor": "manager"
+    }
+  ],
   "items": [
     {
       "id": "backend",
@@ -248,8 +256,9 @@
         ],
         "owner": "verify"
       },
-      "status": "active",
-      "attempt": 1
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-18T21-22-58-310Z.json"
     },
     {
       "id": "integration",
@@ -304,8 +313,9 @@
         ],
         "owner": "integration"
       },
-      "status": "draft",
-      "attempt": 0
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-18T21-22-58-696Z.json"
     },
     {
       "id": "deploy",
@@ -356,8 +366,8 @@
         ],
         "owner": "deploy"
       },
-      "status": "draft",
-      "attempt": 0
+      "status": "active",
+      "attempt": 1
     }
   ]
 }
