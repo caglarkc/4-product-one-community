@@ -204,6 +204,12 @@ Read-only database checks confirm the original single user, both provider record
 GitHub name/handle/avatar/profile URL and Google name/email. No raw metadata or
 credentials were written into verification output.
 
-Frontend visual verification remains in the active connected-account run until
-Vercel automatically publishes the pushed frontend. No local production build or
-manual Vercel deployment was initiated.
+Automatic publication did not start for the new commits during the observation
+window. The user explicitly authorized a manual Vercel deployment for this task.
+Commit `08397bcfe885d928af787b904a1d7f1c717daa15` built successfully in 24 seconds
+as deployment `cDKJJvYtNnJuTGBxCMpL6M3JWHaH` (Ready, Production/Staged).
+A Promote request targeting the existing production domains was submitted.
+Vercel subsequently reported "A promotion is already pending/in-progress";
+the live account page still showed the previous frontend during verification.
+The connected-account run remains active until the domain promotion finishes and
+live visual verification passes. No local production build was run.
