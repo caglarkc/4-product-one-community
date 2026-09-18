@@ -1,0 +1,353 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-google-auth",
+  "title": "FIRST Google sign-in and signup",
+  "goal": "Implement approved Google sign-in and profile completion, deploy backend and verify live",
+  "createdAt": "2026-09-18T15:23:52.943Z",
+  "updatedAt": "2026-09-18T15:34:41.129Z",
+  "revision": 15,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "96d2ce1296d8bda1ab4f61f32f800703eed685e10eaba52b054f884ca37426eb",
+    "assumptions": []
+  },
+  "constraints": [
+    "FIRST only. No in-app Google linking. User authorized push and remote Docker rebuild. Vercel automatic build, no extra frontend build. No secrets in evidence."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [],
+  "items": [
+    {
+      "id": "backend",
+      "title": "backend",
+      "kind": "implement",
+      "domains": [
+        "first-frontend"
+      ],
+      "objective": "Implement approved Google sign-in and profile completion, deploy backend and verify live",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Design artifacts or evidence"
+      ],
+      "acceptanceCriteria": [
+        "Google login/signup and reauth follow approved rules and backend regressions pass."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth flow changes"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "google_backend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-18T15-34-14-896Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "frontend",
+      "kind": "implement",
+      "domains": [
+        "first-frontend"
+      ],
+      "objective": "Implement approved Google sign-in and profile completion, deploy backend and verify live",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Design artifacts or evidence"
+      ],
+      "acceptanceCriteria": [
+        "Google UI and constrained callback proxy implement shared API without in-app linking; frontend checks pass."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth flow changes"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "google_frontend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-18T15-34-15-112Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "first-frontend"
+      ],
+      "objective": "Implement approved Google sign-in and profile completion, deploy backend and verify live",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Design artifacts or evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent security review has no unresolved material findings."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "frontend"
+        ],
+        "reviews": [
+          "backend",
+          "frontend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "google_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-18T15-34-15-456Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "first-frontend"
+      ],
+      "objective": "Implement approved Google sign-in and profile completion, deploy backend and verify live",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Design artifacts or evidence"
+      ],
+      "acceptanceCriteria": [
+        "Tests and integration contract checks provide passing evidence."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "frontend"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-18T15-34-15-808Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "integration",
+      "kind": "integration",
+      "domains": [
+        "first-frontend"
+      ],
+      "objective": "Implement approved Google sign-in and profile completion, deploy backend and verify live",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Design artifacts or evidence"
+      ],
+      "acceptanceCriteria": [
+        "Accepted backend and frontend are consistent with user decisions."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review",
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "backend",
+          "frontend"
+        ]
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-18T15-34-16-148Z.json"
+    },
+    {
+      "id": "deploy",
+      "title": "deploy",
+      "kind": "deployment",
+      "domains": [
+        "first-frontend"
+      ],
+      "objective": "Implement approved Google sign-in and profile completion, deploy backend and verify live",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Design artifacts or evidence"
+      ],
+      "acceptanceCriteria": [
+        "Accepted commit pushed; remote backend rebuilt; live checks and any user-dependent limitations recorded."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "active",
+      "attempt": 1,
+      "resultRef": null
+    }
+  ]
+}

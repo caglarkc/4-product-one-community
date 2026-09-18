@@ -24,7 +24,17 @@ export async function proxyAuth(request:Request, path:string[]):Promise<Response
       headers.set('X-First-Client-Time',timestamp);
       headers.set('X-First-Client-Signature',createHmac('sha256',secret).update(message).digest('hex'));
     }
-    const response=await fetch(new URL(`/api/auth/${path.join('/')}/`,base),{
+    const target=new URL(`/api/auth/${path.join('/')}/`,base);
+    // Only Google's callback accepts query parameters. Never forward arbitrary URLs.
+    if(request.method==='GET' && path.join('/')==='google/callback'){
+      const query=new URL(request.url).searchParams;
+      for(const key of ['code','state','error']){
+        const values=query.getAll(key);
+        if(values.length>1 || (values[0]?.length || 0)>4096) return reply(400,'Geçersiz Google dönüşü.');
+        if(values.length) target.searchParams.set(key,values[0]);
+      }
+    }
+    const response=await fetch(target,{
       method:request.method,headers,cache:'no-store',redirect:'manual',
       body:['GET','HEAD'].includes(request.method)?undefined:await request.text(),
       signal:AbortSignal.timeout(30000),

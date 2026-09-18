@@ -110,4 +110,5 @@ def user_data(user):
             'full_name': user.full_name, 'birth_date': user.birth_date.isoformat() if user.birth_date else None,
             'gender': user.gender, 'phone': user.phone, 'email_verified': user.email_verified,
             'phone_verified': user.phone_verified, 'profile_complete': complete,
-            'providers': [], 'capabilities': {'can_apply': False, 'can_create_listing': False}}
+            'providers': list(user.socialaccount_set.values_list('provider', flat=True).distinct()),
+            'has_usable_password': user.has_usable_password(), 'capabilities': {'can_apply': False, 'can_create_listing': False}}

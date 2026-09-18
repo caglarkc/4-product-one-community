@@ -93,3 +93,5 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   .home-page { margin-top: 0; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; } }
+
+.google-auth { margin-block: var(--space-4); }

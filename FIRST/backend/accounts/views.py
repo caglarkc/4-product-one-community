@@ -60,7 +60,8 @@ class CsrfView(AuthView):
 
 class ConfigView(AuthView):
     def get(self, request):
-        return Response({'providers': {'google': False, 'github': False}, 'phone_verification_available': False})
+        from .google_views import enabled
+        return Response({'providers': {'google': enabled(), 'github': False}, 'phone_verification_available': False})
 
 
 class MeView(AuthView):

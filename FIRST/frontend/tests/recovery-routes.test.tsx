@@ -1,3 +1,4 @@
+vi.mock('../src/components/google-auth',()=>({GoogleButton:()=>null}));
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { it, expect, vi } from 'vitest';
 import ResetPage from '../src/app/sifre-sifirla/page';

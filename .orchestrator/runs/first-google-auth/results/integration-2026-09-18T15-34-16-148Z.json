@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-google-auth",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Shared API and fixed callback inspected across backend/frontend; no Google link UI, no passwords on signup. Secret config only backend env; ingress callback stays same-origin. All prior review/verify gates passed.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Accepted backend and frontend are consistent with user decisions.",
+      "status": "passed",
+      "evidence": "Shared API and fixed callback inspected across backend/frontend; no Google link UI, no passwords on signup. Secret config only backend env; ingress callback stays same-origin. All prior review/verify gates passed."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Task acceptance",
+      "status": "passed",
+      "evidence": "Shared API and fixed callback inspected across backend/frontend; no Google link UI, no passwords on signup. Secret config only backend env; ingress callback stays same-origin. All prior review/verify gates passed."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T15:34:16.148090+00:00"
+}

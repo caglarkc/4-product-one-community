@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { api, User } from '../lib/api';
-import { AccountForm, Field } from './account-form';
+import { AccountForm, Field, ReauthenticationContext } from './account-form';
 import { ActionLink, Alert, Button, PageHeading } from './ui';
 
 type Session = {id: string; created_at: string; expires_at: string; current: boolean};
@@ -58,7 +58,7 @@ export function AccountStatus({profile = false}: {profile?: boolean}) {
     {name: 'gender', label: 'Cinsiyet', value: user.gender, options: [['female', 'Kadın'], ['male', 'Erkek'], ['other', 'Diğer'], ['unspecified', 'Belirtmek istemiyorum']]},
     {name: 'phone', label: 'Telefon (isteğe bağlı, doğrulanmaz)', type: 'tel', value: user.phone, optional: true, maxLength: 32},
   ] : [];
-  return <div className={profile ? "account-page" : "surface home-page"}><PageHeading title={profile ? 'Hesabım' : 'Ana sayfa'} description={profile ? 'Profilinizi, giriş bilgilerinizi ve açık oturumlarınızı yönetin.' : undefined} />
+  return <ReauthenticationContext.Provider value={{google: !!user?.providers?.includes('google'), password: user?.has_usable_password !== false}}><div className={profile ? "account-page" : "surface home-page"}><PageHeading title={profile ? 'Hesabım' : 'Ana sayfa'} description={profile ? 'Profilinizi, giriş bilgilerinizi ve açık oturumlarınızı yönetin.' : undefined} />
     {error && <Alert role="alert" tone="error"><p>{error}</p>{user === undefined && <Button onClick={() => {setError(''); api<{user: User | null}>('me').then(data => setUser(data.user)).catch(caught => setError(caught.message));}}>Yeniden dene</Button>}</Alert>}
     {user === undefined && !error && <Alert role="status">Oturum kontrol ediliyor…</Alert>}
     {user === null && <Alert><p>Oturumunuz açık değil. <Link href="/giris">Giriş yapın</Link>.</p></Alert>}
@@ -74,9 +74,9 @@ export function AccountStatus({profile = false}: {profile?: boolean}) {
         </div><div className="account-column"><AccountForm title="E-posta değiştir" path="email/change" fields={[{name: 'email', label: 'Yeni e-posta', type: 'email', maxLength: 254}]} submit="Yeni adrese doğrulama gönder">
           <p>Yeni adres doğrulanana kadar mevcut adresiniz geçerlidir. Eski adresinize bildirim gönderilir. Onaydan sonra bütün oturumlar kapanır.</p>
         </AccountForm>
-        <AccountForm title="Şifre değiştir" path="password/change" fields={[{name: 'old_password', label: 'Eski şifre', type: 'password'}, {name: 'password', label: 'Yeni şifre', type: 'password', password: true}]} submit="Şifreyi değiştir" onSuccess={signedOut}>
+        {user.has_usable_password !== false && <AccountForm title="Şifre değiştir" path="password/change" fields={[{name: 'old_password', label: 'Eski şifre', type: 'password'}, {name: 'password', label: 'Yeni şifre', type: 'password', password: true}]} submit="Şifreyi değiştir" onSuccess={signedOut}>
           <p>Başarıyla değiştirildiğinde bütün oturumlar kapanır; yeni şifrenizle giriş yapın.</p>
-        </AccountForm>
+        </AccountForm>}
         </div></div><SessionList onSignedOut={signedOut}/>
       </>}
       <div className="account-exit"><Button variant="quiet" loading={busy} disabled={busy} onClick={async () => {
@@ -87,5 +87,5 @@ export function AccountStatus({profile = false}: {profile?: boolean}) {
         finally {lock.current = false; setBusy(false);}
       }}>{busy ? 'Çıkış yapılıyor…' : 'Çıkış yap'}</Button></div>
     </>}
-  </div>;
+  </div></ReauthenticationContext.Provider>;
 }
