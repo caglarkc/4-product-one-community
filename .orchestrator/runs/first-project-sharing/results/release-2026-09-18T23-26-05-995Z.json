@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-sharing",
+  "itemId": "release",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Pushed398b32ec66bc21c65011798136d6f7add53108f0 to verified private origin/main; remote fast-forward pull exact SHA, Docker release20260918T232438-398b32ec66bc healthy, projects.0001 applied, PostgreSQL/Redis checks passed. Vercel commit status success deployment3tBYwjcL9dqzb1SiRVt9mXiZ4cj1. Live authenticated browser /projelerim shows empty list and /projelerim/yeni correctly disabled App configuration. Real repo consent remains blocked in github-live.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Accepted changes pushed; backend rebuilt and live integration checked",
+      "status": "passed",
+      "evidence": "Pushed398b32ec66bc21c65011798136d6f7add53108f0 to verified private origin/main; remote fast-forward pull exact SHA, Docker release20260918T232438-398b32ec66bc healthy, projects.0001 applied, PostgreSQL/Redis checks passed. Vercel commit status success deployment3tBYwjcL9dqzb1SiRVt9mXiZ4cj1. Live authenticated browser /projelerim shows empty list and /projelerim/yeni correctly disabled App configuration. Real repo consent remains blocked in github-live."
+    }
+  ],
+  "checks": [
+    {
+      "name": "release checks",
+      "status": "passed",
+      "evidence": "Pushed398b32ec66bc21c65011798136d6f7add53108f0 to verified private origin/main; remote fast-forward pull exact SHA, Docker release20260918T232438-398b32ec66bc healthy, projects.0001 applied, PostgreSQL/Redis checks passed. Vercel commit status success deployment3tBYwjcL9dqzb1SiRVt9mXiZ4cj1. Live authenticated browser /projelerim shows empty list and /projelerim/yeni correctly disabled App configuration. Real repo consent remains blocked in github-live."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T23:26:05.995937+00:00"
+}
