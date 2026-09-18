@@ -139,3 +139,36 @@ isolated regression tests; no second live Google identity/signup was used. Real
 PostgreSQL race contention was not stress-tested. Google Console remains External /
 Testing with the intended test user; Branding is incomplete and Publish app is disabled.
 No Console settings or publishing state were changed.
+
+## GitHub integration — 18 September 2026
+
+Application commit `aebcb8807fb2b7a971b08f2c09aed4b1199c4725` was pushed to main.
+Vercel reported successful automatic deployment; no extra frontend production build
+was run. Updated `send-machine` pulled the exact commit from GitHub into the clean
+remote checkout and created healthy release `20260918T200008-aebcb8807fb2`.
+GitHub configuration was merged while persistent database/Redis/Django settings
+were preserved. Database backup, Django/migration checks, PostgreSQL and Redis
+connectivity passed; no new migration was needed.
+
+111 backend tests (24 GitHub), 95 frontend tests, lint/typecheck and independent
+security/deployment review passed. Live endpoint checks verified provider readiness,
+secure CSRF cookie, missing-CSRF rejection, fixed callback with minimal `user:email`
+scope and PKCE, cancellation and replay rejection, denied pending signup without
+proof, denied anonymous linking and explicit unsupported GitHub fresh reauth.
+
+Chrome completed real GitHub OAuth using the existing signed-in account. The
+callback returned 200 and FIRST showed the account with GitHub connected. Read-only
+database comparison confirmed the same single user, one Google identity and one
+new GitHub identity; no duplicate user was created. Only read-only email access was
+requested. A separate new-user live signup and explicit in-account linking were
+not performed; these flows are covered by isolated tests. Real PostgreSQL race
+contention was not stress-tested.
+
+Startup logs exposed Gunicorn26.2's unused management control socket attempting to
+write under `/home/app` in the read-only container. Follow-up `d2cea0c` disables that
+socket with the supported `--no-control-socket` option, preserving the read-only
+filesystem and existing HTTP/worker/log/health configuration.
+
+The follow-up was pulled and rebuilt as release `20260918T200454-d2cea0cb4c3b`.
+All three containers are healthy; PostgreSQL/Redis and migration checks pass.
+Fresh backend startup logs contain no control-socket error; `/health/` returns 200.
