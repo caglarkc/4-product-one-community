@@ -38,9 +38,9 @@ Google/GitHub kaydında sağlayıcıdan gelmeyen zorunlu profil bilgileri ilk gi
 | Herkese açık projeleri gezmek | Hesap gerekmiyor |
 | Public repo ilanına başvurmak | Hesap, doğrulanmış e-posta ve bağlı GitHub hesabı |
 | GitHub üzerinde katkı/PR işlemleri | Bağlı GitHub hesabı ve işlemin gerektirdiği GitHub izinleri; öğrenci doğrulaması şart değil |
-| Repo ilanı eklemek | Doğrulanmış e-posta, bağlı GitHub, repo sahibi/yetkili yönetici olma ve doğrulanmış telefon |
+| Repo ilanı eklemek | Doğrulanmış e-posta, bağlı GitHub ve repo sahibi/yetkili yönetici olma; test aşamasında telefon şartı yok |
 
-Telefon doğrulaması normal kullanıcının başvuru yapması için şart değildir. Repo ilanı ekleme aşamasında telefonu olmayan kullanıcıdan numara ve doğrulama istenir. Buradaki “repo oluşturma”, mevcut GitHub reposunu FIRST'e bağlayıp ilan oluşturma anlamındadır; GitHub'da yeni repo oluşturan API kararlaştırılmadı. Private repolarda katılımın yalnız davetle olması kuralı korunur.
+Telefon doğrulaması normal kullanıcının başvuru yapması için şart değildir. 19 Eylül 2026 test aşaması kararıyla repo ilanı ekleme sırasında telefon numarası veya telefon doğrulaması aranmaz. Telefon alanı isteğe bağlı kalır; numaranın dolu veya boş olması işlem yetkisini etkilemez. Buradaki “repo oluşturma”, mevcut GitHub reposunu FIRST'e bağlayıp ilan oluşturma anlamındadır; GitHub'da yeni repo oluşturan API kararlaştırılmadı. Private repolarda katılımın yalnız davetle olması kuralı korunur.
 
 ## 5. Telefon
 
@@ -112,7 +112,7 @@ Hesap e-postası doğrulaması, telefon doğrulaması ve aktif öğrenci doğrul
 - Django/DRF kimlik ve yetki kaynağıdır; django-allauth sosyal girişleri yönetir. HttpOnly session cookie + CSRF ve Next.js üzerinden aynı origin proxy yaklaşımı kabul edildi.
 - Kalıcı veriler PostgreSQL'de tutulacaktır. Auth işlemlerinde Redis kullanılacaktır; oturum, sayaç ve geçici veri sorumlulukları ile kalıcılık/arıza davranışı teknik uygulamada netleştirilecektir.
 - Backend uzak sunucuda Docker içinde çalıştırılır. İlk aşama FIRST oturumudur; dört ürünün ortak oturum/SSO tasarımı ayrıdır.
-- Telefon doğrulama kanalı/sağlayıcısı ilan akışından önce seçilecektir. İlk auth aşamasında telefon isteğe bağlıdır ve doğrulanmış sayılmaz.
+- Telefon doğrulama kanalı/sağlayıcısı daha sonraya ertelendi. Test aşamasında ilan akışı telefon doğrulamasına bağlı değildir; telefon isteğe bağlıdır ve girilmesi doğrulanmış sayılmaz.
 - Yeni kabul edilen oturum listeleme/sonlandırma, yeniden doğrulama, e-posta değiştirme ve sosyal kullanıcıya şifre oluşturma akışlarının endpoint/veri sözleşmeleri uygulama öncesinde tamamlanacaktır.
 
 ## 14. Google akışı — 18 Eylül 2026 kullanıcı güncellemesi
@@ -133,3 +133,12 @@ ile eşleştirme, şifresiz profil tamamlama ve Hesabım ekranından GitHub bağ
 GitHub OAuth yeni kimlik doğrulama zamanını garanti etmediğinden hassas işlemler için
 şifre veya bağlı Google hesabıyla yakın yeniden doğrulama gerekir; yalnız GitHub
 kullanan kişi mevcut e-posta kurtarma akışıyla yerel şifre oluşturabilir.
+
+## 19 Eylül 2026 — Repo erişimi ve test aşaması
+
+- Telefon numarası ve telefon doğrulaması repo ilanı oluşturma koşulu değildir; test aşamasında tek iletişim doğrulama şartı e-postadır. GitHub bağlantısı ve seçilen reponun sahibi/yetkili yöneticisi olma şartları korunur.
+- Kullanıcının son kararı önceki geniş OAuth `repo` izni tercihini geçersiz kılar. Mevcut GitHub OAuth giriş/bağlama akışı `user:email` ile kalır.
+- Repo işlemleri ayrı bir GitHub App kurulumu üzerinden, kullanıcının seçtiği repolarda yürütülür. Kullanıcının tek repo seçebilmesi gerekir; bütün hesabın private repolarına erişim zorunlu tutulmaz.
+- Repo ekleme akışı GitHub App kurulumunu ve repo seçimini başlatır; FIRST yalnız kurulumda erişim verilmiş repoları işlem için sunar. Kurulum callback parametreleri tek başına yetki kanıtı sayılmaz; kullanıcı/kurulum ilişkisi ve repo yönetim yetkisi GitHub API ile doğrulanır.
+- Seçilen repolarda mevcut ürün akışlarının gerektirdiği okuma/yazma izinleri tanımlanır. Repo erişimi seçimi ile Contents, Pull requests, Issues ve Administration gibi işlem izinleri ayrı kontrol edilir. Hesap/organizasyon geneli yönetim izinleri bu kararın parçası değildir.
+- GitHub App kaydı, izinlerin endpoint bazında kesinleştirilmesi, kurulum doğrulaması ve token yönetimi henüz uygulanmadı. Mevcut OAuth kimlikleri ve girişleri değiştirilmez.
