@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-local-google",
+  "itemId": "verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "local_google_review",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Independent verifier: backend 123 tests, frontend 106 tests, lint/typecheck, Python compile and diff check pass; send-machine payload 34 runtime files and exact local allowlist confirmed.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Backend tests and frontend checks pass",
+      "status": "passed",
+      "evidence": "Independent verifier: backend 123 tests, frontend 106 tests, lint/typecheck, Python compile and diff check pass; send-machine payload 34 runtime files and exact local allowlist confirmed."
+    }
+  ],
+  "checks": [
+    {
+      "name": "verify checks",
+      "status": "passed",
+      "evidence": "Independent verifier: backend 123 tests, frontend 106 tests, lint/typecheck, Python compile and diff check pass; send-machine payload 34 runtime files and exact local allowlist confirmed."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T21:22:58.310378+00:00"
+}
