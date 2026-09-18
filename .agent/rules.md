@@ -13,6 +13,14 @@
 
 18 Eylül 2026 kararıyla FIRST tasarım aşaması açılmıştır. `FIRST/tasarim-dili.md` içindeki onaylı renk/tema dili, merkezi token'lar ve ortak UI bileşenleri mevcut ve yeni FIRST sayfalarında kullanılır. Referans görselin yerleşimi ve örnek özellikleri kapsam onayı değildir. STEP, INTO ve PATH için ayrı karar verilene kadar işlev ve sade yerleşim önceliği korunur. Frontend işlerinde `.agent/skills/frontend/frontend-implementation/SKILL.md` uygulanır.
 
+## Ortam yapılandırması — doğrudan `.env`
+
+19 Eylül 2026 kalıcı kullanıcı talimatı: Bu repo kapsamındaki görevlerde agent ilgili gerçek `.env` dosyalarını okuyabilir, gerekli değerleri doğrudan yazabilir ve yönetebilir; bunun için her seferinde yeniden izin istemez. Yapılandırmayı `.env.example` üzerinden yürütme veya yalnız örnek dosyayı güncelleyerek tamamlandı sayma. Görev kapsamındaki yerel ve uzak ortam değerlerini mevcut dağıtım akışıyla eşleştir; sunucuya özgü kalıcı anahtarları koru.
+
+- Bilinen değerleri gerçek `.env` dosyasına yaz. Sağlayıcıdan henüz alınmamış anahtarları uydurma; eksik yapılandırmayı açıkça bildir ve entegrasyonu çalışıyor gösterme.
+- Gizli değerleri sohbet, log, test çıktısı veya görev kayıtlarına dökme. Bu yetki sağlayıcı hesabında yeni izin verme/kimlik doğrulama adımları yerine geçmez; platformun işlem anında gerektirdiği onaylar ayrı kalır.
+- Kullanıcının bu private repo için verdiği `.env` commit/push talimatı geçerlidir. Yalnız görev kapsamındaki dosyaları doğrulanmış mevcut private remote'a teslim et; bu yetkiyi başka repo veya public hedeflere genelleme.
+
 ## Git Teslim Protokolü
 
 Kullanıcının kalıcı talimatı: **Dosya değişikliği yapılan her görev sonunda, ilgili kontroller tamamlandıktan sonra değişiklikleri anlamlı commit'lerle kaydet ve pushla.** Her görevde yeniden izin isteme. Kullanıcı o görev için commit/push istemediğini belirtirse veya farklı branch seçerse bu talimatı uygula.
