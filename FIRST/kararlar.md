@@ -39,7 +39,7 @@ Tamamlayıcı kayıtlar: [teknoloji ve yayın kararları](teknik-kararlar.md), [
 - Kullanıcı proje ve ekipleri kaydedip daha sonra bulabilir.
 - Başlık, kategori, açıklama ve ihtiyaçlar sonradan düzenlenebilir; katılım yönteminin değiştirilememesi kuralı korunur.
 - Repo ilanını yalnızca repo sahibi veya yetkili yöneticisi açabilir.
-- İlan oluşturmak için bağlı GitHub hesabı, doğrulanmış e-posta ve doğrulanmış telefon zorunludur; aynı telefon yalnızca tek hesapta doğrulanmış olarak kullanılabilir; doğrulanmamış numara girişi gerçek sahibinin doğrulamasını engellemez.
+- 19 Eylül 2026 test aşaması güncellemesi: İlan oluşturmak için bağlı GitHub hesabı ve doğrulanmış e-posta gerekir; repo sahibi/yetkili yönetici kontrolü korunur. Telefon numarası girilmesi veya doğrulanması şimdilik şart değildir ve işlem yetkisini etkilemez. Telefon doğrulamasının ileride devreye alınması ayrı karardır.
 - İlanlar platformun yayın öncesi onayı beklenmeden doğrudan yayımlanır. Uygunsuz içerik için şikâyet özelliği korunur; değerlendirme süreci ayrıca belirlenecek.
 - Projeler alanına göre kategorilenir; kullanılan teknolojiler ve aranan beceriler ayrı filtrelerdir. Kesin kategori ve filtre değerleri henüz belirlenmedi.
 - Proje sahibi genel destek ihtiyacını ve somut görevlerini yayımlayabilir.
