@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-sharing",
+  "itemId": "setup",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "py_compile passed; AST comparison confirmed all GitHub App sender keys accepted by receiver; dry-run includes projects runtime and excludes env/tests; GitHub registration form prepared Contents/Metadata read-only with exact callback. Actual App registration pending explicit user confirmation; feature remains disabled.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Deployment sender/receiver accept matching GitHub App keys and archive projects runtime sources; registration settings documented",
+      "status": "passed",
+      "evidence": "py_compile passed; AST comparison confirmed all GitHub App sender keys accepted by receiver; dry-run includes projects runtime and excludes env/tests; GitHub registration form prepared Contents/Metadata read-only with exact callback. Actual App registration pending explicit user confirmation; feature remains disabled."
+    }
+  ],
+  "checks": [
+    {
+      "name": "setup checks",
+      "status": "passed",
+      "evidence": "py_compile passed; AST comparison confirmed all GitHub App sender keys accepted by receiver; dry-run includes projects runtime and excludes env/tests; GitHub registration form prepared Contents/Metadata read-only with exact callback. Actual App registration pending explicit user confirmation; feature remains disabled."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T23:20:10.538960+00:00"
+}

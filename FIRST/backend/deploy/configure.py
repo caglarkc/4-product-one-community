@@ -11,7 +11,9 @@ if str(path) != '/opt/first/backend/shared/.env':
 incoming = json.load(sys.stdin)
 allowed = {'AUTH_PROXY_SECRET', 'FRONTEND_ORIGIN', 'CSRF_TRUSTED_ORIGINS', 'DJANGO_ALLOWED_HOSTS',
            'SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM', 'SMTP_TLS', 'SMTP_SSL', 'GOOGLE_ENABLED', 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REDIRECT_URI', 'GOOGLE_LOCAL_REDIRECT_URI',
-           'GITHUB_ENABLED', 'GITHUB_CLIENT_ID', 'GITHUB_CLIENT_SECRET', 'GITHUB_REDIRECT_URI'}
+           'GITHUB_ENABLED', 'GITHUB_CLIENT_ID', 'GITHUB_CLIENT_SECRET', 'GITHUB_REDIRECT_URI',
+           'GITHUB_APP_ENABLED', 'GITHUB_APP_ID', 'GITHUB_APP_SLUG', 'GITHUB_APP_CLIENT_ID',
+           'GITHUB_APP_CLIENT_SECRET', 'GITHUB_APP_REDIRECT_URI', 'GITHUB_APP_TOKEN_KEY'}
 if set(incoming) - allowed or any(not isinstance(v, str) or '\n' in v or '\r' in v for v in incoming.values()):
     raise SystemExit('Invalid configuration payload')
 settings = {}

@@ -26,7 +26,7 @@ export async function proxyAuth(request:Request, path:string[]):Promise<Response
     }
     const target=new URL(`/api/auth/${path.join('/')}/`,base);
     // Only explicitly supported OAuth callbacks accepts query parameters. Never forward arbitrary URLs.
-    if(request.method==='GET' && ['google/callback','github/callback'].includes(path.join('/'))){
+    if(request.method==='GET' && ['google/callback','github/callback','projects/github/callback'].includes(path.join('/'))){
       const query=new URL(request.url).searchParams;
       for(const key of ['code','state','error']){
         const values=query.getAll(key);

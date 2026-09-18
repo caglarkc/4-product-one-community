@@ -4,3 +4,5 @@ gunicorn>=26.2,<27
 redis>=5,<7
 psycopg[binary]>=3.2,<4
 django-allauth[socialaccount]==65.19.4
+
+cryptography>=44,<47

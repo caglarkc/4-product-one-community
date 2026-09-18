@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-09-18T21:19:00.352Z",
+  "generatedAt": "2026-09-18T23:11:39.157Z",
   "repository": {
     "root": ".",
     "name": "4-product-one-community",
-    "commit": "14c5c6a68784257d303fe06484116214ff769f25",
+    "commit": "848792befa7861f226ba31740bbac7c3f6cfefd4",
     "layers": {
       "FIRST": true,
       "STEP": true,
@@ -98,7 +98,7 @@
   },
   "mapHealth": {
     "stale": true,
-    "sourceFingerprint": "aaacdd39208b55b61be3113be3eccd812bc1417afd0a72b7f2b34ff3de026a8a",
+    "sourceFingerprint": "55637687a1af10c5c8707051a39cd4c4a3d7bf5fca7e80dd091fef5677decaf5",
     "mapSourceFingerprint": "9748310452121736b3bcfed61ab28fdadd48fd0546cca8edbb539fa646385c77",
     "dependencyMapGeneratedAt": null,
     "note": "Tazelik, checkout mtime yerine deterministik kaynak ağacı fingerprint’i ile ölçülür."
@@ -138,5 +138,5 @@
       }
     }
   ],
-  "snapshot": "8f4fa2a8657cc5d40b35f860d62cf32a7cb3dc503513ef4e961856576d34f02b"
+  "snapshot": "bc3e4cbfc787921322dce681158f9492a7a1755a320fc087cb458177efdb3654"
 }

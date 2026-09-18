@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-sharing",
+  "itemId": "spec",
+  "agent": {
+    "platform": "codex",
+    "identity": "sharing_discovery",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Read source and official GitHub App authorization/installations API docs; contract.md defines App user token identity/admin proof, gateway endpoints, private DTO and README bounds.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "API contract and GitHub App ownership verification defined",
+      "status": "passed",
+      "evidence": "Read source and official GitHub App authorization/installations API docs; contract.md defines App user token identity/admin proof, gateway endpoints, private DTO and README bounds."
+    }
+  ],
+  "checks": [
+    {
+      "name": "spec checks",
+      "status": "passed",
+      "evidence": "Read source and official GitHub App authorization/installations API docs; contract.md defines App user token identity/admin proof, gateway endpoints, private DTO and README bounds."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T23:14:08.167912+00:00"
+}

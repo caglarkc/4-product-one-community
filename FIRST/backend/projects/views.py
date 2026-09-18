@@ -1,0 +1,238 @@
+import base64
+import hashlib
+import secrets
+from urllib.parse import urlencode
+from allauth.socialaccount.models import SocialAccount
+from django.conf import settings
+from django.db import IntegrityError, transaction
+from django.shortcuts import get_object_or_404
+from rest_framework import serializers
+from rest_framework.exceptions import NotAuthenticated, PermissionDenied, ValidationError, APIException
+from rest_framework.response import Response
+from accounts import security
+from accounts.serializers import StrictSerializer
+from accounts.views import AuthView, RateLimited
+from accounts.proxy import client_ip
+from . import github
+from .models import GitHubCredential, Project
+
+CATEGORIES = [('software', 'Yazılım'), ('design', 'Tasarım'), ('research', 'Araştırma'), ('documentation', 'Dokümantasyon'), ('other', 'Diğer')]
+
+
+def member(request, eligible=False):
+    if not request.user.is_authenticated:
+        raise NotAuthenticated()
+    account = SocialAccount.objects.filter(user=request.user, provider='github').first()
+    if eligible:
+        if not request.user.email_verified:
+            raise PermissionDenied({'detail': 'Önce e-posta adresinizi doğrulayın.', 'code': 'email_verification_required'})
+        if not account:
+            raise PermissionDenied({'detail': 'Önce GitHub hesabınızı bağlayın.', 'code': 'github_link_required'})
+    return account
+
+
+def installation_url():
+    return 'https://github.com/apps/' + settings.GITHUB_APP_SLUG + '/installations/new' if github.enabled() else None
+
+
+def project_data(project, repo=None, visible=True):
+    # Stored privacy is never trusted to expose a URL: current provider proof only.
+    private = repo['private'] if repo else True
+    return {'id': str(project.pk), 'title': project.title, 'category': project.category,
+        'description': project.description, 'readme_excerpt': project.readme_excerpt if visible else '',
+        'is_private': private, 'repository_url': repo['html_url'] if repo and not private else None,
+        'repository_name': repo['full_name'] if repo and not private else None,
+        'is_active': project.is_active, 'created_at': project.created_at.isoformat(), 'updated_at': project.updated_at.isoformat()}
+
+
+class SelectionInput(StrictSerializer):
+    installation_id = serializers.IntegerField(min_value=1)
+    repository_id = serializers.IntegerField(min_value=1)
+
+
+class CreateInput(SelectionInput):
+    title = serializers.CharField(max_length=200)
+    category = serializers.ChoiceField(choices=CATEGORIES)
+    description = serializers.CharField(max_length=5000, required=False, allow_blank=True, default='')
+    readme_excerpt = serializers.CharField(max_length=600, required=False, allow_blank=True, default='')
+
+
+class EditInput(StrictSerializer):
+    title = serializers.CharField(max_length=200, required=False)
+    category = serializers.ChoiceField(choices=CATEGORIES, required=False)
+    description = serializers.CharField(max_length=5000, required=False, allow_blank=True)
+    is_active = serializers.BooleanField(required=False)
+
+    def validate_is_active(self, value):
+        if type(self.initial_data.get('is_active')) is not bool:
+            raise serializers.ValidationError('Boolean gereklidir.')
+        return value
+
+
+def validate(cls, data):
+    serializer = cls(data=data)
+    serializer.is_valid(raise_exception=True)
+    return serializer.validated_data
+
+
+class Conflict(APIException):
+    status_code = 409
+    default_detail = {'detail': 'Bu repo için aktif bir paylaşım zaten var.', 'code': 'repository_already_shared'}
+
+
+class ConfigView(AuthView):
+    def get(self, request):
+        return Response({'categories': [{'value': value, 'label': label} for value, label in CATEGORIES], 'github_app_enabled': github.enabled()})
+
+
+class StatusView(AuthView):
+    def get(self, request):
+        account = member(request)
+        connected = False
+        if account and github.enabled():
+            try:
+                token = github.access_token(account)
+                identity = github.api(token, '/user')
+                connected = type(identity.get('id')) is int and str(identity['id']) == account.uid
+            except github.GitHubAccessError:
+                pass
+        return Response({'enabled': github.enabled(), 'connected': connected, 'github_linked': bool(account), 'installation_url': installation_url()})
+
+
+class StartView(AuthView):
+    def post(self, request):
+        account = member(request, eligible=True)
+        github.require_enabled()
+        validate(StrictSerializer, request.data)
+        if security.count('github-app-start', str(request.user.pk)) > 20:
+            raise RateLimited()
+        binder = secrets.token_urlsafe(32)
+        request.session['github_app_binder'] = binder
+        verifier = secrets.token_urlsafe(48)
+        flow = {'binder': binder, 'verifier': verifier, 'user_id': request.user.pk,
+            'uid': account.uid, 'account_id': account.pk, 'security_version': request.user.security_version,
+            'session_hash': security.digest(request.session.session_key)}
+        state = security.issue_token('github-app-state', flow, 600)
+        challenge = base64.urlsafe_b64encode(hashlib.sha256(verifier.encode()).digest()).rstrip(b'=').decode()
+        return Response({'authorization_url': 'https://github.com/login/oauth/authorize?' + urlencode({
+            'client_id': settings.GITHUB_APP_CLIENT_ID, 'redirect_uri': settings.GITHUB_APP_REDIRECT_URI,
+            'state': state, 'code_challenge': challenge, 'code_challenge_method': 'S256'})})
+
+
+class CallbackView(AuthView):
+    def get(self, request):
+        account = member(request, eligible=True)
+        github.require_enabled()
+        state = request.query_params.get('state', '')
+        if not state or len(state) > 128 or len(request.query_params.getlist('state')) != 1:
+            raise PermissionDenied('Geçersiz GitHub doğrulaması.')
+        flow = security.peek_token('github-app-state', state)
+        binder = request.session.get('github_app_binder', '')
+        if (not flow or not binder or not secrets.compare_digest(binder, flow.get('binder', ''))
+                or flow.get('user_id') != request.user.pk or flow.get('account_id') != account.pk or flow.get('uid') != account.uid
+                or flow.get('security_version') != request.user.security_version
+                or flow.get('session_hash') != security.digest(request.session.session_key)):
+            raise PermissionDenied('Geçersiz GitHub doğrulaması.')
+        if security.consume_token('github-app-state', state) != flow:
+            raise PermissionDenied('GitHub doğrulaması daha önce kullanıldı.')
+        request.session.pop('github_app_binder', None)
+        code = request.query_params.get('code', '')
+        if request.query_params.get('error') or not code or len(code) > 4096 or len(request.query_params.getlist('code')) != 1:
+            raise PermissionDenied('GitHub doğrulaması tamamlanamadı.')
+        tokens = github.token_request({'code': code, 'code_verifier': flow['verifier'], 'redirect_uri': settings.GITHUB_APP_REDIRECT_URI})
+        identity = github.api(tokens['access_token'], '/user')
+        if type(identity.get('id')) is not int or str(identity['id']) != account.uid:
+            raise PermissionDenied({'detail': 'Hesabınıza bağlı GitHub hesabını seçin.', 'code': 'github_identity_mismatch'})
+        with transaction.atomic():
+            # Serialize against account recovery/deletion before storing a credential.
+            from accounts.models import User
+            user = User.objects.select_for_update().get(pk=request.user.pk)
+            if user.security_version != flow['security_version'] or not SocialAccount.objects.filter(pk=account.pk, user=user, uid=flow['uid']).exists():
+                raise PermissionDenied('GitHub bağlantısı değişti.')
+            github.save_tokens(account, tokens)
+        return Response({'status': 'connected'})
+
+
+class RepositoriesView(AuthView):
+    def get(self, request):
+        account = member(request, eligible=True)
+        _, repos = github.authorized_repositories(account)
+        return Response({'repositories': repos})
+
+
+class PreviewView(AuthView):
+    def post(self, request):
+        account = member(request, eligible=True)
+        data = validate(SelectionInput, request.data)
+        token, repo = github.repository(account, **data)
+        return Response({'repository': repo, 'readme_excerpt': github.readme(token, repo)})
+
+
+class MineView(AuthView):
+    def get(self, request):
+        account = member(request)
+        repos = {}
+        if account and github.enabled():
+            try:
+                _, rows = github.authorized_repositories(account)
+                repos = {(row['installation_id'], row['id']): row for row in rows}
+            except github.GitHubAccessError:
+                pass
+        return Response({'projects': [project_data(project, repos.get((project.installation_id, project.repository_id)))
+            for project in Project.objects.filter(owner=request.user)]})
+
+
+class CreateView(AuthView):
+    def post(self, request):
+        account = member(request, eligible=True)
+        data = validate(CreateInput, request.data)
+        token, repo = github.repository(account, data['installation_id'], data['repository_id'])
+        current_excerpt = github.readme(token, repo)
+        if data['readme_excerpt'] and data['readme_excerpt'] != current_excerpt:
+            raise ValidationError({'readme_excerpt': ['README değişti. Önizlemeyi yenileyin.']})
+        try:
+            with transaction.atomic():
+                project = Project.objects.create(owner=request.user, is_private=repo['private'], **data)
+        except IntegrityError:
+            raise Conflict() from None
+        return Response({'project': project_data(project, repo)}, status=201)
+
+
+class DetailView(AuthView):
+    def get(self, request, project_id):
+        if security.count('project-public-view', client_ip(request), ttl=60) > 30:
+            raise RateLimited()
+        project = get_object_or_404(Project, pk=project_id)
+        own = request.user.is_authenticated and request.user.pk == project.owner_id
+        if not project.is_active and not own:
+            from rest_framework.exceptions import NotFound
+            raise NotFound()
+        account = SocialAccount.objects.filter(user_id=project.owner_id, provider='github').first()
+        repo = None
+        try:
+            if account:
+                _, repo = github.repository(account, project.installation_id, project.repository_id)
+        except github.GitHubAccessError:
+            pass
+        return Response({'project': project_data(project, repo, visible=own or repo is not None)})
+
+    def patch(self, request, project_id):
+        account = member(request)
+        project = get_object_or_404(Project, pk=project_id, owner=request.user)
+        data = validate(EditInput, request.data)
+        archive_only = data == {'is_active': False}
+        repo = None
+        if not archive_only:
+            account = member(request, eligible=True)
+            _, repo = github.repository(account, project.installation_id, project.repository_id)
+        try:
+            with transaction.atomic():
+                project = Project.objects.select_for_update().get(pk=project.pk, owner=request.user)
+                for field, value in data.items():
+                    setattr(project, field, value)
+                if repo:
+                    project.is_private = repo['private']
+                project.save()
+        except IntegrityError:
+            raise Conflict() from None
+        return Response({'project': project_data(project, repo)})

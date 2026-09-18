@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [path('csrf/', views.CsrfView.as_view()), path('config/', views.ConfigView.as_view()),
@@ -37,3 +37,5 @@ urlpatterns += [
     path('github/email/request/', github.GitHubEmailRequestView.as_view()),
     path('github/email/verify/', github.GitHubEmailVerifyView.as_view()),
 ]
+
+urlpatterns += [path('projects/', include('projects.urls'))]

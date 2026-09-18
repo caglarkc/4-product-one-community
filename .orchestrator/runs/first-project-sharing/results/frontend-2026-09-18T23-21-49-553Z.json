@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-sharing",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "repo_access_frontend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "117 frontend tests, lint and typecheck passed; shared UI pages and exact App callback added. Real Chrome desktop and390px checked;320px overflow found then corrected and verified innerWidth=scrollWidth320. Backend not released yet; real repo flow pending credentials.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "My Projects navigation/list/create/detail with safe previews and actual API integration",
+      "status": "passed",
+      "evidence": "117 frontend tests, lint and typecheck passed; shared UI pages and exact App callback added. Real Chrome desktop and390px checked;320px overflow found then corrected and verified innerWidth=scrollWidth320. Backend not released yet; real repo flow pending credentials."
+    }
+  ],
+  "checks": [
+    {
+      "name": "frontend checks",
+      "status": "passed",
+      "evidence": "117 frontend tests, lint and typecheck passed; shared UI pages and exact App callback added. Real Chrome desktop and390px checked;320px overflow found then corrected and verified innerWidth=scrollWidth320. Backend not released yet; real repo flow pending credentials."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T23:21:49.553243+00:00"
+}

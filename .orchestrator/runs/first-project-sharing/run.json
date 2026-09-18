@@ -1,0 +1,550 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-sharing",
+  "title": "FIRST selected-repository project sharing",
+  "goal": "Implement My Projects, project creation and selected repository GitHub App access with safe public/private previews",
+  "createdAt": "2026-09-18T23:11:39.304Z",
+  "updatedAt": "2026-09-18T23:23:38.957Z",
+  "revision": 23,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "bc3e4cbfc787921322dce681158f9492a7a1755a320fc087cb458177efdb3654",
+    "assumptions": []
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "phase-one-permissions",
+      "summary": "This phase uses only Contents read and mandatory Metadata read on selected repositories; administration write rejected by automatic UI review as broader than sharing. No write permissions or file browsing enabled.",
+      "reason": "Current implementation reads repository metadata and README only; preserve selected-repository scope and defer future contribution/invite operations.",
+      "decidedAt": "2026-09-18T23:19:10.829Z",
+      "actor": "manager"
+    },
+    {
+      "id": "categories",
+      "summary": "Initial categories software, design, research, documentation, other are API-supplied; optional clarification sent and implementation proceeds with these replaceable defaults.",
+      "reason": "User requested type selection but exact taxonomy not established; not a security-critical choice.",
+      "decidedAt": "2026-09-18T23:19:10.951Z",
+      "actor": "manager"
+    }
+  ],
+  "items": [
+    {
+      "id": "spec",
+      "title": "spec",
+      "kind": "discovery",
+      "domains": [
+        "first-projects"
+      ],
+      "objective": "API contract and GitHub App ownership verification defined",
+      "responsibility": "API contract and GitHub App ownership verification defined",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "API contract and GitHub App ownership verification defined"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Selected repository access and privacy"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "spec"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/spec-2026-09-18T23-14-08-167Z.json"
+    },
+    {
+      "id": "backend",
+      "title": "backend",
+      "kind": "implement",
+      "domains": [
+        "first-projects"
+      ],
+      "objective": "Project persistence, email-only eligibility and secure selected repo access with tests",
+      "responsibility": "Project persistence, email-only eligibility and secure selected repo access with tests",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Project persistence, email-only eligibility and secure selected repo access with tests"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "spec"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Selected repository access and privacy"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/projects",
+          "FIRST/backend/config",
+          "FIRST/backend/accounts/serializers.py",
+          "FIRST/backend/requirements.txt",
+          "FIRST/backend/accounts/urls.py"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "backend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-18T23-23-18-199Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "frontend",
+      "kind": "implement",
+      "domains": [
+        "first-projects"
+      ],
+      "objective": "My Projects navigation/list/create/detail with safe previews and actual API integration",
+      "responsibility": "My Projects navigation/list/create/detail with safe previews and actual API integration",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "My Projects navigation/list/create/detail with safe previews and actual API integration"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "spec"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Selected repository access and privacy"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "frontend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-18T23-21-49-553Z.json"
+    },
+    {
+      "id": "setup",
+      "title": "setup",
+      "kind": "configuration",
+      "domains": [
+        "first-projects"
+      ],
+      "objective": "Prepare safe deploy/runtime configuration and reviewable GitHub App settings",
+      "responsibility": "Prepare safe deploy/runtime configuration and reviewable GitHub App settings",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Deployment sender/receiver accept matching GitHub App keys and archive projects runtime sources; registration settings documented"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "spec"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Selected repository access and privacy"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "send-machine",
+          "FIRST/backend/deploy/configure.py",
+          "FIRST/backend/.env.example",
+          "FIRST/github-app-setup.md",
+          "FIRST/backend/.env"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "setup"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/setup-2026-09-18T23-20-10-538Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "first-projects"
+      ],
+      "objective": "Independent security and functionality review",
+      "responsibility": "Independent security and functionality review",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent security and functionality review"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "frontend",
+          "setup"
+        ],
+        "reviews": [
+          "backend",
+          "frontend"
+        ],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Selected repository access and privacy"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-18T23-23-38-058Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "first-projects"
+      ],
+      "objective": "Independent backend and frontend test verification",
+      "responsibility": "Independent backend and frontend test verification",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent backend and frontend test verification"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend"
+        ],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Selected repository access and privacy"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "verify"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-18T23-23-38-442Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "integration",
+      "kind": "integration",
+      "domains": [
+        "first-projects"
+      ],
+      "objective": "Cross-layer contract and UI behavior verified",
+      "responsibility": "Cross-layer contract and UI behavior verified",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Cross-layer contract and UI behavior verified"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [
+          "backend",
+          "frontend",
+          "setup"
+        ],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Selected repository access and privacy"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "integration"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-18T23-23-38-841Z.json"
+    },
+    {
+      "id": "release",
+      "title": "release",
+      "kind": "delivery",
+      "domains": [
+        "first-projects"
+      ],
+      "objective": "Accepted changes pushed; backend rebuilt and live integration checked",
+      "responsibility": "Accepted changes pushed; backend rebuilt and live integration checked",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Accepted changes pushed; backend rebuilt and live integration checked"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Selected repository access and privacy"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "release"
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "github-live",
+      "title": "GitHub App registration and live consent",
+      "kind": "external-configuration",
+      "domains": [
+        "first-projects"
+      ],
+      "objective": "Register approved GitHub App and verify authorized selected repo sharing end to end",
+      "responsibility": "Complete GitHub registration, credential handoff and live user consent only with required authorization",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "App configured with selected repository access; actual public/private repo sharing verified without files"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "setup"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Selected repository access and privacy"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/.env"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "blocked",
+      "attempt": 0,
+      "resultRef": null
+    }
+  ]
+}

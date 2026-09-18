@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-sharing",
+  "itemId": "backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "sharing_backend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "144 backend tests passed (123 existing and21 project tests), makemigrations --check no changes. Includes selected App user identity/admin checks, encrypted rotating credentials, bounded API read and pagination, private publication/redaction, one-active uniqueness and optional phone.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Project persistence, email-only eligibility and secure selected repo access with tests",
+      "status": "passed",
+      "evidence": "144 backend tests passed (123 existing and21 project tests), makemigrations --check no changes. Includes selected App user identity/admin checks, encrypted rotating credentials, bounded API read and pagination, private publication/redaction, one-active uniqueness and optional phone."
+    }
+  ],
+  "checks": [
+    {
+      "name": "backend checks",
+      "status": "passed",
+      "evidence": "144 backend tests passed (123 existing and21 project tests), makemigrations --check no changes. Includes selected App user identity/admin checks, encrypted rotating credentials, bounded API read and pagination, private publication/redaction, one-active uniqueness and optional phone."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T23:23:18.199720+00:00"
+}
