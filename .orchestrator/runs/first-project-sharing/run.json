@@ -4,8 +4,8 @@
   "title": "FIRST selected-repository project sharing",
   "goal": "Implement My Projects, project creation and selected repository GitHub App access with safe public/private previews",
   "createdAt": "2026-09-18T23:11:39.304Z",
-  "updatedAt": "2026-09-18T23:26:06.114Z",
-  "revision": 26,
+  "updatedAt": "2026-09-18T23:37:37.741Z",
+  "revision": 30,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -39,6 +39,13 @@
       "summary": "Initial categories software, design, research, documentation, other are API-supplied; optional clarification sent and implementation proceeds with these replaceable defaults.",
       "reason": "User requested type selection but exact taxonomy not established; not a security-critical choice.",
       "decidedAt": "2026-09-18T23:19:10.951Z",
+      "actor": "manager"
+    },
+    {
+      "id": "app-created",
+      "summary": "User explicitly approved Administration, Contents, Issues and Pull requests write with Metadata read. Created FIRST Community Repositories App4995681; public GitHub API confirms exact permissions. Actual env identifiers configured; client credential generation handed to user, so feature remains disabled.",
+      "reason": "Current explicit user request to create the App after permission explanation; browser credential generation handoff still required.",
+      "decidedAt": "2026-09-18T23:37:37.631Z",
       "actor": "manager"
     }
   ],
@@ -543,7 +550,7 @@
         "owner": "manager"
       },
       "status": "blocked",
-      "attempt": 0,
+      "attempt": 1,
       "resultRef": null
     }
   ]
