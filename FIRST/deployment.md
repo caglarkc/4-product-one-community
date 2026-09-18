@@ -213,3 +213,21 @@ Vercel subsequently reported "A promotion is already pending/in-progress";
 the live account page still showed the previous frontend during verification.
 The connected-account run remains active until the domain promotion finishes and
 live visual verification passes. No local production build was run.
+
+### Local frontend against the existing backend
+
+The approved local origin is exactly `http://127.0.0.1:3101`. Next.js development
+loads `.env.local`, not `.env.production`: copy the existing frontend production
+proxy configuration to `FIRST/frontend/.env.local` (keep it private), then run
+`npm run dev -- --hostname 127.0.0.1 --port 3101` in `FIRST/frontend`.
+This uses real backend accounts and data; it is not an isolated test database.
+
+For Google, the Console client includes the existing production callback and
+`http://127.0.0.1:3101/accounts/google/login/callback/`. The backend explicitly
+opts in via `GOOGLE_LOCAL_REDIRECT_URI`; `send-machine` includes that exact local
+origin in CSRF trusted origins only when this setting is enabled. The chosen
+redirect URI is pinned in the server-side OAuth flow and reused during exchange.
+Production redirects, CSRF validation, PKCE, browser binding and Secure cookies
+remain enabled. Use the exact loopback address, not another hostname or port.
+GitHub OAuth and email verification links still use their production URLs; this
+local setup currently supports the approved Google/Gmail sign-in workflow.

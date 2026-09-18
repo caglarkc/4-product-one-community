@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-local-google",
+  "itemId": "backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "local_google_backend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "123 backend tests passed; exact local callback opt-in, per-flow redirect pinning, production unchanged.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Production Google login preserved; exact local redirect supported and state pinned with tests",
+      "status": "passed",
+      "evidence": "123 backend tests passed; exact local callback opt-in, per-flow redirect pinning, production unchanged."
+    }
+  ],
+  "checks": [
+    {
+      "name": "backend checks",
+      "status": "passed",
+      "evidence": "123 backend tests passed; exact local callback opt-in, per-flow redirect pinning, production unchanged."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T21:21:28.689148+00:00"
+}

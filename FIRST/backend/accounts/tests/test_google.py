@@ -29,6 +29,61 @@ class GoogleTests(TestCase):
         return {'username': 'google_member', 'full_name': 'Google Member', 'birth_date': '2000-01-01',
                 'gender': 'unspecified', **extra}
 
+    @override_settings(GOOGLE_LOCAL_REDIRECT_URI='http://127.0.0.1:3101/accounts/google/login/callback/',
+                       CSRF_TRUSTED_ORIGINS=['https://first.test', 'http://127.0.0.1:3101'])
+    def test_local_redirect_is_opt_in_exact_origin_and_pinned_to_flow(self):
+        for origin, expected in [
+            ('https://first.test', 'https://first.test/accounts/google/login/callback/'),
+            ('http://127.0.0.1:3101', 'http://127.0.0.1:3101/accounts/google/login/callback/'),
+        ]:
+            with self.subTest(origin=origin):
+                csrf = self.client.get('/api/auth/csrf/').json()['csrfToken']
+                result = self.client.post('/api/auth/google/start/', {}, content_type='application/json',
+                                          HTTP_X_CSRFTOKEN=csrf, HTTP_ORIGIN=origin)
+                self.assertEqual(result.status_code, 200, result.content)
+                params = parse_qs(urlparse(result.json()['authorization_url']).query)
+                self.assertEqual(params['redirect_uri'], [expected])
+                flow = security.peek_token('google-state', params['state'][0])
+                self.assertEqual(flow['redirect_uri'], expected)
+                with patch('accounts.google_views.requests.post') as post, patch(
+                        'accounts.google_views._verify_and_decode', return_value={
+                            'sub': 'test', 'nonce': flow['nonce'], 'iat': 1, 'exp': 2}):
+                    post.return_value.json.return_value = {'id_token': 'opaque'}
+                    # Callback has no Origin; code exchange must use the start flow.
+                    callback = self.client.get('/api/auth/google/callback/', {
+                        'state': params['state'][0], 'code': 'valid',
+                        'redirect_uri': 'https://evil.test/callback',
+                    })
+                    self.assertEqual(callback.status_code, 200, callback.content)
+                    self.assertEqual(post.call_args.kwargs['data']['redirect_uri'], expected)
+                    self.assertEqual(post.call_args.kwargs['data']['code_verifier'], flow['verifier'])
+                self.assertTrue(result.cookies['sessionid']['secure'])
+
+    @override_settings(GOOGLE_LOCAL_REDIRECT_URI='http://127.0.0.1:3101/accounts/google/login/callback/',
+                       CSRF_TRUSTED_ORIGINS=['http://127.0.0.1:3101'])
+    def test_similar_local_origins_and_supplied_redirect_are_rejected(self):
+        csrf = self.client.get('/api/auth/csrf/').json()['csrfToken']
+        for origin in ['http://127.0.0.1:3102', 'http://localhost:3101',
+                       'https://evil.test', 'http://127.0.0.1:3101.evil.test']:
+            with self.subTest(origin=origin):
+                result = self.client.post('/api/auth/google/start/', {}, content_type='application/json',
+                                          HTTP_X_CSRFTOKEN=csrf, HTTP_ORIGIN=origin)
+                self.assertEqual(result.status_code, 403)
+        self.assertEqual(self.post('google/start', {'redirect_uri': 'https://evil.test'}).status_code, 400)
+
+    @override_settings(GOOGLE_LOCAL_REDIRECT_URI='', CSRF_TRUSTED_ORIGINS=['http://127.0.0.1:3101'])
+    def test_csrf_allowlist_alone_does_not_enable_local_google(self):
+        csrf = self.client.get('/api/auth/csrf/').json()['csrfToken']
+        result = self.client.post('/api/auth/google/start/', {}, content_type='application/json',
+                                  HTTP_X_CSRFTOKEN=csrf, HTTP_ORIGIN='http://127.0.0.1:3101')
+        self.assertEqual(result.status_code, 400)
+
+    def test_exchange_rejects_unconfigured_stored_redirect(self):
+        with patch('accounts.google_views.requests.post') as post:
+            with self.assertRaises(GoogleError):
+                exchange('code', {'redirect_uri': 'https://evil.test'})
+            post.assert_not_called()
+
     def test_display_metadata_signup_login_and_provider_email_separation(self):
         claims = {'sub': 'display', 'email': 'provider@gmail.com', 'email_verified': True, 'name': 'Provider Name', 'picture': 'https://lh3.googleusercontent.com/a/photo', 'access_token': 'never-store'}
         self.callback(self.start(), claims)

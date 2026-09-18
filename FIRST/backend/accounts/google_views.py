@@ -42,6 +42,17 @@ def require_enabled():
         raise ServiceError({'detail': 'Google girişi şu anda kullanılamıyor.', 'code': 'google_unavailable'})
 
 
+def redirect_uri_for_request(request):
+    # AuthView has already enforced CSRF, including the Origin allowlist.
+    # The local origin additionally requires its own explicit OAuth opt-in.
+    origin = request.headers.get('Origin', '')
+    if origin == 'http://127.0.0.1:3101' and settings.GOOGLE_LOCAL_REDIRECT_URI:
+        return settings.GOOGLE_LOCAL_REDIRECT_URI
+    if origin and origin != settings.FRONTEND_ORIGIN:
+        raise GoogleError()
+    return settings.GOOGLE_REDIRECT_URI
+
+
 class StartInput(StrictSerializer):
     remember_me = serializers.BooleanField(default=False)
     purpose = serializers.ChoiceField(choices=['login', 'reauth'], default='login')
@@ -59,10 +70,14 @@ class SignupInput(ProfileSerializer):
 def exchange(code, flow):
     """TLS code exchange + allauth signature/issuer/audience/expiry verification."""
     try:
+        # Missing keys are only for production flows started before this release.
+        redirect_uri = flow.get('redirect_uri', settings.GOOGLE_REDIRECT_URI)
+        if not redirect_uri or redirect_uri not in (settings.GOOGLE_REDIRECT_URI, settings.GOOGLE_LOCAL_REDIRECT_URI):
+            raise GoogleError()
         response = requests.post(ACCESS_TOKEN_URL, data={
             'client_id': settings.GOOGLE_CLIENT_ID, 'client_secret': settings.GOOGLE_CLIENT_SECRET,
             'code': code, 'code_verifier': flow['verifier'], 'grant_type': 'authorization_code',
-            'redirect_uri': settings.GOOGLE_REDIRECT_URI,
+            'redirect_uri': redirect_uri,
         }, timeout=10)
         response.raise_for_status()
         credential = response.json()['id_token']
@@ -104,6 +119,7 @@ class GoogleStartView(AuthView):
         serializer = StartInput(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
+        redirect_uri = redirect_uri_for_request(request)
         if data['purpose'] == 'reauth' and not request.user.is_authenticated:
             raise NotAuthenticated()
         if not request.session.session_key:
@@ -114,10 +130,10 @@ class GoogleStartView(AuthView):
         flow = {**data, 'binder': binder, 'nonce': nonce, 'verifier': verifier,
                 'user_id': request.user.pk if request.user.is_authenticated else None,
                 'security_version': request.user.security_version if request.user.is_authenticated else None,
-                'started_at': time.time()}
+                'started_at': time.time(), 'redirect_uri': redirect_uri}
         state = security.issue_token('google-state', flow, TTL)
         challenge = base64.urlsafe_b64encode(hashlib.sha256(verifier.encode()).digest()).rstrip(b'=').decode()
-        params = {'client_id': settings.GOOGLE_CLIENT_ID, 'redirect_uri': settings.GOOGLE_REDIRECT_URI,
+        params = {'client_id': settings.GOOGLE_CLIENT_ID, 'redirect_uri': redirect_uri,
                   'response_type': 'code', 'scope': 'openid email profile', 'state': state, 'nonce': nonce,
                   'code_challenge': challenge, 'code_challenge_method': 'S256', 'prompt': 'select_account'}
         if data['purpose'] == 'reauth':

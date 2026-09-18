@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-local-google",
+  "itemId": "config",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Google Console OAuth client saved local callback; local frontend config endpoint returns HTTP 200 with enabled providers; deployment sends exact opt-in and matching CSRF origin.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Local frontend connects to backend; deployment env preserves explicit loopback origin; Google Console saves local callback",
+      "status": "passed",
+      "evidence": "Google Console OAuth client saved local callback; local frontend config endpoint returns HTTP 200 with enabled providers; deployment sends exact opt-in and matching CSRF origin."
+    }
+  ],
+  "checks": [
+    {
+      "name": "config checks",
+      "status": "passed",
+      "evidence": "Google Console OAuth client saved local callback; local frontend config endpoint returns HTTP 200 with enabled providers; deployment sends exact opt-in and matching CSRF origin."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T21:21:28.856222+00:00"
+}
