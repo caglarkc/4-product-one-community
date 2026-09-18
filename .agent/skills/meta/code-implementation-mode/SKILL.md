@@ -7,7 +7,7 @@ description: Implement, review, or verify scoped changes in the four-product rep
 
 Görevde rolü açık belirt. Ön analiz: **Ne istendi? Dosyalar/ürünler? Riskler? Güncellemeler?** İlgili ürün belgesi, `.agent/rules.md` ve görev skill'lerini oku.
 
-Frontend dosyası değişiyorsa `.agent/skills/frontend/frontend-implementation/SKILL.md` oku; mevcut aşamada işlev ve yerleşime odaklan.
+Frontend dosyası değişiyorsa `.agent/skills/frontend/frontend-implementation/SKILL.md` oku; seçilen ürünün tasarım aşamasına uy. FIRST'te `FIRST/tasarim-dili.md`, merkezi token'lar ve ortak UI bileşenleriyle mevcut işlevleri birlikte koru.
 
 ## Implement
 

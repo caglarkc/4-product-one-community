@@ -11,7 +11,7 @@
 
 ## Frontend geliştirme aşaması
 
-FIRST, STEP, INTO ve PATH için şimdilik işlev, sayfa düzeni ve kontrollerin yerleşimi önceliklidir. Temiz ve sade görünüm yeterlidir; buton rengi/şekli, animasyon ve görsel tasarım ayrıntıları sonraki aşamada değerlendirilir. Frontend işlerinde `.agent/skills/frontend/frontend-implementation/SKILL.md` uygulanır.
+18 Eylül 2026 kararıyla FIRST tasarım aşaması açılmıştır. `FIRST/tasarim-dili.md` içindeki onaylı renk/tema dili, merkezi token'lar ve ortak UI bileşenleri mevcut ve yeni FIRST sayfalarında kullanılır. Referans görselin yerleşimi ve örnek özellikleri kapsam onayı değildir. STEP, INTO ve PATH için ayrı karar verilene kadar işlev ve sade yerleşim önceliği korunur. Frontend işlerinde `.agent/skills/frontend/frontend-implementation/SKILL.md` uygulanır.
 
 ## Git Teslim Protokolü
 

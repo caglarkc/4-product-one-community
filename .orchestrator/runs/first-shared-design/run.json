@@ -1,0 +1,249 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-shared-design",
+  "title": "FIRST shared design language",
+  "goal": "Update skills to approved theme and redesign existing FIRST pages with central tokens and reusable UI components",
+  "createdAt": "2026-09-18T14:51:54.354Z",
+  "updatedAt": "2026-09-18T15:01:11.427Z",
+  "revision": 11,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/rules.md",
+      ".agent/skills/frontend/frontend-implementation/SKILL.md",
+      "FIRST/tasarim-dili.md",
+      "FIRST/frontend/package.json"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "d04433fbd12098bad845eaefbb9a6e4b70ef25baa8da4ff3d75fced7fd28bd4e",
+    "assumptions": [
+      "User explicitly reopened FIRST visual design and requested native subagent implementation."
+    ]
+  },
+  "constraints": [
+    "FIRST only; approved theme/colors, not mock layout or features.",
+    "Central tokens and UI primitives; existing API behavior preserved.",
+    "Never read/change env credentials for styling work; no backend changes."
+  ],
+  "policy": {
+    "requiresIntegration": false
+  },
+  "decisions": [],
+  "items": [
+    {
+      "id": "design-rules",
+      "title": "design-rules",
+      "kind": "documentation",
+      "domains": [
+        "first-frontend"
+      ],
+      "objective": "Shared theme for existing FIRST screens",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/tasarim-dili.md"
+        }
+      ],
+      "outputs": [
+        "Design artifacts or evidence"
+      ],
+      "acceptanceCriteria": [
+        "FIRST design deferral lifted without changing other products; shared tokens/components and mock-scope limits documented."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          ".agent",
+          "AGENTS.md",
+          "FIRST/tasarim-dili.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/design-rules-2026-09-18T14-53-18-750Z.json"
+    },
+    {
+      "id": "implement",
+      "title": "implement",
+      "kind": "implement",
+      "domains": [
+        "first-frontend"
+      ],
+      "objective": "Shared theme for existing FIRST screens",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/tasarim-dili.md"
+        }
+      ],
+      "outputs": [
+        "Design artifacts or evidence"
+      ],
+      "acceptanceCriteria": [
+        "All existing pages use approved theme and shared tokens/primitives without added product features.",
+        "Current auth/profile/recovery behavior preserved and frontend checks pass."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "design-rules"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Presentation changes on existing auth screens"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "first_theme_implement"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/implement-2026-09-18T15-00-47-242Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "first-frontend"
+      ],
+      "objective": "Shared theme for existing FIRST screens",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/tasarim-dili.md"
+        }
+      ],
+      "outputs": [
+        "Design artifacts or evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent review finds no unresolved material regressions or duplicated design sources."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "implement"
+        ],
+        "reviews": [
+          "implement"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "first_theme_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-18T15-00-47-243Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "first-frontend"
+      ],
+      "objective": "Shared theme for existing FIRST screens",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/tasarim-dili.md"
+        }
+      ],
+      "outputs": [
+        "Design artifacts or evidence"
+      ],
+      "acceptanceCriteria": [
+        "Desktop/mobile visual review and relevant state checks recorded; tests/build results verified."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "implement"
+        ],
+        "reviews": [],
+        "verifies": [
+          "implement"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-18T15-00-47-243Z.json"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-shared-design",
+  "itemId": "implement",
+  "agent": {
+    "platform": "codex",
+    "identity": "first_theme_implement",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "All seven existing FIRST routes migrated to shared design tokens and typed UI primitives.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "All existing pages use approved theme and shared tokens/primitives without added product features.",
+      "status": "passed",
+      "evidence": "Agent reports 64/64 tests; lint, typecheck, production build passed; final type-only variant derivation typechecked. API/lib/backend/env unchanged."
+    },
+    {
+      "criterion": "Current auth/profile/recovery behavior preserved and frontend checks pass.",
+      "status": "passed",
+      "evidence": "Agent reports 64/64 tests; lint, typecheck, production build passed; final type-only variant derivation typechecked. API/lib/backend/env unchanged."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Bounded task verification",
+      "status": "passed",
+      "evidence": "Agent reports 64/64 tests; lint, typecheck, production build passed; final type-only variant derivation typechecked. API/lib/backend/env unchanged."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T15:00:47.242589+00:00"
+}

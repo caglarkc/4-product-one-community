@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { api, User } from '../lib/api';
 import { AccountForm, Field } from './account-form';
+import { ActionLink, Alert, Button, PageHeading } from './ui';
 
 type Session = {id: string; created_at: string; expires_at: string; current: boolean};
 export function EmailReminder({reminder = true}: {reminder?: boolean}) {
-  return <aside>{reminder && <p>E-posta adresiniz henüz doğrulanmadı.</p>}
-    <AccountForm title="E-posta doğrulama" path="email/resend" submit="Doğrulama e-postasını yeniden gönder">
+  return <aside className="email-reminder">{reminder && <p>E-posta adresiniz henüz doğrulanmadı.</p>}
+    <AccountForm title="E-posta doğrulama" path="email/resend" variant="secondary" submit="Doğrulama e-postasını yeniden gönder">
       <p>Bağlantı 24 saat geçerlidir. Gönderimler arasında 60 saniye bekleyin; saatte en fazla 5 gönderim yapılabilir.</p>
     </AccountForm></aside>;
 }
@@ -25,16 +26,16 @@ export function SessionList({onSignedOut}: {onSignedOut: () => void}) {
       .catch(caught => {if (active) setError(caught.message);});
     return () => {active = false;};
   }, []);
-  return <section><h2>Açık oturumlar</h2>
-    {error && <div role="alert"><p>{error}</p><button onClick={reload}>Oturumları yeniden yükle</button><p><Link href="/giris">Giriş yap</Link></p></div>}
-    {!sessions && !error && <p role="status">Oturumlar yükleniyor…</p>}
+  return <section className="sessions"><h2>Açık oturumlar</h2>
+    {error && <Alert role="alert" tone="error"><p>{error}</p><Button onClick={reload}>Oturumları yeniden yükle</Button><p><Link href="/giris">Giriş yap</Link></p></Alert>}
+    {!sessions && !error && <Alert role="status">Oturumlar yükleniyor…</Alert>}
     {sessions?.length === 0 && <p>Açık oturum bulunamadı.</p>}
-    {sessions?.map(session => <AccountForm key={session.id} title={session.current ? 'Bu oturum' : 'Diğer oturum'}
-      path={`sessions/${session.id}`} method="DELETE" submit={session.current ? 'Bu oturumu kapat' : 'Oturumu kapat'}
+    <div className="session-grid">{sessions?.map(session => <AccountForm key={session.id} title={session.current ? 'Bu oturum' : 'Diğer oturum'}
+      variant="secondary" path={`sessions/${session.id}`} method="DELETE" submit={session.current ? 'Bu oturumu kapat' : 'Oturumu kapat'}
       onSuccess={async () => {if (session.current) onSignedOut(); else await reload();}}>
       <p>Açılış: <time dateTime={session.created_at}>{session.created_at}</time><br/>Bitiş: <time dateTime={session.expires_at}>{session.expires_at}</time></p>
-    </AccountForm>)}
-    <AccountForm title="Bütün oturumlar" path="sessions/revoke" submit="Bütün oturumları kapat" onSuccess={onSignedOut}>
+    </AccountForm>)}</div>
+    <AccountForm title="Bütün oturumlar" variant="danger" path="sessions/revoke" submit="Bütün oturumları kapat" onSuccess={onSignedOut}>
       <p>Bu oturum dahil bütün cihazlardan çıkış yapılır.</p>
     </AccountForm>
   </section>;
@@ -57,33 +58,34 @@ export function AccountStatus({profile = false}: {profile?: boolean}) {
     {name: 'gender', label: 'Cinsiyet', value: user.gender, options: [['female', 'Kadın'], ['male', 'Erkek'], ['other', 'Diğer'], ['unspecified', 'Belirtmek istemiyorum']]},
     {name: 'phone', label: 'Telefon (isteğe bağlı, doğrulanmaz)', type: 'tel', value: user.phone, optional: true, maxLength: 32},
   ] : [];
-  return <section className="card"><h1>{profile ? 'Hesabım' : 'Ana sayfa'}</h1>
-    {error && <div role="alert"><p>{error}</p>{user === undefined && <button onClick={() => {setError(''); api<{user: User | null}>('me').then(data => setUser(data.user)).catch(caught => setError(caught.message));}}>Yeniden dene</button>}</div>}
-    {user === undefined && !error && <p role="status">Oturum kontrol ediliyor…</p>}
-    {user === null && <p>Oturumunuz açık değil. <Link href="/giris">Giriş yapın</Link>.</p>}
-    {user && <><p>Merhaba, {user.full_name}.</p>
+  return <div className={profile ? "account-page" : "surface home-page"}><PageHeading title={profile ? 'Hesabım' : 'Ana sayfa'} description={profile ? 'Profilinizi, giriş bilgilerinizi ve açık oturumlarınızı yönetin.' : undefined} />
+    {error && <Alert role="alert" tone="error"><p>{error}</p>{user === undefined && <Button onClick={() => {setError(''); api<{user: User | null}>('me').then(data => setUser(data.user)).catch(caught => setError(caught.message));}}>Yeniden dene</Button>}</Alert>}
+    {user === undefined && !error && <Alert role="status">Oturum kontrol ediliyor…</Alert>}
+    {user === null && <Alert><p>Oturumunuz açık değil. <Link href="/giris">Giriş yapın</Link>.</p></Alert>}
+    {user && <><div className="account-summary"><p>Merhaba, {user.full_name}.</p>
+      {profile && <p className="account-email">E-posta: {user.email} — {user.email_verified ? 'Doğrulandı' : 'Doğrulanmadı'}</p>}</div>
       {!user.email_verified && <EmailReminder/>}
-      {!profile && <p><Link href="/hesap">Hesabımı yönet</Link></p>}
+      {!profile && <div className="home-actions"><ActionLink href="/hesap">Hesabımı yönet</ActionLink></div>}
       {profile && <>
-        <p>E-posta: {user.email} — {user.email_verified ? 'Doğrulandı' : 'Doğrulanmadı'}</p>
+        <div className="account-grid"><div className="account-column">
         <AccountForm<{user: User}> title="Profil bilgileri" path="profile" method="PATCH" fields={fields} submit="Profili kaydet" onSuccess={data => setUser(data.user)}>
           <p>En az 13 yaşında olmalısınız. Kullanıcı adı 3–30 harf, rakam veya alt çizgi içermelidir. Telefon + ile başlayan 8–15 rakam olmalıdır; kaydedilmesi doğrulama sağlamaz.</p>
         </AccountForm>
-        <AccountForm title="E-posta değiştir" path="email/change" fields={[{name: 'email', label: 'Yeni e-posta', type: 'email', maxLength: 254}]} submit="Yeni adrese doğrulama gönder">
+        </div><div className="account-column"><AccountForm title="E-posta değiştir" path="email/change" fields={[{name: 'email', label: 'Yeni e-posta', type: 'email', maxLength: 254}]} submit="Yeni adrese doğrulama gönder">
           <p>Yeni adres doğrulanana kadar mevcut adresiniz geçerlidir. Eski adresinize bildirim gönderilir. Onaydan sonra bütün oturumlar kapanır.</p>
         </AccountForm>
         <AccountForm title="Şifre değiştir" path="password/change" fields={[{name: 'old_password', label: 'Eski şifre', type: 'password'}, {name: 'password', label: 'Yeni şifre', type: 'password', password: true}]} submit="Şifreyi değiştir" onSuccess={signedOut}>
           <p>Başarıyla değiştirildiğinde bütün oturumlar kapanır; yeni şifrenizle giriş yapın.</p>
         </AccountForm>
-        <SessionList onSignedOut={signedOut}/>
+        </div></div><SessionList onSignedOut={signedOut}/>
       </>}
-      <button disabled={busy} onClick={async () => {
+      <div className="account-exit"><Button variant="quiet" loading={busy} disabled={busy} onClick={async () => {
         if (lock.current) return;
         lock.current = true; setBusy(true); setError('');
         try {await api('logout', {}); signedOut();}
         catch (caught) {setError((caught as Error).message);}
         finally {lock.current = false; setBusy(false);}
-      }}>{busy ? 'Çıkış yapılıyor…' : 'Çıkış yap'}</button>
+      }}>{busy ? 'Çıkış yapılıyor…' : 'Çıkış yap'}</Button></div>
     </>}
-  </section>;
+  </div>;
 }

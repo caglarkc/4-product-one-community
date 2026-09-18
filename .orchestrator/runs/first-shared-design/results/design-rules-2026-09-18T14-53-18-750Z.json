@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-shared-design",
+  "itemId": "design-rules",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "FIRST-only design policy updated in frontend/code skills, entrypoints and rules; canonical design language defines theme-only reference scope, semantic token roles, shared UI ownership and accessibility. Other products keep prior functional phase.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "FIRST design deferral lifted without changing other products; shared tokens/components and mock-scope limits documented.",
+      "status": "passed",
+      "evidence": "FIRST-only design policy updated in frontend/code skills, entrypoints and rules; canonical design language defines theme-only reference scope, semantic token roles, shared UI ownership and accessibility. Other products keep prior functional phase."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Skill frontmatter and policy scope",
+      "status": "passed",
+      "evidence": "Both skills validated with bundled Python; no first-design deferral left in related entrypoints."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T14:53:18.750013+00:00"
+}

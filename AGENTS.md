@@ -26,7 +26,7 @@ Yönetici yetkisi kullanıcının verdiği görev kapsamındadır; geçmiş proj
 
 ## Skill seçimi
 
-- Frontend uygulama / review: `.agent/skills/frontend/frontend-implementation/SKILL.md` (işlev ve sade yerleşim öncelikli).
+- Frontend uygulama / review: `.agent/skills/frontend/frontend-implementation/SKILL.md`; FIRST için `FIRST/tasarim-dili.md` ve ortak token/UI bileşenleri zorunludur. Diğer ürünlerin sade yerleşim aşaması ayrı karar verilene kadar korunur.
 - Implement / review / verify: `.agent/skills/meta/code-implementation-mode/SKILL.md`
 - Ürün kapsamı ve FIRST–STEP–INTO–PATH bağlantıları: `.agent/skills/cross/product-boundaries/SKILL.md`
 - API, ortak kimlik, yetki ve veri paylaşımı: `.agent/skills/cross/shared-integration/SKILL.md`

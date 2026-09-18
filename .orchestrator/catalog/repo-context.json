@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-09-17T19:30:18.414Z",
+  "generatedAt": "2026-09-18T14:51:54.213Z",
   "repository": {
     "root": ".",
     "name": "4-product-one-community",
-    "commit": "8183d9aa8b9c355ad3653deae4690db9e73ade2b",
+    "commit": "7eefb3971d533d7f0b2923778588ba37eed27dc4",
     "layers": {
       "FIRST": true,
       "STEP": true,
@@ -31,11 +31,11 @@
     },
     {
       "name": "frontend-implementation",
-      "description": "Implement or review frontend pages and forms in FIRST, STEP, INTO and PATH using the current functional, minimal layout phase. Apply to frontend work in this repository.",
+      "description": "Implement or review frontend pages in this repository using the selected product's design rules, shared tokens and reusable UI components; preserve real workflows and accessibility.",
       "path": ".agent/skills/frontend/frontend-implementation/SKILL.md",
       "root": ".agent/skills",
       "disableModelInvocation": false,
-      "fingerprint": "c1c1c6b280e02402efcce297a32e713a971df667d9d17d595b8fbec0ead78583"
+      "fingerprint": "b411717307bb8f96253bb1c77b61cd36e71f8516c8db4bf560eb4b52a6908b5f"
     },
     {
       "name": "code-implementation-mode",
@@ -43,7 +43,7 @@
       "path": ".agent/skills/meta/code-implementation-mode/SKILL.md",
       "root": ".agent/skills",
       "disableModelInvocation": false,
-      "fingerprint": "54272e524b0bcc570179307a199d98fa310b4e7571020ea41f59d83198e03e59"
+      "fingerprint": "d00fda67c30f870b39926eeeb332639b1ce2cd680d5b61fb08eb75cf79c5968f"
     },
     {
       "name": "repo-context",
@@ -98,7 +98,7 @@
   },
   "mapHealth": {
     "stale": true,
-    "sourceFingerprint": "44166a367952f4598e45a4c707bacf8ff4c74564c7c84f6e784fcc6b3c888b5b",
+    "sourceFingerprint": "7e58f2a1f63ccea34b55cea39a68f6702f83f756fab59ae2617009a536b6d6ad",
     "mapSourceFingerprint": "9748310452121736b3bcfed61ab28fdadd48fd0546cca8edbb539fa646385c77",
     "dependencyMapGeneratedAt": null,
     "note": "Tazelik, checkout mtime yerine deterministik kaynak ağacı fingerprint’i ile ölçülür."
@@ -138,5 +138,5 @@
       }
     }
   ],
-  "snapshot": "bd2672e74a452f1580e982152aed28f284772af6e072462d3b7134f0dbc89bed"
+  "snapshot": "d04433fbd12098bad845eaefbb9a6e4b70ef25baa8da4ff3d75fced7fd28bd4e"
 }
