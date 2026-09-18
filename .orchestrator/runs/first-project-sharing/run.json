@@ -4,8 +4,8 @@
   "title": "FIRST selected-repository project sharing",
   "goal": "Implement My Projects, project creation and selected repository GitHub App access with safe public/private previews",
   "createdAt": "2026-09-18T23:11:39.304Z",
-  "updatedAt": "2026-09-18T23:37:37.741Z",
-  "revision": 30,
+  "updatedAt": "2026-09-18T23:39:59.025Z",
+  "revision": 32,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -549,7 +549,7 @@
         ],
         "owner": "manager"
       },
-      "status": "blocked",
+      "status": "active",
       "attempt": 1,
       "resultRef": null
     }
