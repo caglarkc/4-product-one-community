@@ -4,8 +4,8 @@
   "title": "FIRST selected-repository project sharing",
   "goal": "Implement My Projects, project creation and selected repository GitHub App access with safe public/private previews",
   "createdAt": "2026-09-18T23:11:39.304Z",
-  "updatedAt": "2026-09-18T23:39:59.025Z",
-  "revision": 32,
+  "updatedAt": "2026-09-18T23:43:02.194Z",
+  "revision": 34,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -46,6 +46,13 @@
       "summary": "User explicitly approved Administration, Contents, Issues and Pull requests write with Metadata read. Created FIRST Community Repositories App4995681; public GitHub API confirms exact permissions. Actual env identifiers configured; client credential generation handed to user, so feature remains disabled.",
       "reason": "Current explicit user request to create the App after permission explanation; browser credential generation handoff still required.",
       "decidedAt": "2026-09-18T23:37:37.631Z",
+      "actor": "manager"
+    },
+    {
+      "id": "app-enabled-live",
+      "summary": "User-provided client credential saved in actual env; feature enabled. Independent config/Fernet review passed. Commit b3f834d deployed as release20260918T234019-b3f834d685df; Docker health, PostgreSQL/Redis and Vercel success. Live config/status/start endpoints200; GitHub Authorize screen reached.",
+      "reason": "User supplied App credential and confirmed prerequisite private key generated. OAuth exchange and selected repository test await action-time consent and repo choice.",
+      "decidedAt": "2026-09-18T23:43:02.080Z",
       "actor": "manager"
     }
   ],
@@ -549,7 +556,7 @@
         ],
         "owner": "manager"
       },
-      "status": "active",
+      "status": "blocked",
       "attempt": 1,
       "resultRef": null
     }
