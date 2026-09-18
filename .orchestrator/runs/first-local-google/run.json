@@ -1,0 +1,363 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-local-google",
+  "title": "FIRST local frontend Google login",
+  "goal": "Connect local frontend to existing backend and verify Google login without changing production redirect behavior",
+  "createdAt": "2026-09-18T21:19:00.500Z",
+  "updatedAt": "2026-09-18T21:22:04.531Z",
+  "revision": 9,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "8f4fa2a8657cc5d40b35f860d62cf32a7cb3dc503513ef4e961856576d34f02b",
+    "assumptions": []
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [],
+  "items": [
+    {
+      "id": "backend",
+      "title": "backend",
+      "kind": "implement",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Connect local frontend to existing backend and verify Google login without changing production redirect behavior",
+      "responsibility": "Production Google login preserved; exact local redirect supported and state pinned with tests",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Production Google login preserved; exact local redirect supported and state pinned with tests"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth flow changes"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/accounts/google_views.py",
+          "FIRST/backend/config/settings.py",
+          "FIRST/backend/accounts/tests"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "backend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-18T21-21-28-689Z.json"
+    },
+    {
+      "id": "config",
+      "title": "config",
+      "kind": "implement",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Connect local frontend to existing backend and verify Google login without changing production redirect behavior",
+      "responsibility": "Local frontend connects to backend; deployment env preserves explicit loopback origin; Google Console saves local callback",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Local frontend connects to backend; deployment env preserves explicit loopback origin; Google Console saves local callback"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth flow changes"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "send-machine",
+          "FIRST/deployment.md",
+          "FIRST/backend/.env"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "config"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/config-2026-09-18T21-21-28-856Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Connect local frontend to existing backend and verify Google login without changing production redirect behavior",
+      "responsibility": "Independent security review passes",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent security review passes"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "config"
+        ],
+        "reviews": [
+          "backend",
+          "config"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth flow changes"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-18T21-21-29-243Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Connect local frontend to existing backend and verify Google login without changing production redirect behavior",
+      "responsibility": "Backend tests and frontend checks pass",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Backend tests and frontend checks pass"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "config"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "config"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth flow changes"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "verify"
+      },
+      "status": "active",
+      "attempt": 1
+    },
+    {
+      "id": "integration",
+      "title": "integration",
+      "kind": "integration",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Connect local frontend to existing backend and verify Google login without changing production redirect behavior",
+      "responsibility": "Accepted changes committed and pushed",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Accepted changes committed and pushed"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review",
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "backend",
+          "config"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth flow changes"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "integration"
+      },
+      "status": "draft",
+      "attempt": 0
+    },
+    {
+      "id": "deploy",
+      "title": "deploy",
+      "kind": "deployment",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Connect local frontend to existing backend and verify Google login without changing production redirect behavior",
+      "responsibility": "Remote backend built healthy and real Google login succeeds on localhost",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Remote backend built healthy and real Google login succeeds on localhost"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Auth flow changes"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "deploy"
+      },
+      "status": "draft",
+      "attempt": 0
+    }
+  ]
+}

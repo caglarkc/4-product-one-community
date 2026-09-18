@@ -78,6 +78,11 @@ GOOGLE_ENABLED = os.environ.get("GOOGLE_ENABLED", "false").lower() == "true"
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
 GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI", "")
+# Explicit opt-in for this development origin only; never accept an arbitrary
+# redirect supplied by the browser or derive one from forwarded host headers.
+GOOGLE_LOCAL_REDIRECT_URI = os.environ.get("GOOGLE_LOCAL_REDIRECT_URI", "")
+if GOOGLE_LOCAL_REDIRECT_URI not in ("", "http://127.0.0.1:3101/accounts/google/login/callback/"):
+    raise ImproperlyConfigured("GOOGLE_LOCAL_REDIRECT_URI must be the approved local callback URL.")
 
 GITHUB_CLIENT_ID = os.environ.get("GITHUB_CLIENT_ID", "")
 GITHUB_CLIENT_SECRET = os.environ.get("GITHUB_CLIENT_SECRET", "")

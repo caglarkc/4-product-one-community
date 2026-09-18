@@ -17,6 +17,7 @@ REMOTE = '/opt/first/backend'
 TOP_FILES = {'manage.py', 'requirements.txt', 'Dockerfile', '.dockerignore', 'compose.yaml'}
 SOURCE_DIRS = {'accounts', 'config', 'deploy'}
 OAUTH_KEYS = {'GOOGLE_ENABLED', 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REDIRECT_URI',
+              'GOOGLE_LOCAL_REDIRECT_URI',
               'GITHUB_ENABLED', 'GITHUB_CLIENT_ID', 'GITHUB_CLIENT_SECRET', 'GITHUB_REDIRECT_URI'}
 SMTP_KEYS = {'SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM', 'SMTP_TLS', 'SMTP_SSL'}
 
@@ -84,8 +85,14 @@ def main():
                 if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
                     value = value[1:-1]
                 config[key] = value
+    csrf_origins = 'https://first.alicaglarkocer.com'
+    local_redirect = config.get('GOOGLE_LOCAL_REDIRECT_URI', '')
+    if local_redirect:
+        if local_redirect != 'http://127.0.0.1:3101/accounts/google/login/callback/':
+            raise ValueError('Only the explicitly approved loopback Google callback is supported')
+        csrf_origins += ',http://127.0.0.1:3101'
     config.update(AUTH_PROXY_SECRET=secret, FRONTEND_ORIGIN='https://first.alicaglarkocer.com',
-                  CSRF_TRUSTED_ORIGINS='https://first.alicaglarkocer.com',
+                  CSRF_TRUSTED_ORIGINS=csrf_origins,
                   DJANGO_ALLOWED_HOSTS=f'localhost,127.0.0.1,{host}')
     if any('\n' in value or '\r' in value for value in config.values()):
         raise ValueError('Multiline configuration values are not supported')
