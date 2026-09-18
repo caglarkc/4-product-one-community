@@ -54,3 +54,7 @@ Git: Dosya değişen görev sonunda ana agent anlamlı commit ve push yapar; .ag
 ```
 
 Implement'te mevcut pattern ve ürün kurallarını uygulat. Review'da dosya değiştirmeden P0/P1/P2 ve kanıt iste. Verify'da gerçek çalıştırma/manuel adım ile acceptance eşleşmesini iste; çalıştırılmayanı açık yazdır. Revizyonda önceki bulguyu ve beklenen düzeltmeyi belirt; ilgisiz refactor ekleme.
+
+## FIRST dağıtım teslimi
+
+`.agent/rules.md` → FIRST yayın teslim protokolünü uygula. Backend değiştiğinde gerekli kontrollerden sonra ana agent commit/push, uzak root SSH checkout’unda `git pull --ff-only`, aynı commit’ten Docker rebuild ve canlı sağlık kontrolünü tamamlar. Frontend push ile Vercel otomatik build alır; ek yerel üretim build’i veya manuel Vercel deployment yapma. Test/lint/typecheck ve otomatik dağıtım sonucunu doğrula. Belge/skill değişikliği tek başına backend rebuild gerektirmez; açık kullanıcı istisnası önceliklidir. İşlem ayrıntıları `FIRST/deployment.md` içindedir.

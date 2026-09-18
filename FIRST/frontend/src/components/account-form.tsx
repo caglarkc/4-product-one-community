@@ -7,6 +7,13 @@ import { Alert, Button, Field as FormField, Input, Select, Surface } from './ui'
 
 export const ReauthenticationContext = createContext({google: false, password: true});
 
+export function ReauthenticationOptions({methods}: {methods: {google: boolean; password: boolean}}) {
+  return <>
+    {methods.google && <><p>Google ile kimliğinizi doğruladıktan sonra işleminizi yeniden başlatın.</p><GoogleButton purpose="reauth"/></>}
+    {!methods.google && !methods.password && <p>Bu işlem için önce <Link href="/sifremi-unuttum">e-posta bağlantısıyla bir şifre oluşturun</Link>, ardından şifrenizle giriş yapıp işlemi yeniden deneyin.</p>}
+  </>;
+}
+
 export type Field = {
   name: string; label: string; type?: string; value?: string;
   optional?: boolean; password?: boolean; maxLength?: number;
@@ -73,7 +80,7 @@ export function AccountForm<T = {detail: string}>({title, path, method = 'POST',
         <Button type="submit" variant={variant} loading={busy} disabled={requireChanges && !hasChanges}>{busy ? 'İşlem sürüyor…' : submit}</Button>
       </fieldset>
     </form>
-    {reauth && methods.google && <><p>Google ile kimliğinizi doğruladıktan sonra işleminizi yeniden başlatın.</p><GoogleButton purpose="reauth"/></>}
+    {reauth && <ReauthenticationOptions methods={methods}/>}
     {reauth && methods.password && <AccountForm title="Kimliğinizi yeniden doğrulayın" path="reauthenticate"
       fields={[{name: 'password', label: 'Mevcut şifreniz', type: 'password'}]} submit="Kimliğimi doğrula"
       onSuccess={() => {setReauth(false); setError(null); setMessage('Kimliğiniz doğrulandı. İşleminizi yeniden gönderin.');}}/>}

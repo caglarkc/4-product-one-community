@@ -28,3 +28,12 @@ urlpatterns += [
     path('google/email/request/', google.GoogleEmailRequestView.as_view()),
     path('google/email/verify/', google.GoogleEmailVerifyView.as_view()),
 ]
+
+from . import github_views as github
+urlpatterns += [
+    path('github/start/', github.GitHubStartView.as_view()),
+    path('github/callback/', github.GitHubCallbackView.as_view()),
+    path('github/signup/', github.GitHubSignupView.as_view()),
+    path('github/email/request/', github.GitHubEmailRequestView.as_view()),
+    path('github/email/verify/', github.GitHubEmailVerifyView.as_view()),
+]

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-auth",
+  "itemId": "verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Independent root execution: 111 Django tests pass; 95 frontend tests pass; ESLint and tsc pass; no migrations. Deploy Python syntax/dry-run and git diff check pass. Two Codex skill validators pass; existing Cursor disable-model-invocation frontmatter unsupported by Codex validator and unchanged. Real PostgreSQL contention not stress-tested.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Tests and integration contract checks provide passing evidence.",
+      "status": "passed",
+      "evidence": "Independent root execution: 111 Django tests pass; 95 frontend tests pass; ESLint and tsc pass; no migrations. Deploy Python syntax/dry-run and git diff check pass. Two Codex skill validators pass; existing Cursor disable-model-invocation frontmatter unsupported by Codex validator and unchanged. Real PostgreSQL contention not stress-tested."
+    }
+  ],
+  "checks": [
+    {
+      "name": "verify checks",
+      "status": "passed",
+      "evidence": "Independent root execution: 111 Django tests pass; 95 frontend tests pass; ESLint and tsc pass; no migrations. Deploy Python syntax/dry-run and git diff check pass. Two Codex skill validators pass; existing Cursor disable-model-invocation frontmatter unsupported by Codex validator and unchanged. Real PostgreSQL contention not stress-tested."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T19:59:14.339911+00:00"
+}

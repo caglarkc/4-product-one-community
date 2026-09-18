@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-auth",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Backend/frontend contracts match, GitHub reauth limitation documented, private backend env populated without exposing credentials. FIRST delivery defaults saved in rules/skills; send-machine now pulls and deploys exact pushed main. Independent review and verification accepted.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Accepted backend and frontend are consistent with user decisions.",
+      "status": "passed",
+      "evidence": "Backend/frontend contracts match, GitHub reauth limitation documented, private backend env populated without exposing credentials. FIRST delivery defaults saved in rules/skills; send-machine now pulls and deploys exact pushed main. Independent review and verification accepted."
+    }
+  ],
+  "checks": [
+    {
+      "name": "integration checks",
+      "status": "passed",
+      "evidence": "Backend/frontend contracts match, GitHub reauth limitation documented, private backend env populated without exposing credentials. FIRST delivery defaults saved in rules/skills; send-machine now pulls and deploys exact pushed main. Independent review and verification accepted."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T19:59:14.727136+00:00"
+}

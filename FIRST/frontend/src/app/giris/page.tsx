@@ -1,5 +1,5 @@
 import { AuthForm } from '../../components/auth-form';
-export default async function Page({searchParams}: {searchParams: Promise<{google_error?: string}>}) {
+export default async function Page({searchParams}: {searchParams: Promise<{google_error?: string; github_error?: string}>}) {
   const params = await searchParams;
-  return <AuthForm googleError={params.google_error}/>;
+  return <AuthForm googleError={params.google_error} githubError={params.github_error}/>;
 }

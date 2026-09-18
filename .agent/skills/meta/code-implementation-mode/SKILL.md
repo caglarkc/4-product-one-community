@@ -34,3 +34,7 @@ Dosya değişen her görev sonunda `.agent/rules.md` Git Teslim Protokolü uygul
 5. Manuel kontrol (çalıştırılan kontroller ve doğrulanamayanlar dahil)
 
 Run kullanılıyorsa `.orchestrator/contracts/result.schema.json` ile evidence üret. Eksik kanıt uydurma; başarısız denemeyi koru ve revision düğümü kullan.
+
+## FIRST dağıtım teslimi
+
+`.agent/rules.md` → FIRST yayın teslim protokolünü uygula. Backend değiştiğinde gerekli kontrollerden sonra ana agent commit/push, uzak root SSH checkout’unda `git pull --ff-only`, aynı commit’ten Docker rebuild ve canlı sağlık kontrolünü tamamlar. Frontend push ile Vercel otomatik build alır; ek yerel üretim build’i veya manuel Vercel deployment yapma. Test/lint/typecheck ve otomatik dağıtım sonucunu doğrula. Belge/skill değişikliği tek başına backend rebuild gerektirmez; açık kullanıcı istisnası önceliklidir. İşlem ayrıntıları `FIRST/deployment.md` içindedir.
