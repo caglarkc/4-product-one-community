@@ -1,3 +1,4 @@
+vi.mock('../src/components/github-auth',()=>({GitHubButton:()=>null}));
 vi.mock('../src/components/google-auth',()=>({GoogleButton:()=>null}));
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { it, expect, vi } from 'vitest';

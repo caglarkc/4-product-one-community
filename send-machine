@@ -2,8 +2,6 @@
 """Deploy only FIRST backend via verified SSH. No local backend or Docker process."""
 import argparse
 import datetime
-import hashlib
-import io
 import ipaddress
 import json
 import os
@@ -12,14 +10,14 @@ import re
 import shlex
 import subprocess
 import sys
-import tarfile
 
 ROOT = Path(__file__).resolve().parent
 BACKEND = ROOT / 'FIRST/backend'
 REMOTE = '/opt/first/backend'
 TOP_FILES = {'manage.py', 'requirements.txt', 'Dockerfile', '.dockerignore', 'compose.yaml'}
 SOURCE_DIRS = {'accounts', 'config', 'deploy'}
-GOOGLE_KEYS = {'GOOGLE_ENABLED', 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REDIRECT_URI'}
+OAUTH_KEYS = {'GOOGLE_ENABLED', 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REDIRECT_URI',
+              'GITHUB_ENABLED', 'GITHUB_CLIENT_ID', 'GITHUB_CLIENT_SECRET', 'GITHUB_REDIRECT_URI'}
 SMTP_KEYS = {'SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM', 'SMTP_TLS', 'SMTP_SSL'}
 
 
@@ -81,7 +79,7 @@ def main():
     if (BACKEND / '.env').exists():
         for line in (BACKEND / '.env').read_text().splitlines():
             key, sep, value = line.partition('=')
-            if sep and key in GOOGLE_KEYS:
+            if sep and key in OAUTH_KEYS:
                 value = value.strip()
                 if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
                     value = value[1:-1]
@@ -91,19 +89,43 @@ def main():
                   DJANGO_ALLOWED_HOSTS=f'localhost,127.0.0.1,{host}')
     if any('\n' in value or '\r' in value for value in config.values()):
         raise ValueError('Multiline configuration values are not supported')
-    fingerprint = hashlib.sha256()
-    for path in files:
-        fingerprint.update(str(path.relative_to(BACKEND)).encode() + b'\0' + path.read_bytes())
-    release = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S') + '-' + fingerprint.hexdigest()[:12]
-    archive = io.BytesIO()
-    with tarfile.open(fileobj=archive, mode='w:gz') as bundle:
-        for path in files:
-            bundle.add(path, arcname=str(path.relative_to(BACKEND)), recursive=False)
-    # Payload is streamed directly; no source tree checkout and no rsync deletion.
+    # Deploy exactly the accepted pushed main commit, from the server checkout.
+    commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+    if not re.fullmatch(r'[a-f0-9]{40}', commit):
+        raise ValueError('Invalid commit')
+    branch = subprocess.check_output(['git', 'branch', '--show-current'], cwd=ROOT, text=True).strip()
+    dirty = subprocess.check_output(['git', 'status', '--porcelain', '--', 'FIRST/backend', 'send-machine'], cwd=ROOT, text=True).strip()
+    if branch != 'main' or dirty:
+        raise ValueError('Deploy requires clean backend/deploy sources on main')
+    origin = subprocess.check_output(['git', 'remote', 'get-url', 'origin'], cwd=ROOT, text=True).strip()
+    allowed_origins = {'https://github.com/caglarkc/4-product-one-community',
+                       'https://github.com/caglarkc/4-product-one-community.git',
+                       'git@github.com:caglarkc/4-product-one-community.git'}
+    if origin not in allowed_origins:
+        raise ValueError('Unexpected origin')
+    remote_head = subprocess.check_output(['git', 'ls-remote', 'origin', 'refs/heads/main'], cwd=ROOT, text=True).split()
+    if not remote_head or remote_head[0] != commit:
+        raise ValueError('Push accepted main commit before deployment')
+    release = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S') + '-' + commit[:12]
     destination = REMOTE + '/releases/' + release
-    subprocess.run(ssh + [f'umask 077; mkdir -p {destination}; tar -xzf - -C {destination}'], input=archive.getvalue(), check=True)
-    remote_command = f'bash {destination}/deploy/release.sh {shlex.quote(release)}'
-    subprocess.run(ssh + [remote_command], input=json.dumps(config).encode(), check=True)
+    # Archive only runtime files. Never extract tracked env or frontend files into a release.
+    runtime_paths = ' '.join(shlex.quote(str(path.relative_to(BACKEND))) for path in files)
+    remote_script = f"""set -euo pipefail
+umask 077
+cd /root/first-backend
+test -z "$(git status --porcelain)"
+test "$(git branch --show-current)" = main
+case "$(git remote get-url origin)" in
+  https://github.com/caglarkc/4-product-one-community|https://github.com/caglarkc/4-product-one-community.git|git@github.com:caglarkc/4-product-one-community.git) ;;
+  *) echo 'Unexpected remote origin'; exit 1 ;;
+esac
+git pull --ff-only
+test "$(git rev-parse HEAD)" = {shlex.quote(commit)}
+mkdir -p {shlex.quote(destination)}
+git archive HEAD:FIRST/backend {runtime_paths} | tar -x -C {shlex.quote(destination)}
+bash {shlex.quote(destination)}/deploy/release.sh {shlex.quote(release)}
+"""
+    subprocess.run(ssh + ['bash -c ' + shlex.quote(remote_script)], input=json.dumps(config).encode(), check=True)
     print('FIRST backend deployed. Frontend: https://first.alicaglarkocer.com')
 
 

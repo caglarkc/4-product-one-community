@@ -1,12 +1,14 @@
 # FIRST deployment
 
-Frontend: https://first.alicaglarkocer.com on Vercel. GitHub pushes trigger its configured frontend build. The owner explicitly chose to track frontend `.env.production` in this private repository. It contains only three server-side proxy settings; backend SMTP, database and Django secrets are not committed. Root `.gitignore` remains in place to exclude dependencies and unrelated local secrets; only this production config is explicitly tracked.
+Frontend: https://first.alicaglarkocer.com on Vercel. GitHub pushes trigger its configured frontend build. The owner explicitly chose to track frontend `.env.production` in this private repository. It contains only three server-side proxy settings; the owner also explicitly chose to track backend `.env` in this private repository. Backend secrets are never bundled into the frontend or Docker image. Root `.gitignore` remains in place to exclude dependencies and unrelated local secrets; only this production config is explicitly tracked.
 
 Backend: Hetzner Docker Compose project `first`, deployed below `/opt/first/backend`. Django listens on loopback port 18081; PostgreSQL and Redis expose no host ports. Existing host nginx forwards only `/api/auth/` on its HTTPS IP virtual host to FIRST. Other virtual hosts/routes are preserved. The existing IP TLS certificate and renewal service are shared with the already configured host; renewal must remain operational. Auth requests require the frontend HMAC assertion, CSRF and secure cookies.
 
 ## Routine deployment
 
-From the repository root:
+Permanent user instruction: backend changes are delivered through commit/push, remote root SSH pull, Docker rebuild and health checks unless the user explicitly makes an exception. Frontend changes require push only; Vercel automatically builds/deploys. Do not run an extra local production build or manual Vercel deployment. Tests, lint and typecheck remain required as appropriate. Documentation-only changes do not require a backend rebuild.
+
+After accepted changes are committed and pushed to `origin/main`, from the repository root:
 
 ```sh
 ./send-machine --dry-run
@@ -16,7 +18,7 @@ From the repository root:
 
 Python 3, SSH key access and the verified host entry in known_hosts are required. Root `.env` supplies `hetzner_sunucu_ip`, `FIRST_AUTH_PROXY_SECRET` and optional `FIRST_SSH_USER` (default root). The proxy secret must match frontend `.env.production`. SMTP overrides are optional; existing remote settings are preserved. The initial deployment copied only SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD and EMAIL_FROM from the remote Immense configuration, mapping EMAIL_FROM to SMTP_FROM with STARTTLS on port 587. No Immense file was modified.
 
-The script uploads only allowlisted backend runtime files, migrations and deployment scripts. No frontend, tests, venv, node_modules, Git history, other product, or raw .env file is sent. Future backend assets/dependency files outside that allowlist must explicitly be added to `source_files()` before deployment. Configuration is sent separately over SSH and stored with mode 600.
+The script verifies clean local backend/deployment sources on main and that GitHub main equals HEAD. It connects via SSH to `/root/first-backend`, checks a clean main checkout and the expected repository origin, runs `git pull --ff-only`, and verifies the same commit. Only allowlisted backend runtime files, migrations and deployment scripts are extracted from that remote commit into the new release. No frontend, tests, venv, node_modules, Git history, other product, or raw .env enters the release archive. The private checkout itself includes the explicitly tracked backend env. OAuth configuration is read separately from the local backend env and merged into the server env; database, Redis and Django secrets are preserved. Future backend assets/dependency files outside that allowlist must explicitly be added to `source_files()` before deployment. Configuration is sent separately over SSH and stored with mode 600.
 
 Each release builds its own image, starts private PostgreSQL/Redis, checks Django, applies migrations, verifies database/Redis connectivity, starts the backend, and checks health before changing the current symlink. Deployments are serialized by a remote lock. Updates back up PostgreSQL and the previous environment. Failed updates restore the previous environment/image when possible; database migrations are not automatically reversed, so schema changes must be backward compatible or accompanied by a deliberate recovery plan. Backup files, images and old release directories are retained; no automatic pruning touches the existing server.
 
@@ -119,7 +121,7 @@ migrations, passed Django/migration/database/Redis checks, and became healthy.
 Existing database/Redis volumes and other applications were retained.
 
 Google credentials and enabled flag were added to backend environment only; no secret
-was exposed to the frontend. `send-machine` forwards only the four OAuth settings
+was exposed to the frontend. `send-machine` forwarded only the four Google OAuth settings for that release
 from backend env for subsequent routine releases. Callback uses the existing frontend
 origin `/accounts/google/login/callback/` and the signed `/api/auth/` proxy. FIRST
 nginx already disables access logs; Gunicorn now logs paths without query parameters.

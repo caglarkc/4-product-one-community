@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-auth",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "github_frontend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "GitHub login signup linking and constrained callback implemented with shared Google/GitHub forms. 95 tests, ESLint and tsc pass; no production build per user instruction.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "GitHub UI and constrained callback proxy implement shared API with authenticated linking; frontend checks pass.",
+      "status": "passed",
+      "evidence": "GitHub login signup linking and constrained callback implemented with shared Google/GitHub forms. 95 tests, ESLint and tsc pass; no production build per user instruction."
+    }
+  ],
+  "checks": [
+    {
+      "name": "frontend checks",
+      "status": "passed",
+      "evidence": "GitHub login signup linking and constrained callback implemented with shared Google/GitHub forms. 95 tests, ESLint and tsc pass; no production build per user instruction."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T19:59:13.694568+00:00"
+}

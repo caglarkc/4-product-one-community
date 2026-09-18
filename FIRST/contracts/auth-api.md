@@ -1,6 +1,6 @@
-# FIRST normal auth API sözleşmesi
+# FIRST auth API sözleşmesi
 
-17 Eylül 2026. Ürün kararları: [auth-kararlari.md](../auth-kararlari.md). Bu belge uygulanmış normal auth davranışını tanımlar. Google/GitHub OAuth, bağlantı/eşleştirme, ortak ürün SSO'su, ilan/repo ve öğrenci doğrulama kapsam dışıdır. Sosyal giriş kararları gelecekte uygulanacaktır; aktif sosyal endpoint veya bağlantı kaldırma ekranı yoktur.
+17 Eylül 2026. Ürün kararları: [auth-kararlari.md](../auth-kararlari.md). Bu belge normal auth ve aşağıdaki sağlayıcı genişletmelerini tanımlar. Ortak ürün SSO’su, ilan/repo ve öğrenci doğrulama kapsam dışıdır. Bağlantı kaldırma ekranı veya endpoint’i yoktur.
 
 ## Taşıma ve kimlik
 
@@ -17,7 +17,8 @@ id: number; email, username, full_name, phone: string
 birth_date: ISO date | null
 gender: female | male | other | unspecified | ''
 email_verified, phone_verified, profile_complete: boolean
-providers: []
+providers: (google | github)[]
+has_usable_password: boolean
 capabilities: {can_apply:false, can_create_listing:false}
 ```
 
@@ -78,7 +79,7 @@ Django süreç içi client, `enforce_csrf_checks=True`, izole SQLite, FakeRedis 
 
 ## Google giriş/kayıt genişletmesi — 18 Eylül 2026
 
-Bu bölüm önceki Google kapsam-dışı notunu Google için günceller; GitHub henüz uygulanmaz.
+Bu bölüm Google akışını tanımlar; GitHub genişletmesi ayrı bölümde açıklanır.
 Google yalnız giriş, kayıt ve bağlı kimlikle yeniden doğrulama içindir. Uygulama içinden
 Google bağlama/kaldırma endpoint'i yoktur. `django-allauth` Google kimlik doğrulama ve
 kalıcı sağlayıcı kimliği için kullanılır; FIRST oturum kayıtları yetki kaynağı kalır.
@@ -123,3 +124,42 @@ Mevcut hesap ancak adres kanıtından sonra eşleştirilir; yeni adres kanıtı 
 profili günceller ve `/kayit/google` ekranına döner. Doğrulama yanıtında
 `status:authenticated|profile_required` kullanılır. Süresi dolmuş/yabancı oturumdaki
 kanıt reddedilir. Kullanıcı ilk Google akışından yeniden başlayabilir.
+
+## GitHub giriş/kayıt ve hesap bağlama — 18 Eylül 2026
+
+GitHub OAuth App yalnız `user:email` ister; repo izni istemez ve sağlayıcı token'ını
+kalıcı saklamaz. HTTPS code exchange PKCE S256 kullanır. `/user` içindeki kalıcı
+sayısal ID kimlik kaynağıdır; otomatik e-posta eşleştirme yalnız `/user/emails`
+yanıtındaki birincil ve doğrulanmış adresten yapılır. Public profil e-postası yeterli
+değildir. Eksik adres FIRST mailbox doğrulamasına yönlenir.
+
+| Metot / yol | Girdi | Sonuç |
+|---|---|---|
+| POST github/start/ | remember_me?:boolean, purpose?:login veya link | CSRF; `{authorization_url}`. Link için oturum + yakın kanıt gerekir |
+| GET github/callback/ | code,state veya error,state | Tek kullanımlı, tarayıcıya bağlı state; `{status:authenticated veya profile_required veya linked,user?}` |
+| GET github/signup/ | — | `{profile:{email,full_name,username,birth_date,gender,phone},email_verified,email_editable}` |
+| POST github/signup/ | full_name,username,birth_date,gender,phone?,email? | CSRF; şifresiz profil tamamlama, 201 `{user}` |
+| POST github/email/request/ | email | Bekleyen kayıtta doğrulanmamış/eksik adres için FIRST bağlantısı |
+| POST github/email/verify/ | key | Aynı bekleyen tarayıcıda açık onay; `{status:authenticated veya profile_required,user?}` |
+
+Sabit frontend callback `/accounts/github/login/callback/`; mevcut giriş `/`, yeni
+kayıt `/kayit/github`, hesap bağlama `/hesap` yönüne gider. Posta kanıt ekranı
+`/github-eposta-dogrula?key=…`; GET tek başına onaylamaz. Profilde GitHub adı ve
+kullanıcı adı önerilir (GitHub kullanıcı adındaki tire alt çizgiye çevrilir); doğum
+tarihi/cinsiyet gibi alınamayan zorunlu bilgiler kullanıcı tarafından doldurulur.
+
+Hesabım ekranından GitHub bağlanabilir. Başlatma ve callback aynı oturum/kullanıcı,
+güvenlik sürümü ve yakın yeniden doğrulamaya bağlıdır. Başka kullanıcıya bağlı
+GitHub kimliği taşınmaz; mevcut farklı GitHub bağlantısı değiştirilmez. E-posta
+farklı olsa bile bilinçli link akışı mevcut FIRST hesabına bağlar ve FIRST e-postasını
+değiştirmez. Bağlantı kaldırma endpoint'i yoktur.
+
+GitHub OAuth yeni şifre/ikinci faktör doğrulaması zamanını kanıtlamaz. Bu nedenle
+`purpose:reauth` isteği `github_reauth_unavailable` ile reddedilir; GitHub girişinin
+kendisi hassas işlemler için yakın kanıt oluşturmaz. Kullanıcı mevcut yerel şifresi
+veya bağlı Google kimliğiyle yeniden doğrular. İkisi de yoksa mevcut şifre sıfırlama
+akışıyla yerel şifre oluşturabilir. Hesap bağlama çatışması `github_link_conflict`,
+eski bekleyen kayıt `github_signup_expired` ile bildirilir.
+
+Kaynaklar: [GitHub OAuth akışı](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps),
+[e-posta API'si](https://docs.github.com/en/rest/users/emails).

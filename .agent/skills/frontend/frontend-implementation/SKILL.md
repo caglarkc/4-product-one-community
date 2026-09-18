@@ -27,3 +27,7 @@ STEP, INTO ve PATH için ayrı tasarım kararı verilene kadar 17 Eylül 2026 i�
 - Teknik altyapıyı ilgili ürünün gerçek manifesti ve karar dosyalarından doğrula. FIRST için `FIRST/teknik-kararlar.md`, auth için `FIRST/auth-kararlari.md` kaynak kabul edilir.
 
 Review/verify: FIRST'te token ve bileşen tekrar kullanımı, sayfalar arası tutarlılık, kontrast, odak, disabled/loading/error/success durumları, masaüstü ve dar ekran görünümü ile mevcut işlevleri birlikte kontrol et. Görsel referansı yerleşim şartnamesi olarak kullanma. Diğer ürünlerde henüz açılmamış görsel tasarımı eksik özellik sayma. Çalıştırılan kontroller ile doğrulanamayanları ayır.
+
+## FIRST dağıtım teslimi
+
+`.agent/rules.md` → FIRST yayın teslim protokolünü uygula. Backend değiştiğinde gerekli kontrollerden sonra ana agent commit/push, uzak root SSH checkout’unda `git pull --ff-only`, aynı commit’ten Docker rebuild ve canlı sağlık kontrolünü tamamlar. Frontend push ile Vercel otomatik build alır; ek yerel üretim build’i veya manuel Vercel deployment yapma. Test/lint/typecheck ve otomatik dağıtım sonucunu doğrula. Belge/skill değişikliği tek başına backend rebuild gerektirmez; açık kullanıcı istisnası önceliklidir. İşlem ayrıntıları `FIRST/deployment.md` içindedir.

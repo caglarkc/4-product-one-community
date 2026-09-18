@@ -4,10 +4,11 @@ import { useRouter } from 'next/navigation';
 import { useId, useRef, useState } from 'react';
 import { api, ApiError, User } from '../lib/api';
 import { GoogleButton } from './google-auth';
+import { GitHubButton } from './github-auth';
 import { passwordHelp } from './account-form';
 import { Alert, Button, Checkbox, Field, Input, PageHeading, Select, Surface } from './ui';
 
-export function AuthForm({ register = false, googleError }: { register?: boolean; googleError?: string }) {
+export function AuthForm({ register = false, googleError, githubError }: { register?: boolean; googleError?: string; githubError?: string }) {
   const router = useRouter();
   const id = useId();
   const lock = useRef(false);
@@ -27,6 +28,8 @@ export function AuthForm({ register = false, googleError }: { register?: boolean
     <PageHeading title={register ? 'Hesap oluştur' : 'Giriş yap'}
       description={register ? 'FIRST hesabınız için bilgilerinizi doldurun.' : 'FIRST hesabınıza yeniden hoş geldiniz.'} />
     {googleError && <Alert role="alert" tone="error">{googleError === 'cancelled' ? 'Google ile giriş iptal edildi. Yeniden deneyebilirsiniz.' : 'Google ile giriş tamamlanamadı. Lütfen yeniden deneyin.'}</Alert>}
+    {githubError && <Alert role="alert" tone="error">{githubError === 'cancelled' ? 'GitHub ile giriş iptal edildi. Yeniden deneyebilirsiniz.' : 'GitHub işlemi tamamlanamadı. Giriş veya hesap bağlama işlemini yeniden başlatın.'}</Alert>}
+    <GitHubButton remember={remember} disabled={busy} onBusyChange={value => {lock.current = value; setBusy(value);}}/>
     <GoogleButton remember={remember} disabled={busy} onBusyChange={value => {lock.current = value; setBusy(value);}}/>
     <form aria-busy={busy} onSubmit={async event => {
       event.preventDefault();

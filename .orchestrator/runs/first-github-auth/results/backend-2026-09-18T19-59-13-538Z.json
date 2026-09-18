@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-auth",
+  "itemId": "backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "github_backend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "GitHub login, verified-email matching, passwordless signup and authenticated linking implemented. 111 backend tests pass, including 24 GitHub regressions. Migration dry-run shows no changes. Github OAuth fresh reauth explicitly unsupported; password/Google required.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "GitHub login/signup and reauth follow approved rules and backend regressions pass.",
+      "status": "passed",
+      "evidence": "GitHub login, verified-email matching, passwordless signup and authenticated linking implemented. 111 backend tests pass, including 24 GitHub regressions. Migration dry-run shows no changes. Github OAuth fresh reauth explicitly unsupported; password/Google required."
+    }
+  ],
+  "checks": [
+    {
+      "name": "backend checks",
+      "status": "passed",
+      "evidence": "GitHub login, verified-email matching, passwordless signup and authenticated linking implemented. 111 backend tests pass, including 24 GitHub regressions. Migration dry-run shows no changes. Github OAuth fresh reauth explicitly unsupported; password/Google required."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T19:59:13.538360+00:00"
+}

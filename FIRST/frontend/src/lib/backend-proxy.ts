@@ -25,12 +25,12 @@ export async function proxyAuth(request:Request, path:string[]):Promise<Response
       headers.set('X-First-Client-Signature',createHmac('sha256',secret).update(message).digest('hex'));
     }
     const target=new URL(`/api/auth/${path.join('/')}/`,base);
-    // Only Google's callback accepts query parameters. Never forward arbitrary URLs.
-    if(request.method==='GET' && path.join('/')==='google/callback'){
+    // Only explicitly supported OAuth callbacks accepts query parameters. Never forward arbitrary URLs.
+    if(request.method==='GET' && ['google/callback','github/callback'].includes(path.join('/'))){
       const query=new URL(request.url).searchParams;
       for(const key of ['code','state','error']){
         const values=query.getAll(key);
-        if(values.length>1 || (values[0]?.length || 0)>4096) return reply(400,'Geçersiz Google dönüşü.');
+        if(values.length>1 || (values[0]?.length || 0)>4096) return reply(400,'Geçersiz sağlayıcı dönüşü.');
         if(values.length) target.searchParams.set(key,values[0]);
       }
     }

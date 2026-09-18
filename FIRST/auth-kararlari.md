@@ -1,6 +1,6 @@
 # FIRST — Kayıt, giriş ve hesap bağlantısı kararları
 
-Kayıt tarihi: 17 Eylül 2026. Kaynak: kullanıcının auth görüşmesindeki açık kararları. Kabul edilmiş ürün ve auth tasarım kararlarıdır. Normal auth ve hesap yönetimi uygulandı; Google/GitHub ve hesap eşleştirme gelecek kapsamdır. Güncel uygulama sözleşmesi: `contracts/auth-api.md`.
+Kayıt tarihi: 17 Eylül 2026. Kaynak: kullanıcının auth görüşmesindeki açık kararları. Kabul edilmiş ürün ve auth tasarım kararlarıdır. Normal auth, hesap yönetimi ve Google entegrasyonu uygulandı; GitHub entegrasyonu 18 Eylül 2026 görevinde eklenmektedir. Güncel uygulama sözleşmesi: `contracts/auth-api.md`.
 
 ## 1. Giriş ve kayıt yöntemleri
 
@@ -66,7 +66,7 @@ Görüşmede resmî dokümanlarla kontrol edildi:
 
 - `GET /user`: kullanıcı ID'si, kullanıcı adı, avatar ve doldurulmuşsa isim/biyografi/konum gibi profil alanları. İsim doğrulanmış yasal kimlik değildir.
 - `GET /user/emails`: uygun izinle gizli adresler dahil hesaba bağlı e-postalar; `primary`, `verified`, `visibility` alanları.
-- OAuth App için `user:email`; GitHub App kullanıcı erişimi için “Email addresses: read” izni gerekir. Uygulama türü henüz seçilmedi.
+- OAuth App için `user:email`; GitHub App kullanıcı erişimi için “Email addresses: read” izni gerekir. 18 Eylül 2026: kullanıcı OAuth App oluşturdu; giriş için OAuth App seçildi. Repo işlemlerinin izin tasarımı ayrı kalır.
 - Ayrı bir “güvenlik/kurtarma e-postası” alanı varsayılmaz. Birincil doğrulanmış e-postayı seçmek mümkündür.
 - GitHub ID ile hesap eşleştirmek, ad/avatar ile profili doldurmak ve gizli e-postayı public profilde yayımlamamak önerildi. Kesin veri saklama şeması henüz oluşturulmadı.
 
@@ -124,3 +124,12 @@ Hesap e-postası doğrulaması, telefon doğrulaması ve aktif öğrenci doğrul
 - Canlı callback: `https://first.alicaglarkocer.com/accounts/google/login/callback/`.
 
 Teknik güvenlik koşulu: Google adres sahipliği kanıtı sağlamıyorsa bekleyen Google kaydı FIRST e-posta doğrulaması tamamlanana kadar nihai kullanıcı/sağlayıcı bağlantısı oluşturmaz. Bu, henüz doğrulanmamış adresle başka bir kişinin hesabına kalıcı sosyal erişim bırakılmasını önler; güvenilir Google e-postasında ek doğrulama yoktur.
+
+## 18 Eylül 2026 — GitHub uygulama ayrıntısı
+
+GitHub giriş/kayıt için OAuth App ve yalnız `user:email` izni kullanılır. Repo erişimi
+bu entegrasyona dahil değildir. GitHub kimliğiyle giriş, doğrulanmış birincil e-posta
+ile eşleştirme, şifresiz profil tamamlama ve Hesabım ekranından GitHub bağlama uygulanır.
+GitHub OAuth yeni kimlik doğrulama zamanını garanti etmediğinden hassas işlemler için
+şifre veya bağlı Google hesabıyla yakın yeniden doğrulama gerekir; yalnız GitHub
+kullanan kişi mevcut e-posta kurtarma akışıyla yerel şifre oluşturabilir.

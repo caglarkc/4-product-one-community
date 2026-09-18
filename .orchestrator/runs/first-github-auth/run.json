@@ -1,0 +1,369 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-auth",
+  "title": "FIRST GitHub integration",
+  "goal": "Implement GitHub login signup linking and deploy with persistent delivery rules",
+  "createdAt": "2026-09-18T19:53:39.848Z",
+  "updatedAt": "2026-09-18T19:59:24.949Z",
+  "revision": 16,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "e437f1d3ed71db748520700662d4f08b51d2d0332c53bbce4769478190f1850d",
+    "assumptions": []
+  },
+  "constraints": [
+    "FIRST only; GitHub OAuth App login/signup and authenticated linking; no repo permissions. User authorized push and root SSH pull/Docker rebuild. Frontend uses automatic Vercel build. No secrets in evidence."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "delivery",
+      "summary": "User authorized GitHub integration and root SSH deployment plus permanent FIRST delivery defaults",
+      "reason": "Explicit current user request",
+      "decidedAt": "2026-09-18T19:56:43.261Z",
+      "actor": "user",
+      "extensions": {
+        "type": "approval",
+        "itemId": "deploy",
+        "boundary": "production-write",
+        "outcome": "approved",
+        "provenance": "user-confirmed"
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "backend",
+      "title": "backend",
+      "kind": "implement",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Implement GitHub login signup linking and deploy with persistent delivery rules",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "GitHub login/signup and reauth follow approved rules and backend regressions pass."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth flow changes"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "github_backend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-18T19-59-13-538Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "frontend",
+      "kind": "implement",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Implement GitHub login signup linking and deploy with persistent delivery rules",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "GitHub UI and constrained callback proxy implement shared API with authenticated linking; frontend checks pass."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Auth flow changes"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "github_frontend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-18T19-59-13-694Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Implement GitHub login signup linking and deploy with persistent delivery rules",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent security review has no unresolved material findings."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "frontend"
+        ],
+        "reviews": [
+          "backend",
+          "frontend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "github_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-18T19-59-14-075Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Implement GitHub login signup linking and deploy with persistent delivery rules",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Tests and integration contract checks provide passing evidence."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "frontend"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-18T19-59-14-339Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "integration",
+      "kind": "integration",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Implement GitHub login signup linking and deploy with persistent delivery rules",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Accepted backend and frontend are consistent with user decisions."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review",
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "backend",
+          "frontend"
+        ]
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-18T19-59-14-727Z.json"
+    },
+    {
+      "id": "deploy",
+      "title": "deploy",
+      "kind": "deployment",
+      "domains": [
+        "first-auth"
+      ],
+      "objective": "Implement GitHub login signup linking and deploy with persistent delivery rules",
+      "responsibility": "Preserve functional scope and ownership",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/auth-kararlari.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Accepted commit pushed; remote backend rebuilt; live checks and any user-dependent limitations recorded."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [],
+        "approvalBoundaries": [
+          "production-write"
+        ]
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "active",
+      "attempt": 1
+    }
+  ]
+}
