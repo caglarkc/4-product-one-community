@@ -6,7 +6,7 @@ Kayıt tarihi: 17 Eylül 2026. Kaynak: kullanıcının auth görüşmesindeki a�
 
 - E-posta + şifre, Google ve GitHub ile kayıt/giriş olacak.
 - Tüm yöntemler normal kullanıcı hesabı oluşturur. Öğrenci olmak temel katılım şartı değildir.
-- Kullanıcı mevcut hesabına Google ve GitHub bağlayabilir.
+- Google eşleştirmesi yalnız Google ile giriş/kayıt sırasında yapılır; uygulama içinde Google bağlama seçeneği yoktur (18 Eylül 2026 güncellemesi). GitHub bağlama kararı korunur.
 - Dört ürün ayrı siteler olacak; hesaplar ileride ortak kullanılacak.
 
 ## 2. Normal kayıt alanları
@@ -51,7 +51,7 @@ Telefon doğrulaması normal kullanıcının başvuru yapması için şart deği
 ## 6. Hesap bağlama
 
 - E-postayla veya Google ile kayıt olan kullanıcı, repo başvurusu/ilan oluşturma öncesinde GitHub'ı bağlamalıdır.
-- Google/GitHub hesabını mevcut oturumdan aynı kullanıcı hesabına bağlama kabul edildi.
+- GitHub hesabını mevcut oturumdan aynı kullanıcı hesabına bağlama kabul edildi. Google için bu karar 18 Eylül 2026 tarihinde kaldırıldı; Google yalnız giriş/kayıt sağlayıcısıdır.
 - Google/GitHub tarafından güvenilir biçimde doğrulanmış e-posta mevcut FIRST hesabıyla eşleşirse otomatik giriş ve sağlayıcı bağlama yapılır. Önce mevcut hesaba ayrıca giriş istenmez. Önceki otomatik eşleştirmeme önerisi geçersizdir.
 - Sağlayıcı e-postası eksik veya doğrulanmamışsa FIRST e-posta doğrulaması tamamlanmadan mevcut hesaba erişim verilmez.
 - Sonraki sosyal girişlerde sağlayıcının değişmeyen kullanıcı ID'si esas alınır.
@@ -114,3 +114,13 @@ Hesap e-postası doğrulaması, telefon doğrulaması ve aktif öğrenci doğrul
 - Backend uzak sunucuda Docker içinde çalıştırılır. İlk aşama FIRST oturumudur; dört ürünün ortak oturum/SSO tasarımı ayrıdır.
 - Telefon doğrulama kanalı/sağlayıcısı ilan akışından önce seçilecektir. İlk auth aşamasında telefon isteğe bağlıdır ve doğrulanmış sayılmaz.
 - Yeni kabul edilen oturum listeleme/sonlandırma, yeniden doğrulama, e-posta değiştirme ve sosyal kullanıcıya şifre oluşturma akışlarının endpoint/veri sözleşmeleri uygulama öncesinde tamamlanacaktır.
+
+## 14. Google akışı — 18 Eylül 2026 kullanıcı güncellemesi
+
+- Google ile giriş/kayıt aynı akıştır. Güvenilir biçimde doğrulanmış Google e-postası mevcut hesabın e-postasıyla eşleşirse, hesabın normal veya GitHub kaydıyla açılmış olmasına bakılmadan Google kimliği eşleştirilir ve giriş yapılır. Bölüm 6 güvenlik kuralları korunur.
+- Eşleşen hesap yoksa henüz tamamlanmış hesap oluşturulmaz: kayıt tamamlama ekranı açılır. Sağlayıcıdan alınabilen bilgiler önceden doldurulur; eksik zorunlu alanlar kullanıcıdan alınır ve “Kaydı tamamla” ile kayıt tamamlanır.
+- Google kaydında yerel şifre istenmez. Ad soyad, kullanıcı adı, doğum tarihi ve cinsiyet zorunlu; telefon isteğe bağlıdır. Sağlayıcıdan doğum tarihi/cinsiyet geldiği varsayılmaz veya sırf bunlar için ek Google API izni istenmez.
+- Uygulama içinden Google bağlama/kaldırma ekranı veya endpoint'i yoktur. Başka Google hizmetlerine erişim kapsam dışıdır. Mevcut bağlı Google kimliğiyle hassas işlemler için yeniden doğrulama, hesap bağlama işlemi sayılmaz.
+- Canlı callback: `https://first.alicaglarkocer.com/accounts/google/login/callback/`.
+
+Teknik güvenlik koşulu: Google adres sahipliği kanıtı sağlamıyorsa bekleyen Google kaydı FIRST e-posta doğrulaması tamamlanana kadar nihai kullanıcı/sağlayıcı bağlantısı oluşturmaz. Bu, henüz doğrulanmamış adresle başka bir kişinin hesabına kalıcı sosyal erişim bırakılmasını önler; güvenilir Google e-postasında ek doğrulama yoktur.

@@ -1,8 +1,11 @@
 'use client';
 import Link from 'next/link';
-import { useId, useRef, useState, type ComponentProps } from 'react';
+import { createContext, useContext, useId, useRef, useState, type ComponentProps } from 'react';
+import { GoogleButton } from './google-auth';
 import { api, ApiError } from '../lib/api';
 import { Alert, Button, Field as FormField, Input, Select, Surface } from './ui';
+
+export const ReauthenticationContext = createContext({google: false, password: true});
 
 export type Field = {
   name: string; label: string; type?: string; value?: string;
@@ -19,6 +22,7 @@ export function AccountForm<T = {detail: string}>({title, path, method = 'POST',
   extra?: Record<string, string>; submit: string; children?: React.ReactNode;
   onSuccess?: (result: T) => void | Promise<void>;
 }) {
+  const methods = useContext(ReauthenticationContext);
   const [draft, setDraft] = useState<Record<string, string>>({});
   const normalize = (name: string, value: string) => name === 'username' ? value.normalize('NFC') : value;
   const hasChanges = fields.some(field => normalize(field.name, draft[field.name] ?? field.value ?? '') !== normalize(field.name, field.value ?? ''));
@@ -69,7 +73,8 @@ export function AccountForm<T = {detail: string}>({title, path, method = 'POST',
         <Button type="submit" variant={variant} loading={busy} disabled={requireChanges && !hasChanges}>{busy ? 'İşlem sürüyor…' : submit}</Button>
       </fieldset>
     </form>
-    {reauth && <AccountForm title="Kimliğinizi yeniden doğrulayın" path="reauthenticate"
+    {reauth && methods.google && <><p>Google ile kimliğinizi doğruladıktan sonra işleminizi yeniden başlatın.</p><GoogleButton purpose="reauth"/></>}
+    {reauth && methods.password && <AccountForm title="Kimliğinizi yeniden doğrulayın" path="reauthenticate"
       fields={[{name: 'password', label: 'Mevcut şifreniz', type: 'password'}]} submit="Kimliğimi doğrula"
       onSuccess={() => {setReauth(false); setError(null); setMessage('Kimliğiniz doğrulandı. İşleminizi yeniden gönderin.');}}/>}
   </Surface>;

@@ -19,6 +19,7 @@ BACKEND = ROOT / 'FIRST/backend'
 REMOTE = '/opt/first/backend'
 TOP_FILES = {'manage.py', 'requirements.txt', 'Dockerfile', '.dockerignore', 'compose.yaml'}
 SOURCE_DIRS = {'accounts', 'config', 'deploy'}
+GOOGLE_KEYS = {'GOOGLE_ENABLED', 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REDIRECT_URI'}
 SMTP_KEYS = {'SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM', 'SMTP_TLS', 'SMTP_SSL'}
 
 
@@ -76,6 +77,15 @@ def main():
     if len(secret) < 32:
         raise ValueError('Set FIRST_AUTH_PROXY_SECRET (>=32 random characters) in root .env and matching AUTH_PROXY_SECRET in Vercel.')
     config = {key: values[key] for key in SMTP_KEYS if key in values}
+    # Read only OAuth settings from the backend env; never replace persistent server credentials.
+    if (BACKEND / '.env').exists():
+        for line in (BACKEND / '.env').read_text().splitlines():
+            key, sep, value = line.partition('=')
+            if sep and key in GOOGLE_KEYS:
+                value = value.strip()
+                if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+                    value = value[1:-1]
+                config[key] = value
     config.update(AUTH_PROXY_SECRET=secret, FRONTEND_ORIGIN='https://first.alicaglarkocer.com',
                   CSRF_TRUSTED_ORIGINS='https://first.alicaglarkocer.com',
                   DJANGO_ALLOWED_HOSTS=f'localhost,127.0.0.1,{host}')

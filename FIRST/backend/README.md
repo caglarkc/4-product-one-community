@@ -174,3 +174,41 @@ only been applied against isolated SQLite during this task, never production dat
 ## Live deployment
 
 Deployment instructions and current verification evidence: [deployment.md](../deployment.md). Email change additionally reserves a stable requester budget (60 seconds between attempts, 5/hour per user, 30/15 minutes per trusted IP) atomically before destination admission and SMTP. Changing destinations cannot bypass the requester limits.
+
+## Google giriş ve profil tamamlama
+
+`GOOGLE_ENABLED=true`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` ve Google Console ile birebir
+aynı `GOOGLE_REDIRECT_URI` sunucu ortamında tanımlanır. Secret frontend'e verilmez.
+`django-allauth[socialaccount]==65.19.4` Google JWT doğrulaması ve kalıcı `SocialAccount`
+kimliğini sağlar; deploy sırasında paketle gelen account/socialaccount migration'ları uygulanır.
+Allauth'un HTML/link/unlink URL'leri açık değildir; mevcut FIRST JSON ve oturum sınırı korunur.
+
+- `POST google/start/`: CSRF korumalı `{remember_me?, purpose?: "login" | "reauth"}`;
+  `{authorization_url}` döner. `openid email profile`, PKCE S256 ve nonce kullanır.
+- `GET google/callback/?code=...&state=...`: session-bound, Redis'te tek kullanımlık
+  10 dakikalık state; `{status: "authenticated" | "profile_required" | "reauthenticated", user?}`.
+  Tarayıcı callback'i Next.js aynı-origin sabit rota üzerinden buraya aktarır.
+- `GET google/signup/`: 10 dakikalık oturuma bağlı bekleyen profil, `email_verified` ve
+  `email_editable` döner. Yeni kullanıcı henüz oluşturulmamıştır.
+- `POST google/signup/`: normal zorunlu profil alanları ve opsiyonel telefon; şifre kabul etmez.
+  Güvenilir Google e-postası değiştirilemez; eksik/güvenilir olmayan adres kullanıcıdan alınır
+  ve kayıt tamamlanmadan FIRST e-posta kanıtı zorunludur (`email_verification_required`).
+  Kanıt öncesinde aktif kullanıcı/sosyal kimlik oluşturulmaz. Böyle bir adres kanıt olmadan mevcut hesapla eşleştirilmez.
+- `POST google/email/request/ {email}` bekleyen Google kaydı için 10 dakikalık FIRST e-posta
+  kanıtı gönderir (`/google-eposta-dogrula?key=...`). `POST google/email/verify/ {key}` aynı
+  tarayıcıdaki bekleyen Google oturumunu gerektirir; mevcut hesap varsa kanıt sonrasında bağlar
+  ve giriş yapar; yoksa kayıt profili doğrulanmış/değiştirilemez e-postayla devam eder.
+  Hesap güvenlik sürümü değişirse eski kanıt geçersizdir.
+
+Google'ın doğrulanmış Gmail veya Workspace e-postası mevcut hesapla otomatik eşleşir.
+Önceden doğrulanmamış hesabın eski oturumları, yerel şifresi, kurtarma token sürümü ve
+önceden bağlanan sosyal kimlikleri geçersizleştirilir; gerçek e-posta sahibinin Google kimliği
+bağlanır. Sonraki girişler provider/sub kimliğini esas alır. Google bağlama/kaldırma endpoint'i yoktur.
+Hassas işlemler için `purpose=reauth` yalnız zaten bağlı Google kimliğini kabul eder;
+Google `auth_time` alanı yeni doğrulamayı kanıtlamalıdır. Provider access/refresh token'ları saklanmaz.
+
+Test: `python manage.py test accounts --settings=config.test_settings`.
+`test_google.py` sahte Redis ve token exchange kullanarak akışı, ayrıca RSA ile imzalanmış JWT'lerle
+allauth imza/issuer/audience/süre/nonce kontrollerini test eder; gerçek Google hesap etkileşiminin yerine geçmez.
+
+Gunicorn erişim logları yalnız method, sorgusuz URL path, durum ve süre içerir; OAuth code/state, cookie ve referrer loglanmaz.

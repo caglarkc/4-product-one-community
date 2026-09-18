@@ -3,14 +3,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useId, useRef, useState } from 'react';
 import { api, ApiError, User } from '../lib/api';
+import { GoogleButton } from './google-auth';
 import { passwordHelp } from './account-form';
 import { Alert, Button, Checkbox, Field, Input, PageHeading, Select, Surface } from './ui';
 
-export function AuthForm({ register = false }: { register?: boolean }) {
+export function AuthForm({ register = false, googleError }: { register?: boolean; googleError?: string }) {
   const router = useRouter();
   const id = useId();
   const lock = useRef(false);
   const [busy, setBusy] = useState(false);
+  const [remember, setRemember] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
   const field = (name: string, label: string, type = 'text', extra: React.InputHTMLAttributes<HTMLInputElement> = {}, help?: string) => {
     const inputId = `${id}-${name}`;
@@ -24,6 +26,8 @@ export function AuthForm({ register = false }: { register?: boolean }) {
   return <Surface className={`form-page${register ? ' register-page' : ''}`}>
     <PageHeading title={register ? 'Hesap oluştur' : 'Giriş yap'}
       description={register ? 'FIRST hesabınız için bilgilerinizi doldurun.' : 'FIRST hesabınıza yeniden hoş geldiniz.'} />
+    {googleError && <Alert role="alert" tone="error">{googleError === 'cancelled' ? 'Google ile giriş iptal edildi. Yeniden deneyebilirsiniz.' : 'Google ile giriş tamamlanamadı. Lütfen yeniden deneyin.'}</Alert>}
+    <GoogleButton remember={remember} disabled={busy} onBusyChange={value => {lock.current = value; setBusy(value);}}/>
     <form aria-busy={busy} onSubmit={async event => {
       event.preventDefault();
       if (lock.current) return;
@@ -54,7 +58,7 @@ export function AuthForm({ register = false }: { register?: boolean }) {
         </>}
         {register && field('phone', 'Telefon (isteğe bağlı, doğrulanmaz)', 'tel', { autoComplete: 'tel', maxLength: 32, placeholder: '+905551234567' })}
         {field('password', 'Şifre', 'password', { autoComplete: register ? 'new-password' : 'current-password' }, register ? passwordHelp : undefined)}
-        {!register && <Checkbox name="remember_me">Beni hatırla (30 gün)</Checkbox>}
+        {!register && <Checkbox name="remember_me" checked={remember} onChange={event => setRemember(event.target.checked)}>Beni hatırla (30 gün)</Checkbox>}
         <Button type="submit" loading={busy} className="button--full">{busy ? 'İşlem sürüyor…' : register ? 'Kayıt ol' : 'Giriş yap'}</Button>
       </fieldset>
     </form>

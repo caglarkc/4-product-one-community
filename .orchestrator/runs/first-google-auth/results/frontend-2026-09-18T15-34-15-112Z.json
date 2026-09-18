@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-google-auth",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "google_frontend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "80 frontend tests pass; lint/typecheck pass; no local build per user. Google callback, passwordless profile completion, mailbox proof and reauth UI implemented.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Google UI and constrained callback proxy implement shared API without in-app linking; frontend checks pass.",
+      "status": "passed",
+      "evidence": "80 frontend tests pass; lint/typecheck pass; no local build per user. Google callback, passwordless profile completion, mailbox proof and reauth UI implemented."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Task acceptance",
+      "status": "passed",
+      "evidence": "80 frontend tests pass; lint/typecheck pass; no local build per user. Google callback, passwordless profile completion, mailbox proof and reauth UI implemented."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T15:34:15.112010+00:00"
+}

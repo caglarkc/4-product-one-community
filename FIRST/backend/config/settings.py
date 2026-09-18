@@ -11,13 +11,14 @@ ALLOWED_HOSTS = [host.strip() for host in os.environ.get(
 ).split(",") if host.strip()]
 ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
-INSTALLED_APPS = ["django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "rest_framework", "accounts"]
+INSTALLED_APPS = ["django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "rest_framework", "accounts", "allauth", "allauth.account", "allauth.socialaccount", "allauth.socialaccount.providers.google"]
 MIDDLEWARE = [
     "accounts.middleware.AuthBoundaryMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "accounts.proxy.TrustedClientIPMiddleware",
     "accounts.middleware.RedisSessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "accounts.middleware.RegistryMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -67,3 +68,13 @@ AUTH_BREACHED_PASSWORD_HASHES = load_corpus(os.environ.get('AUTH_BREACHED_PASSWO
 
 from accounts.proxy import validate_proxy_secret
 AUTH_PROXY_SECRET = validate_proxy_secret(os.environ.get('AUTH_PROXY_SECRET', ''))
+
+# Only the custom JSON endpoints are mounted; no allauth account/linking views.
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
+SOCIALACCOUNT_STORE_TOKENS = False
+SOCIALACCOUNT_REQUESTS_TIMEOUT = 10
+GOOGLE_ENABLED = os.environ.get("GOOGLE_ENABLED", "false").lower() == "true"
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
+GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI", "")

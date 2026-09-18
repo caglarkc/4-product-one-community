@@ -75,3 +75,51 @@ Varsayılan IP kaynağı backend REMOTE_ADDR'dır; proxy arkasında ortak IP bü
 Django süreç içi client, `enforce_csrf_checks=True`, izole SQLite, FakeRedis ve locmem mail; frontend bileşen/sözleşme/lint/typecheck/build kullanılır. Mock'lar yalnız testtedir. Gerçek PostgreSQL kilit/eşzamanlılık, Redis Lua/TTL/arıza, SMTP teslim/zamanlama, proxy-ingress/HTTPS-cookie, tarayıcı E2E/görsel kullanım, Docker/uzak servis/deploy **not_verified**. Kod testlerinin geçmesi canlı ortamın çalıştığı anlamına gelmez. Kanıt ve korunmuş başarısız denemeler: [run checklist](../../.orchestrator/runs/first-auth/checklist.md).
 
 - E-posta değiştirme: hedef adresten bağımsız kullanıcı başına 60 saniye aralık ve 5/saat, istemci IP başına 30/15 dakika. Redis bu üç bütçeyi atomik ayırır; hedef adres bütçesi ayrıca uygulanır. Hedef/SMTP başarısızlığı rezervasyonu geri almaz.
+
+## Google giriş/kayıt genişletmesi — 18 Eylül 2026
+
+Bu bölüm önceki Google kapsam-dışı notunu Google için günceller; GitHub henüz uygulanmaz.
+Google yalnız giriş, kayıt ve bağlı kimlikle yeniden doğrulama içindir. Uygulama içinden
+Google bağlama/kaldırma endpoint'i yoktur. `django-allauth` Google kimlik doğrulama ve
+kalıcı sağlayıcı kimliği için kullanılır; FIRST oturum kayıtları yetki kaynağı kalır.
+
+| Metot / yol | Girdi | Sonuç |
+|---|---|---|
+| POST google/start/ | remember_me?:boolean, purpose?:login veya reauth | CSRF korumalı; `{authorization_url}` |
+| GET google/callback/ | code,state veya error,state | Oturuma bağlı tek kullanımlı state; `{status:authenticated veya profile_required veya reauthenticated,user?}` |
+| GET google/signup/ | — | Süreli bekleyen kayıt; `{profile:{email,full_name,username,birth_date,gender,phone},email_verified,email_editable}` |
+| POST google/signup/ | full_name,username,birth_date,gender,phone?,email? | CSRF; yerel şifre kabul edilmez; 201 `{user}` |
+
+Google callback frontend yolu `/accounts/google/login/callback/` olarak sabittir.
+Next callback işleyicisi izin verilen sorgu alanlarını backend JSON endpoint'ine taşır;
+Set-Cookie başlıklarını korur ve yalnız sabit FIRST sayfalarına yönlenir. Normal auth
+proxy'sinin genel yönlendirme yasağı korunur. Başarılı mevcut giriş `/`, yeni kullanıcı
+`/kayit/google`, başarılı yeniden doğrulama `/hesap` yönüne gider.
+
+Sağlayıcıdan dönen token tarayıcıya verilmez. Google state, nonce ve PKCE kullanılır;
+kimlik token imzası, issuer, audience ve süre denetlenir. Google subject kalıcı
+kimliktir; e-posta daha sonraki girişlerde bağlı kimliği başka hesaba taşımaz.
+Yalnız Google'ın adres sahipliğine güvenilir kanıt sağladığı e-posta otomatik eşleşir.
+Gmail veya doğrulanmış Workspace haricindeki Google hesabında sırf email_verified
+iddiası mevcut FIRST hesabına erişim sağlamaz.
+
+Yeni kayıt için Google bilgileri öneri olarak doldurulur. Zorunlu profil ve en az 13
+yaş koşulu sağlanmadan kullanıcı oluşturulmaz. Güvenilir e-posta değiştirilemez;
+eksik/güvenilmeyen adres için önce FIRST e-posta doğrulama akışı kullanılır.
+Adres ispatı tamamlanmadan sosyal kimlik veya nihai kullanıcı oluşturulmaz; mevcut
+adres yalnız aynı bekleyen akışta mailbox kanıtıyla eşleştirilir. Hata sonrası form bilgileri korunur.
+
+`config/` Google hazırsa `providers.google=true` döner. User yanıtında `providers`
+bağlı sağlayıcıları ve `has_usable_password` kullanılabilir yerel şifre durumunu
+bildirir. Sosyal kullanıcı için zorunlu şifre alanı gösterilmez; isterse mevcut şifre
+sıfırlama akışıyla yerel şifre oluşturabilir. Hassas işlem Google yeniden doğrulamasında
+aynı oturum ve zaten bağlı aynı Google kimliği gerekir; başka hesaba bağlama yapılmaz.
+
+Güvenilir Google e-postası alınamayan bekleyen kayıt için ek POST uçları:
+`google/email/request/` `{email}` ile FIRST doğrulama bağlantısı ister;
+`google/email/verify/` `{key}` ile aynı bekleyen tarayıcı oturumunda açıkça onaylar.
+Link `/google-eposta-dogrula?key=…` ekranını açar; GET tek başına onaylamaz.
+Mevcut hesap ancak adres kanıtından sonra eşleştirilir; yeni adres kanıtı bekleyen
+profili günceller ve `/kayit/google` ekranına döner. Doğrulama yanıtında
+`status:authenticated|profile_required` kullanılır. Süresi dolmuş/yabancı oturumdaki
+kanıt reddedilir. Kullanıcı ilk Google akışından yeniden başlayabilir.

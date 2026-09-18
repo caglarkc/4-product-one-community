@@ -19,3 +19,12 @@ urlpatterns += [
     path('sessions/revoke/', account.SessionsRevokeView.as_view()),
     path('sessions/<uuid:session_id>/', account.SessionRevokeView.as_view()),
 ]
+
+from . import google_views as google
+urlpatterns += [
+    path('google/start/', google.GoogleStartView.as_view()),
+    path('google/callback/', google.GoogleCallbackView.as_view()),
+    path('google/signup/', google.GoogleSignupView.as_view()),
+    path('google/email/request/', google.GoogleEmailRequestView.as_view()),
+    path('google/email/verify/', google.GoogleEmailVerifyView.as_view()),
+]
