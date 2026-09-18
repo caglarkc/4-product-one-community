@@ -4,8 +4,8 @@
   "title": "FIRST selected-repository project sharing",
   "goal": "Implement My Projects, project creation and selected repository GitHub App access with safe public/private previews",
   "createdAt": "2026-09-18T23:11:39.304Z",
-  "updatedAt": "2026-09-18T23:23:38.957Z",
-  "revision": 23,
+  "updatedAt": "2026-09-18T23:26:06.114Z",
+  "revision": 26,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -487,9 +487,9 @@
         ],
         "owner": "release"
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/release-2026-09-18T23-26-05-995Z.json"
     },
     {
       "id": "github-live",
