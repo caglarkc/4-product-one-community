@@ -1,4 +1,5 @@
-export type User = {id:number;email:string;username:string;full_name:string;birth_date:string|null;gender:string;phone:string;email_verified:boolean;phone_verified:boolean;profile_complete:boolean;providers:string[];has_usable_password?:boolean;capabilities:{can_apply:boolean;can_create_listing:boolean}};
+export type ConnectedAccount = {provider: 'google' | 'github'; display_name: string; username: string; email: string; avatar_url: string; profile_url: string};
+export type User = {id:number;email:string;username:string;full_name:string;birth_date:string|null;gender:string;phone:string;email_verified:boolean;phone_verified:boolean;profile_complete:boolean;providers:string[];connected_accounts?:ConnectedAccount[];has_usable_password?:boolean;capabilities:{can_apply:boolean;can_create_listing:boolean}};
 export class ApiError extends Error {
   constructor(message:string, public status:number, public errors:Record<string,string[]> = {}, public code?:string){super(message);}
 }

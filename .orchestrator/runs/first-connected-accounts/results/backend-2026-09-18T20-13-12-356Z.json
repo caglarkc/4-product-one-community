@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-connected-accounts",
+  "itemId": "backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "connected_backend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Minimal whitelisted provider metadata stored on successful auth paths; own-user connected_accounts contract and bounded public stable-ID GitHub backfill implemented. 119 full backend tests pass; no migrations.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Own-account API exposes minimal safe provider display metadata with compatibility for existing identities; backend tests pass.",
+      "status": "passed",
+      "evidence": "Minimal whitelisted provider metadata stored on successful auth paths; own-user connected_accounts contract and bounded public stable-ID GitHub backfill implemented. 119 full backend tests pass; no migrations."
+    }
+  ],
+  "checks": [
+    {
+      "name": "backend checks",
+      "status": "passed",
+      "evidence": "Minimal whitelisted provider metadata stored on successful auth paths; own-user connected_accounts contract and bounded public stable-ID GitHub backfill implemented. 119 full backend tests pass; no migrations."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T20:13:12.356015+00:00"
+}

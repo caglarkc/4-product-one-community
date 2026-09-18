@@ -172,3 +172,19 @@ filesystem and existing HTTP/worker/log/health configuration.
 The follow-up was pulled and rebuilt as release `20260918T200454-d2cea0cb4c3b`.
 All three containers are healthy; PostgreSQL/Redis and migration checks pass.
 Fresh backend startup logs contain no control-socket error; `/health/` returns 200.
+
+## Connected-account profile data
+
+Provider display fields are stored as a minimal whitelist in the existing
+SocialAccount extra_data field; no schema migration is required. Successful
+Google/GitHub login, signup and GitHub linking refresh their own display metadata.
+Legacy Google metadata remains empty until a successful provider flow; FIRST email
+is never substituted for the provider email.
+
+Existing GitHub connections can be enriched once from their public stable-ID profile:
+run `python manage.py backfill_github_profiles --dry-run --limit 50` inside the deployed
+backend container, inspect count-only output, then repeat without `--dry-run`.
+The command uses fixed HTTPS GitHub API requests, verifies the returned account ID,
+imports no public email or token, and fills only missing display fields under locks.
+The bound is the first N GitHub identities (1–100), not a paginated bulk migration.
+No provider request is made while rendering `/me/` or the account page.

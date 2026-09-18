@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from .models import User, username_key
 from .security import digest
+from .connected_accounts import connected_accounts
 
 # Repository-authored baseline of obvious password variants; not a breach corpus.
 # Django CommonPasswordValidator supplies its shipped common-password corpus;
@@ -111,4 +112,5 @@ def user_data(user):
             'gender': user.gender, 'phone': user.phone, 'email_verified': user.email_verified,
             'phone_verified': user.phone_verified, 'profile_complete': complete,
             'providers': list(user.socialaccount_set.values_list('provider', flat=True).distinct()),
+            'connected_accounts': connected_accounts(user),
             'has_usable_password': user.has_usable_password(), 'capabilities': {'can_apply': False, 'can_create_listing': False}}

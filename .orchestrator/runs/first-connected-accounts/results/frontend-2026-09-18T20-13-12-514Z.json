@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-connected-accounts",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "connected_frontend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Responsive shared connected-account cards show GitHub avatar/name/handle/profile link and Google identity/status; multi-Google identities and legacy/image fallbacks supported. 106 tests lint and tsc pass.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Account page shows responsive GitHub profile and Google linked-account cards preserving linking behavior and theme; frontend checks pass.",
+      "status": "passed",
+      "evidence": "Responsive shared connected-account cards show GitHub avatar/name/handle/profile link and Google identity/status; multi-Google identities and legacy/image fallbacks supported. 106 tests lint and tsc pass."
+    }
+  ],
+  "checks": [
+    {
+      "name": "frontend checks",
+      "status": "passed",
+      "evidence": "Responsive shared connected-account cards show GitHub avatar/name/handle/profile link and Google identity/status; multi-Google identities and legacy/image fallbacks supported. 106 tests lint and tsc pass."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-18T20:13:12.514084+00:00"
+}

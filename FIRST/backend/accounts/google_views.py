@@ -9,6 +9,7 @@ from urllib.parse import urlencode
 
 import requests
 from allauth.socialaccount.models import SocialAccount
+from .connected_accounts import provider_metadata, save_metadata
 from allauth.socialaccount.providers.google.views import AUTHORIZE_URL, ACCESS_TOKEN_URL, _verify_and_decode
 from allauth.socialaccount.providers.oauth2.client import OAuth2Error
 from django.conf import settings
@@ -91,7 +92,7 @@ def identity_profile(claims):
     # Google is authoritative for Gmail and verified Workspace domains only.
     trusted = bool(email and claims.get('email_verified') is True and
                    (email.endswith('@gmail.com') or bool(claims.get('hd'))))
-    return {'sub': claims['sub'], 'email': email, 'trusted': trusted,
+    return {'display': provider_metadata('google', claims), 'sub': claims['sub'], 'email': email, 'trusted': trusted,
             'full_name': str(claims.get('name') or '')[:150]}
 
 
@@ -156,6 +157,7 @@ class GoogleCallbackView(AuthView):
                         raise GoogleError()
                     if user.security_version != flow['security_version']:
                         raise GoogleError()
+                    save_metadata(user, 'google', profile)
                     request.session['reauthenticated_at'] = time.time()
                     return Response({'status': 'reauthenticated', 'user': user_data(user)})
                 if identity:
@@ -180,6 +182,7 @@ class GoogleCallbackView(AuthView):
                             user.email_verified = True
                             user.save(update_fields=['password', 'email_verified'])
                         SocialAccount.objects.create(user=user, provider='google', uid=profile['sub'])
+                    save_metadata(user, 'google', profile)
                     start_session(request, user, flow['remember_me'])
                     request.session.pop('google_signup', None)
                     return Response({'status': 'authenticated', 'user': user_data(user)})
@@ -238,6 +241,7 @@ class GoogleSignupView(AuthView):
                 if security.consume_token('google-signup', token) != pending:
                     raise GoogleError()
                 request.session.pop('google_signup', None)
+                save_metadata(user, 'google', pending)
                 start_session(request, user, pending['remember_me'])
         except IntegrityError as exc:
             raise ValidationError({'non_field_errors': ['Hesap veya kullanıcı adı kullanılıyor. Google ile yeniden başlayın.']}) from exc
@@ -327,6 +331,7 @@ class GoogleEmailVerifyView(AuthView):
                 if security.consume_token('google-signup', signup_token) != pending:
                     raise GoogleError()
                 request.session.pop('google_signup', None)
+                save_metadata(user, 'google', pending)
                 start_session(request, user, pending['remember_me'])
                 return Response({'status': 'authenticated', 'user': user_data(user)})
         except IntegrityError as exc:

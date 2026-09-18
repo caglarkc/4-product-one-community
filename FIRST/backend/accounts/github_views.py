@@ -8,6 +8,7 @@ from urllib.parse import urlencode
 
 import requests
 from allauth.socialaccount.models import SocialAccount
+from .connected_accounts import provider_metadata, save_metadata
 from django.conf import settings
 from django.db import IntegrityError, transaction
 from rest_framework import serializers
@@ -95,7 +96,7 @@ def identity_profile(claims):
         email = serializers.EmailField(max_length=254).run_validation(email)
     except ValidationError:
         email = ''
-    return {'sub': str(claims['id']), 'email': email, 'trusted': bool(email),
+    return {'display': provider_metadata('github', claims), 'sub': str(claims['id']), 'email': email, 'trusted': bool(email),
             'full_name': str(claims.get('name') or '')[:150],
             'username': str(claims.get('login') or '').replace('-', '_')[:30]}
 
@@ -175,6 +176,7 @@ class GitHubCallbackView(AuthView):
                                            'code': 'github_link_conflict'})
                     if not identity:
                         SocialAccount.objects.create(user=user, provider='github', uid=profile['sub'])
+                    save_metadata(user, 'github', profile)
                     return Response({'status': 'linked', 'user': user_data(user)})
                 if identity:
                     user = User.objects.select_for_update().get(pk=identity.user_id)
@@ -201,6 +203,7 @@ class GitHubCallbackView(AuthView):
                             raise GitHubError({'detail': 'Hesabınızda farklı bir GitHub bağlantısı var.',
                                                'code': 'github_link_conflict'})
                         SocialAccount.objects.create(user=user, provider='github', uid=profile['sub'])
+                    save_metadata(user, 'github', profile)
                     github_session(request, user, flow['remember_me'])
                     request.session.pop('github_signup', None)
                     return Response({'status': 'authenticated', 'user': user_data(user)})
@@ -259,6 +262,7 @@ class GitHubSignupView(AuthView):
                 if security.consume_token('github-signup', token) != pending:
                     raise GitHubError()
                 request.session.pop('github_signup', None)
+                save_metadata(user, 'github', pending)
                 github_session(request, user, pending['remember_me'])
         except IntegrityError as exc:
             raise ValidationError({'non_field_errors': ['Hesap veya kullanıcı adı kullanılıyor. GitHub ile yeniden başlayın.']}) from exc
@@ -351,6 +355,7 @@ class GitHubEmailVerifyView(AuthView):
                 if security.consume_token('github-signup', signup_token) != pending:
                     raise GitHubError()
                 request.session.pop('github_signup', None)
+                save_metadata(user, 'github', pending)
                 github_session(request, user, pending['remember_me'])
                 return Response({'status': 'authenticated', 'user': user_data(user)})
         except IntegrityError as exc:

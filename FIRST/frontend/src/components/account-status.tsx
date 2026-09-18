@@ -3,9 +3,9 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { api, User } from '../lib/api';
-import { GitHubButton } from './github-auth';
+import { ConnectedAccounts } from './connected-accounts';
 import { AccountForm, Field, ReauthenticationContext } from './account-form';
-import { ActionLink, Alert, Button, PageHeading, Surface } from './ui';
+import { ActionLink, Alert, Button, PageHeading } from './ui';
 
 type Session = {id: string; created_at: string; expires_at: string; current: boolean};
 export function EmailReminder({reminder = true}: {reminder?: boolean}) {
@@ -78,9 +78,7 @@ export function AccountStatus({profile = false}: {profile?: boolean}) {
         {user.has_usable_password !== false && <AccountForm title="Şifre değiştir" path="password/change" fields={[{name: 'old_password', label: 'Eski şifre', type: 'password'}, {name: 'password', label: 'Yeni şifre', type: 'password', password: true}]} submit="Şifreyi değiştir" onSuccess={signedOut}>
           <p>Başarıyla değiştirildiğinde bütün oturumlar kapanır; yeni şifrenizle giriş yapın.</p>
         </AccountForm>}
-        <Surface className="account-section"><h2>GitHub hesabı</h2>
-          {user.providers?.includes('github') ? <p>GitHub hesabınız bağlı.</p> : <><p>GitHub hesabınızı FIRST hesabınıza bağlayabilirsiniz.</p><GitHubButton purpose="link"/></>}
-        </Surface>
+        <ConnectedAccounts user={user}/>
         </div></div><SessionList onSignedOut={signedOut}/>
       </>}
       <div className="account-exit"><Button variant="quiet" loading={busy} disabled={busy} onClick={async () => {
