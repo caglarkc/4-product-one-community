@@ -4,8 +4,8 @@
   "title": "FIRST connected provider profiles",
   "goal": "Show GitHub profile and Google linked account on account page; deploy and verify",
   "createdAt": "2026-09-18T20:08:46.063Z",
-  "updatedAt": "2026-09-18T20:13:33.150Z",
-  "revision": 15,
+  "updatedAt": "2026-09-18T20:28:27.301Z",
+  "revision": 16,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -25,7 +25,15 @@
   "policy": {
     "requiresIntegration": true
   },
-  "decisions": [],
+  "decisions": [
+    {
+      "id": "manual-vercel-exception",
+      "summary": "User explicitly authorized trying manual Vercel deployment after automatic trigger did not arrive",
+      "reason": "Latest user: manual dagitimda ne yapacaksin dene bir de onu dene; this is a task-specific exception to push-only frontend default",
+      "decidedAt": "2026-09-18T20:28:27.299Z",
+      "actor": "user"
+    }
+  ],
   "items": [
     {
       "id": "backend",
