@@ -4,8 +4,8 @@
   "title": "FIRST GitHub integration",
   "goal": "Implement GitHub login signup linking and deploy with persistent delivery rules",
   "createdAt": "2026-09-18T19:53:39.848Z",
-  "updatedAt": "2026-09-18T20:04:35.481Z",
-  "revision": 24,
+  "updatedAt": "2026-09-18T20:05:46.139Z",
+  "revision": 25,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -362,8 +362,9 @@
         ],
         "owner": "manager"
       },
-      "status": "active",
-      "attempt": 1
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/deploy-2026-09-18T20-05-46-029Z.json"
     },
     {
       "id": "runtime-fix",
