@@ -12,12 +12,16 @@ export type Field = {
 export const passwordHelp = '8–20 karakter; boşluk içermemeli. Büyük harf, küçük harf, sayı ve özel karakter zorunludur. Türkçe karakter kullanabilirsiniz.';
 
 /** Every mutation obtains fresh CSRF; a reauth challenge never silently retries it. */
-export function AccountForm<T = {detail: string}>({title, path, method = 'POST', fields = [], extra = {}, submit, children, onSuccess, variant = 'primary'}: {
+export function AccountForm<T = {detail: string}>({title, path, method = 'POST', fields = [], extra = {}, submit, children, onSuccess, variant = 'primary', requireChanges = false}: {
+  requireChanges?: boolean;
   variant?: ComponentProps<typeof Button>['variant'];
   title: string; path: string; method?: string; fields?: Field[];
   extra?: Record<string, string>; submit: string; children?: React.ReactNode;
   onSuccess?: (result: T) => void | Promise<void>;
 }) {
+  const [draft, setDraft] = useState<Record<string, string>>({});
+  const normalize = (name: string, value: string) => name === 'username' ? value.normalize('NFC') : value;
+  const hasChanges = fields.some(field => normalize(field.name, draft[field.name] ?? field.value ?? '') !== normalize(field.name, field.value ?? ''));
   const id = useId();
   const lock = useRef(false);
   const [busy, setBusy] = useState(false);
@@ -29,7 +33,7 @@ export function AccountForm<T = {detail: string}>({title, path, method = 'POST',
     {children}
     <form aria-label={title} aria-busy={busy} onSubmit={async event => {
       event.preventDefault();
-      if (lock.current) return;
+      if (lock.current || reauth || (requireChanges && !hasChanges)) return;
       lock.current = true; setBusy(true); setError(null); setMessage('');
       const payload = Object.fromEntries(new FormData(event.currentTarget));
       if (typeof payload.username === 'string') payload.username = payload.username.normalize('NFC');
@@ -37,6 +41,7 @@ export function AccountForm<T = {detail: string}>({title, path, method = 'POST',
         const result = await api<T>(path, {...payload, ...extra}, method);
         setMessage((result as {detail?: string}).detail || 'Bilgiler güncellendi.');
         await onSuccess?.(result);
+        if (requireChanges) setDraft({});
       } catch (caught) {
         const failure = caught as ApiError;
         setError(failure);
@@ -53,7 +58,7 @@ export function AccountForm<T = {detail: string}>({title, path, method = 'POST',
           const inputId = `${id}-${field.name}`;
           const errors = error?.errors[field.name];
           const common = {id: inputId, name: field.name, required: !field.optional,
-            defaultValue: field.value, 'aria-invalid': !!errors,
+            ...(requireChanges ? {value: draft[field.name] ?? field.value ?? '', onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setDraft(current => ({...current, [field.name]: event.target.value}))} : {defaultValue: field.value}), 'aria-invalid': !!errors,
             'aria-describedby': [errors ? `${inputId}-error` : '', field.password ? `${inputId}-help` : ''].filter(Boolean).join(' ') || undefined};
           return <FormField key={field.name} id={inputId} label={field.label} help={field.password ? passwordHelp : undefined} error={errors?.join(' ')}>
             {field.options ? <Select {...common}>{field.options.map(([value, label]) => <option value={value} key={value}>{label}</option>)}</Select>
@@ -61,7 +66,7 @@ export function AccountForm<T = {detail: string}>({title, path, method = 'POST',
                 autoComplete={field.type === 'password' ? (field.password ? 'new-password' : 'current-password') : undefined}/>}
           </FormField>;
         })}
-        <Button type="submit" variant={variant} loading={busy}>{busy ? 'İşlem sürüyor…' : submit}</Button>
+        <Button type="submit" variant={variant} loading={busy} disabled={requireChanges && !hasChanges}>{busy ? 'İşlem sürüyor…' : submit}</Button>
       </fieldset>
     </form>
     {reauth && <AccountForm title="Kimliğinizi yeniden doğrulayın" path="reauthenticate"
