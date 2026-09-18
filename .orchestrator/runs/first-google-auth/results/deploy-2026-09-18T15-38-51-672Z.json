@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-google-auth",
+  "itemId": "deploy",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Pushed 1f62e31 to main and verified remote hash; Vercel automatic deployment success. Root SSH fast-forward git pull then release20260918T153520-1f62e31d7eb6 Docker build/migrations/backups/health passed. Live config/CSRF/start/cancel/replay passed; Chrome real Google sign-in matched existing FIRST account; read-only DB confirms pre-existing user with one Google identity.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Accepted commit pushed; remote backend rebuilt; live checks and any user-dependent limitations recorded.",
+      "status": "passed",
+      "evidence": "Pushed 1f62e31 to main and verified remote hash; Vercel automatic deployment success. Root SSH fast-forward git pull then release20260918T153520-1f62e31d7eb6 Docker build/migrations/backups/health passed. Live config/CSRF/start/cancel/replay passed; Chrome real Google sign-in matched existing FIRST account; read-only DB confirms pre-existing user with one Google identity."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Production deployment and live existing-account sign-in",
+      "status": "passed",
+      "evidence": "Pushed 1f62e31 to main and verified remote hash; Vercel automatic deployment success. Root SSH fast-forward git pull then release20260918T153520-1f62e31d7eb6 Docker build/migrations/backups/health passed. Live config/CSRF/start/cancel/replay passed; Chrome real Google sign-in matched existing FIRST account; read-only DB confirms pre-existing user with one Google identity."
+    },
+    {
+      "name": "Additional new-user and social reauth live journeys",
+      "status": "not_run",
+      "evidence": "Covered by regression tests, not repeated with additional live Google identities."
+    }
+  ],
+  "risks": [
+    "Google Console External/Testing; Branding incomplete prevents publish.",
+    "Real PostgreSQL concurrent race stress test not run."
+  ],
+  "followUps": [
+    "Complete Google Branding before public publication."
+  ],
+  "completedAt": "2026-09-18T15:38:51.672529+00:00"
+}

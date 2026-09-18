@@ -107,3 +107,33 @@ and secure cookie, all FIRST containers, all 16 Immense application containers,
 Immense gateway health and expected unauthenticated auth-route responses. The SMTP
 534 blocker is resolved. No email was sent; inbox delivery and full user account
 email flows were not tested.
+
+## Google integration — 18 September 2026
+
+Application commit `1f62e31d7eb6d6879bff764df986ee248ff81ab2` was pushed to main;
+GitHub's Vercel status reported successful automatic deployment. No additional local
+frontend production build was run. Remote `/root/first-backend` fast-forward pulled
+the same commit. Release `20260918T153520-1f62e31d7eb6` built the backend image after
+configuration/database backups, applied bundled allauth account/socialaccount
+migrations, passed Django/migration/database/Redis checks, and became healthy.
+Existing database/Redis volumes and other applications were retained.
+
+Google credentials and enabled flag were added to backend environment only; no secret
+was exposed to the frontend. `send-machine` forwards only the four OAuth settings
+from backend env for subsequent routine releases. Callback uses the existing frontend
+origin `/accounts/google/login/callback/` and the signed `/api/auth/` proxy. FIRST
+nginx already disables access logs; Gunicorn now logs paths without query parameters.
+
+Live verification passed: config advertises Google; CSRF JSON and secure cookie;
+missing-CSRF start rejection; Google authorization URL with fixed callback, minimal
+openid/email/profile scopes, state/nonce/PKCE; cancellation and replay rejection;
+pending signup denied without Google proof. Chrome completed real Google sign-in and
+returned to the existing FIRST account. A read-only database check confirmed the
+account predates the deployment and has one Google identity; it was not duplicated.
+
+87 backend tests, 80 frontend tests, lint/typecheck and independent review passed.
+New-user profile completion, third-party-email proof and reauth were covered by
+isolated regression tests; no second live Google identity/signup was used. Real
+PostgreSQL race contention was not stress-tested. Google Console remains External /
+Testing with the intended test user; Branding is incomplete and Publish app is disabled.
+No Console settings or publishing state were changed.
