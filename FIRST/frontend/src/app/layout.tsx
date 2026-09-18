@@ -8,7 +8,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return <html lang="tr"><body>
     <a className="skip" href="#main">İçeriğe geç</a>
     <header className="site-header"><div className="header-inner">
-      <Link className="brand" href="/" aria-label="FIRST ana sayfa"><span className="brand-mark" aria-hidden="true">f</span>FIRST</Link>
+      <Link className="brand" href="/" aria-label="FIRST ana sayfa">
+        <span className="brand-mark" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" focusable="false">
+            <path d="M5 16V4H15M5 10H12" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+        FIRST
+      </Link>
       <nav className="site-nav" aria-label="Ana gezinme">
         <ActionLink variant="quiet" href="/giris">Giriş</ActionLink>
         <ActionLink variant="quiet" href="/hesap">Hesabım</ActionLink>
