@@ -4,8 +4,8 @@
   "title": "FIRST Google sign-in and signup",
   "goal": "Implement approved Google sign-in and profile completion, deploy backend and verify live",
   "createdAt": "2026-09-18T15:23:52.943Z",
-  "updatedAt": "2026-09-18T15:34:41.129Z",
-  "revision": 15,
+  "updatedAt": "2026-09-18T15:38:53.061Z",
+  "revision": 16,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -345,9 +345,9 @@
         ],
         "owner": "manager"
       },
-      "status": "active",
+      "status": "done",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/deploy-2026-09-18T15-38-51-672Z.json"
     }
   ]
 }
