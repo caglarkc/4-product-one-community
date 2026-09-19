@@ -4,6 +4,10 @@ Bu dizin, `4-product-one-community` için platformdan bağımsız yönetim düzl
 
 Ürün bağlamı `.cursor/maps/stack-shared-ai/` ve `.agent/skills/SKILL-MAP.md` üzerinden okunur. Bütün ürünler tek kök sistemi paylaşır. Ürün/ortak katman geçişlerinde `policy.requiresIntegration: true` kullanılır. Örnek run'lar sentetik fixture'lardır; uygulanmış ürün veya gerçek görev geçmişi değildir.
 
+## Varsayılan kontrol sınırı
+
+`.agent/rules.md` Kontrol tercihi geçerlidir: kod yazımı ardından kaynak kodu/diff incelemesi yapılır. Review/verify graph düğümleri kendiliğinden test çalıştırma yetkisi vermez. Kullanıcı açıkça istemedikçe test yazımı/çalıştırma, lint/typecheck, smoke/E2E, tarayıcı/computer use doğrulaması veya bunları yapacak alt agent görevi başlatılmaz. Kaynak incelemesi çalışma zamanı kanıtı olarak kaydedilmez.
+
 ## Sistem sınırı
 
 ```text
@@ -187,7 +191,9 @@ verify-system
 
 Komutlar ürün uygulaması veya dış servis başlatmaz. Sadece orkestrasyon artifact'lerini okur/yazar.
 
-## Sistem doğrulaması
+## Sistem doğrulaması — yalnız kullanıcı açıkça isterse
+
+Aşağıdaki komutlar rutin teslim şartı değildir; skill/kural değişikliğinde otomatik çalıştırılmaz.
 
 ```powershell
 node --test .orchestrator/test/orchestrator.test.mjs

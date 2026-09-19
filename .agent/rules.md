@@ -9,6 +9,12 @@
 - Yerel kontrolleri görev ve platform izinleri kapsamında çalıştır. Immense'in uzak Docker/Flutter çalışma kısıtları burada varsayılmaz.
 - Run/result/event dosyalarına token, kişisel veri veya ekran görüntüsü içeriği koyma; güvenli özet ve referans kullan.
 
+## Kontrol tercihi — 19 Eylül 2026
+
+Varsayılan akış: kodu yaz, ardından kaynak kodu ve diff'i okuyarak gözden geçir. Kullanıcı ilgili görevde açıkça istemedikçe test yazma/çalıştırma, test suite, lint, typecheck, smoke/E2E, tarayıcı veya computer use ile doğrulama yapma. Test çalıştırmak için kendiliğinden izin sorup işi uzatma. Bu kural alt agentlara da aktarılır; review/verify görevi varsayılan olarak yalnız kaynak kod incelemesidir. Çalıştırılmamış davranışı test edilmiş gibi sunma.
+
+Commit/push ve mevcut backend pull/build teslim talimatları korunur. Mevcut deployment komutunun kendi build/migration/health adımları teslimin parçasıdır; ayrıca test, tarayıcı turu veya canlı kullanıcı senaryosu başlatma.
+
 ## Frontend geliştirme aşaması
 
 18 Eylül 2026 kararıyla FIRST tasarım aşaması açılmıştır. `FIRST/tasarim-dili.md` içindeki onaylı renk/tema dili, merkezi token'lar ve ortak UI bileşenleri mevcut ve yeni FIRST sayfalarında kullanılır. Referans görselin yerleşimi ve örnek özellikleri kapsam onayı değildir. STEP, INTO ve PATH için ayrı karar verilene kadar işlev ve sade yerleşim önceliği korunur. Frontend işlerinde `.agent/skills/frontend/frontend-implementation/SKILL.md` uygulanır.
@@ -35,9 +41,9 @@ Kullanıcının kalıcı talimatı: **Dosya değişikliği yapılan her görev s
 
 ## FIRST yayın teslim protokolü
 
-18 Eylül 2026 kalıcı kullanıcı talimatı: FIRST backend değişikliğinde, kullanıcı o görev için açık istisna belirtmedikçe, gerekli test/review kontrollerinden sonra commit ve GitHub push yap; root SSH ile doğrulanmış sunucudaki `/root/first-backend` checkout'unda `git pull --ff-only` çalıştır; push edilen commit'i doğrula ve bu kaynaklardan Docker backend image'ını yeniden build edip servisi ayağa kaldır. Her görevde yeniden onay isteme. Sunucu adresini kök `.env` içinden oku; gizli değerleri çıktıya yazma.
+18 Eylül 2026 kalıcı kullanıcı talimatı: FIRST backend değişikliğinde, kullanıcı o görev için açık istisna belirtmedikçe, kaynak kod incelemesinden sonra commit ve GitHub push yap; root SSH ile doğrulanmış sunucudaki `/root/first-backend` checkout'unda `git pull --ff-only` çalıştır; push edilen commit'i doğrula ve bu kaynaklardan Docker backend image'ını yeniden build edip servisi ayağa kaldır. Her görevde yeniden onay isteme. Sunucu adresini kök `.env` içinden oku; gizli değerleri çıktıya yazma.
 
 - Standart işlem ve mevcut altyapı `FIRST/deployment.md` ve `./send-machine` içindedir. Uzak checkout kirliyse veya commit farklıysa değişiklikleri ezme; sebebi çözmeden dağıtım yapma.
 - FIRST PostgreSQL/Redis kalıcı verilerini, sunucuya özgü anahtarları ve diğer projeleri koru. Mevcut yedekleme, migration, rollback ve sağlık kontrollerini kullan. Başarısız dağıtımı başarılı sayma; durumu açıkça bildir.
-- FIRST frontend push sonrası Vercel otomatik build/deploy alır. Ek yerel üretim build'i veya manuel Vercel deployment başlatma; ilgili test/lint/typecheck kontrollerini çalıştır, Vercel sonucunu ve canlı entegrasyonu doğrula.
+- FIRST frontend push sonrası Vercel otomatik build/deploy alır. Ek yerel üretim build'i veya manuel Vercel deployment başlatma; test/lint/typecheck veya canlı kullanıcı senaryosu çalıştırma; dağıtım komutunun sonucunu raporla.
 - Yalnız belge/skill değişikliğinde backend rebuild gerekmez. Kullanıcının göreve özel istisnası önceliklidir; platform izinleri ayrı kalır. Teslimde push edilen commit, uzak backend release/sağlık durumu ve frontend dağıtım sonucu belirtilir.

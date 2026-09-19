@@ -19,7 +19,7 @@ Read-only incele; dosya ve somut etkiyle P0/P1/P2 bulgularını yaz. Özellikle 
 
 ## Verify
 
-Acceptance maddelerini gerçek çıktı/kontrol ile eşleştir. Çalıştırılmayan kontrolü `not_verified` olarak belirt. Mevcut testleri değişikliğe göre seç; uygulama kodu yokken uygulama testleri geçti deme. Orchestrator değişikliği için `verify-system` ve mevcut Node testlerini çalıştır.
+Acceptance maddelerini kaynak kodu ve diff okuyarak değerlendir. Varsayılan olarak test yazma veya çalıştırma; lint/typecheck, `verify-system`, Node testleri, smoke/E2E ve computer use/tarayıcı kontrolleri yalnız kullanıcının ilgili görevde açık isteğiyle yapılır. Kod incelemesi sonucunu çalışma zamanı doğrulaması gibi sunma.
 
 ## Git teslimi
 
@@ -37,4 +37,4 @@ Run kullanılıyorsa `.orchestrator/contracts/result.schema.json` ile evidence �
 
 ## FIRST dağıtım teslimi
 
-`.agent/rules.md` → FIRST yayın teslim protokolünü uygula. Backend değiştiğinde gerekli kontrollerden sonra ana agent commit/push, uzak root SSH checkout’unda `git pull --ff-only`, aynı commit’ten Docker rebuild ve canlı sağlık kontrolünü tamamlar. Frontend push ile Vercel otomatik build alır; ek yerel üretim build’i veya manuel Vercel deployment yapma. Test/lint/typecheck ve otomatik dağıtım sonucunu doğrula. Belge/skill değişikliği tek başına backend rebuild gerektirmez; açık kullanıcı istisnası önceliklidir. İşlem ayrıntıları `FIRST/deployment.md` içindedir.
+`.agent/rules.md` → FIRST yayın teslim protokolünü uygula. Backend değiştiğinde gerekli kontrollerden sonra ana agent commit/push, uzak root SSH checkout’unda `git pull --ff-only`, aynı commit’ten Docker rebuild ve canlı sağlık kontrolünü tamamlar. Frontend push ile Vercel otomatik build alır; ek yerel üretim build’i veya manuel Vercel deployment yapma. Varsayılan kontrol yalnız kaynak kod incelemesidir; kullanıcı istemedikçe test/lint/typecheck veya browser/computer use doğrulaması yapma. Mevcut dağıtım komutunun sonucunu raporla. Belge/skill değişikliği tek başına backend rebuild gerektirmez; açık kullanıcı istisnası önceliklidir. İşlem ayrıntıları `FIRST/deployment.md` içindedir.

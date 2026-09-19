@@ -35,9 +35,13 @@ All four products use this one root system. Read `.agent/skills/cross/product-bo
 - Use worktree isolation for parallel writers when supported. If not supported, serialize writers or give them disjoint files.
 - Keep approval decisions with the platform/user. Never weaken sandbox or permission settings to make a plan easier to execute.
 
+## Default review scope
+
+Follow `.agent/rules.md` control preference: write the code, then inspect source/diff. Do not write or run tests, lint/typecheck, smoke/E2E, browser or computer-use verification unless the user explicitly requests it for the task. Do not ask to run unsolicited tests. Propagate this boundary to all delegated agents. Review/verify nodes use source inspection by default; runtime behavior remains unverified. Existing deployment build/migration/health steps remain part of authorized delivery, without additional test passes.
+
 ## Apply Quality Gates
 
-- For high or critical implementation, API contract, authentication, authorization, payment, data storage, migration, security, or deployment work, add an independent review node and a verification node.
+- For high or critical implementation, API contract, authentication, authorization, payment, data storage, migration, security, or deployment work, add an independent review node and a source-inspection verification node (not a test run).
 - Give review and verify nodes `relations.reviews` or `relations.verifies`; use a different agent/thread where the platform permits it.
 - Add an integration node for cross-layer runs and make it depend on accepted layer results.
 - Record claims using `.orchestrator/contracts/result.schema.json`. A `pass` result requires evidence for every acceptance criterion and no failed check.

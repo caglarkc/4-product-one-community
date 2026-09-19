@@ -13,4 +13,4 @@ description: Plan and check shared API, identity, project references, and access
 - Entegrasyon sözleşmesinde girdi/çıktı, kimlik referansı, yetki, hata, durum geçişleri ve tekrarlanan isteğin etkisini tanımla. Sağlayıcı ve framework yalnız seçilmişse kullan.
 - Ödeme, GitHub, takvim/görüşme, AI veya yarışma çalıştırma entegrasyonunu mevcut servis gibi gösterme. Mock ile gerçek servisin doğrulama kanıtını ayır.
 
-Ürünler arası işlerde `policy.requiresIntegration: true` kullan; contract → tüketici/üretici → bağımsız review/verify → integration bağımlılıklarını kur. Ortak dosyalar tek writer'a aittir. Yalnız gerçek çalıştırmalar için pass ver.
+Ürünler arası işlerde `policy.requiresIntegration: true` kullan; contract → tüketici/üretici → bağımsız review/verify → integration bağımlılıklarını kur. Ortak dosyalar tek writer'a aittir. Varsayılan review/verify kaynak kodu incelemesidir; test veya browser/computer use yalnız kullanıcı açıkça isterse yapılır. Kaynak incelemesi kabulünü çalışma zamanı test başarısı gibi sunma.
