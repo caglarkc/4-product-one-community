@@ -277,3 +277,20 @@ project creation now shows a single setup completion link for this older account
 No new provider consent or repository installation was granted during verification.
 Authorized repository selection and skip-setup branches are covered by isolated
 tests; a real selected-repository installation remains user-controlled.
+
+## Direct IP API revision — 19 September 2026
+
+Application commit `0d63e512b64cc8067aeaad8ec19fff752f3f9c99` was pushed to main,
+then pulled with fast-forward in the remote checkout and deployed as
+`20260919T202209-0d63e512b64c`. Standard deployment completed its Docker build,
+Django check, migration check (no pending migrations), PostgreSQL/Redis connection
+checks and container health checks. All three FIRST containers were healthy;
+persistent data and other projects were preserved. No extra test, lint, typecheck,
+browser or live login scenario was run. Vercel reported this commit's automatic frontend deployment successful; no manual frontend deployment was initiated.
+
+The old Next API proxy and shared signature configuration are removed. The web
+client calls `https://167.235.158.118/api/auth/` directly. Google/GitHub code exchange,
+identity, sessions and repository operations remain in Django. Backend configuration
+allows the production frontend and the previously approved local origin. OAuth
+provider callback registrations do not change; frontend callback pages forward to
+Django directly. Existing cookie users must sign in again.
