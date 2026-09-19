@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.exceptions import NotAuthenticated, PermissionDenied, ValidationError, APIException
 from rest_framework.response import Response
+from accounts.oauth_response import OAuthDestinationMixin, validate_callback_query
 from accounts import security
 from accounts.serializers import StrictSerializer
 from accounts.account_views import locked_user
@@ -129,8 +130,12 @@ class StartView(AuthView):
             'state': state, 'code_challenge': challenge, 'code_challenge_method': 'S256'})})
 
 
-class CallbackView(AuthView):
+class CallbackView(OAuthDestinationMixin, AuthView):
+    oauth_provider = 'github_app'
+    oauth_callback = True
+
     def get(self, request):
+        validate_callback_query(request)
         account = member(request, linked=True)
         github.require_enabled()
         state = request.query_params.get('state', '')

@@ -10,4 +10,4 @@ class DjangoSessionAuthentication(BaseAuthentication):
         return None
 
     def authenticate_header(self, request):
-        return 'Session'
+        return 'Bearer'

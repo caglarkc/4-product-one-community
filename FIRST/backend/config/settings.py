@@ -1,5 +1,6 @@
 """Production settings: PostgreSQL persistence and Redis-only security state."""
 import os
+from urllib.parse import urlsplit
 from django.core.exceptions import ImproperlyConfigured
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
@@ -13,6 +14,7 @@ ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
 INSTALLED_APPS = ["django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "rest_framework", "accounts", "projects", "allauth", "allauth.account", "allauth.socialaccount", "allauth.socialaccount.providers.google"]
 MIDDLEWARE = [
+    "accounts.cors.CorsMiddleware",
     "accounts.middleware.AuthBoundaryMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "accounts.proxy.TrustedClientIPMiddleware",
@@ -37,6 +39,7 @@ SESSION_COOKIE_AGE = 86400
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_USE_SESSIONS = True
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = "Lax"
 CSRF_FAILURE_VIEW = "accounts.views.csrf_failure"
@@ -66,8 +69,36 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 from accounts.password_corpus import load_corpus
 AUTH_BREACHED_PASSWORD_HASHES = load_corpus(os.environ.get('AUTH_BREACHED_PASSWORD_FILE', ''))
 
-from accounts.proxy import validate_proxy_secret
-AUTH_PROXY_SECRET = validate_proxy_secret(os.environ.get('AUTH_PROXY_SECRET', ''))
+# HTTPS IP endpoint is supported: authentication is an explicit opaque Bearer
+# session, independent of cross-site/third-party cookies.
+API_ORIGIN = os.environ.get('API_ORIGIN', 'https://167.235.158.118').rstrip('/')
+TRUST_NGINX_PROXY = os.environ.get('TRUST_NGINX_PROXY', 'false').lower() == 'true'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https') if TRUST_NGINX_PROXY else None
+CORS_ALLOWED_ORIGINS = [value.strip() for value in os.environ.get('CORS_ALLOWED_ORIGINS', FRONTEND_ORIGIN).split(',') if value.strip()]
+
+def valid_origin(value, local=False):
+    try:
+        parsed = urlsplit(value)
+        port = parsed.port  # Reject malformed/non-numeric ports at startup.
+    except ValueError:
+        return False
+    scheme_allowed = parsed.scheme == 'https' or (
+        local and parsed.scheme == 'http' and parsed.netloc in ('127.0.0.1:3101', 'localhost:3101'))
+    return (scheme_allowed and bool(parsed.hostname) and (port is None or port > 0)
+            and not parsed.username and not parsed.password and not parsed.path
+            and not parsed.query and not parsed.fragment
+            and not any(character.isspace() or character in '*\\%' for character in value))
+
+if not valid_origin(API_ORIGIN) or not valid_origin(FRONTEND_ORIGIN):
+    raise ImproperlyConfigured('API_ORIGIN and FRONTEND_ORIGIN must be exact HTTPS origins.')
+if not CORS_ALLOWED_ORIGINS or any(not valid_origin(origin, local=True) for origin in CORS_ALLOWED_ORIGINS):
+    raise ImproperlyConfigured('CORS_ALLOWED_ORIGINS must contain exact HTTPS origins or explicit loopback development origins.')
+if FRONTEND_ORIGIN not in CORS_ALLOWED_ORIGINS:
+    raise ImproperlyConfigured('CORS_ALLOWED_ORIGINS must include FRONTEND_ORIGIN.')
+# Every browser allowed to read a token must also be allowed to submit CSRF proof.
+CSRF_TRUSTED_ORIGINS = list(dict.fromkeys(CSRF_TRUSTED_ORIGINS + CORS_ALLOWED_ORIGINS))
+if any(not valid_origin(origin, local=True) for origin in CSRF_TRUSTED_ORIGINS):
+    raise ImproperlyConfigured('CSRF_TRUSTED_ORIGINS must contain exact approved origins.')
 
 # Only the custom JSON endpoints are mounted; no allauth account/linking views.
 ACCOUNT_LOGIN_METHODS = {"email"}

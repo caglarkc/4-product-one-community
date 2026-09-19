@@ -9,7 +9,7 @@ path = Path(sys.argv[1])
 if str(path) != '/opt/first/backend/shared/.env':
     raise SystemExit('Unexpected configuration path')
 incoming = json.load(sys.stdin)
-allowed = {'AUTH_PROXY_SECRET', 'FRONTEND_ORIGIN', 'CSRF_TRUSTED_ORIGINS', 'DJANGO_ALLOWED_HOSTS',
+allowed = {'API_ORIGIN', 'CORS_ALLOWED_ORIGINS', 'TRUST_NGINX_PROXY', 'FRONTEND_ORIGIN', 'CSRF_TRUSTED_ORIGINS', 'DJANGO_ALLOWED_HOSTS',
            'SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM', 'SMTP_TLS', 'SMTP_SSL', 'GOOGLE_ENABLED', 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REDIRECT_URI', 'GOOGLE_LOCAL_REDIRECT_URI',
            'GITHUB_ENABLED', 'GITHUB_CLIENT_ID', 'GITHUB_CLIENT_SECRET', 'GITHUB_REDIRECT_URI',
            'GITHUB_APP_ENABLED', 'GITHUB_APP_ID', 'GITHUB_APP_SLUG', 'GITHUB_APP_CLIENT_ID',
@@ -31,8 +31,7 @@ for key, value in defaults.items():
     settings.setdefault(key, value)
 settings.update(incoming)
 settings['AUTH_REDIS_URL'] = 'redis://:' + settings['REDIS_PASSWORD'] + '@redis:6379/0'
-if not settings.get('AUTH_PROXY_SECRET') or len(settings['AUTH_PROXY_SECRET']) < 32:
-    raise SystemExit('A strong proxy secret is required')
+settings.pop('AUTH_PROXY_SECRET', None)
 if any(value.endswith('\\') for value in settings.values()):
     raise SystemExit('Configuration values ending in a backslash are not supported')
 path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)

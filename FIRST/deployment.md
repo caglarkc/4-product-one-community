@@ -1,8 +1,10 @@
+> Current architecture (19 September): direct HTTPS IP API and Bearer Redis sessions. Older dated release entries below describe historical cookie/proxy behavior and are not the current configuration. Provider callback URLs stay on the frontend, where static client pages call Django directly. Existing users sign in again. No DNS record is needed.
+
 # FIRST deployment
 
-Frontend: https://first.alicaglarkocer.com on Vercel. GitHub pushes trigger its configured frontend build. The owner explicitly chose to track frontend `.env.production` in this private repository. It contains only three server-side proxy settings; the owner also explicitly chose to track backend `.env` in this private repository. Backend secrets are never bundled into the frontend or Docker image. Root `.gitignore` remains in place to exclude dependencies and unrelated local secrets; only this production config is explicitly tracked.
+Frontend: https://first.alicaglarkocer.com on Vercel. GitHub pushes trigger its configured frontend build. The owner explicitly chose to track frontend `.env.production` in this private repository. It contains the public NEXT_PUBLIC_API_URL=https://167.235.158.118; the owner also explicitly chose to track backend `.env` in this private repository. Backend secrets are never bundled into the frontend or Docker image. Root `.gitignore` remains in place to exclude dependencies and unrelated local secrets; only this production config is explicitly tracked.
 
-Backend: Hetzner Docker Compose project `first`, deployed below `/opt/first/backend`. Django listens on loopback port 18081; PostgreSQL and Redis expose no host ports. Existing host nginx forwards only `/api/auth/` on its HTTPS IP virtual host to FIRST. Other virtual hosts/routes are preserved. The existing IP TLS certificate and renewal service are shared with the already configured host; renewal must remain operational. Auth requests require the frontend HMAC assertion, CSRF and secure cookies.
+Backend: Hetzner Docker Compose project `first`, deployed below `/opt/first/backend`. Django listens on loopback port 18081; PostgreSQL and Redis expose no host ports. Existing host nginx forwards only `/api/auth/` on its HTTPS IP virtual host to FIRST. Other virtual hosts/routes are preserved. The existing IP TLS certificate and renewal service are shared with the already configured host; renewal must remain operational. Auth requests use explicit Bearer Redis sessions and session-bound CSRF. Exact-origin CORS permits the frontend; nginx overwrites real IP headers. No Vercel API proxy or HMAC is used.
 
 ## Routine deployment
 
@@ -14,7 +16,7 @@ After accepted changes are committed and pushed to `origin/main`, from the repos
 ./send-machine
 ```
 
-Python 3, SSH key access and the verified host entry in known_hosts are required. Root `.env` supplies `hetzner_sunucu_ip`, `FIRST_AUTH_PROXY_SECRET` and optional `FIRST_SSH_USER` (default root). The proxy secret must match frontend `.env.production`. SMTP overrides are optional; existing remote settings are preserved. The initial deployment copied only SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD and EMAIL_FROM from the remote Immense configuration, mapping EMAIL_FROM to SMTP_FROM with STARTTLS on port 587. No Immense file was modified.
+Python 3, SSH key access and the verified host entry in known_hosts are required. Root `.env` supplies `hetzner_sunucu_ip` and optional `FIRST_SSH_USER` (default root). The sender configures API_ORIGIN, CORS_ALLOWED_ORIGINS and protected nginx trust, and removes the legacy proxy secret. SMTP overrides are optional; existing remote settings are preserved. The initial deployment copied only SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD and EMAIL_FROM from the remote Immense configuration, mapping EMAIL_FROM to SMTP_FROM with STARTTLS on port 587. No Immense file was modified.
 
 The script verifies clean local backend/deployment sources on main and that GitHub main equals HEAD. It connects via SSH to `/root/first-backend`, checks a clean main checkout and the expected repository origin, runs `git pull --ff-only`, and verifies the same commit. Only allowlisted backend runtime files, migrations and deployment scripts are extracted from that remote commit into the new release. No frontend, tests, venv, node_modules, Git history, other product, or raw .env enters the release archive. The private checkout itself includes the explicitly tracked backend env. OAuth configuration is read separately from the local backend env and merged into the server env; database, Redis and Django secrets are preserved. Future backend assets/dependency files outside that allowlist must explicitly be added to `source_files()` before deployment. Configuration is sent separately over SSH and stored with mode 600.
 
@@ -216,7 +218,7 @@ live visual verification passes. No local production build was run.
 
 The approved local origin is exactly `http://127.0.0.1:3101`. Next.js development
 loads `.env.local`, not `.env.production`: copy the existing frontend production
-proxy configuration to `FIRST/frontend/.env.local` (keep it private), then run
+`NEXT_PUBLIC_API_URL=https://167.235.158.118` to `FIRST/frontend/.env.local` (keep it private), then run
 `npm run dev -- --hostname 127.0.0.1 --port 3101` in `FIRST/frontend`.
 This uses real backend accounts and data; it is not an isolated test database.
 

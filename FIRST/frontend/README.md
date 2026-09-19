@@ -1,28 +1,16 @@
 # FIRST web
 
-Next.js 16.3.5 + React 19.3.0 + TypeScript. Development and tests require Node.js 20.19+ within 20.x, 22.13+ within 22.x, or 24+ (Next alone has a lower minimum); this delivery's code checks used Node 25.8.2. Dependencies are pinned in package-lock.json.
+Next.js / React / TypeScript frontend. Auth, OAuth exchanges, sessions, account and repository operations run in Django. Browser requests go directly to `https://167.235.158.118/api/auth/`; there are no Next API proxy route handlers or frontend server secrets.
 
-`npm ci`, `npm test`, `npm run lint`, `npm run typecheck`, `npm run build` run dependency installation and static/in-process checks. These commands do not require a running backend. For a local browser preview use `npm run dev`; previewing the UI alone does not verify live backend services.
+Actual `.env.production` and local `.env.local` use `NEXT_PUBLIC_API_URL=https://167.235.158.118`. Vercel builds after Git push; no manual deployment is required. The public origin is embedded during build. Existing unused Vercel proxy environment variables have no consumer.
 
-Routes: `/` (home with navigation and session state), `/giris`, `/kayit`, `/hesap` (profile, phone, email/password changes, reauthentication and session management), `/sifremi-unuttum`, `/sifre-sifirla?uid=…&token=…`, `/eposta-dogrula?key=…`. Verification links only mutate after an explicit confirmation form; reset/change/current or all-session revocation returns to login. Email change leaves the old address visible until the new address is confirmed. UI calls real `/api/auth/*/` endpoints. No social login or fake backend data is present in product code.
+The shared `src/lib/api.ts` sends opaque Django Redis session keys as Bearer credentials with `credentials: omit`. Browser localStorage preserves the session across OAuth navigation and tabs. Session authority, expiry, rotation and revocation remain backend responsibilities. Browser script access to storage makes XSS prevention important; provider tokens and backend secrets never enter browser storage. Old cookie sessions require a fresh login.
 
-Set server-only `BACKEND_URL` to the fixed Django HTTP(S) origin, without path, credentials, query or fragment. Missing/invalid config fails closed with 503; builds do not contact Django. `/api/auth/[...path]` preserves the Django-required final slash, forwards Cookie/Origin/Referer/X-CSRFToken, preserves separate Set-Cookie values and disables caching. Client requests fetch a fresh CSRF token before every mutation, including anonymous register/login. Session credentials never enter browser storage.
+Before mutations the client retrieves a session-bound CSRF token. Expired sessions clear storage; bootstrap retries once. Requests serialize within a tab and session header updates compare the request's original token to avoid overwriting a newer session. Callback pages forward only bounded code/state/error parameters to Django, scrub the address bar and follow fixed backend `redirect_to` values. Provider callback registrations remain unchanged.
 
-Deployment prerequisites: HTTPS frontend for Secure cookies; backend `CSRF_TRUSTED_ORIGINS` includes the frontend origin and `ALLOWED_HOSTS` includes backend host. Cookie Domain must remain unset/compatible with frontend host; backend paths `/` and SameSite=Lax work with the same-origin proxy. Backend IP limiter sees proxy REMOTE_ADDR: trusted ingress/IP handling needs explicit deployment verification, and arbitrary client X-Forwarded-For is deliberately not trusted here.
+Backend CORS allows the exact frontend origin and the explicitly configured local origin. Native clients use the same Bearer API and CSRF bootstrap with the configured FIRST Origin header. nginx terminates the existing IP TLS certificate; Docker binds only loopback. See [API contract](../contracts/auth-api.md) and [deployment](../deployment.md).
 
-Not verified in this task: listening runtime, actual PostgreSQL/Redis/SMTP, proxy infrastructure/client-IP forwarding, browser E2E, deployed HTTPS and cookie delivery. Passing component/build checks is not evidence that live services work.
-
-Proxy implementation reference: https://nextjs.org/docs/app/getting-started/route-handlers .
-
-Optional per-client IP mode: configure the same server-only `AUTH_PROXY_SECRET` (at least 32 characters) on Next and Django, and set `AUTH_CLIENT_IP_HEADER` on Next to the exact header overwritten by the trusted ingress. Configure both frontend variables or neither. Ingress MUST replace any client value and prevent direct untrusted access to Next; merely choosing a header name does not establish trust. Never expose the secret with `NEXT_PUBLIC_`. Missing/invalid configuration or absent/malformed/multiple IP values fails closed with 503. Next generates HMAC-SHA256 assertions bound to IP, timestamp, HTTP method and Django path; incoming assertion headers are never copied. Django checks signatures and timestamp freshness. With neither variable, incoming IP assertion headers are ignored and Django uses REMOTE_ADDR (proxy budget aggregates by egress). Deployment trust, clock sync and real per-client behavior remain not_verified.
-
-For an actual Vercel deployment, its documented overwritten `x-forwarded-for` can be configured as `AUTH_CLIENT_IP_HEADER` (https://vercel.com/docs/headers/request-headers). This example is not safe on an unprotected local/self-hosted server accepting that client header directly. Validate ingress behavior before enabling signed mode.
-
-G code evidence: `test-evidence-stage-g.md`. Proxy upstream timeout is 30 seconds to accommodate two SMTP operations with 10-second per-call timeouts; actual transport timing remains not_verified. Run typecheck and build sequentially because Next regenerates `.next/types` during build.
-
-## Production configuration
-
-The private repository intentionally tracks `.env.production`, as requested by the owner. Vercel Git deployments load its server-only BACKEND_URL, AUTH_PROXY_SECRET and AUTH_CLIENT_IP_HEADER during the frontend build/runtime. These are not NEXT_PUBLIC variables. Backend SMTP/database credentials stay only on Hetzner. For a proxy-secret rotation, update root FIRST_AUTH_PROXY_SECRET and frontend AUTH_PROXY_SECRET together, deploy the backend with `./send-machine`, and push the frontend configuration. Any Vercel dashboard variables with the same names override the file and must match. See [deployment.md](../deployment.md) for current verification.
+Review for this revision is source-only. No tests, lint, typecheck, browser scenarios or extra local production build were run, per owner instruction. Earlier test evidence documents describe earlier implementations.
 
 ## Shared FIRST design language
 

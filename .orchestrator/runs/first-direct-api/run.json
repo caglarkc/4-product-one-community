@@ -1,0 +1,315 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-direct-api",
+  "title": "FIRST direct HTTPS IP API",
+  "goal": "Remove Vercel API proxy; backend-owned Bearer Redis auth accessed directly by web/mobile through HTTPS IP; source-only review and standard deployment.",
+  "createdAt": "2026-09-19T20:18:48.865Z",
+  "updatedAt": "2026-09-19T20:21:30.949Z",
+  "revision": 14,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "64810c82fbaa7fa0b0c1e5308b899f445d10949ae91cba4dd376f2af9f268830",
+    "assumptions": []
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz.",
+    "Source/diff review only. No tests, lint, typecheck or browser; standard deployment build/migration/health remains authorized.",
+    "Direct HTTPS IP only; no new DNS hostname."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [],
+  "items": [
+    {
+      "id": "backend",
+      "title": "backend",
+      "kind": "implement",
+      "domains": [
+        "first-direct-api"
+      ],
+      "objective": "Backend owns Bearer Redis session transport, CORS, CSRF and OAuth destinations",
+      "responsibility": "Backend owns Bearer Redis session transport, CORS, CSRF and OAuth destinations",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Backend owns Bearer Redis session transport, CORS, CSRF and OAuth destinations"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Direct API authentication transport revision"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/accounts",
+          "FIRST/backend/config",
+          "FIRST/backend/projects"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "direct_backend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-19T20-21-29-675Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "frontend",
+      "kind": "implement",
+      "domains": [
+        "first-direct-api"
+      ],
+      "objective": "Frontend calls HTTPS IP directly, removes proxy, persists opaque session and forwards callback to backend",
+      "responsibility": "Frontend calls HTTPS IP directly, removes proxy, persists opaque session and forwards callback to backend",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Frontend calls HTTPS IP directly, removes proxy, persists opaque session and forwards callback to backend"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Direct API authentication transport revision"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "root"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-19T20-21-12-075Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "first-direct-api"
+      ],
+      "objective": "Independent source inspection of session rotation, callbacks, CORS and client races",
+      "responsibility": "Independent source inspection of session rotation, callbacks, CORS and client races",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent source inspection of session rotation, callbacks, CORS and client races"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "frontend"
+        ],
+        "reviews": [
+          "backend",
+          "frontend"
+        ],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Direct API authentication transport revision"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "github_onboarding_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-19T20-21-30-055Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "first-direct-api"
+      ],
+      "objective": "Source inspection confirms no frontend API proxy and compatible direct API contracts",
+      "responsibility": "Source inspection confirms no frontend API proxy and compatible direct API contracts",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Source inspection confirms no frontend API proxy and compatible direct API contracts"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend"
+        ],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Direct API authentication transport revision"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "github_onboarding_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-19T20-21-30-448Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "integration",
+      "kind": "integration",
+      "domains": [
+        "first-direct-api"
+      ],
+      "objective": "Environment and deployment configuration use direct HTTPS IP; current documentation matches source",
+      "responsibility": "Environment and deployment configuration use direct HTTPS IP; current documentation matches source",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/contracts/auth-api.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Environment and deployment configuration use direct HTTPS IP; current documentation matches source"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [
+          "backend",
+          "frontend"
+        ],
+        "revises": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Direct API authentication transport revision"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "send-machine",
+          "FIRST/backend/deploy",
+          "FIRST/deployment.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "root"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-19T20-21-30-841Z.json"
+    }
+  ]
+}

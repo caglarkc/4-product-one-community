@@ -18,6 +18,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import APIException, NotAuthenticated, ValidationError
 from rest_framework.response import Response
 
+from .oauth_response import OAuthDestinationMixin, validate_callback_query
 from . import security
 from .account_views import locked_user, revoke_all
 from .models import User
@@ -141,8 +142,12 @@ class GoogleStartView(AuthView):
         return Response({'authorization_url': AUTHORIZE_URL + '?' + urlencode(params)})
 
 
-class GoogleCallbackView(AuthView):
+class GoogleCallbackView(OAuthDestinationMixin, AuthView):
+    oauth_provider = 'google'
+    oauth_callback = True
+
     def get(self, request):
+        validate_callback_query(request)
         require_enabled()
         state = request.query_params.get('state', '')
         if not state or len(state) > 128 or len(request.query_params.getlist('state')) != 1:
@@ -228,7 +233,9 @@ def pending_signup(request):
     return token, pending
 
 
-class GoogleSignupView(AuthView):
+class GoogleSignupView(OAuthDestinationMixin, AuthView):
+    oauth_provider = 'google'
+
     def get(self, request):
         require_enabled()
         _, pending = pending_signup(request)
@@ -313,7 +320,9 @@ class GoogleEmailRequestView(AuthView):
         return Response({'detail': 'Google girişini tamamlamak için e-posta doğrulama bağlantısı gönderildi.'})
 
 
-class GoogleEmailVerifyView(AuthView):
+class GoogleEmailVerifyView(OAuthDestinationMixin, AuthView):
+    oauth_provider = 'google'
+
     def post(self, request):
         require_enabled()
         signup_token, pending = pending_signup(request)
