@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-direct-api",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "root",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Source reviewed: HTTPS IP fetch credentials omit, token CAS and request serialization, bounded per-flow OAuth callback promise and backend destinations. Removed obsolete proxy route imports/tests; no tests run.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Frontend calls HTTPS IP directly, removes proxy, persists opaque session and forwards callback to backend",
+      "status": "passed",
+      "evidence": "Source reviewed: HTTPS IP fetch credentials omit, token CAS and request serialization, bounded per-flow OAuth callback promise and backend destinations. Removed obsolete proxy route imports/tests; no tests run."
+    }
+  ],
+  "checks": [
+    {
+      "name": "frontend checks",
+      "status": "passed",
+      "evidence": "Source reviewed: HTTPS IP fetch credentials omit, token CAS and request serialization, bounded per-flow OAuth callback promise and backend destinations. Removed obsolete proxy route imports/tests; no tests run."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T20:21:12.075166+00:00"
+}

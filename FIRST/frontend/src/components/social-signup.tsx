@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useEffect, useId, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { api, ApiError } from '../lib/api';
+import { api, ApiError, oauthDestination } from '../lib/api';
 import { Alert, Button, Field, Input, PageHeading, Select, Surface } from './ui';
 
 type Pending = {profile: {email: string; full_name: string; username: string; birth_date: string; gender: string; phone: string}; email_verified: boolean; email_editable: boolean};
@@ -30,7 +30,7 @@ export function SocialSignup({provider}: {provider: 'google' | 'github'}) {
       const payload = Object.fromEntries(new FormData(event.currentTarget));
       if(typeof payload.username === 'string') payload.username = payload.username.normalize('NFC');
       if(!pending.email_editable) delete payload.email;
-      try {await api(`${provider}/signup`, payload); router.replace(provider === 'github' ? '/github-kurulum?next=%2F' : '/'); router.refresh();}
+      try {const result = await api<{redirect_to:string}>(`${provider}/signup`, payload); router.replace(oauthDestination(result.redirect_to)); router.refresh();}
       catch(caught) {setError(caught as ApiError);}
       finally {lock.current = false; setBusy(false);}
     }}><fieldset disabled={busy}>

@@ -39,20 +39,19 @@ as a shell script or print rendered Compose configuration containing credentials
 The example Redis URL uses Compose interpolation; a concrete authenticated URL is
 also supported, as in the prepared local file.
 
-The prepared configuration targets the existing HTTPS frontend origin. Browser
-auth requires the Next.js proxy and secure cookies; a successful HTTP health check
-alone does not verify login. Set the backend `AUTH_PROXY_SECRET` to the same secret
-used by the frontend and set its trusted IP header as described below. Local Docker
-startup does not update Vercel or the existing Hetzner environment. For production
-releases, use the existing `send-machine` workflow in [deployment.md](../deployment.md),
-which manages the separate server environment and runs migrations before startup.
+The configured browser calls `https://167.235.158.118/api/auth/` directly, with
+an opaque Redis session in Authorization: Bearer and session-bound CSRF. There
+is no Next API proxy, shared HMAC secret or cookie authentication. Exact-origin
+CORS allows the configured frontend. Old cookie users must sign in again.
+Use `send-machine` for pushed main checkout, preserved server configuration,
+Docker build/migrations and built-in deployment health checks.
 
 Implemented normal-auth endpoints under `/api/auth/`: `csrf/`, `config/`,
 `register/`, `login/`, `me/`, `logout/`, `profile/`, `reauthenticate/`,
 `password/reset/`, `password/reset/confirm/`, `password/change/`, `email/resend/`,
 `email/verify/`, `email/change/`, `sessions/`, `sessions/<uuid>/`,
 `sessions/revoke/`. See `../contracts/auth-api.md` for request and response shapes.
-OAuth and provider connection are not implemented. Config reports both unavailable.
+Google/GitHub OAuth and GitHub App repository authorization are implemented; config reports actual availability.
 
 ## Security storage
 
@@ -70,22 +69,9 @@ hash operations must complete within the lease; real Redis concurrency remains a
 required environment check. By default only REMOTE_ADDR is trusted; arbitrary
 X-Forwarded-For and X-First-Client-* assertions are ignored.
 
-Optional per-client proxy attribution requires the same `AUTH_PROXY_SECRET` on
-backend and frontend (at least 32 characters). Frontend also configures
-`AUTH_CLIENT_IP_HEADER` to a single IP header that its trusted ingress always
-replaces. Backend then requires every `/api/auth/` request to carry
-`X-First-Client-IP`, `X-First-Client-Time`, `X-First-Client-Signature`.
-The signature is HMAC-SHA256 hex over exact UTF-8 text:
-`ip + "\n" + unix_seconds + "\n" + HTTP_METHOD + "\n" + request.path`.
-The backend validates a single IP, integer timestamp within 60 seconds, and the
-signature with constant-time comparison. It canonicalizes the verified IP before
-rate counting so equivalent IPv6 representations share a budget. Missing, invalid,
-stale or method/path-mismatched assertions return 403 `invalid_proxy_assertion`.
-A configured short secret fails startup. Assertions cannot substitute for CSRF;
-the usual cookie/origin/token checks still apply. Requests within the 60-second
-window can be replayed, so HTTPS and ingress access controls remain required.
-Trusted ingress header replacement and matching deployed configuration have not
-been verified in this task. Never expose the shared key to browser code.
+With `TRUST_NGINX_PROXY=true`, nginx must overwrite X-Real-IP and
+X-Forwarded-Proto; the Docker backend must remain loopback-only. Arbitrary
+X-Forwarded-For is not used. This is the configured production ingress.
 
 ## Password corpus
 

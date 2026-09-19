@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-direct-api",
+  "itemId": "backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "direct_backend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Source reviewed: explicit Redis session transport, changed-only response keys, expired session rejection, fixed anonymous expiry, exact CORS and backend OAuth destinations. No runtime tests.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Backend owns Bearer Redis session transport, CORS, CSRF and OAuth destinations",
+      "status": "passed",
+      "evidence": "Source reviewed: explicit Redis session transport, changed-only response keys, expired session rejection, fixed anonymous expiry, exact CORS and backend OAuth destinations. No runtime tests."
+    }
+  ],
+  "checks": [
+    {
+      "name": "backend checks",
+      "status": "passed",
+      "evidence": "Source reviewed: explicit Redis session transport, changed-only response keys, expired session rejection, fixed anonymous expiry, exact CORS and backend OAuth destinations. No runtime tests."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T20:21:29.675164+00:00"
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-direct-api",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "root",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Actual env uses public HTTPS IP; sender configures exact CORS and protected nginx ingress; configure removes legacy shared signature setting while preserving persistent credentials. Current docs updated. Runtime verified only by forthcoming standard deployment health.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Environment and deployment configuration use direct HTTPS IP; current documentation matches source",
+      "status": "passed",
+      "evidence": "Actual env uses public HTTPS IP; sender configures exact CORS and protected nginx ingress; configure removes legacy shared signature setting while preserving persistent credentials. Current docs updated. Runtime verified only by forthcoming standard deployment health."
+    }
+  ],
+  "checks": [
+    {
+      "name": "integration checks",
+      "status": "passed",
+      "evidence": "Actual env uses public HTTPS IP; sender configures exact CORS and protected nginx ingress; configure removes legacy shared signature setting while preserving persistent credentials. Current docs updated. Runtime verified only by forthcoming standard deployment health."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T20:21:30.841040+00:00"
+}

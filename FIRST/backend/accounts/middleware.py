@@ -41,8 +41,37 @@ from django.contrib.sessions.backends.base import UpdateError
 
 
 class RedisSessionMiddleware(SessionMiddleware):
-    def process_response(self, request, response):
+    """Transport the existing Redis session explicitly, never by browser cookie."""
+    def process_request(self, request):
+        import re
+        value = request.headers.get('Authorization')
+        if value is not None and not re.fullmatch(r'Bearer [a-z0-9]{32}', value):
+            response = JsonResponse({'detail': 'Geçersiz oturum anahtarı.', 'code': 'invalid_session'}, status=401)
+            response['X-First-Session'] = ''
+            return response
+        request.incoming_session_key = value[7:] if value else None
+        request.session = self.SessionStore(request.incoming_session_key)
         try:
-            return super().process_response(request, response)
+            # Resolve an expired/revoked key now, before auth/CSRF access.
+            request.session.items()
+            if value and not request.session.session_key:
+                response = JsonResponse({'detail': 'Oturum süresi doldu. Yeniden giriş yapın.', 'code': 'invalid_session'}, status=401)
+                response['X-First-Session'] = ''
+                return response
+        except SecurityUnavailable:
+            return unavailable()
+
+    def process_response(self, request, response):
+        if not hasattr(request, 'session'):
+            return response
+        try:
+            response = super().process_response(request, response)
+            # Django's persistence/expiry semantics are retained; cookies are not
+            # an authentication transport and must not be emitted to clients.
+            from django.conf import settings
+            response.cookies.pop(settings.SESSION_COOKIE_NAME, None)
+            if response.status_code < 500 and request.session.session_key != request.incoming_session_key:
+                response['X-First-Session'] = request.session.session_key or ''
+            return response
         except (SecurityUnavailable, UpdateError):
             return unavailable()

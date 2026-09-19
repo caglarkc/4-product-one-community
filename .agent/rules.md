@@ -47,3 +47,7 @@ Kullanıcının kalıcı talimatı: **Dosya değişikliği yapılan her görev s
 - FIRST PostgreSQL/Redis kalıcı verilerini, sunucuya özgü anahtarları ve diğer projeleri koru. Mevcut yedekleme, migration, rollback ve sağlık kontrollerini kullan. Başarısız dağıtımı başarılı sayma; durumu açıkça bildir.
 - FIRST frontend push sonrası Vercel otomatik build/deploy alır. Ek yerel üretim build'i veya manuel Vercel deployment başlatma; test/lint/typecheck veya canlı kullanıcı senaryosu çalıştırma; dağıtım komutunun sonucunu raporla.
 - Yalnız belge/skill değişikliğinde backend rebuild gerekmez. Kullanıcının göreve özel istisnası önceliklidir; platform izinleri ayrı kalır. Teslimde push edilen commit, uzak backend release/sağlık durumu ve frontend dağıtım sonucu belirtilir.
+
+## FIRST doğrudan API mimarisi
+
+19 Eylül kullanıcı kararı: Web/mobil istemci doğrudan `https://167.235.158.118` backend API adresine istek atar. Vercel/Next.js API proxy veya ayrı API DNS kaydı ekleme. İş kuralları, OAuth kod değişimi, oturum ve yetki backend tarafından yönetilir. Frontend yalnız API tüketimi ve arayüzden sorumludur.

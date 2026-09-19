@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-direct-api",
+  "itemId": "verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "github_onboarding_review",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Independent source inspection confirmed callback routes became pages, signup and email responses include backend destinations, session clearing and bootstrap pair correctly. No tests lint typecheck or browser executed.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Source inspection confirms no frontend API proxy and compatible direct API contracts",
+      "status": "passed",
+      "evidence": "Independent source inspection confirmed callback routes became pages, signup and email responses include backend destinations, session clearing and bootstrap pair correctly. No tests lint typecheck or browser executed."
+    }
+  ],
+  "checks": [
+    {
+      "name": "verify checks",
+      "status": "passed",
+      "evidence": "Independent source inspection confirmed callback routes became pages, signup and email responses include backend destinations, session clearing and bootstrap pair correctly. No tests lint typecheck or browser executed."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T20:21:30.448892+00:00"
+}

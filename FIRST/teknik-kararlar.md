@@ -21,7 +21,7 @@ Kullanıcı “bu dillere ve frameworklere karar verdik” diyerek seçimi onayl
 
 - Next.js arayüzü ve sayfaların hazırlanmasını, Django iş kurallarını, yetkilendirmeyi, veri işlemlerini ve GitHub entegrasyonunu üstlenecek şekilde ilerlenmesi önerildi.
 - Ayrı siteler ve ortak hesap kararı, ortak veritabanı veya tek backend kararı değildir. Ürünler arası oturum/SSO, servis sınırları ve domain yapısı henüz tasarlanmadı.
-- PostgreSQL kalıcı veritabanı olarak seçildi. Auth işlemlerinde Redis kullanılacak; kesin sorumlulukları teknik tasarımda netleştirilecek. django-allauth, HttpOnly Django session cookie + CSRF ve Next.js aynı origin proxy yaklaşımı onaylandı. E-posta SMTP üzerinden gönderilecek; hizmet ve gönderen domain henüz seçilmedi. Dosya saklama, iş kuyruğu, arama altyapısı ve sürümler henüz kesinleşmedi.
+- PostgreSQL kalıcı veritabanı olarak seçildi. Auth işlemlerinde Redis kullanılacak; kesin sorumlulukları teknik tasarımda netleştirilecek. django-allauth, Doğrudan HTTPS IP API, Bearer ile taşınan Redis/Django oturumu ve session-bound CSRF kullanılır; Next.js API proxy kaldırıldı (19 Eylül revizyonu). E-posta SMTP üzerinden gönderilecek; hizmet ve gönderen domain henüz seçilmedi. Dosya saklama, iş kuyruğu, arama altyapısı ve sürümler henüz kesinleşmedi.
 - Hiçbir sağlayıcı hesabı açılmadı veya ücretli abonelik başlatılmadı.
 
 ## API tasarımının ilerleme biçimi

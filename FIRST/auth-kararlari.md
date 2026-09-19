@@ -109,7 +109,7 @@ Hesap e-postası doğrulaması, telefon doğrulaması ve aktif öğrenci doğrul
 ## 13. Onaylanan mimari ve kalan ayrıntılar
 
 - `contracts/auth-api.md` onaylanmış başlangıç sözleşmesidir; bu belgedeki sonraki kararlarla birlikte uygulanır. Önceki uzun API öneri listesinin tamamı onaylanmış kapsam değildir.
-- Django/DRF kimlik ve yetki kaynağıdır; django-allauth sosyal girişleri yönetir. HttpOnly session cookie + CSRF ve Next.js üzerinden aynı origin proxy yaklaşımı kabul edildi.
+- Django/DRF kimlik ve yetki kaynağıdır; django-allauth sosyal girişleri yönetir. 19 Eylül revizyonu: doğrudan HTTPS IP API, Bearer ile taşınan Redis oturumu ve session-bound CSRF kullanılır; frontend API proxy yoktur.
 - Kalıcı veriler PostgreSQL'de tutulacaktır. Auth işlemlerinde Redis kullanılacaktır; oturum, sayaç ve geçici veri sorumlulukları ile kalıcılık/arıza davranışı teknik uygulamada netleştirilecektir.
 - Backend uzak sunucuda Docker içinde çalıştırılır. İlk aşama FIRST oturumudur; dört ürünün ortak oturum/SSO tasarımı ayrıdır.
 - Telefon doğrulama kanalı/sağlayıcısı daha sonraya ertelendi. Test aşamasında ilan akışı telefon doğrulamasına bağlı değildir; telefon isteğe bağlıdır ve girilmesi doğrulanmış sayılmaz.

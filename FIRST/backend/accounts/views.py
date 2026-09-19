@@ -55,6 +55,12 @@ class AuthView(APIView):
 
 class CsrfView(AuthView):
     def get(self, request):
+        if not request.session.session_key:
+            if security.count('session-bootstrap-ip', client_ip(request), ttl=60) > settings.AUTH_IP_ATTEMPTS:
+                raise RateLimited()
+            # Fixed expiry bounds abandoned anonymous OAuth/CSRF state.
+            request.session.set_expiry(timezone.now() + timedelta(minutes=10))
+            request.session.create()
         return Response({'csrfToken': get_token(request._request)})
 
 

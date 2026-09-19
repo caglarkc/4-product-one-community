@@ -4,7 +4,7 @@
 
 ## Taşıma ve kimlik
 
-Django + DRF yetki kaynağıdır. Next.js yalnız `/api/auth/*/` yollarını server-only sabit `BACKEND_URL` origin'ine proxy eder. Tarayıcı aynı origin üzerinden HttpOnly session cookie ve CSRF kullanır; bearer token veya localStorage kimliği yoktur. Son slash zorunludur. Bütün mutation'lar anonim kayıt/giriş/reset/doğrulama dahil CSRF cookie ve `X-CSRFToken` gerektirir. Web her mutation öncesi `csrf/` alır. Yanıtlar `Cache-Control: no-store` taşır.
+Django + DRF yetki kaynağıdır. Web/mobil doğrudan `https://167.235.158.118/api/auth/` adresini çağırır; Vercel API proxy ve HMAC katmanı yoktur. `Authorization: Bearer <opaque-session>` Redis/Django oturumunu taşır. Web `credentials: omit` kullanır, anahtarı localStorage içinde saklar. Backend yeni/dönen/silinen anahtarı `X-First-Session` başlığında iletir; boş değer temizleme anlamındadır. Geçersiz/süresi dolan anahtar 401 `invalid_session`; cookie fallback yoktur. Anonim `csrf/` oturumu sabit 10 dakika ve IP sınırlamalıdır. Bütün mutation'lar session-bound `X-CSRFToken` gerektirir. Native istemci aynı bootstrap ve yapılandırılmış FIRST Origin başlığını kullanır. Son slash zorunlu, yanıtlar no-store. Eski cookie kullanıcıları yeniden giriş yapar.
 
 Production kalıcı veri PostgreSQL'de kullanıcı ve oturum iptal kayıtlarıdır. Redis oturum içeriğini, deneme sayaçlarını ve anahtarı hash'lenmiş süreli token'ları tutar; process-local production fallback yoktur. Normal oturum 24 saat, `remember_me=true` 30 gün; süre mutlak, etkinlikle uzamaz. Her istek kalıcı oturum kaydı, süre ve kullanıcı güvenlik sürümünü kontrol eder. Doğrulanmamış e-postayla giriş serbesttir; web hatırlatma gösterir.
 
@@ -32,7 +32,7 @@ Tüm yollar `/api/auth/` altındadır. JSON nesnesi gönderilir; boş mutation `
 
 | Metot / yol | Girdi | Başarı ve yetki |
 |---|---|---|
-| GET csrf/ | — | 200 `{csrfToken}` + CSRF cookie; anonim |
+| GET csrf/ | — | 200 `{csrfToken}` + gerektiğinde `X-First-Session`; anonim |
 | GET config/ | — | 200 `{providers:{google:false,github:false},phone_verification_available:false}` |
 | GET me/ | — | 200 `{user:User|null}` |
 | POST register/ | email,password,username,full_name,birth_date,gender,phone? | 201 `{user}`; oturum açar, doğrulama e-postası gönderir |
@@ -67,9 +67,7 @@ Tüm yollar `/api/auth/` altındadır. JSON nesnesi gönderilir; boş mutation `
 
 Web rotaları `/`, `/giris`, `/kayit`, `/hesap`, `/sifremi-unuttum`, `/sifre-sifirla?uid=…&token=…`, `/eposta-dogrula?key=…`. Ana sayfa yalnız temel gezinme ve oturum durumunu içerir; profil işlevseldir. Kayıt/giriş ana sayfaya; çıkış, şifre değişimi/reset ve mevcut/toplu oturum kapatma girişe yönlenir. E-posta doğrulama linkini GET ile açmak veri değiştirmez; kullanıcı onay formu gönderir. Doğrulamadan sonra web `me/` sorgular; adres değişimi nedeniyle kapanmış oturumu gösterir. Linkler yalnız `FRONTEND_ORIGIN` üzerinden üretilir, Host başlığına güvenilmez.
 
-Next proxy Cookie/Origin/Referer/X-CSRFToken ve ayrı Set-Cookie başlıklarını korur; backend yönlendirmelerini takip etmez. Upstream timeout30s, SMTP timeout işlem başına10s. HTTPS, Secure cookie ve frontend origin için backend `CSRF_TRUSTED_ORIGINS` gerekir. Secret'lar yalnız ortam değişkenlerindedir; `.env.example` gerçek değer içermez.
-
-Varsayılan IP kaynağı backend REMOTE_ADDR'dır; proxy arkasında ortak IP bütçesi oluşur. İsteğe bağlı per-client modda iki tarafta aynı server-only `AUTH_PROXY_SECRET` (en az32 karakter), frontend'de trusted ingress'in overwrite ettiği `AUTH_CLIENT_IP_HEADER` gerekir. Next tek IP için `ip\nseconds\nMETHOD\n/api/auth/path/` üzerinde HMAC-SHA256 üretir; X-First-Client-IP/Time/Signature gönderir. Backend ±60s ve imzayı denetler; uygunsuz istek403 `invalid_proxy_assertion`. Secret yoksa gelen assertion başlıkları yok sayılır. Gerçek ingress güveni ve saat uyumu ayrıca doğrulanmalıdır.
+Exact-origin CORS yalnız yapılandırılmış frontend/local origin değerlerine izin verir; Authorization, Content-Type ve X-CSRFToken kabul edilir, X-First-Session açığa çıkarılır. nginx X-Real-IP ve HTTPS bilgisini overwrite eder; Docker portu loopback'e bağlıdır. `TRUST_NGINX_PROXY=true` yalnız bu korunan upstream'de kullanılır. Kimlik/sağlayıcı sırları backend'de kalır. IP TLS sertifikasının yenilenmesi korunur.
 
 ## Test sınırı
 
@@ -92,9 +90,7 @@ kalıcı sağlayıcı kimliği için kullanılır; FIRST oturum kayıtları yetk
 | POST google/signup/ | full_name,username,birth_date,gender,phone?,email? | CSRF; yerel şifre kabul edilmez; 201 `{user}` |
 
 Google callback frontend yolu `/accounts/google/login/callback/` olarak sabittir.
-Next callback işleyicisi izin verilen sorgu alanlarını backend JSON endpoint'ine taşır;
-Set-Cookie başlıklarını korur ve yalnız sabit FIRST sayfalarına yönlenir. Normal auth
-proxy'sinin genel yönlendirme yasağı korunur. Başarılı mevcut giriş `/`, yeni kullanıcı
+Statik istemci callback sayfası izin verilen sorgu alanlarını doğrudan backend JSON endpoint'ine Bearer ile taşır; adres çubuğunu temizler. Backend `redirect_to` döndürür, istemci yalnız sabit FIRST yollarını kabul eder. Başarılı mevcut giriş `/`, yeni kullanıcı
 `/kayit/google`, başarılı yeniden doğrulama `/hesap` yönüne gider.
 
 Sağlayıcıdan dönen token tarayıcıya verilmez. Google state, nonce ve PKCE kullanılır;
@@ -203,3 +199,5 @@ GitHub identity. Preview/create retain verified-email guards. Existing status
 and repository APIs determine readiness; installation callback query values are
 never trusted as ownership proof. Cancellation, empty installation return and
 provider errors stop automatic redirects and offer explicit recovery.
+
+19 Eylül doğrudan IP revizyonunda yalnız kaynak/diff incelemesi yapıldı. Önceki test kanıtları yeni transport için çalışma zamanı doğrulaması sayılmaz.

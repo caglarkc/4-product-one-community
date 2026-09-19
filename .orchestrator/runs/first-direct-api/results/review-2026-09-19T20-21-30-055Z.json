@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-direct-api",
+  "itemId": "review",
+  "agent": {
+    "platform": "codex",
+    "identity": "github_onboarding_review",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Independent source review fixed stale session response and expired session fallback. Confirmed CORS CSRF and backend destination integration. Flow-specific callback cache advisory applied by root. No blocking source findings; runtime unverified.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Independent source inspection of session rotation, callbacks, CORS and client races",
+      "status": "passed",
+      "evidence": "Independent source review fixed stale session response and expired session fallback. Confirmed CORS CSRF and backend destination integration. Flow-specific callback cache advisory applied by root. No blocking source findings; runtime unverified."
+    }
+  ],
+  "checks": [
+    {
+      "name": "review checks",
+      "status": "passed",
+      "evidence": "Independent source review fixed stale session response and expired session fallback. Confirmed CORS CSRF and backend destination integration. Flow-specific callback cache advisory applied by root. No blocking source findings; runtime unverified."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T20:21:30.055468+00:00"
+}

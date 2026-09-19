@@ -15,6 +15,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import APIException, NotAuthenticated, ValidationError
 from rest_framework.response import Response
 
+from .oauth_response import OAuthDestinationMixin, validate_callback_query
 from . import security
 from .account_views import locked_user, revoke_all, recent
 from .models import User
@@ -139,8 +140,12 @@ class GitHubStartView(AuthView):
         return Response({'authorization_url': AUTHORIZE_URL + '?' + urlencode(params)})
 
 
-class GitHubCallbackView(AuthView):
+class GitHubCallbackView(OAuthDestinationMixin, AuthView):
+    oauth_provider = 'github'
+    oauth_callback = True
+
     def get(self, request):
+        validate_callback_query(request)
         require_enabled()
         state = request.query_params.get('state', '')
         if not state or len(state) > 128 or len(request.query_params.getlist('state')) != 1:
@@ -233,7 +238,9 @@ def pending_signup(request):
     return token, pending
 
 
-class GitHubSignupView(AuthView):
+class GitHubSignupView(OAuthDestinationMixin, AuthView):
+    oauth_provider = 'github'
+
     def get(self, request):
         require_enabled()
         _, pending = pending_signup(request)
@@ -318,7 +325,9 @@ class GitHubEmailRequestView(AuthView):
         return Response({'detail': 'GitHub girişini tamamlamak için e-posta doğrulama bağlantısı gönderildi.'})
 
 
-class GitHubEmailVerifyView(AuthView):
+class GitHubEmailVerifyView(OAuthDestinationMixin, AuthView):
+    oauth_provider = 'github'
+
     def post(self, request):
         require_enabled()
         signup_token, pending = pending_signup(request)
