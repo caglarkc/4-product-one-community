@@ -4,8 +4,8 @@
   "title": "GitHub login and repository setup",
   "goal": "Collect selected-repository authorization during GitHub login/link/signup and simplify project picker",
   "createdAt": "2026-09-19T19:46:16.006Z",
-  "updatedAt": "2026-09-19T19:51:36.241Z",
-  "revision": 16,
+  "updatedAt": "2026-09-19T19:54:30.050Z",
+  "revision": 17,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -352,9 +352,9 @@
         ],
         "owner": "manager"
       },
-      "status": "active",
+      "status": "done",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/release-2026-09-19T19-54-29-938Z.json"
     }
   ]
 }
