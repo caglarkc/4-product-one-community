@@ -1,0 +1,360 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-onboarding",
+  "title": "GitHub login and repository setup",
+  "goal": "Collect selected-repository authorization during GitHub login/link/signup and simplify project picker",
+  "createdAt": "2026-09-19T19:46:16.006Z",
+  "updatedAt": "2026-09-19T19:51:36.241Z",
+  "revision": 16,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "64810c82fbaa7fa0b0c1e5308b899f445d10949ae91cba4dd376f2af9f268830",
+    "assumptions": []
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [],
+  "items": [
+    {
+      "id": "backend",
+      "title": "backend",
+      "kind": "implement",
+      "domains": [
+        "first-github-onboarding"
+      ],
+      "objective": "Bound App continuation destinations and permit authenticated linked-user setup while preserving publication guards",
+      "responsibility": "Bound App continuation destinations and permit authenticated linked-user setup while preserving publication guards",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-github-onboarding/contract.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Bound App continuation destinations and permit authenticated linked-user setup while preserving publication guards"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Identity, credential revocation and account deletion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "github_onboarding_backend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-19T19-49-15-867Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "frontend",
+      "kind": "implement",
+      "domains": [
+        "first-github-onboarding"
+      ],
+      "objective": "One login/link/signup setup flow with cancellation and loop guards; project editor uses authorized repo picker",
+      "responsibility": "One login/link/signup setup flow with cancellation and loop guards; project editor uses authorized repo picker",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-github-onboarding/contract.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "One login/link/signup setup flow with cancellation and loop guards; project editor uses authorized repo picker"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Identity, credential revocation and account deletion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "github_onboarding_frontend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-19T19-51-34-788Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "first-github-onboarding"
+      ],
+      "objective": "Independent security and flow review without material findings",
+      "responsibility": "Independent security and flow review without material findings",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-github-onboarding/contract.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent security and flow review without material findings"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "frontend"
+        ],
+        "reviews": [
+          "backend",
+          "frontend"
+        ],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Identity, credential revocation and account deletion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "github_onboarding_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-19T19-51-35-160Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "first-github-onboarding"
+      ],
+      "objective": "Independent backend/frontend tests lint typecheck pass",
+      "responsibility": "Independent backend/frontend tests lint typecheck pass",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-github-onboarding/contract.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent backend/frontend tests lint typecheck pass"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend"
+        ],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Identity, credential revocation and account deletion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "github_onboarding_verify"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-19T19-51-35-545Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "integration",
+      "kind": "integration",
+      "domains": [
+        "first-github-onboarding"
+      ],
+      "objective": "Contracts and onboarding routes agree across layers",
+      "responsibility": "Contracts and onboarding routes agree across layers",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-github-onboarding/contract.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Contracts and onboarding routes agree across layers"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [
+          "backend",
+          "frontend"
+        ],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Identity, credential revocation and account deletion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-19T19-51-35-920Z.json"
+    },
+    {
+      "id": "release",
+      "title": "release",
+      "kind": "delivery",
+      "domains": [
+        "first-github-onboarding"
+      ],
+      "objective": "Push accepted code, remote Docker healthy and Vercel automatic deployment verified",
+      "responsibility": "Push accepted code, remote Docker healthy and Vercel automatic deployment verified",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-github-onboarding/contract.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Push accepted code, remote Docker healthy and Vercel automatic deployment verified"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Identity, credential revocation and account deletion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "active",
+      "attempt": 1,
+      "resultRef": null
+    }
+  ]
+}

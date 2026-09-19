@@ -28,8 +28,21 @@ Mevcut GitHub OAuth uygulaması yalnız giriş/hesap bağlama için `user:email`
 
 Callback state mevcut FIRST kullanıcısı, oturumu, güvenlik sürümü ve bağlı GitHub kimliğine bağlanır. App yetkilendirmesinde dönen `/user` kimliği bağlı GitHub hesabıyla aynı olmalıdır. `installation_id` query parametresi sahiplik kanıtı değildir. GitHub'dan uygulamanın installation bilgisi, seçili repo ve kullanıcının `permissions.admin` alanı doğrulanır.
 
-E-posta doğrulaması zorunlu, telefon alanı ve telefon doğrulaması bu fazda koşul değildir. Bir repo için tek aktif paylaşım bulunur. Başlık ve kategori gereklidir; açıklama isteğe bağlıdır. README en fazla üç cümle/600 karakter düz metin olarak önizlenir. Kullanıcı önizlemeyi görerek paylaşır. Private reponun URL'si, repo kimliği ve dosyaları ziyaretçi yanıtına eklenmez. Public repo için GitHub bağlantısı gösterilir. Repo erişimi veya görünürlüğü doğrulanamazsa dış bağlantı ve README ziyaretçiye açılmaz.
+README önizleme ve paylaşım için e-posta doğrulaması zorunlu; kendi repo envanteri ve ilk App kurulumu bağlı GitHub kimliğiyle tamamlanabilir. Telefon alanı ve telefon doğrulaması bu fazda koşul değildir. Bir repo için tek aktif paylaşım bulunur. Başlık ve kategori gereklidir; açıklama isteğe bağlıdır. README en fazla üç cümle/600 karakter düz metin olarak önizlenir. Kullanıcı önizlemeyi görerek paylaşır. Private reponun URL'si, repo kimliği ve dosyaları ziyaretçi yanıtına eklenmez. Public repo için GitHub bağlantısı gösterilir. Repo erişimi veya görünürlüğü doğrulanamazsa dış bağlantı ve README ziyaretçiye açılmaz.
 
 Başvuru, davet, dosya gezgini ve private repodan seçilen dosyaları yayımlama sonraki fazdadır.
 
 Kaynaklar: [GitHub App kullanıcı yetkilendirmesi](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app), [installation API](https://docs.github.com/en/rest/apps/installations#list-repositories-accessible-to-the-user-access-token), [Setup URL doğrulaması](https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/about-the-setup-url).
+
+## Girişle birleşen kurulum
+
+GitHub login/link/signup başarıları `/github-kurulum` sayfasına gider. Geçerli
+kullanıcı yetkisi ve erişilebilir repo varsa hedef ekrana geçilir; eksik kullanıcı
+yetkisi için OAuth, eksik repo seçimi için GitHub kurulum ekranı açılır. Kurulumdan
+dönen boş liste tekrar otomatik yönlendirilmez. İptal/hata açık tekrar deneme sunar.
+
+Mevcut Setup URL değişmez: `/projelerim/yeni?github_setup=1` FIRST içinde kurulum
+sayfasına yönlendirilir. `installation_id` ve `setup_action` yetki kanıtı değildir.
+`projects/github/start` isteğinin `return_to` değeri sabit üç yolla sınırlıdır ve
+server-side state içinde tutulur. Sonradan proje eklemek için iki ayrı izin butonu
+yoktur; izin verilen repo listesinden seçim ve tek izin yönetimi bağlantısı vardır.

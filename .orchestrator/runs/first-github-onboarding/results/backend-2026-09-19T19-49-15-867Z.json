@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-onboarding",
+  "itemId": "backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "github_onboarding_backend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "159 backend tests passed. App start/callback/inventory require linked identity; publication retains verified email. Return paths fixed allowlist and server-state bound; start serialized against reset/disconnect. No migration/env change.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Bound App continuation destinations and permit authenticated linked-user setup while preserving publication guards",
+      "status": "passed",
+      "evidence": "159 backend tests passed. App start/callback/inventory require linked identity; publication retains verified email. Return paths fixed allowlist and server-state bound; start serialized against reset/disconnect. No migration/env change."
+    }
+  ],
+  "checks": [
+    {
+      "name": "backend checks",
+      "status": "passed",
+      "evidence": "159 backend tests passed. App start/callback/inventory require linked identity; publication retains verified email. Return paths fixed allowlist and server-state bound; start serialized against reset/disconnect. No migration/env change."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T19:49:15.867952+00:00"
+}

@@ -3,7 +3,7 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import {GET} from '../src/app/accounts/github/login/callback/route';
 afterEach(()=>vi.unstubAllEnvs());
 describe('GitHub callback boundary',()=>{
- it.each([['authenticated','/'],['profile_required','/kayit/github'],['linked','/hesap'],['unknown','/giris?github_error=failed']])('maps %s to fixed destination and retains cookies',async(status,destination)=>{
+ it.each([['authenticated','/github-kurulum?next=%2F'],['profile_required','/kayit/github'],['linked','/github-kurulum?next=%2Fhesap'],['unknown','/giris?github_error=failed']])('maps %s to fixed destination and retains cookies',async(status,destination)=>{
  vi.stubEnv('BACKEND_URL','https://backend.example');vi.stubEnv('AUTH_PROXY_SECRET','');vi.stubEnv('AUTH_CLIENT_IP_HEADER','');
  const headers=new Headers();headers.append('Set-Cookie','sessionid=next; HttpOnly');headers.append('Set-Cookie','csrftoken=new');
  const fetcher=vi.fn().mockResolvedValue(Response.json({status},{headers}));vi.stubGlobal('fetch',fetcher);

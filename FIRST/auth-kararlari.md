@@ -128,7 +128,7 @@ Teknik güvenlik koşulu: Google adres sahipliği kanıtı sağlamıyorsa bekley
 ## 18 Eylül 2026 — GitHub uygulama ayrıntısı
 
 GitHub giriş/kayıt için OAuth App ve yalnız `user:email` izni kullanılır. Repo erişimi
-bu entegrasyona dahil değildir. GitHub kimliğiyle giriş, doğrulanmış birincil e-posta
+ayrı App izniyle yürütülür; aşağıdaki güncel kararla giriş/bağlama akışına dahil edilir. GitHub kimliğiyle giriş, doğrulanmış birincil e-posta
 ile eşleştirme, şifresiz profil tamamlama ve Hesabım ekranından GitHub bağlama uygulanır.
 GitHub OAuth yeni kimlik doğrulama zamanını garanti etmediğinden hassas işlemler için
 şifre veya bağlı Google hesabıyla yakın yeniden doğrulama gerekir; yalnız GitHub
@@ -139,9 +139,9 @@ kullanan kişi mevcut e-posta kurtarma akışıyla yerel şifre oluşturabilir.
 - Telefon numarası ve telefon doğrulaması repo ilanı oluşturma koşulu değildir; test aşamasında tek iletişim doğrulama şartı e-postadır. GitHub bağlantısı ve seçilen reponun sahibi/yetkili yöneticisi olma şartları korunur.
 - Kullanıcının son kararı önceki geniş OAuth `repo` izni tercihini geçersiz kılar. Mevcut GitHub OAuth giriş/bağlama akışı `user:email` ile kalır.
 - Repo işlemleri ayrı bir GitHub App kurulumu üzerinden, kullanıcının seçtiği repolarda yürütülür. Kullanıcının tek repo seçebilmesi gerekir; bütün hesabın private repolarına erişim zorunlu tutulmaz.
-- Repo ekleme akışı GitHub App kurulumunu ve repo seçimini başlatır; FIRST yalnız kurulumda erişim verilmiş repoları işlem için sunar. Kurulum callback parametreleri tek başına yetki kanıtı sayılmaz; kullanıcı/kurulum ilişkisi ve repo yönetim yetkisi GitHub API ile doğrulanır.
+- GitHub giriş/bağlama akışı GitHub App kurulumunu ve repo izin seçimini tamamlar; repo ekleme ekranı yalnız kurulumda erişim verilmiş repoları işlem için sunar. Kurulum callback parametreleri tek başına yetki kanıtı sayılmaz; kullanıcı/kurulum ilişkisi ve repo yönetim yetkisi GitHub API ile doğrulanır.
 - Seçilen repolarda mevcut ürün akışlarının gerektirdiği okuma/yazma izinleri tanımlanır. Repo erişimi seçimi ile Contents, Pull requests, Issues ve Administration gibi işlem izinleri ayrı kontrol edilir. Hesap/organizasyon geneli yönetim izinleri bu kararın parçası değildir.
-- GitHub App kaydı, izinlerin endpoint bazında kesinleştirilmesi, kurulum doğrulaması ve token yönetimi henüz uygulanmadı. Mevcut OAuth kimlikleri ve girişleri değiştirilmez.
+- GitHub App kaydı, seçilen repo doğrulaması ve şifreli dönen kullanıcı tokenları uygulanmıştır. Mevcut OAuth kimlikleri ve girişleri korunur.
 
 ## 16. Test sürecinde bağlantı ve hesap sıfırlama — 19 Eylül 2026
 
@@ -152,3 +152,12 @@ kullanan kişi mevcut e-posta kurtarma akışıyla yerel şifre oluşturabilir.
 - FIRST hesabını silmek profil, bağlı sağlayıcı kayıtları, repo erişim bilgileri, paylaşımlar ve oturum kayıtlarını siler. GitHub hesabı veya repoları silinmez. Aynı e-postayla yeni kayıt tekrar denenebilir.
 - Üç işlem de CSRF ve son 10 dakikada yeniden kimlik doğrulaması ister. Yalnız GitHub girişi olan kullanıcı mevcut e-posta kurtarma akışıyla şifre oluşturabilir; test için kimlik doğrulaması atlanmaz.
 - GitHub yetki iptali denenir. Süresi dolmuş/geçersiz anahtar veya sağlayıcı arızası yerel temizliği engellemez; böyle bir durumda arayüz kalan iznin GitHub ayarlarından kaldırılması gerektiğini açıkça belirtir. Bağlantı kaldırma diğer oturumları ve bekleyen bağlantı akışlarını geçersiz kılar, mevcut oturumu korur.
+
+## 17. GitHub girişinde repo izinlerini tamamlama — 19 Eylül 2026
+
+- GitHub ile giriş, yeni kayıt tamamlanması ve mevcut FIRST hesabına GitHub bağlanması aynı repo kurulum akışına devam eder. Kullanıcıya sonradan iki ayrı repo bağlantısı butonu sunulmaz.
+- Teknik olarak giriş OAuth App ve repo GitHub App ayrı kalır. İlk kullanımda kullanıcı GitHub yetkilendirme ve seçili repo kurulum ekranlarına sırayla gider; mevcut geçerli yetkiler varsa adımlar atlanır. GitHub izinleri kullanıcı yerine sessizce onaylanmaz.
+- Repo ekleme ekranında erişime açılmış ve kullanıcının yönetim yetkisi bulunan repolar listelenir. Yeni repo erişime açmak için tek “Repo izinlerini yönet” işlemi bulunur. Eski/eksik bağlantılar tek tamamlama akışına yönlendirilir.
+- Kurulumdan dönüşte hâlâ seçilebilir repo yoksa veya kullanıcı reddederse yönlendirme döngüsü oluşturulmaz; açıklama ve tekrar deneme gösterilir. FIRST oturumu korunur.
+- App yetkilendirmesi ve kendi repo envanterini listeleme için bağlı GitHub kimliği yeterlidir. README önizleme, paylaşım oluşturma ve yayımlama için doğrulanmış e-posta şartı korunur.
+- Giriş/bağlama sonrası dönüş yolu yalnız `/`, `/hesap` veya `/projelerim/yeni` olabilir; dış adres veya GitHub callback query bilgileri yetki kanıtı değildir.

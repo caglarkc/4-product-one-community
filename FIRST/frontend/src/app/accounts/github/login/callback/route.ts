@@ -6,7 +6,7 @@ export async function GET(request: Request) {
   try {
     const body = await response.json();
     if (response.ok) {
-      const routes: Record<string, string> = {authenticated: '/', profile_required: '/kayit/github', linked: '/hesap'};
+      const routes: Record<string, string> = {authenticated: '/github-kurulum?next=%2F', profile_required: '/kayit/github', linked: '/github-kurulum?next=%2Fhesap'};
       destination = routes[body.status] || destination;
     } else if (new URL(request.url).searchParams.get('error') === 'access_denied') {
       destination = '/giris?github_error=cancelled';

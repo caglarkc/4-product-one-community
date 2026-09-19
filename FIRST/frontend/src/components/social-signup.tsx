@@ -30,7 +30,7 @@ export function SocialSignup({provider}: {provider: 'google' | 'github'}) {
       const payload = Object.fromEntries(new FormData(event.currentTarget));
       if(typeof payload.username === 'string') payload.username = payload.username.normalize('NFC');
       if(!pending.email_editable) delete payload.email;
-      try {await api(`${provider}/signup`, payload); router.replace('/'); router.refresh();}
+      try {await api(`${provider}/signup`, payload); router.replace(provider === 'github' ? '/github-kurulum?next=%2F' : '/'); router.refresh();}
       catch(caught) {setError(caught as ApiError);}
       finally {lock.current = false; setBusy(false);}
     }}><fieldset disabled={busy}>

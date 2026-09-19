@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-onboarding",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "github_onboarding_frontend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "GitHub login/link/signup/email authentication enter unified onboarding; selected-repo install and App authorization chained; valid connections skip setup. Cancel/empty/stale return loops and unmount guarded; optional storage safe.152 frontend tests lint/typecheck independently passed.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "One login/link/signup setup flow with cancellation and loop guards; project editor uses authorized repo picker",
+      "status": "passed",
+      "evidence": "GitHub login/link/signup/email authentication enter unified onboarding; selected-repo install and App authorization chained; valid connections skip setup. Cancel/empty/stale return loops and unmount guarded; optional storage safe.152 frontend tests lint/typecheck independently passed."
+    }
+  ],
+  "checks": [
+    {
+      "name": "frontend checks",
+      "status": "passed",
+      "evidence": "GitHub login/link/signup/email authentication enter unified onboarding; selected-repo install and App authorization chained; valid connections skip setup. Cancel/empty/stale return loops and unmount guarded; optional storage safe.152 frontend tests lint/typecheck independently passed."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T19:51:34.788030+00:00"
+}

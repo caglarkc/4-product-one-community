@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-onboarding",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Backend return_to state matches frontend allowlist; cookie-forwarding callback, login/link/signup/email routes and unchanged installation Setup URL bridge verified by source and tests. Project editor no longer has two separate permission controls. Decision/API/setup docs updated.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Contracts and onboarding routes agree across layers",
+      "status": "passed",
+      "evidence": "Backend return_to state matches frontend allowlist; cookie-forwarding callback, login/link/signup/email routes and unchanged installation Setup URL bridge verified by source and tests. Project editor no longer has two separate permission controls. Decision/API/setup docs updated."
+    }
+  ],
+  "checks": [
+    {
+      "name": "integration checks",
+      "status": "passed",
+      "evidence": "Backend return_to state matches frontend allowlist; cookie-forwarding callback, login/link/signup/email routes and unchanged installation Setup URL bridge verified by source and tests. Project editor no longer has two separate permission controls. Decision/API/setup docs updated."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T19:51:35.920031+00:00"
+}

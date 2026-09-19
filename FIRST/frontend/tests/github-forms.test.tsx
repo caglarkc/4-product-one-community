@@ -11,7 +11,7 @@ describe('GitHub registration',()=>{
  const fetcher=vi.fn().mockResolvedValueOnce(Response.json(pending)).mockResolvedValueOnce(Response.json({csrfToken:'csrf'})).mockResolvedValueOnce(Response.json({user:{id:1}}));vi.stubGlobal('fetch',fetcher);render(<GitHubSignup/>);
  expect(await screen.findByLabelText('E-posta')).toHaveValue('member@gmail.com');expect(screen.getByLabelText('E-posta')).toHaveAttribute('readonly');expect(screen.queryByLabelText('Şifre')).not.toBeInTheDocument();expect(screen.getByLabelText('Ad soyad')).toHaveValue('GitHub Üye');
  for(const [label,value] of [['Kullanıcı adı','u\u0308ye'],['Doğum tarihi','2000-01-01'],['Cinsiyet','unspecified']]) fireEvent.change(screen.getByLabelText(label),{target:{value}});
- fireEvent.submit(screen.getByRole('button',{name:'Kaydı tamamla'}).closest('form')!);await waitFor(()=>expect(nav.replace).toHaveBeenCalledWith('/'));
+ fireEvent.submit(screen.getByRole('button',{name:'Kaydı tamamla'}).closest('form')!);await waitFor(()=>expect(nav.replace).toHaveBeenCalledWith('/github-kurulum?next=%2F'));
  expect(JSON.parse(fetcher.mock.calls[2][1].body)).toEqual({full_name:'GitHub Üye',username:'üye',birth_date:'2000-01-01',phone:'',gender:'unspecified'});
  });
  it('offers restart for expired pending signup',async()=>{
@@ -59,4 +59,9 @@ it('offers password setup for GitHub-only sensitive actions, not unsupported pro
  render(<ReauthenticationContext.Provider value={{google:false,password:false}}><AccountForm title="E-posta değiştir" path="email/change" submit="Kaydet"/></ReauthenticationContext.Provider>);
  fireEvent.submit(screen.getByRole('button',{name:'Kaydet'}).closest('form')!);
  expect(await screen.findByRole('link',{name:'e-posta bağlantısıyla bir şifre oluşturun'})).toHaveAttribute('href','/sifremi-unuttum');expect(screen.queryByLabelText('Mevcut şifreniz')).not.toBeInTheDocument();
+});
+it.each([['github', '/github-kurulum?next=%2F'], ['google', '/']])('authenticated %s email proof routes correctly', async (provider, destination) => {
+ const {VerifySocialEmail} = await import('../src/components/social-email');nav.replace.mockClear();
+ vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(Response.json({csrfToken:'csrf'})).mockResolvedValueOnce(Response.json({status:'authenticated'})));
+ render(<VerifySocialEmail provider={provider as 'github'|'google'} token="proof"/>);fireEvent.click(screen.getByRole('button', {name:'Doğrula ve devam et'}));await waitFor(() => expect(nav.replace).toHaveBeenCalledWith(destination));
 });
