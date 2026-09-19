@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-account-reset",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Routes, CSRF proxy method support, confirmation payloads, user-state refresh, reauth errors and cleanup flags match both layers; auth decision and API docs updated. UI confirmation behavior covered by component tests; live check follows release.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Cross-layer contract and decision documentation agree with observed UI",
+      "status": "passed",
+      "evidence": "Routes, CSRF proxy method support, confirmation payloads, user-state refresh, reauth errors and cleanup flags match both layers; auth decision and API docs updated. UI confirmation behavior covered by component tests; live check follows release."
+    }
+  ],
+  "checks": [
+    {
+      "name": "integration checks",
+      "status": "passed",
+      "evidence": "Routes, CSRF proxy method support, confirmation payloads, user-state refresh, reauth errors and cleanup flags match both layers; auth decision and API docs updated. UI confirmation behavior covered by component tests; live check follows release."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T19:29:34.335554+00:00"
+}

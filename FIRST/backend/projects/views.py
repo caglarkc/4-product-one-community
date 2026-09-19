@@ -11,6 +11,7 @@ from rest_framework.exceptions import NotAuthenticated, PermissionDenied, Valida
 from rest_framework.response import Response
 from accounts import security
 from accounts.serializers import StrictSerializer
+from accounts.account_views import locked_user
 from accounts.views import AuthView, RateLimited
 from accounts.proxy import client_ip
 from . import github
@@ -96,7 +97,7 @@ class StatusView(AuthView):
                 connected = type(identity.get('id')) is int and str(identity['id']) == account.uid
             except github.GitHubAccessError:
                 pass
-        return Response({'enabled': github.enabled(), 'connected': connected, 'github_linked': bool(account), 'installation_url': installation_url()})
+        return Response({'enabled': github.enabled(), 'connected': connected, 'github_linked': bool(account), 'credential_stored': bool(account and GitHubCredential.objects.filter(account=account).exists()), 'installation_url': installation_url()})
 
 
 class StartView(AuthView):
@@ -146,8 +147,8 @@ class CallbackView(AuthView):
         with transaction.atomic():
             # Serialize against account recovery/deletion before storing a credential.
             from accounts.models import User
-            user = User.objects.select_for_update().get(pk=request.user.pk)
-            if user.security_version != flow['security_version'] or not SocialAccount.objects.filter(pk=account.pk, user=user, uid=flow['uid']).exists():
+            user = User.objects.select_for_update().filter(pk=request.user.pk).first()
+            if not user or user.security_version != flow['security_version'] or not SocialAccount.objects.filter(pk=account.pk, user=user, uid=flow['uid']).exists():
                 raise PermissionDenied('GitHub bağlantısı değişti.')
             github.save_tokens(account, tokens)
         return Response({'status': 'connected'})
@@ -192,6 +193,9 @@ class CreateView(AuthView):
             raise ValidationError({'readme_excerpt': ['README değişti. Önizlemeyi yenileyin.']})
         try:
             with transaction.atomic():
+                locked_user(request)
+                if not SocialAccount.objects.filter(pk=account.pk, user=request.user).exists():
+                    raise PermissionDenied('GitHub bağlantısı değişti.')
                 project = Project.objects.create(owner=request.user, is_private=repo['private'], **data)
         except IntegrityError:
             raise Conflict() from None
@@ -227,6 +231,7 @@ class DetailView(AuthView):
             _, repo = github.repository(account, project.installation_id, project.repository_id)
         try:
             with transaction.atomic():
+                locked_user(request)
                 project = Project.objects.select_for_update().get(pk=project.pk, owner=request.user)
                 for field, value in data.items():
                     setattr(project, field, value)

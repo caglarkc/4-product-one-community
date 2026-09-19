@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { api, User } from '../lib/api';
+import { AccountReset } from './account-reset';
 import { ConnectedAccounts } from './connected-accounts';
 import { AccountForm, Field, ReauthenticationContext } from './account-form';
 import { ActionLink, Alert, Button, PageHeading } from './ui';
@@ -47,6 +48,7 @@ export function AccountStatus({profile = false}: {profile?: boolean}) {
   const [user, setUser] = useState<User | null | undefined>(undefined);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [sessionRevision, setSessionRevision] = useState(0);
   useEffect(() => {let active = true;
     api<{user: User | null}>('me').then(data => {if (active) setUser(data.user);}).catch(caught => {if (active) setError(caught.message);});
     return () => {active = false;};
@@ -79,7 +81,7 @@ export function AccountStatus({profile = false}: {profile?: boolean}) {
           <p>Başarıyla değiştirildiğinde bütün oturumlar kapanır; yeni şifrenizle giriş yapın.</p>
         </AccountForm>}
         <ConnectedAccounts user={user}/>
-        </div></div><SessionList onSignedOut={signedOut}/>
+        </div></div><AccountReset user={user} onChanged={updated => {setUser(updated); setSessionRevision(value => value + 1); router.refresh();}} onDeleted={result => {setUser(null); router.replace(`/giris?account_deleted=1${result.github_cleanup_required ? '&github_cleanup=1' : ''}`); router.refresh();}}/><SessionList key={sessionRevision} onSignedOut={signedOut}/>
       </>}
       <div className="account-exit"><Button variant="quiet" loading={busy} disabled={busy} onClick={async () => {
         if (lock.current) return;

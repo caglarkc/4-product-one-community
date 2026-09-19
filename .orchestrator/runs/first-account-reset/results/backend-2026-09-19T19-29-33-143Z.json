@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-account-reset",
+  "itemId": "backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "reset_backend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "156 backend tests passed. Confirmed CSRF/recent-auth controls, login fallback guard, best-effort remote grant revocation, local cascade, archived shares, current session preservation and pending-flow rejection. No migration or env change.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Secure confirmed disconnect and account deletion with regression tests",
+      "status": "passed",
+      "evidence": "156 backend tests passed. Confirmed CSRF/recent-auth controls, login fallback guard, best-effort remote grant revocation, local cascade, archived shares, current session preservation and pending-flow rejection. No migration or env change."
+    }
+  ],
+  "checks": [
+    {
+      "name": "backend checks",
+      "status": "passed",
+      "evidence": "156 backend tests passed. Confirmed CSRF/recent-auth controls, login fallback guard, best-effort remote grant revocation, local cascade, archived shares, current session preservation and pending-flow rejection. No migration or env change."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T19:29:33.143613+00:00"
+}

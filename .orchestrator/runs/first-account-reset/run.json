@@ -1,0 +1,368 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-account-reset",
+  "title": "FIRST account reset controls",
+  "goal": "Separate GitHub identity and repository disconnect controls plus confirmed account deletion",
+  "createdAt": "2026-09-19T19:23:06.910Z",
+  "updatedAt": "2026-09-19T19:29:34.673Z",
+  "revision": 17,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "55cbffb1e6fd0a8f7646f330089894266011bff7a876209c24303485c0c03c86",
+    "assumptions": []
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "local-cleanup",
+      "summary": "Always allow local deletion; best-effort remote revoke with explicit cleanup warning if unverified",
+      "reason": "Expired or already-revoked provider credentials must not trap users in an undeletable account",
+      "decidedAt": "2026-09-19T19:26:58.180Z",
+      "actor": "manager"
+    }
+  ],
+  "items": [
+    {
+      "id": "backend",
+      "title": "backend",
+      "kind": "implement",
+      "domains": [
+        "first-account"
+      ],
+      "objective": "Secure confirmed disconnect and account deletion with regression tests",
+      "responsibility": "Secure confirmed disconnect and account deletion with regression tests",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-account-reset/contract.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Secure confirmed disconnect and account deletion with regression tests"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Identity, credential revocation and account deletion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "reset_backend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-19T19-29-33-143Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "frontend",
+      "kind": "implement",
+      "domains": [
+        "first-account"
+      ],
+      "objective": "Separate confirmed controls and reauthentication with user state updates and tests",
+      "responsibility": "Separate confirmed controls and reauthentication with user state updates and tests",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-account-reset/contract.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Separate confirmed controls and reauthentication with user state updates and tests"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Identity, credential revocation and account deletion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "reset_frontend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-19T19-28-43-918Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "first-account"
+      ],
+      "objective": "Independent auth, concurrency and UI review without unresolved material findings",
+      "responsibility": "Independent auth, concurrency and UI review without unresolved material findings",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-account-reset/contract.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent auth, concurrency and UI review without unresolved material findings"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "frontend"
+        ],
+        "reviews": [
+          "backend",
+          "frontend"
+        ],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Identity, credential revocation and account deletion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "reset_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-19T19-29-33-548Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "first-account"
+      ],
+      "objective": "Independent backend/frontend tests lint and typecheck pass",
+      "responsibility": "Independent backend/frontend tests lint and typecheck pass",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-account-reset/contract.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent backend/frontend tests lint and typecheck pass"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend"
+        ],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Identity, credential revocation and account deletion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "reset_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-19T19-29-33-941Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "integration",
+      "kind": "integration",
+      "domains": [
+        "first-account"
+      ],
+      "objective": "Cross-layer contract and decision documentation agree with observed UI",
+      "responsibility": "Cross-layer contract and decision documentation agree with observed UI",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-account-reset/contract.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Cross-layer contract and decision documentation agree with observed UI"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [
+          "backend",
+          "frontend"
+        ],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Identity, credential revocation and account deletion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-19T19-29-34-335Z.json"
+    },
+    {
+      "id": "release",
+      "title": "release",
+      "kind": "delivery",
+      "domains": [
+        "first-account"
+      ],
+      "objective": "Push accepted changes and rebuild remote backend with healthy services",
+      "responsibility": "Push accepted changes and rebuild remote backend with healthy services",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-account-reset/contract.md"
+        }
+      ],
+      "outputs": [
+        "Implementation or verification evidence"
+      ],
+      "acceptanceCriteria": [
+        "Push accepted changes and rebuild remote backend with healthy services"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "integrates": [],
+        "revises": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Identity, credential revocation and account deletion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "active",
+      "attempt": 1,
+      "resultRef": null
+    }
+  ]
+}

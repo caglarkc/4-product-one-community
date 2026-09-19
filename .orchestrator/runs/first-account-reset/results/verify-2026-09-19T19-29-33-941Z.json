@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-account-reset",
+  "itemId": "verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "reset_review",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Independently ran 156 backend tests, 131 frontend tests, lint, typecheck and git diff --check: all passed. Remote grant mocked; SQLite simulates race winners, not PostgreSQL stress. No real account deleted.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Independent backend/frontend tests lint and typecheck pass",
+      "status": "passed",
+      "evidence": "Independently ran 156 backend tests, 131 frontend tests, lint, typecheck and git diff --check: all passed. Remote grant mocked; SQLite simulates race winners, not PostgreSQL stress. No real account deleted."
+    }
+  ],
+  "checks": [
+    {
+      "name": "verify checks",
+      "status": "passed",
+      "evidence": "Independently ran 156 backend tests, 131 frontend tests, lint, typecheck and git diff --check: all passed. Remote grant mocked; SQLite simulates race winners, not PostgreSQL stress. No real account deleted."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T19:29:33.941052+00:00"
+}

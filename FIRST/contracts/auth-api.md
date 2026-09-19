@@ -176,3 +176,15 @@ sağlayıcıdan alınan adrestir; eski kayıtta eksikse FIRST e-postasından tü
 Bu alanlar yalnız görüntüleme içindir; hesap sahipliği/eşleştirme ve doğrulama
 kararlarında kullanılmaz. Ham sağlayıcı yanıtı, erişim token'ı veya başka kullanıcı
 verisi döndürülmez. Hesap sayfası okunurken harici sağlayıcı isteği yapılmaz.
+
+## Confirmed account reset controls
+
+All routes below require authenticated session, CSRF and recent authentication (10 minutes). Existing `reauthentication_required` handling applies; no automatic mutation retry after proof.
+
+| Method/path | Body | Effect |
+| --- | --- | --- |
+| POST `github/disconnect/` | `{"confirmation":"GITHUB"}` | Remove GitHub identity and repository grant; archive shares. Another login method required (`last_login_method`). |
+| POST `projects/github/disconnect/` | `{"confirmation":"REPO"}` | Revoke GitHub App user grant, remove credential, archive shares; keep login identity. |
+| DELETE `account/` | `{"confirmation":"HESABIMI SIL"}` | Revoke stored App grant, delete FIRST user and cascaded data, invalidate sessions and logout. |
+
+Disconnect returns `{detail,user}`; account deletion returns `{detail}`. Repository status includes `credential_stored` independently from current provider connectivity so stale credentials can be cleared. Disconnect preserves the current session and invalidates other sessions and pending provider flows. GitHub App installations, GitHub repositories and the GitHub account are never deleted. Discarded login OAuth tokens cannot be revoked server-side; the UI links to GitHub consent settings for a full external authorization reset. Known provider revocation failure does not block local data removal: responses include `github_cleanup_required: true` and a warning to revoke remaining access in GitHub settings. `github_authorization_revoked` is true for confirmed revocation, false for failure, null when no stored credential existed. Confirmations explain this limitation, and the deletion redirect retains the cleanup warning.
