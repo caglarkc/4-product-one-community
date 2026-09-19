@@ -33,6 +33,7 @@ export function GitHubButton({remember = false, purpose = 'login', disabled = fa
         lock.current = false; setBusy(false); onBusyChange?.(false);
       }
     }}>{busy ? 'GitHub’a yönlendiriliyor…' : purpose === 'link' ? 'GitHub hesabımı bağla' : 'GitHub ile devam et'}</Button>
+    <p className="field-help">İlk bağlantıda, seçtiğiniz repolara erişim iznini de GitHub’da tamamlarsınız.</p>
     {reauth && <>
       <ReauthenticationOptions methods={methods}/>
       {methods.password && <AccountForm title="Kimliğinizi yeniden doğrulayın" path="reauthenticate" fields={[{name: 'password', label: 'Mevcut şifreniz', type: 'password'}]} submit="Kimliğimi doğrula" onSuccess={() => {setReauth(false); setError('');}}/>}

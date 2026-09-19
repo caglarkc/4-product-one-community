@@ -188,3 +188,18 @@ All routes below require authenticated session, CSRF and recent authentication (
 | DELETE `account/` | `{"confirmation":"HESABIMI SIL"}` | Revoke stored App grant, delete FIRST user and cascaded data, invalidate sessions and logout. |
 
 Disconnect returns `{detail,user}`; account deletion returns `{detail}`. Repository status includes `credential_stored` independently from current provider connectivity so stale credentials can be cleared. Disconnect preserves the current session and invalidates other sessions and pending provider flows. GitHub App installations, GitHub repositories and the GitHub account are never deleted. Discarded login OAuth tokens cannot be revoked server-side; the UI links to GitHub consent settings for a full external authorization reset. Known provider revocation failure does not block local data removal: responses include `github_cleanup_required: true` and a warning to revoke remaining access in GitHub settings. `github_authorization_revoked` is true for confirmed revocation, false for failure, null when no stored credential existed. Confirmations explain this limitation, and the deletion redirect retains the cleanup warning.
+
+## GitHub repository onboarding during authentication
+
+Successful GitHub login/link/signup and email-verification authentication enter
+`/github-kurulum`. Existing GitHub OAuth identity and App permission boundaries
+remain separate internally; no broad OAuth `repo` scope is requested.
+
+`POST projects/github/start/` accepts optional `return_to` from `/`, `/hesap`,
+`/projelerim/yeni` (default). It is state-bound and returned by the callback,
+not taken from callback query parameters. Frontend validates destinations again.
+App start/callback and own-repository inventory require authenticated linked
+GitHub identity. Preview/create retain verified-email guards. Existing status
+and repository APIs determine readiness; installation callback query values are
+never trusted as ownership proof. Cancellation, empty installation return and
+provider errors stop automatic redirects and offer explicit recovery.

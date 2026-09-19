@@ -20,15 +20,15 @@ from .models import GitHubCredential, Project
 CATEGORIES = [('software', 'Yazılım'), ('design', 'Tasarım'), ('research', 'Araştırma'), ('documentation', 'Dokümantasyon'), ('other', 'Diğer')]
 
 
-def member(request, eligible=False):
+def member(request, eligible=False, linked=False):
     if not request.user.is_authenticated:
         raise NotAuthenticated()
     account = SocialAccount.objects.filter(user=request.user, provider='github').first()
     if eligible:
         if not request.user.email_verified:
             raise PermissionDenied({'detail': 'Önce e-posta adresinizi doğrulayın.', 'code': 'email_verification_required'})
-        if not account:
-            raise PermissionDenied({'detail': 'Önce GitHub hesabınızı bağlayın.', 'code': 'github_link_required'})
+    if (eligible or linked) and not account:
+        raise PermissionDenied({'detail': 'Önce GitHub hesabınızı bağlayın.', 'code': 'github_link_required'})
     return account
 
 
@@ -44,6 +44,10 @@ def project_data(project, repo=None, visible=True):
         'is_private': private, 'repository_url': repo['html_url'] if repo and not private else None,
         'repository_name': repo['full_name'] if repo and not private else None,
         'is_active': project.is_active, 'created_at': project.created_at.isoformat(), 'updated_at': project.updated_at.isoformat()}
+
+
+class StartInput(StrictSerializer):
+    return_to = serializers.ChoiceField(choices=['/', '/hesap', '/projelerim/yeni'], required=False, default='/projelerim/yeni')
 
 
 class SelectionInput(StrictSerializer):
@@ -102,18 +106,23 @@ class StatusView(AuthView):
 
 class StartView(AuthView):
     def post(self, request):
-        account = member(request, eligible=True)
+        member(request, linked=True)
         github.require_enabled()
-        validate(StrictSerializer, request.data)
+        data = validate(StartInput, request.data)
         if security.count('github-app-start', str(request.user.pk)) > 20:
             raise RateLimited()
         binder = secrets.token_urlsafe(32)
         request.session['github_app_binder'] = binder
         verifier = secrets.token_urlsafe(48)
-        flow = {'binder': binder, 'verifier': verifier, 'user_id': request.user.pk,
-            'uid': account.uid, 'account_id': account.pk, 'security_version': request.user.security_version,
-            'session_hash': security.digest(request.session.session_key)}
-        state = security.issue_token('github-app-state', flow, 600)
+        with transaction.atomic():
+            user = locked_user(request)
+            account = SocialAccount.objects.filter(user=user, provider='github').first()
+            if not account:
+                raise PermissionDenied('GitHub bağlantısı değişti.')
+            flow = {'binder': binder, 'verifier': verifier, 'user_id': user.pk,
+                'uid': account.uid, 'account_id': account.pk, 'security_version': user.security_version,
+                'session_hash': security.digest(request.session.session_key), 'return_to': data['return_to']}
+            state = security.issue_token('github-app-state', flow, 600)
         challenge = base64.urlsafe_b64encode(hashlib.sha256(verifier.encode()).digest()).rstrip(b'=').decode()
         return Response({'authorization_url': 'https://github.com/login/oauth/authorize?' + urlencode({
             'client_id': settings.GITHUB_APP_CLIENT_ID, 'redirect_uri': settings.GITHUB_APP_REDIRECT_URI,
@@ -122,7 +131,7 @@ class StartView(AuthView):
 
 class CallbackView(AuthView):
     def get(self, request):
-        account = member(request, eligible=True)
+        account = member(request, linked=True)
         github.require_enabled()
         state = request.query_params.get('state', '')
         if not state or len(state) > 128 or len(request.query_params.getlist('state')) != 1:
@@ -151,12 +160,12 @@ class CallbackView(AuthView):
             if not user or user.security_version != flow['security_version'] or not SocialAccount.objects.filter(pk=account.pk, user=user, uid=flow['uid']).exists():
                 raise PermissionDenied('GitHub bağlantısı değişti.')
             github.save_tokens(account, tokens)
-        return Response({'status': 'connected'})
+        return Response({'status': 'connected', 'return_to': flow.get('return_to', '/projelerim/yeni')})
 
 
 class RepositoriesView(AuthView):
     def get(self, request):
-        account = member(request, eligible=True)
+        account = member(request, linked=True)
         _, repos = github.authorized_repositories(account)
         return Response({'repositories': repos})
 

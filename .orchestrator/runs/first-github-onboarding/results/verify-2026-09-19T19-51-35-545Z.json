@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-onboarding",
+  "itemId": "verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "github_onboarding_review",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "159 backend tests and152 frontend tests passed; lint/typecheck and git diff --check clean. Real provider consent not exercised. Logs /tmp/first-onboarding-review-backend.log and frontend/lint/types logs.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Independent backend/frontend tests lint typecheck pass",
+      "status": "passed",
+      "evidence": "159 backend tests and152 frontend tests passed; lint/typecheck and git diff --check clean. Real provider consent not exercised. Logs /tmp/first-onboarding-review-backend.log and frontend/lint/types logs."
+    }
+  ],
+  "checks": [
+    {
+      "name": "verify checks",
+      "status": "passed",
+      "evidence": "159 backend tests and152 frontend tests passed; lint/typecheck and git diff --check clean. Real provider consent not exercised. Logs /tmp/first-onboarding-review-backend.log and frontend/lint/types logs."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T19:51:35.545212+00:00"
+}

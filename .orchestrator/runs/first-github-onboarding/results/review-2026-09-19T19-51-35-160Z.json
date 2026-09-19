@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-onboarding",
+  "itemId": "review",
+  "agent": {
+    "platform": "codex",
+    "identity": "github_onboarding_review",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "No unresolved material findings. Fixed allowlisted callback destinations, verified inventory ownership, first-use setup, cancellation loops, unmount guards and stale manage context. Google and reset controls unchanged.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Independent security and flow review without material findings",
+      "status": "passed",
+      "evidence": "No unresolved material findings. Fixed allowlisted callback destinations, verified inventory ownership, first-use setup, cancellation loops, unmount guards and stale manage context. Google and reset controls unchanged."
+    }
+  ],
+  "checks": [
+    {
+      "name": "review checks",
+      "status": "passed",
+      "evidence": "No unresolved material findings. Fixed allowlisted callback destinations, verified inventory ownership, first-use setup, cancellation loops, unmount guards and stale manage context. Google and reset controls unchanged."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T19:51:35.160305+00:00"
+}

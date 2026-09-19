@@ -98,6 +98,47 @@ class ProjectTests(TestCase):
         session=self.client.session; session['github_app_binder']='wrong'; session.save()
         self.assertEqual(self.client.get('/api/auth/projects/github/callback/',query).status_code,403); token.assert_not_called()
 
+
+    @patch('projects.github.authorized_repositories', return_value=('token', [REPO]))
+    @patch('projects.github.api', return_value={'id':77})
+    @patch('projects.github.token_request', return_value=TOKENS)
+    def test_unverified_email_can_complete_repo_setup_but_not_publish(self, token, api, repos):
+        self.user.email_verified = False
+        self.user.save()
+        params = self.start()
+        response = self.client.get('/api/auth/projects/github/callback/', {'state':params['state'][0], 'code':'code'})
+        self.assertEqual(response.status_code, 200, response.content)
+        self.assertEqual(response.json()['return_to'], '/projelerim/yeni')
+        self.assertEqual(self.client.get('/api/auth/projects/github/repositories/').json()['repositories'], [REPO])
+        self.assertEqual(self.create().status_code, 403)
+        self.assertEqual(self.post('projects/github/preview', {'installation_id':11, 'repository_id':99}).status_code, 403)
+
+    @patch('projects.github.api', return_value={'id':77})
+    @patch('projects.github.token_request', return_value=TOKENS)
+    def test_onboarding_return_target_is_allowlisted_and_state_bound(self, token, api):
+        for target in ['https://evil.test/', '//evil.test', '/hesap?next=evil', '/github-kurulum']:
+            self.assertEqual(self.post('projects/github/start', {'return_to':target}).status_code, 400)
+        for target in ['/', '/hesap', '/projelerim/yeni']:
+            response = self.post('projects/github/start', {'return_to':target})
+            self.assertEqual(response.status_code, 200)
+            params = parse_qs(urlparse(response.json()['authorization_url']).query)
+            response = self.client.get('/api/auth/projects/github/callback/', {
+                'state':params['state'][0], 'code':'code', 'return_to':'https://evil.test/',
+                'installation_id':'999', 'setup_action':'install'})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json()['return_to'], target)
+
+    @patch('projects.github.authorized_repositories')
+    def test_setup_still_requires_linked_identity_session_and_csrf(self, repos):
+        self.assertEqual(self.client.post('/api/auth/projects/github/start/', {}, content_type='application/json').status_code, 403)
+        self.account.delete()
+        self.assertEqual(self.post('projects/github/start').status_code, 403)
+        self.assertEqual(self.client.get('/api/auth/projects/github/repositories/').status_code, 403)
+        self.post('logout')
+        self.assertEqual(self.post('projects/github/start').status_code, 401)
+        self.assertEqual(self.client.get('/api/auth/projects/github/repositories/').status_code, 401)
+        repos.assert_not_called()
+
 @override_settings(**CONFIG)
 class GitHubServiceTests(TestCase):
     def setUp(self):
