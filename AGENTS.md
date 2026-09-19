@@ -34,6 +34,10 @@ Yönetici yetkisi kullanıcının verdiği görev kapsamındadır; geçmiş proj
 
 FIRST için Python/Django/DRF backend ve TypeScript/React/Next.js frontend seçildi; yayın Hetzner/Docker ve Vercel olacak. Kesin kararlar `FIRST/teknik-kararlar.md` ve `FIRST/auth-kararlari.md` içindedir; henüz uygulama kodu yoktur. Immense'in Flutter/Node/admin varsayımları burada geçerli değildir. Uygulama kodu geldiğinde gerçek manifest ve kaynakları temel al.
 
+## Kontrol tercihi
+
+Varsayılan olarak yalnız kaynak kodu/diff incele. Kullanıcı açıkça istemedikçe test yazma/çalıştırma, lint/typecheck veya browser/computer use doğrulaması yapma; alt agentlara da aynı sınırı aktar. Ayrıntı: `.agent/rules.md` → Kontrol tercihi.
+
 ## Teslim
 
 `.agent/skills/meta/code-implementation-mode/SKILL.md` içindeki beş başlık: yapılan iş, değişen dosyalar, aktif davranışlar, beklenen eklemeler, manuel kontrol. Çalıştırılan kontrolleri ve doğrulanamayan noktaları belirt.

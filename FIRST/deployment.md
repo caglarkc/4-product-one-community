@@ -6,14 +6,12 @@ Backend: Hetzner Docker Compose project `first`, deployed below `/opt/first/back
 
 ## Routine deployment
 
-Permanent user instruction: backend changes are delivered through commit/push, remote root SSH pull, Docker rebuild and health checks unless the user explicitly makes an exception. Frontend changes require push only; Vercel automatically builds/deploys. Do not run an extra local production build or manual Vercel deployment. Tests, lint and typecheck remain required as appropriate. Documentation-only changes do not require a backend rebuild.
+Permanent user instruction: backend changes are delivered through commit/push, remote root SSH pull, Docker rebuild and health checks unless the user explicitly makes an exception. Frontend changes require push only; Vercel automatically builds/deploys. Do not run an extra local production build or manual Vercel deployment. Default review is source/diff inspection only. Tests, lint/typecheck, smoke/E2E and browser/computer-use verification require an explicit user request; do not initiate them routinely. Existing deployment-script build/migration/health steps remain part of delivery. Documentation-only changes do not require a backend rebuild.
 
 After accepted changes are committed and pushed to `origin/main`, from the repository root:
 
 ```sh
-./send-machine --dry-run
 ./send-machine
-./send-machine --check
 ```
 
 Python 3, SSH key access and the verified host entry in known_hosts are required. Root `.env` supplies `hetzner_sunucu_ip`, `FIRST_AUTH_PROXY_SECRET` and optional `FIRST_SSH_USER` (default root). The proxy secret must match frontend `.env.production`. SMTP overrides are optional; existing remote settings are preserved. The initial deployment copied only SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD and EMAIL_FROM from the remote Immense configuration, mapping EMAIL_FROM to SMTP_FROM with STARTTLS on port 587. No Immense file was modified.
