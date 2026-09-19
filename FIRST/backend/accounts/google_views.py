@@ -162,6 +162,12 @@ class GoogleCallbackView(AuthView):
         profile = identity_profile(exchange(code, flow))
         try:
             with transaction.atomic():
+                if flow.get('user_id') is not None:
+                    if not request.user.is_authenticated or request.user.pk != flow['user_id']:
+                        raise GoogleError()
+                    flow_user = locked_user(request)
+                    if flow_user.security_version != flow.get('security_version'):
+                        raise GoogleError()
                 identity = SocialAccount.objects.select_related('user').filter(provider='google', uid=profile['sub']).first()
                 if flow['purpose'] == 'reauth':
                     if (not request.user.is_authenticated or request.user.pk != flow['user_id']
@@ -177,7 +183,10 @@ class GoogleCallbackView(AuthView):
                     request.session['reauthenticated_at'] = time.time()
                     return Response({'status': 'reauthenticated', 'user': user_data(user)})
                 if identity:
-                    user = User.objects.select_for_update().get(pk=identity.user_id)
+                    try:
+                        user = User.objects.select_for_update().get(pk=identity.user_id)
+                    except User.DoesNotExist:
+                        raise GoogleError() from None
                     # Recovery may remove this identity while we wait for the user lock.
                     if not SocialAccount.objects.filter(pk=identity.pk, provider='google',
                                                         uid=profile['sub'], user=user).exists():

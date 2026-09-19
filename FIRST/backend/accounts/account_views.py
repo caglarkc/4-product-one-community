@@ -41,8 +41,8 @@ def recent(request):
 
 
 def locked_user(request, sensitive=False):
-    user = User.objects.select_for_update().get(pk=request.user.pk)
-    if (not user.is_active or user.security_version != request.user.security_version
+    user = User.objects.select_for_update().filter(pk=request.user.pk).first()
+    if (not user or not user.is_active or user.security_version != request.user.security_version
             or not SessionRecord.objects.filter(user=user, key_hash=security.digest(request.session.session_key),
                 revoked=False, expires_at__gt=timezone.now(), security_version=user.security_version).exists()):
         raise NotAuthenticated('Oturum sona erdi. Yeniden giriş yapın.')

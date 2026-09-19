@@ -39,3 +39,10 @@ urlpatterns += [
 ]
 
 urlpatterns += [path('projects/', include('projects.urls'))]
+
+from . import reset_views as reset
+urlpatterns += [
+    path('github/disconnect/', reset.GitHubDisconnectView.as_view()),
+    path('projects/github/disconnect/', reset.RepositoryDisconnectView.as_view()),
+    path('account/', reset.AccountDeleteView.as_view()),
+]

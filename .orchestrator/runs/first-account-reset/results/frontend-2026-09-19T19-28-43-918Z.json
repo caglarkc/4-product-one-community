@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-account-reset",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "reset_frontend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Three separately confirmed controls with shared UI, typed account deletion, reauthentication, persistent cleanup warning and deletion redirect. 131 frontend tests, lint and typecheck passed; no production build.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Separate confirmed controls and reauthentication with user state updates and tests",
+      "status": "passed",
+      "evidence": "Three separately confirmed controls with shared UI, typed account deletion, reauthentication, persistent cleanup warning and deletion redirect. 131 frontend tests, lint and typecheck passed; no production build."
+    }
+  ],
+  "checks": [
+    {
+      "name": "frontend checks",
+      "status": "passed",
+      "evidence": "Three separately confirmed controls with shared UI, typed account deletion, reauthentication, persistent cleanup warning and deletion redirect. 131 frontend tests, lint and typecheck passed; no production build."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T19:28:43.918263+00:00"
+}

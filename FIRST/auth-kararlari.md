@@ -57,7 +57,7 @@ Telefon doğrulaması normal kullanıcının başvuru yapması için şart deği
 - Sonraki sosyal girişlerde sağlayıcının değişmeyen kullanıcı ID'si esas alınır.
 - Bir Google/GitHub hesabı yalnızca bir FIRST hesabına bağlı olabilir; başka hesaba bağlı kimlik sessizce taşınmaz.
 - Önceden doğrulanmamış FIRST hesabına otomatik eşleştirme yapılınca eski oturumlar kapatılır; önceki yerel şifre yenilenmeden kullanılamaz.
-- Kullanıcı Google/GitHub bağlantısını kaldıramaz; bağlantı kaldırma ekranı ve endpoint'i olmayacaktır.
+- 19 Eylül 2026 test süreci kararı: Hesabım ekranından GitHub hesap bağlantısı ve GitHub repo erişimi ayrı işlemlerle kaldırılabilir. Bu karar önceki GitHub bağlantısını kaldıramama kararını geçersiz kılar. Google bağlantısını ayrı kaldırma bu kapsamda değildir.
 - GitHub ile giriş ve repo üzerinde işlem yapma izinlerinin kapsamı ayrı tasarlanacak; girişin tek başına tüm repolarda yetki verdiği varsayılmaz.
 
 ## 7. GitHub'dan alınabilecek bilgiler — araştırma notu
@@ -96,7 +96,7 @@ Hesap e-postası doğrulaması, telefon doğrulaması ve aktif öğrenci doğrul
 
 - Normal oturum 24 saat; “Beni hatırla” ile 30 gündür.
 - Kullanıcı açık oturumlarını görebilir, tek tek veya topluca kapatabilir.
-- E-posta ve şifre değişikliği gibi hassas işlemler için son 10 dakika içinde şifre veya sosyal sağlayıcıyla yeniden doğrulama gerekir. Sağlayıcı bağlantısı kaldırma kapsamda değildir.
+- E-posta ve şifre değişikliği gibi hassas işlemler için son 10 dakika içinde şifre veya sosyal sağlayıcıyla yeniden doğrulama gerekir. GitHub bağlantısı/repo erişimi kaldırma ve FIRST hesabını silme de bu koşula tabidir.
 - Hesap başına 15 dakikada 5 başarısız şifre denemesinden sonra geçici bekleme uygulanır; ayrıca IP bazlı hız sınırı bulunur. Kalıcı hesap kilidi yoktur; eşikler ayarlanabilir olacaktır.
 - IP eşiği ve geçici beklemenin süresi teknik uygulamada netleştirilecektir.
 
@@ -142,3 +142,13 @@ kullanan kişi mevcut e-posta kurtarma akışıyla yerel şifre oluşturabilir.
 - Repo ekleme akışı GitHub App kurulumunu ve repo seçimini başlatır; FIRST yalnız kurulumda erişim verilmiş repoları işlem için sunar. Kurulum callback parametreleri tek başına yetki kanıtı sayılmaz; kullanıcı/kurulum ilişkisi ve repo yönetim yetkisi GitHub API ile doğrulanır.
 - Seçilen repolarda mevcut ürün akışlarının gerektirdiği okuma/yazma izinleri tanımlanır. Repo erişimi seçimi ile Contents, Pull requests, Issues ve Administration gibi işlem izinleri ayrı kontrol edilir. Hesap/organizasyon geneli yönetim izinleri bu kararın parçası değildir.
 - GitHub App kaydı, izinlerin endpoint bazında kesinleştirilmesi, kurulum doğrulaması ve token yönetimi henüz uygulanmadı. Mevcut OAuth kimlikleri ve girişleri değiştirilmez.
+
+## 16. Test sürecinde bağlantı ve hesap sıfırlama — 19 Eylül 2026
+
+- Hesabım ekranında GitHub hesap bağlantısını kaldırma, repo erişimini kaldırma ve FIRST hesabını kalıcı silme ayrı onaylı işlemlerdir. Hesap silme için `HESABIMI SIL` yazılır.
+- Repo erişimi kaldırıldığında GitHub App kullanıcı yetkilendirmesi iptal edilir, FIRST'teki şifreli erişim/yenileme bilgileri silinir ve paylaşımlar arşivlenir; GitHub ile giriş korunur. GitHub App kurulumu ayrı kalır; GitHub'daki kurulum ayarlarından yönetilir.
+- GitHub hesap bağlantısı kaldırıldığında repo erişimi de temizlenir ve paylaşımlar arşivlenir. Kullanıcının başka giriş yöntemi (yerel şifre veya başka bağlı sağlayıcı) olmalıdır.
+- Giriş OAuth uygulamasının anahtarı kalıcı tutulmadığından FIRST bağlantısını kaldırmak GitHub tarafındaki bu ayrı OAuth onayını iptal etmez. Baştan onay testi için GitHub Authorized OAuth Apps ayarından kaldırılır; arayüz bu ayrımı belirtir.
+- FIRST hesabını silmek profil, bağlı sağlayıcı kayıtları, repo erişim bilgileri, paylaşımlar ve oturum kayıtlarını siler. GitHub hesabı veya repoları silinmez. Aynı e-postayla yeni kayıt tekrar denenebilir.
+- Üç işlem de CSRF ve son 10 dakikada yeniden kimlik doğrulaması ister. Yalnız GitHub girişi olan kullanıcı mevcut e-posta kurtarma akışıyla şifre oluşturabilir; test için kimlik doğrulaması atlanmaz.
+- GitHub yetki iptali denenir. Süresi dolmuş/geçersiz anahtar veya sağlayıcı arızası yerel temizliği engellemez; böyle bir durumda arayüz kalan iznin GitHub ayarlarından kaldırılması gerektiğini açıkça belirtir. Bağlantı kaldırma diğer oturumları ve bekleyen bağlantı akışlarını geçersiz kılar, mevcut oturumu korur.

@@ -85,6 +85,27 @@ def access_token(account):
         return tokens['access_token']
 
 
+def revoke_authorization(account):
+    """Revoke this user's App grant, never a shared repository installation."""
+    token = access_token(account)
+    response = None
+    try:
+        response = requests.delete(
+            'https://api.github.com/applications/' + quote(settings.GITHUB_APP_CLIENT_ID, safe='') + '/grant',
+            auth=(settings.GITHUB_APP_CLIENT_ID, settings.GITHUB_APP_CLIENT_SECRET),
+            json={'access_token': token}, headers={'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28'}, timeout=10, allow_redirects=False, stream=True)
+        if response.status_code != 204:
+            raise GitHubAccessError({'detail': 'GitHub repo izni kaldırılamadı. Bağlantıyı yenileyip tekrar deneyin.',
+                                     'code': 'github_revocation_failed'})
+    except requests.RequestException:
+        raise GitHubAccessError({'detail': 'GitHub şu anda yanıt vermiyor. Uzak izin kaldırma işlemi doğrulanamadı.',
+                                 'code': 'github_revocation_failed'}) from None
+    finally:
+        if response is not None:
+            response.close()
+
+
 _budget = ContextVar('github_request_budget', default=None)
 
 
