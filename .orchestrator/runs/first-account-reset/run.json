@@ -4,8 +4,8 @@
   "title": "FIRST account reset controls",
   "goal": "Separate GitHub identity and repository disconnect controls plus confirmed account deletion",
   "createdAt": "2026-09-19T19:23:06.910Z",
-  "updatedAt": "2026-09-19T19:29:34.673Z",
-  "revision": 17,
+  "updatedAt": "2026-09-19T19:32:22.010Z",
+  "revision": 18,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -360,9 +360,9 @@
         ],
         "owner": "manager"
       },
-      "status": "active",
+      "status": "done",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/release-2026-09-19T19-32-21-770Z.json"
     }
   ]
 }

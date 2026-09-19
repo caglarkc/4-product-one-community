@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-account-reset",
+  "itemId": "release",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Commit dc7b79b3c5dd208508855c158b1315a2fb136f6f pushed to origin/main (remote SHA verified). send-machine pulled exact SHA and deployed release20260919T193026-dc7b79b3c5dd; backend/PostgreSQL/Redis healthy and health200. Vercel status success. Live authenticated /hesap shows all three controls; opened/cancelled each confirmation and observed typed-delete disabled until entry. No real destructive mutation executed.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Push accepted changes and rebuild remote backend with healthy services",
+      "status": "passed",
+      "evidence": "Commit dc7b79b3c5dd208508855c158b1315a2fb136f6f pushed to origin/main (remote SHA verified). send-machine pulled exact SHA and deployed release20260919T193026-dc7b79b3c5dd; backend/PostgreSQL/Redis healthy and health200. Vercel status success. Live authenticated /hesap shows all three controls; opened/cancelled each confirmation and observed typed-delete disabled until entry. No real destructive mutation executed."
+    }
+  ],
+  "checks": [
+    {
+      "name": "release checks",
+      "status": "passed",
+      "evidence": "Commit dc7b79b3c5dd208508855c158b1315a2fb136f6f pushed to origin/main (remote SHA verified). send-machine pulled exact SHA and deployed release20260919T193026-dc7b79b3c5dd; backend/PostgreSQL/Redis healthy and health200. Vercel status success. Live authenticated /hesap shows all three controls; opened/cancelled each confirmation and observed typed-delete disabled until entry. No real destructive mutation executed."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-19T19:32:21.770741+00:00"
+}
