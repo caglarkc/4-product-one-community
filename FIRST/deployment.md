@@ -242,3 +242,24 @@ Desktop width had no horizontal overflow. Mobile viewport was not verified.
 Independent checks: 123 backend tests, 106 frontend tests, lint/typecheck; the
 deployment configuration allowlist was separately tested after a safely rolled
 back first attempt. The local frontend stays bound to 127.0.0.1 only.
+
+### Account reset controls — 19 September 2026
+
+Commit `dc7b79b3c5dd208508855c158b1315a2fb136f6f` was pushed, pulled with
+`git pull --ff-only` and deployed as `20260919T193026-dc7b79b3c5dd`.
+Backend, PostgreSQL and Redis are healthy; health endpoint returns 200. Vercel
+automatic deployment reports success. No extra frontend production build ran.
+
+Independent verification: 156 backend tests, 131 frontend tests, lint/typecheck
+and diff whitespace checks pass; no schema migration needed. Live authenticated
+`/hesap` shows separate GitHub identity/repository reset and FIRST deletion
+controls. Each confirmation opened and cancelled correctly; deletion stays
+disabled until typed confirmation. Real account/permissions were not deleted.
+Provider revoke was mocked in isolated tests; race-winner tests use SQLite and
+are not PostgreSQL concurrency stress tests. Existing email-send cooldown can
+briefly return 429 during repeated immediate delete/re-register testing.
+
+Remote GitHub grant revocation is best effort; local cleanup remains available
+for expired credentials/provider outages, with explicit remaining-permission
+warning. GitHub App installations and login OAuth approval remain separately
+managed at GitHub, and GitHub accounts/repositories are never deleted.
