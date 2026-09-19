@@ -263,3 +263,17 @@ Remote GitHub grant revocation is best effort; local cleanup remains available
 for expired credentials/provider outages, with explicit remaining-permission
 warning. GitHub App installations and login OAuth approval remain separately
 managed at GitHub, and GitHub accounts/repositories are never deleted.
+
+### GitHub sign-in with repository setup — 19 September 2026
+
+Commit `19f8eaa1fa83f067290931a1461c0542c91148f4` was pushed and pulled, then
+Docker release `20260919T195209-19f8eaa1fa83` passed backend/PostgreSQL/Redis
+health checks. Vercel automatic deployment succeeded. Independent verification
+passed 159 backend tests and 152 frontend tests, lint/typecheck and diff checks.
+
+Live GitHub sign-in with the existing identity automatically reached the App
+authorization page. Cancel retained the FIRST session and showed explicit retry;
+project creation now shows a single setup completion link for this older account.
+No new provider consent or repository installation was granted during verification.
+Authorized repository selection and skip-setup branches are covered by isolated
+tests; a real selected-repository installation remains user-controlled.
