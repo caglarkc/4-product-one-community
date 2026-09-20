@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-community-redesign",
+  "itemId": "backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/backend_audit",
+    "sessionRef": "/root/backend_audit"
+  },
+  "outcome": "pass",
+  "summary": "Public paginated feed implemented",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Source inspected: explicit public summary allowlist, active owner/share filter, deterministic 12-item pagination, separate rate limit, no GitHub calls or model changes; existing POST/detail unchanged."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Anonymous paginated feed lists all active project shares without GitHub calls or private repository/account data.",
+      "status": "passed",
+      "evidence": "Source inspected: explicit public summary allowlist, active owner/share filter, deterministic 12-item pagination, separate rate limit, no GitHub calls or model changes; existing POST/detail unchanged."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Source inspected: explicit public summary allowlist, active owner/share filter, deterministic 12-item pagination, separate rate limit, no GitHub calls or model changes; existing POST/detail unchanged."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "No schema change; standard deployment required."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T13:53:19.273362+00:00"
+}

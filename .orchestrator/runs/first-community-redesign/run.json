@@ -1,0 +1,318 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-community-redesign",
+  "title": "FIRST topluluk keşfi ve geliştirici tasarımı",
+  "goal": "Herkesin aktif projelerini ana sayfada göster ve FIRST tasarımını geliştirici ekosistemine uygun yeniden kur",
+  "createdAt": "2026-09-20T13:51:16.583Z",
+  "updatedAt": "2026-09-20T13:59:11.195Z",
+  "revision": 15,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/rules.md",
+      "FIRST/README.md",
+      "FIRST/tasarim-dili.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "b5c8b211c9e9b6bae6cc6817de0c8d6c15d5dacdce239557d40841b269306178",
+    "assumptions": [
+      "User explicitly replaces prior warm palette with a GitHub-inspired developer design.",
+      "Source inspection only; standard deployment health checks permitted.",
+      "Public feed includes consented project text and classification only, no repository data or personal information."
+    ]
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "developer-theme",
+      "summary": "User-requested full redesign replaces previous warm palette with a GitHub-inspired dark developer workspace.",
+      "reason": "Latest user asks complete visual revision plus everyone’s projects on home; shared tokens and all workflow behavior retained.",
+      "decidedAt": "2026-09-20T13:53:46.916Z",
+      "actor": "manager"
+    }
+  ],
+  "items": [
+    {
+      "id": "backend",
+      "title": "backend",
+      "kind": "implement",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Anonymous paginated feed lists all active project shares without GitHub calls or private repository/account data.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Anonymous paginated feed lists all active project shares without GitHub calls or private repository/account data."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/projects/views.py",
+          "FIRST/backend/projects/urls.py"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-20T13-53-19-273Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "frontend",
+      "kind": "implement",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Home consumes real public project feed; GitHub-inspired shared design covers all existing workflows, responsive states and accessible controls.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "frontend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Home consumes real public project feed; GitHub-inspired shared design covers all existing workflows, responsive states and accessible controls."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/src"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-20T13-57-31-698Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Independent source review accepts feed privacy/pagination and complete frontend redesign.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "review artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Independent source review accepts feed privacy/pagination and complete frontend redesign."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "frontend"
+        ],
+        "reviews": [
+          "backend",
+          "frontend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-20T13-57-32-074Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Manager verifies final source against feed and redesign acceptance.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "verify artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Manager verifies final source against feed and redesign acceptance."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-20T13-57-48-627Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "integration",
+      "kind": "integration",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Accepted backend/frontend deployed and push hashes and deployment results recorded.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "integration artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Accepted backend/frontend deployed and push hashes and deployment results recorded."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "backend",
+          "frontend"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-20T13-59-11-066Z.json"
+    }
+  ]
+}

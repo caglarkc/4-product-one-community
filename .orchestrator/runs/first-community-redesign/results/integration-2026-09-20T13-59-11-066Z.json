@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-community-redesign",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Community API and developer redesign deployed successfully",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Application 10d35d0 pushed to origin/main; remote hash matched. Release 20260920T135812-10d35d06f01d healthy; no pending migrations, Django and PostgreSQL/Redis checks passed. Vercel success. See delivery.md."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Accepted backend/frontend deployed and push hashes and deployment results recorded.",
+      "status": "passed",
+      "evidence": "Application 10d35d0 pushed to origin/main; remote hash matched. Release 20260920T135812-10d35d06f01d healthy; no pending migrations, Django and PostgreSQL/Redis checks passed. Vercel success. See delivery.md."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Application 10d35d0 pushed to origin/main; remote hash matched. Release 20260920T135812-10d35d06f01d healthy; no pending migrations, Django and PostgreSQL/Redis checks passed. Vercel success. See delivery.md."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "No schema change; standard deployment required."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T13:59:11.066161+00:00"
+}
