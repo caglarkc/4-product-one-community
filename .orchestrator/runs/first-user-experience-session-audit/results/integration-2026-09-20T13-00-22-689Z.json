@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-user-experience-session-audit",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Frontend accepted and pushed; read-only backend audit delivered with two open findings.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Frontend eca755bb219abc2edab54ae8c5c816a5948398f2 pushed to verified private origin/main and remote hash matched. Vercel automatic deployment pending. delivery.md and backend-audit.md document scope, source verification and limitations."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Frontend ve backend denetimi birlikte raporlanır; kabul edilen değişiklikler commit/push ile teslim edilir.",
+      "status": "passed",
+      "evidence": "Frontend eca755bb219abc2edab54ae8c5c816a5948398f2 pushed to verified private origin/main and remote hash matched. Vercel automatic deployment pending. delivery.md and backend-audit.md document scope, source verification and limitations."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Frontend eca755bb219abc2edab54ae8c5c816a5948398f2 pushed to verified private origin/main and remote hash matched. Vercel automatic deployment pending. delivery.md and backend-audit.md document scope, source verification and limitations."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Backend audit findings remain open; audit scope is read-only."
+  ],
+  "followUps": [
+    "Resolve separately documented backend P1/P2."
+  ],
+  "completedAt": "2026-09-20T13:00:22.689881+00:00"
+}

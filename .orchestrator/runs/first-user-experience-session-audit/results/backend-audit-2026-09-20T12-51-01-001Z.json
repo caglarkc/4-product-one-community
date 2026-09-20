@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-user-experience-session-audit",
+  "itemId": "backend-audit",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/backend_audit",
+    "sessionRef": "/root/backend_audit"
+  },
+  "outcome": "pass",
+  "summary": "Read-only audit complete; one P1 and one P2 confirmed independently. This is audit completion, not a backend security pass.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Manager persisted audit at backend-audit.md in run directory. Auditor performed no writes."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "FIRST oturumu ile sağlayıcı tokenları ayrılır; süre, iptal, CSRF ve yetki kodu incelenir.",
+      "status": "passed",
+      "evidence": "backend-audit.md: FIRST Redis session, provider refresh, expiry/revocation, permissions and findings documented from source."
+    },
+    {
+      "criterion": "Somut bulgular dosya/satır kanıtıyla ve çalışma zamanı sınırıyla raporlanır.",
+      "status": "passed",
+      "evidence": "backend-audit.md: FIRST Redis session, provider refresh, expiry/revocation, permissions and findings documented from source."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Auditor source review and independent reviewer corroboration."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "Repository control preference; no tests/browser/build."
+    }
+  ],
+  "risks": [
+    "P1 Google normal login incorrectly establishes recent identity proof.",
+    "P2 in-flight GitHub callback may persist credentials after session revocation."
+  ],
+  "followUps": [
+    "Fix separately reported backend findings."
+  ],
+  "completedAt": "2026-09-20T12:51:01.001607+00:00"
+}

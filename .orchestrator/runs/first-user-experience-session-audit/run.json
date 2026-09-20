@@ -1,0 +1,462 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-user-experience-session-audit",
+  "title": "FIRST kullanıcı arayüzü ve oturum denetimi",
+  "goal": "Oturuma uygun üretim arayüzünü uygula ve backend kimlik/oturum güvenliğini kaynak üzerinden denetle",
+  "createdAt": "2026-09-20T12:46:38.069Z",
+  "updatedAt": "2026-09-20T13:00:51.444Z",
+  "revision": 23,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/rules.md",
+      "FIRST/README.md",
+      "FIRST/kararlar.md",
+      "FIRST/tasarim-dili.md",
+      "FIRST/auth-kararlari.md",
+      "FIRST/teknik-kararlar.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "903c38dc2d82f291457864ff2b7abf2b166031b37e26f5a33df27e7bcbe9e17e",
+    "assumptions": [
+      "Map snapshot is stale; actual source files are authoritative.",
+      "FIRST scope only. Source inspection only; no tests, lint, typecheck or browser."
+    ]
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "session-aware-design",
+      "summary": "FIRST mevcut ekranları ortak oturum durumuna göre kullanıcıya hazır düzenlenir; tasarım design-brief.md içinde.",
+      "reason": "Kullanıcı önce sayfa kurgusu sonra subagent uygulaması istedi. Haritalar stale olduğu için kaynak dosyalar esas alındı.",
+      "decidedAt": "2026-09-20T12:49:55.971Z",
+      "actor": "manager"
+    },
+    {
+      "id": "backend-audit-only",
+      "summary": "Backend salt okunur denetim; FIRST Redis oturumu ile GitHub access/refresh tokenları ayrı değerlendirilir.",
+      "reason": "Kullanıcı frontend düzeltmesi ve ek backend denetimi istedi; backend mimari değişikliği veya bulgu düzeltmesi bu teslimde uygulanmaz.",
+      "decidedAt": "2026-09-20T12:49:56.082Z",
+      "actor": "manager"
+    },
+    {
+      "id": "accepted-delivery",
+      "summary": "Frontend kaynak kapıları kabul edildi; eca755b origin/main üzerinde ve Vercel deployment success. Backend P1/P2 audit bulguları açık.",
+      "reason": "Bağımsız review-revision önceki frontend P2 bulgusunu kapattı; eski failed review geçmişi korundu.",
+      "decidedAt": "2026-09-20T13:00:51.443Z",
+      "actor": "manager"
+    }
+  ],
+  "items": [
+    {
+      "id": "frontend",
+      "title": "Uygun oturum menüsü ve kullanıcıya hazır sayfalar",
+      "kind": "implement",
+      "domains": [
+        "frontend"
+      ],
+      "objective": "Uygun oturum menüsü ve kullanıcıya hazır sayfalar",
+      "responsibility": "Only bounded scope; no independent commits or pushes.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "Uygun oturum menüsü ve kullanıcıya hazır sayfalar"
+      ],
+      "acceptanceCriteria": [
+        "Ziyaretçi ve üye menüleri ayrılır; yüklenme/hata durumları güvenlidir.",
+        "Mevcut sayfalar ortak tasarım diliyle düzenlenir; gerçek akışlar korunur.",
+        "Giriş/çıkış, süre dolumu ve sekme değişimi ortak oturum durumuna yansır."
+      ],
+      "capabilities": [
+        "source-inspection"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Session-aware user interface and authentication review"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/src"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-20T12-55-07-826Z.json"
+    },
+    {
+      "id": "backend-audit",
+      "title": "Backend kimlik ve oturum denetimi",
+      "kind": "audit",
+      "domains": [
+        "auth"
+      ],
+      "objective": "Backend kimlik ve oturum denetimi",
+      "responsibility": "Only bounded scope; no independent commits or pushes.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "Backend kimlik ve oturum denetimi"
+      ],
+      "acceptanceCriteria": [
+        "FIRST oturumu ile sağlayıcı tokenları ayrılır; süre, iptal, CSRF ve yetki kodu incelenir.",
+        "Somut bulgular dosya/satır kanıtıyla ve çalışma zamanı sınırıyla raporlanır."
+      ],
+      "capabilities": [
+        "source-inspection"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Session-aware user interface and authentication review"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-audit-2026-09-20T12-51-01-001Z.json"
+    },
+    {
+      "id": "review",
+      "title": "Bağımsız frontend ve auth bulgu incelemesi",
+      "kind": "review",
+      "domains": [
+        "auth"
+      ],
+      "objective": "Bağımsız frontend ve auth bulgu incelemesi",
+      "responsibility": "Only bounded scope; no independent commits or pushes.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "Bağımsız frontend ve auth bulgu incelemesi"
+      ],
+      "acceptanceCriteria": [
+        "Değişiklik ve denetim bulguları bağımsız kaynak incelemesinden geçer."
+      ],
+      "capabilities": [
+        "source-inspection"
+      ],
+      "relations": {
+        "dependsOn": [
+          "frontend",
+          "backend-audit"
+        ],
+        "reviews": [
+          "frontend",
+          "backend-audit"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Session-aware user interface and authentication review"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-20T12-56-55-004Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "Kabul maddeleri kaynak doğrulaması",
+      "kind": "verify",
+      "domains": [
+        "auth"
+      ],
+      "objective": "Kabul maddeleri kaynak doğrulaması",
+      "responsibility": "Only bounded scope; no independent commits or pushes.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "Kabul maddeleri kaynak doğrulaması"
+      ],
+      "acceptanceCriteria": [
+        "Kabul kriterleri gerçek kaynak ve diff ile eşleştirilir; çözülmemiş riskler belirtilir."
+      ],
+      "capabilities": [
+        "source-inspection"
+      ],
+      "relations": {
+        "dependsOn": [
+          "review-revision"
+        ],
+        "reviews": [],
+        "verifies": [
+          "frontend",
+          "backend-audit",
+          "frontend-revision"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Session-aware user interface and authentication review"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-20T12-58-51-744Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "Sonuçları birleştir ve teslim et",
+      "kind": "integration",
+      "domains": [
+        "auth"
+      ],
+      "objective": "Sonuçları birleştir ve teslim et",
+      "responsibility": "Only bounded scope; no independent commits or pushes.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "Sonuçları birleştir ve teslim et"
+      ],
+      "acceptanceCriteria": [
+        "Frontend ve backend denetimi birlikte raporlanır; kabul edilen değişiklikler commit/push ile teslim edilir."
+      ],
+      "capabilities": [
+        "source-inspection"
+      ],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "frontend",
+          "backend-audit",
+          "frontend-revision"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Session-aware user interface and authentication review"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-20T13-00-22-689Z.json"
+    },
+    {
+      "id": "frontend-revision",
+      "title": "Oturum listesindeki işlemde form taslağını koru",
+      "kind": "implement",
+      "domains": [
+        "frontend"
+      ],
+      "objective": "Aynı kimlikte diğer session iptali foreground unmount yapmasın.",
+      "responsibility": "Only bounded scope; no independent commits or pushes.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "Uygun oturum menüsü ve kullanıcıya hazır sayfalar"
+      ],
+      "acceptanceCriteria": [
+        "Diğer oturumun kapatılması mevcut hesap form taslağını korur.",
+        "Gerçek kimlik değişimi ve çıkış eski özel içerikleri temizler."
+      ],
+      "capabilities": [
+        "source-inspection"
+      ],
+      "relations": {
+        "dependsOn": [
+          "frontend"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "frontend"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Session-aware user interface and authentication review"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/src/lib/api.ts",
+          "FIRST/frontend/src/components/session-provider.tsx"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/frontend-revision-2026-09-20T12-58-11-510Z.json"
+    },
+    {
+      "id": "review-revision",
+      "title": "Oturum taslağı düzeltmesini bağımsız incele",
+      "kind": "review",
+      "domains": [
+        "auth"
+      ],
+      "objective": "P2 kapanışı ve kimlik invalidation korumasını kaynakta doğrula.",
+      "responsibility": "Only bounded scope; no independent commits or pushes.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "Bağımsız frontend ve auth bulgu incelemesi"
+      ],
+      "acceptanceCriteria": [
+        "P2 taslak kaybı kapanır; oturum görünürlük korumaları sürer."
+      ],
+      "capabilities": [
+        "source-inspection"
+      ],
+      "relations": {
+        "dependsOn": [
+          "frontend-revision",
+          "backend-audit",
+          "review"
+        ],
+        "reviews": [
+          "frontend-revision",
+          "frontend"
+        ],
+        "verifies": [],
+        "revises": [
+          "review"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Session-aware user interface and authentication review"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/review-revision-2026-09-20T12-58-51-376Z.json"
+    }
+  ]
+}
