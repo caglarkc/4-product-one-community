@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth-audit-fixes",
+  "itemId": "verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Source acceptance verified for both backend findings.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Manager read complete three-file diff and all start_session/reauthenticated_at callsites; git diff --check passed. No API/schema/env changes. Deployment script reviewed; runtime auth/concurrency tests not run."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kabul maddeleri kaynak/diff ile doğrulanır; çalışma zamanı sınırları belirtilir.",
+      "status": "passed",
+      "evidence": "Manager read complete three-file diff and all start_session/reauthenticated_at callsites; git diff --check passed. No API/schema/env changes. Deployment script reviewed; runtime auth/concurrency tests not run."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Manager read complete three-file diff and all start_session/reauthenticated_at callsites; git diff --check passed. No API/schema/env changes. Deployment script reviewed; runtime auth/concurrency tests not run."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Pre-deployment sessions retain previous recent-auth marker until its 10-minute window expires."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T13:07:06.206990+00:00"
+}

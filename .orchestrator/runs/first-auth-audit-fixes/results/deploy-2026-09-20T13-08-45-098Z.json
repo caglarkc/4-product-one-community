@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth-audit-fixes",
+  "itemId": "deploy",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "blocked",
+  "summary": "Deployment blocked by automatic approval review; no remote mutation executed.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Backend e77671bf6a7ef33dddcb5049dc4d18fcdb5b4c85 pushed and remote hash verified. ./send-machine rejected twice: explicit user approval required for production rebuild/migrate/restart despite permanent repo instruction. Approval question sent."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kabul edilen commit push edilir, uzak checkout aynı commite gelir ve mevcut dağıtım sağlık adımları tamamlanır.",
+      "status": "not_verified",
+      "evidence": "Backend e77671bf6a7ef33dddcb5049dc4d18fcdb5b4c85 pushed and remote hash verified. ./send-machine rejected twice: explicit user approval required for production rebuild/migrate/restart despite permanent repo instruction. Approval question sent."
+    }
+  ],
+  "checks": [
+    {
+      "name": "git-delivery",
+      "status": "passed",
+      "evidence": "e77671b origin/main hash matched."
+    },
+    {
+      "name": "remote-deployment",
+      "status": "not_run",
+      "evidence": "Auto-review denied execution; explicit user approval pending."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Pre-deployment sessions retain previous recent-auth marker until its 10-minute window expires."
+  ],
+  "followUps": [
+    "Wait for explicit user production deployment approval, then execute existing send-machine."
+  ],
+  "completedAt": "2026-09-20T13:08:45.098508+00:00"
+}

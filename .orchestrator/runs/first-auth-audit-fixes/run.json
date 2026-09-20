@@ -1,0 +1,250 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth-audit-fixes",
+  "title": "FIRST backend auth bulgularını düzelt",
+  "goal": "Google yakın kimlik kanıtını ve GitHub callback oturum iptali yarışını düzelt, incele ve dağıt",
+  "createdAt": "2026-09-20T13:04:28.232Z",
+  "updatedAt": "2026-09-20T13:08:45.374Z",
+  "revision": 12,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/rules.md",
+      "FIRST/auth-kararlari.md",
+      "FIRST/deployment.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "2ebaf4bca13a02e90e5725adb5cb8b103da8f4cee006b2161363e6cd69ea9b88",
+    "assumptions": [
+      "Source/diff only; no tests, lint, typecheck or browser. Existing deployment checks authorized."
+    ]
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": false
+  },
+  "decisions": [],
+  "items": [
+    {
+      "id": "fix",
+      "title": "fix",
+      "kind": "implement",
+      "domains": [
+        "backend"
+      ],
+      "objective": "FIRST backend audit fixes: fix",
+      "responsibility": "Bounded FIRST scope; manager owns Git/deployment",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-user-experience-session-audit/backend-audit.md"
+        }
+      ],
+      "outputs": [
+        "fix evidence"
+      ],
+      "acceptanceCriteria": [
+        "Normal Google girişleri yakın kimlik kanıtı üretmez; şifre ve açık Google reauth korunur.",
+        "GitHub callback son yazımı güncel aktif oturumla kontrol edilir; tekil iptal aynı kilit sırasını izler."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Authentication fix"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/accounts",
+          "FIRST/backend/projects/views.py"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/fix-2026-09-20T13-06-07-688Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "backend"
+      ],
+      "objective": "FIRST backend audit fixes: review",
+      "responsibility": "Bounded FIRST scope; manager owns Git/deployment",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-user-experience-session-audit/backend-audit.md"
+        }
+      ],
+      "outputs": [
+        "review evidence"
+      ],
+      "acceptanceCriteria": [
+        "İki bulgu bağımsız kaynak incelemesinde kapanır."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "fix"
+        ],
+        "reviews": [
+          "fix"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authentication fix"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-20T13-07-05-685Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "backend"
+      ],
+      "objective": "FIRST backend audit fixes: verify",
+      "responsibility": "Bounded FIRST scope; manager owns Git/deployment",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-user-experience-session-audit/backend-audit.md"
+        }
+      ],
+      "outputs": [
+        "verify evidence"
+      ],
+      "acceptanceCriteria": [
+        "Kabul maddeleri kaynak/diff ile doğrulanır; çalışma zamanı sınırları belirtilir."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "fix"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authentication fix"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-20T13-07-06-206Z.json"
+    },
+    {
+      "id": "deploy",
+      "title": "deploy",
+      "kind": "deployment",
+      "domains": [
+        "backend"
+      ],
+      "objective": "FIRST backend audit fixes: deploy",
+      "responsibility": "Bounded FIRST scope; manager owns Git/deployment",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-user-experience-session-audit/backend-audit.md"
+        }
+      ],
+      "outputs": [
+        "deploy evidence"
+      ],
+      "acceptanceCriteria": [
+        "Kabul edilen commit push edilir, uzak checkout aynı commite gelir ve mevcut dağıtım sağlık adımları tamamlanır."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authentication fix"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "blocked",
+      "attempt": 1,
+      "resultRef": "results/deploy-2026-09-20T13-08-45-098Z.json"
+    }
+  ]
+}

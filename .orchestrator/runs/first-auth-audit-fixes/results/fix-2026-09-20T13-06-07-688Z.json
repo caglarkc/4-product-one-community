@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth-audit-fixes",
+  "itemId": "fix",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/backend_audit",
+    "sessionRef": "/root/backend_audit"
+  },
+  "outcome": "pass",
+  "summary": "Both backend findings fixed in three runtime files.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "accounts/views.py explicit password_authenticated opt-in and logout locking; account_views.py single revocation user lock; projects/views.py callback locked_user final check. All start_session callsites inspected."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Normal Google girişleri yakın kimlik kanıtı üretmez; şifre ve açık Google reauth korunur.",
+      "status": "passed",
+      "evidence": "accounts/views.py explicit password_authenticated opt-in and logout locking; account_views.py single revocation user lock; projects/views.py callback locked_user final check. All start_session callsites inspected."
+    },
+    {
+      "criterion": "GitHub callback son yazımı güncel aktif oturumla kontrol edilir; tekil iptal aynı kilit sırasını izler.",
+      "status": "passed",
+      "evidence": "accounts/views.py explicit password_authenticated opt-in and logout locking; account_views.py single revocation user lock; projects/views.py callback locked_user final check. All start_session callsites inspected."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "accounts/views.py explicit password_authenticated opt-in and logout locking; account_views.py single revocation user lock; projects/views.py callback locked_user final check. All start_session callsites inspected."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Pre-deployment sessions retain previous recent-auth marker until its 10-minute window expires."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T13:06:07.688535+00:00"
+}
