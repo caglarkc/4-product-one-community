@@ -28,7 +28,7 @@ Tamamlayıcı kayıtlar: [teknoloji ve yayın kararları](teknik-kararlar.md), [
 
 - Public ve private repolar bağlanabilir.
 - Repo içeriği yazılımla sınırlı değildir; tasarım, dokümantasyon, araştırma veya yalnızca fikir aşamasındaki projeler de kapsamda olabilir. Çalışan kod veya geliştirilmiş ürün şartı yoktur; repo bağlama şartı korunur.
-- Repo bağlantısı, başlık ve kategori zorunludur. Açıklama ve diğer tanıtım bilgileri isteğe bağlıdır.
+- Repo bağlantısı, başlık, üst kategori, o üst kategoriye ait alt kategori ve proje durumu zorunludur. Açıklama ve diğer tanıtım bilgileri isteğe bağlıdır.
 - Repolar gezilebilir; kategori ve filtrelerle aranabilir. Kesin filtre listesi açık konudur.
 - Her repo için tek aktif ilan bulunabilir.
 - Proje sahibi ilanı silmeden yeni başvurulara kapatabilir ve sonra tekrar açabilir; katılım yöntemi değişmez.
@@ -41,7 +41,8 @@ Tamamlayıcı kayıtlar: [teknoloji ve yayın kararları](teknik-kararlar.md), [
 - Repo ilanını yalnızca repo sahibi veya yetkili yöneticisi açabilir.
 - 19 Eylül 2026 test aşaması güncellemesi: İlan oluşturmak için bağlı GitHub hesabı ve doğrulanmış e-posta gerekir; repo sahibi/yetkili yönetici kontrolü korunur. Telefon numarası girilmesi veya doğrulanması şimdilik şart değildir ve işlem yetkisini etkilemez. Telefon doğrulamasının ileride devreye alınması ayrı karardır.
 - İlanlar platformun yayın öncesi onayı beklenmeden doğrudan yayımlanır. Uygunsuz içerik için şikâyet özelliği korunur; değerlendirme süreci ayrıca belirlenecek.
-- Projeler alanına göre kategorilenir; kullanılan teknolojiler ve aranan beceriler ayrı filtrelerdir. Kesin kategori ve filtre değerleri henüz belirlenmedi.
+- 20 Eylül 2026 kategori kararı: Üst kategori projenin türünü (web uygulaması, AI agent, AI model, mobil uygulama, backend sistemi, skill dosyaları, dokümantasyon vb.), alt kategori o türe özel kullanım amacını (sağlık, siber güvenlik, emlak vb.) belirtir. Tam başlangıç kataloğu ve aşama açıklamaları [proje-kategorileri.md](proje-kategorileri.md) içinde tutulur. Kullanılan teknolojiler ve aranan beceriler ayrı filtrelerdir; keşif filtrelerinin uygulaması bu değişikliğin kapsamında değildir.
+- Proje durumu: Fikir ve Planlama, İlk Prototip, Aktif Geliştirme, Yayına Hazırlık, Yayın Öncesi Test, Yayında ve Geliştiriliyor. Bu alan proje sahibinin beyanıdır; platformun test veya yayın onayı değildir. FIRST paylaşımının aktif/arşiv durumu ile ayrı tutulur.
 - Proje sahibi genel destek ihtiyacını ve somut görevlerini yayımlayabilir.
 - İlan silinince başvurular kapanır; mesajlar ve geçmiş katkılar korunur. Mesaj geçmişini koruma kararı, askıdaki mesajlaşma kapsamını yeniden açmaz.
 
@@ -141,7 +142,7 @@ Public repo ilanında aynı anda yalnızca bir yöntem aktif olabilir. Private r
 - GitHub izinleri, merge işleminin teknik koşulları, otomatik kabul ve iki sistemde PR/davet durumlarının senkronizasyonu.
 - Görev durumlarının gösterimi ve GitHub Issues senkronizasyonu.
 - Private dosya sınırı, desteklenen dosyalar ve yayımlanmış kopyanın elle güncellenmesi.
-- Kategori/filtre listesi.
+- Keşif filtreleri ve değerleri. Üst/alt kategori ile proje durumu kataloğu 20 Eylül 2026 kararıyla ayrı belirlenmiştir.
 - Şikâyet değerlendirme süreci, yetkili roller ve uygulanacak işlemler.
 - Profil metrikleri ve davete açıklık ayarının kapsamı.
 - FIRST sonrası katkı kayıtlarının başlangıç sınırı ve buluşma sonrası takip süresi.

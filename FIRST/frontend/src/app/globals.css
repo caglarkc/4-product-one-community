@@ -175,3 +175,9 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   .dashboard-card, .welcome-panel, .project-panel, .project-card, .project-detail, .empty-state { padding: var(--space-5); }
   .project-card-heading { flex-wrap: wrap; }
 }
+
+.project-sharing { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); color: var(--color-muted); font-size: var(--font-size-small); }
+.project-taxonomy { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); margin-block: var(--space-5); }
+.project-taxonomy dt { color: var(--color-muted); font-size: var(--font-size-small); }
+.project-taxonomy dd { margin: var(--space-1) 0 0; overflow-wrap: anywhere; font-size: var(--font-size-label); }
+@media (max-width: 640px) { .project-taxonomy { grid-template-columns: minmax(0, 1fr); } }

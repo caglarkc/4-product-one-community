@@ -17,8 +17,25 @@ from accounts.views import AuthView, RateLimited
 from accounts.proxy import client_ip
 from . import github
 from .models import GitHubCredential, Project
+from .taxonomy import CATEGORIES, STAGES
 
-CATEGORIES = [('software', 'Yazılım'), ('design', 'Tasarım'), ('research', 'Araştırma'), ('documentation', 'Dokümantasyon'), ('other', 'Diğer')]
+CATEGORY_LABELS = {category['value']: category['label'] for category in CATEGORIES}
+SUBCATEGORY_LABELS = {category['value']: {item['value']: item['label'] for item in category['subcategories']}
+                      for category in CATEGORIES}
+SUBCATEGORY_CODES = sorted({code for children in SUBCATEGORY_LABELS.values() for code in children})
+STAGE_LABELS = {stage['value']: stage['label'] for stage in STAGES}
+
+
+def validate_classification(category, subcategory, stage):
+    errors = {}
+    if category not in CATEGORY_LABELS:
+        errors['category'] = ['Geçerli bir üst kategori seçin.']
+    if subcategory not in SUBCATEGORY_LABELS.get(category, {}):
+        errors['subcategory'] = ['Seçilen üst kategoriye ait bir alt kategori seçin.']
+    if stage not in STAGE_LABELS:
+        errors['stage'] = ['Geçerli bir proje durumu seçin.']
+    if errors:
+        raise ValidationError(errors)
 
 
 def member(request, eligible=False, linked=False):
@@ -41,6 +58,10 @@ def project_data(project, repo=None, visible=True):
     # Stored privacy is never trusted to expose a URL: current provider proof only.
     private = repo['private'] if repo else True
     return {'id': str(project.pk), 'title': project.title, 'category': project.category,
+        'subcategory': project.subcategory, 'stage': project.stage,
+        'category_label': CATEGORY_LABELS.get(project.category, project.category or 'Belirtilmedi'),
+        'subcategory_label': SUBCATEGORY_LABELS.get(project.category, {}).get(project.subcategory, project.subcategory or 'Belirtilmedi'),
+        'stage_label': STAGE_LABELS.get(project.stage, project.stage or 'Belirtilmedi'),
         'description': project.description, 'readme_excerpt': project.readme_excerpt if visible else '',
         'is_private': private, 'repository_url': repo['html_url'] if repo and not private else None,
         'repository_name': repo['full_name'] if repo and not private else None,
@@ -58,14 +79,22 @@ class SelectionInput(StrictSerializer):
 
 class CreateInput(SelectionInput):
     title = serializers.CharField(max_length=200)
-    category = serializers.ChoiceField(choices=CATEGORIES)
+    category = serializers.ChoiceField(choices=list(CATEGORY_LABELS.items()))
+    subcategory = serializers.ChoiceField(choices=SUBCATEGORY_CODES)
+    stage = serializers.ChoiceField(choices=list(STAGE_LABELS.items()))
     description = serializers.CharField(max_length=5000, required=False, allow_blank=True, default='')
     readme_excerpt = serializers.CharField(max_length=600, required=False, allow_blank=True, default='')
+
+    def validate(self, data):
+        validate_classification(data['category'], data['subcategory'], data['stage'])
+        return data
 
 
 class EditInput(StrictSerializer):
     title = serializers.CharField(max_length=200, required=False)
-    category = serializers.ChoiceField(choices=CATEGORIES, required=False)
+    category = serializers.ChoiceField(choices=list(CATEGORY_LABELS.items()), required=False)
+    subcategory = serializers.ChoiceField(choices=SUBCATEGORY_CODES, required=False)
+    stage = serializers.ChoiceField(choices=list(STAGE_LABELS.items()), required=False)
     description = serializers.CharField(max_length=5000, required=False, allow_blank=True)
     is_active = serializers.BooleanField(required=False)
 
@@ -88,7 +117,7 @@ class Conflict(APIException):
 
 class ConfigView(AuthView):
     def get(self, request):
-        return Response({'categories': [{'value': value, 'label': label} for value, label in CATEGORIES], 'github_app_enabled': github.enabled()})
+        return Response({'categories': CATEGORIES, 'stages': STAGES, 'github_app_enabled': github.enabled()})
 
 
 class StatusView(AuthView):
@@ -247,6 +276,12 @@ class DetailView(AuthView):
             with transaction.atomic():
                 locked_user(request)
                 project = Project.objects.select_for_update().get(pk=project.pk, owner=request.user)
+                if not archive_only:
+                    validate_classification(
+                        data.get('category', project.category),
+                        data.get('subcategory', project.subcategory),
+                        data.get('stage', project.stage),
+                    )
                 for field, value in data.items():
                     setattr(project, field, value)
                 if repo:

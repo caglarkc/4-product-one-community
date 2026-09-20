@@ -18,6 +18,8 @@ class Project(models.Model):
     installation_id = models.PositiveBigIntegerField()
     title = models.CharField(max_length=200)
     category = models.CharField(max_length=40)
+    subcategory = models.CharField(max_length=40, blank=True, default='')
+    stage = models.CharField(max_length=40, blank=True, default='')
     description = models.TextField(blank=True, default='')
     readme_excerpt = models.CharField(max_length=600, blank=True, default='')
     is_private = models.BooleanField(default=True)
