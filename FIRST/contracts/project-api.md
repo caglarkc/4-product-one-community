@@ -1,35 +1,39 @@
-# FIRST proje sınıflandırma sözleşmesi
+# FIRST proje ve repo aktarım sözleşmesi
 
-20 Eylül 2026. Temel yol `/api/auth/projects/`. Mevcut Bearer oturumu, session-bound CSRF, e-posta/GitHub doğrulaması, repo yönetim yetkisi ve proje sahipliği koşulları korunur.
+20 Eylül 2026. Temel yol `/api/auth/projects/`. FIRST oturumu, CSRF ve sahiplik kontrolleri korunur. Kullanıcının son kararıyla **yayımlanmış projeler GitHub'dan bağımsız kayıtlı kopyalardır**; önceki canlı repo doğrulamalı detay davranışı kaldırılmıştır.
 
-## Katalog
+## Katalog ve sınıflandırma
 
-`GET config/` anonim erişilebilir. `categories` üst kategorileri ve her birinin `subcategories` seçeneklerini; `stages` proje aşamalarını verir. Her seçenek `value` ve `label`, aşamalar ayrıca `description` taşır. `github_app_enabled` korunur.
+`GET config/` anonim erişilebilir; `categories` üst kategoriler ve her birinin `subcategories` seçenekleri, `stages` ise `value`, `label`, `description` verir. `github_app_enabled` korunur. Kanonik kaynak `backend/projects/taxonomy.py`, okunabilir liste [proje-kategorileri.md](../proje-kategorileri.md).
 
-Kanonik kod kataloğu `backend/projects/taxonomy.py`, kullanıcı tarafından okunabilir tam liste [proje-kategorileri.md](../proje-kategorileri.md) içindedir. Frontend etiket veya kategori listesi kopyalamaz.
+`category`, `subcategory`, `stage` oluşturma sırasında zorunludur. Alt kategori seçilen üste ait olmalıdır; bilinmeyen/uyumsuz seçim alan hatasıdır. Kodlar en çok 40 karakterdir. Yanıt ayrıca katalogdan türetilen `category_label`, `subcategory_label`, `stage_label` içerir.
 
-## Proje verisi
+## Repo listesinin kalıcı kaydı
 
-Mevcut alanlara ek olarak `subcategory`, `stage`, `category_label`, `subcategory_label`, `stage_label` döner. `category` üst kategori kodudur. Kodlar ASCII kebab-case ve en fazla 40 karakterdir. Etiketler DB'de saklanmaz, katalogdan türetilir.
+- `GET github/status/` yalnız yerel yapılandırma ve kayıtlı App kimlik bilgisi durumunu verir. `connected`, GitHub'dan canlı doğrulama yapıldığı anlamına gelmez.
+- `GET github/repositories/` kullanıcıya bağlı kayıtlı repo listesini döndürür. Kayıt yoksa ilk GitHub içe aktarımını yapar. Boş liste de geçerli kayıttır; süre dolunca otomatik yenileme yoktur.
+- `POST github/repositories/` gövde `{}` ile açık yenilemedir. GitHub'dan yeniden alınır, başarıda kayıtlı liste atomik değiştirilir. Hata önceki listeyi silmez.
+- Yanıt `{repositories, cached_at}`. Kimlik/kurulum ve yönetim yetkisi liste GitHub'dan alındığında doğrulanır. Kayıt yalnız ilgili kullanıcı/credential için erişilebilirdir.
+- Credential silinmesi bağlı liste ve hazırlanan kopyaları siler. App yeniden yetkilendirmesi eski kopyaları geçersiz kılar. Eski bir ağ yanıtı yeni yenilemeyi veya koparılan bağlantıyı geri getiremez.
 
-`POST /api/auth/projects/` için `category`, `subcategory` ve `stage` zorunludur. Alt kategori seçilen üst kategoriye ait olmalıdır. Başlık, repo seçimi, açıklama ve README özeti sözleşmesi değişmez. Bilinmeyen veya uyumsuz sınıflandırma 400 alan hatasıdır.
+## Hazırlama ve oluşturma
 
-`PATCH {id}/` kısmi güncellemedir. Gönderilmeyen alanlar korunur. Kategori çifti değiştirilirken gönderilen ve mevcut değerler birleştirilip, güncel proje satırı kilitlendikten sonra birlikte doğrulanır. Üst kategori değişikliği eski alt kategori yeni üstte geçerli değilse yeni alt kategori gerektirir. Salt arşivleme sınıflandırmayı değiştirmez.
+`POST github/preview/` seçilen `installation_id`, `repository_id` ile kayıtlı listedeki repo verisini kullanır. Kullanıcının “Paylaşımı hazırla” aksiyonunda README özeti bir kez GitHub'dan alınır; bu proje oluşturulmadan önceki içe aktarım adımıdır. Repo listesi bu adımda yeniden taranmaz. Sunucu exact repo/gizlilik/README kopyasını kaydeder; yanıt `{repository, readme_excerpt, preview_token}`.
 
-`stage` proje sahibinin beyan ettiği geliştirme aşamasıdır. `is_active` yalnız FIRST paylaşımının aktif/arşiv durumudur; uygulamanın gerçekten yayında veya test edilmiş olduğunu göstermez.
+`POST /api/auth/projects/`: repo seçim kimlikleri, `preview_token`, başlık, sınıflandırma ve isteğe bağlı açıklama/README özeti gönderilir. Kaydetme GitHub'a gitmez. Sunucu ilgili kullanıcıya ait tam hazırlanan kopyayı doğrular ve tek kullanımlık token'ı tüketir. README yalnız boş veya hazırlanmış metinle aynı olabilir. Yeniden hazırlama/başarılı liste yenilemesi eski onayı geçersiz kılar; eski token yeni repo verisine sessizce uygulanmaz.
 
-## Şema
+Projeye repo adı/URL, oluşturma anındaki gizlilik ve onaylanan metin kaydedilir. Gizli repo adı/URL'si proje yanıtında verilmez. Açık repo bağlantısı kayıtlı kopyadan gelir; GitHub'daki sonraki değişiklikler otomatik uygulanmaz.
 
-Mevcut `category` sütunu korunur. Yeni `subcategory` ve `stage` sütunları için additive migration hazırlanır. Eski initial migration değiştirilmez. Kullanıcının mevcut proje bulunmadığı bilgisi nedeniyle veri dönüştürme/backfill işlemi tasarlanmamıştır; Kullanıcı 20 Eylül 2026 tarihinde yalnız gerekli şema migration’ının dağıtımda uygulanmasını onayladı.
+## Okuma ve düzenleme
 
-## Topluluk ana sayfası — 20 Eylül 2026
+`GET {id}/`, `GET mine/` ve public liste yalnız FIRST verisini okur; GitHub ağına çıkmaz. Detayda arşivlenmiş proje yalnız sahibine görünür. Kayıtlı README özeti, paylaşım sırasında onaylanan içeriktir. Eski projelerde daha önce saklanmamış repo adı/URL boş kalır; bunu doldurmak için otomatik GitHub isteği yapılmaz.
 
-`GET /api/auth/projects/?page=N`, giriş gerektirmeden tüm aktif sahiplerin aktif paylaşımlarını en yeni oluşturulandan başlayarak listeler. Sayfa varsayılanı 1, sabit sayfa boyutu 12'dir. Yanıt `projects`, `count`, `next_page`, `previous_page` taşır; son/ilk sayfada ilgili sayfa değeri `null` olur. Geçersiz sayfa değeri 400'dür.
+`PATCH {id}/` sahibin kısmi güncellemesidir; mevcut FIRST oturumu ve gereken e-posta koşulu korunur, GitHub bağlantısı/isteği gerekmez. Eksik sınıflandırma alanları kilitli güncel proje değerleriyle birleştirilerek doğrulanır. Salt arşivleme sınıflandırmayı değiştirmez. Repo snapshot alanları istemci tarafından serbestçe değiştirilemez. `stage` proje sahibinin beyan ettiği aşama, `is_active` FIRST paylaşımının aktif/arşiv durumudur.
 
-Liste özeti yalnız `id`, `title`, `description`, üç sınıflandırma kodu/etiketi, `created_at` ve `updated_at` içerir. Hesap bilgileri, repo kimliği/adı/URL/gizlilik durumu ve README listede bulunmaz. Listeleme GitHub çağrısı yapmaz; mevcut detay ekranı repo verisini kendi güncel yetki kontrolünden sonra verir. Bu ekleme için şema migration'ı yoktur.
+## Topluluk listesi
 
-## Liste yükleme bağımlılıkları — 20 Eylül 2026
+`GET /api/auth/projects/?page=N` tüm aktif sahiplerin aktif paylaşımlarını en yeni önce sıralar; varsayılan sayfa1, sabit boyut12. Yanıt `projects`, `count`, `next_page`, `previous_page`. Özet yalnız id/başlık/açıklama, sınıflandırma kodları/etiketleri ve tarihlerdir; repo, README ve hesap verileri içermez. Ana sayfa bu endpoint'e anonim, oturum kuyruğundan bağımsız gider ve eski isteği sayfa değişiminde iptal eder.
 
-Ana sayfa istemcisi public listeyi oturum kuyruğundan bağımsız, Authorization olmadan alır; oturum anahtarı okuma/yazma yapmaz. Sayfa değişiminde eski isteği iptal eder. Kimlik doğrulamalı işlemlerin mevcut sıra ve kimlik koruması korunur.
+## Şema ve GitHub çağrıları
 
-`GET mine/` kimlik doğrulaması ve sahip filtresiyle yalnız kayıtlı proje alanlarını verir; artık GitHub repo taraması yapmaz. Yanıt şekli korunur, ancak canlı kanıt alınmadığından repo adı/URL `null`, `is_private=true` güvenli varsayılandır. Bu değer listede gerçek repo gizliliği iddiası olarak gösterilmez. Mevcut proje detayı repo verisini güncel GitHub erişim kontrolüyle sunmayı sürdürür.
+0002 sınıflandırma alanlarını; 0003 repo adı/URL kopyası, kalıcı envanter ve hazırlanmış repo kayıtlarını ekler. Eski migration'lar değiştirilmez, GitHub'dan veri backfill yapılmaz. Kalan dış bağlantıların tam listesi [github-connections.md](github-connections.md).

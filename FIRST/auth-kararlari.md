@@ -161,3 +161,8 @@ kullanan kişi mevcut e-posta kurtarma akışıyla yerel şifre oluşturabilir.
 - Kurulumdan dönüşte hâlâ seçilebilir repo yoksa veya kullanıcı reddederse yönlendirme döngüsü oluşturulmaz; açıklama ve tekrar deneme gösterilir. FIRST oturumu korunur.
 - App yetkilendirmesi ve kendi repo envanterini listeleme için bağlı GitHub kimliği yeterlidir. README önizleme, paylaşım oluşturma ve yayımlama için doğrulanmış e-posta şartı korunur.
 - Giriş/bağlama sonrası dönüş yolu yalnız `/`, `/hesap` veya `/projelerim/yeni` olabilir; dış adres veya GitHub callback query bilgileri yetki kanıtı değildir.
+
+
+## 20 Eylül 2026 — yerel proje kopyası ve repo envanteri
+
+Yayımlanmış proje görüntüleme/düzenleme GitHub erişiminden bağımsızdır. Düzenleme FIRST oturumu, sahiplik ve gereken e-posta doğrulamasını kullanır; bağlı GitHub hesabı şartı yalnız yeni repo aktarımında korunur. İlk liste içe aktarımı ve elle yenileme sağlayıcı yetkisini denetler. Paylaşımı hazırlama repo/README kopyasını sunucuda saklar; son oluşturma bu kopyayı tek kullanımlık kimlikle doğrular, GitHub'a yeniden gitmez. Yerel status endpoint'i sağlayıcıyı sorgulamaz. Repo erişimini kaldırma/hesap silme mevcut arşivleme politikasını korur; credential silinmesiyle envanter ve hazırlanmış kopyalar temizlenir.
