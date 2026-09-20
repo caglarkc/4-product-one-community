@@ -1,2 +1,2 @@
-import { AccountStatus } from '../components/account-status';
-export default function Home(){return <AccountStatus/>;}
+import {HomePage} from '../components/home-page';
+export default function Home() {return <HomePage/>;}

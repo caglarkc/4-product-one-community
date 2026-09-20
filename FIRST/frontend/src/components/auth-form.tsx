@@ -5,10 +5,11 @@ import { useId, useRef, useState } from 'react';
 import { api, ApiError, User } from '../lib/api';
 import { GoogleButton } from './google-auth';
 import { GitHubButton } from './github-auth';
+import { GuestOnly } from './session-provider';
 import { passwordHelp } from './account-form';
 import { Alert, Button, Checkbox, Field, Input, PageHeading, Select, Surface } from './ui';
 
-export function AuthForm({ register = false, googleError, githubError }: { register?: boolean; googleError?: string; githubError?: string }) {
+function AuthFormContent({ register = false, googleError, githubError }: { register?: boolean; googleError?: string; githubError?: string }) {
   const router = useRouter();
   const id = useId();
   const lock = useRef(false);
@@ -31,6 +32,7 @@ export function AuthForm({ register = false, googleError, githubError }: { regis
     {githubError && <Alert role="alert" tone="error">{githubError === 'cancelled' ? 'GitHub ile giriş iptal edildi. Yeniden deneyebilirsiniz.' : 'GitHub işlemi tamamlanamadı. Giriş veya hesap bağlama işlemini yeniden başlatın.'}</Alert>}
     <GitHubButton remember={remember} disabled={busy} onBusyChange={value => {lock.current = value; setBusy(value);}}/>
     <GoogleButton remember={remember} disabled={busy} onBusyChange={value => {lock.current = value; setBusy(value);}}/>
+    <p className="form-divider">veya e-posta ile devam edin</p>
     <form aria-busy={busy} onSubmit={async event => {
       event.preventDefault();
       if (lock.current) return;
@@ -62,11 +64,15 @@ export function AuthForm({ register = false, googleError, githubError }: { regis
         {register && field('phone', 'Telefon (isteğe bağlı, doğrulanmaz)', 'tel', { autoComplete: 'tel', maxLength: 32, placeholder: '+905551234567' })}
         {field('password', 'Şifre', 'password', { autoComplete: register ? 'new-password' : 'current-password' }, register ? passwordHelp : undefined)}
         {!register && <Checkbox name="remember_me" checked={remember} onChange={event => setRemember(event.target.checked)}>Beni hatırla (30 gün)</Checkbox>}
-        <Button type="submit" loading={busy} className="button--full">{busy ? 'İşlem sürüyor…' : register ? 'Kayıt ol' : 'Giriş yap'}</Button>
+        <Button type="submit" loading={busy} className="button--full">{busy ? 'İşlem sürüyor…' : register ? 'Hesap oluştur' : 'Giriş yap'}</Button>
       </fieldset>
     </form>
     <div className="form-links"><Link href={register ? '/giris' : '/kayit'}>{register ? 'Zaten hesabım var' : 'Hesap oluştur'}</Link>
       {!register && <Link href="/sifremi-unuttum">Şifremi unuttum</Link>}
     </div>
   </Surface>;
+}
+
+export function AuthForm(props: Parameters<typeof AuthFormContent>[0]) {
+  return <GuestOnly><AuthFormContent {...props}/></GuestOnly>;
 }
