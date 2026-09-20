@@ -69,3 +69,32 @@ class FakeRedis:
         else:
             self.values[key] = str(value)
         return value
+
+
+from importlib import import_module
+from django.conf import settings
+from django.test import Client as DjangoClient
+
+
+class BearerClient(DjangoClient):
+    """Browser transport: capture rotated session header and resend as Bearer."""
+    def request(self, **request):
+        response = super().request(**request)
+        if 'X-First-Session' in response:
+            key = response['X-First-Session']
+            if key:
+                self.defaults['HTTP_AUTHORIZATION'] = 'Bearer ' + key
+            else:
+                self.defaults.pop('HTTP_AUTHORIZATION', None)
+        return response
+
+    @property
+    def session(self):
+        store = import_module(settings.SESSION_ENGINE).SessionStore
+        value = self.defaults.get('HTTP_AUTHORIZATION', '')
+        if value.startswith('Bearer '):
+            return store(value[7:])
+        session = store()
+        session.save()
+        self.defaults['HTTP_AUTHORIZATION'] = 'Bearer ' + session.session_key
+        return session

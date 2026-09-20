@@ -1,6 +1,6 @@
 # FIRST — Ürün kararları
 
-Son güncelleme: 20 Eylül 2026. Kaynak: kullanıcıyla ürün kapsamı görüşmesi.
+Son güncelleme: 21 Eylül 2026. Kaynak: kullanıcıyla ürün kapsamı görüşmesi.
 Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ayırır; uygulanmış özellik veya teknik sözleşme değildir.
 
 Tamamlayıcı kayıtlar: [teknoloji ve yayın kararları](teknik-kararlar.md), [kayıt/giriş ve hesap bağlantısı](auth-kararlari.md), [öğrenci doğrulaması araştırması](ogrenci-dogrulama-arastirmasi.md).
@@ -49,6 +49,23 @@ Tamamlayıcı kayıtlar: [teknoloji ve yayın kararları](teknik-kararlar.md), [
 - Proje sahibi genel destek ihtiyacını ve somut görevlerini yayımlayabilir.
 - İlan silinince başvurular kapanır; mesajlar ve geçmiş katkılar korunur. Mesaj geçmişini koruma kararı, askıdaki mesajlaşma kapsamını yeniden açmaz.
 
+## İlan ve katılım entegrasyonu — 21 Eylül 2026
+
+Kullanıcı tarafından onaylandı; uygulama ve test kanıtı ayrı run kaydındadır.
+
+- Repo başına tek aktif ilan ve ilan başına tek ihtiyaç türü: ekip arkadaşı, contributor, belirli özellik geliştirme veya belirli hata/sorun çözme. Birden fazla ihtiyaç seçilmez.
+- Özellik/hata ilanında mevcut durum ve beklenen sonuç zorunludur; mevcut GitHub Issue bağlanır veya FIRST üzerinden yeni Issue oluşturulur.
+- Proje sınıflandırması ile aranan katkı türü ayrıdır. Keşifte kategori ve ihtiyaç/katılım yöntemi bazlı filtreler bulunur.
+- Katılım yöntemi değiştirilemez. Başvuru kabulü GitHub repo erişim daveti gönderir; davetin GitHub tarafında kabulü ayrı aşamadır. Başvuru açıklaması zorunludur; sohbet açılmaz.
+- Otomatik katılım sahip incelemesi beklemeden GitHub erişim daveti gönderir. Contributor atanabilen bir GitHub rolü değildir. Yazma erişimi, doğrulanmış dal korumaları ile sınırlandırılır; gerekli korumalar doğrulanamıyorsa otomatik katılım açılmaz. FIRST kurulum gereksinimlerini gösterir; sağlayıcı ayarlarını örtük olarak değiştirmez.
+- Public ilanlarda PR ile önce katkı yöntemi vardır; private ilanlarda yoktur. PR kabulü merge; kabul ve repoya ekleme merge ile birlikte erişim davetidir.
+- Herkese açık/keşifte, yalnız bağlantıyla ve yalnız seçilen kişiler görünürlüğü ayrıdır. Seçilen kişiler FIRST kullanıcı adıyla belirlenir. Görüntüleme izni katılım veya repo erişim daveti değildir.
+- Başvuruları kapatmak, ilanı arşivlemek ve görünürlük ayrı işlemlerdir. Kapalı ilan keşifte görünmez; eski başvurular değerlendirilebilir. Başvuru kabulü, Issue kapanması veya PR merge işlemi ilanı otomatik kapatmaz; karar sahibindedir.
+- Gelen/giden başvurular, geri çekme, kabul/ret, katılım davetleri ve site içi sonuç bildirimleri bu teslimdedir. Açık PR listesi ve başvuruyla ilişkili PR/davet durumları kapsamda; contributor listesi/aktivite istatistikleri sonraya bırakıldı.
+- Private repo PR/Issue verilerini görmek için güncel GitHub repo erişimi doğrulanır; ilan görünürlüğü tek başına yeterli değildir.
+- Kullanıcı yalnız mevcut kendi test ilanının FIRST kaydının silinmesine izin verdi; GitHub repo, Issue veya PR silinmez.
+- Uygulama sırası backend → frontend → test. Kullanıcı testleri, GitHub push, uzak backend pull/deploy ve canlı site kontrollerini açıkça yetkilendirdi.
+
 ## Görevler
 
 - Görevler GitHub Issues ile bağlantılıdır.
@@ -60,7 +77,7 @@ Tamamlayıcı kayıtlar: [teknoloji ve yayın kararları](teknik-kararlar.md), [
 
 ## Katılım yöntemleri
 
-Public repo ilanında aynı anda yalnızca bir yöntem aktif olabilir. Private repo katılımı yalnızca davetle olur; aşağıdaki yöntemler private ilanlarda sunulmaz:
+Her ilanda aynı anda yalnızca bir yöntem aktif olabilir ve yöntem sonradan değiştirilemez. Private ilanlarda doğrudan başvuru ve gerekli GitHub korumaları sağlandığında otomatik katılım kullanılabilir; PR ile ön katkı yöntemi sunulmaz. Yalnız seçilen kişilere görünür ilanlarda dışarıdan başvuru alınmaz, sahibi katılım daveti gönderir:
 
 1. Önce katkını göster: Aday yaptığı değişikliği PR üzerinden sunar. Yalnızca PR açılması yeterli değildir; PR'ın kabul edilmesi gerekir.
 2. Doğrudan başvuru: Aday önceden katkı sunmadan katılım isteği gönderir; proje sahibi değerlendirir. Mesaj gereksinimi ve iletişim arayüzü askıdaki kapsamla birlikte netleştirilecek.
@@ -77,7 +94,7 @@ Public repo ilanında aynı anda yalnızca bir yöntem aktif olabilir. Private r
 
 ## Private repo vitrini
 
-- Private repolarda “önce katkını göster” veya doğrudan başvuru yöntemi bulunmaz; katılım yalnızca doğrudan davetle olur. Bu kural katılım öncesi akışa aittir; erişim kazandıktan sonraki geliştirme sürecini değiştirmez.
+- 21 Eylül 2026: Private repolarda “önce katkını göster” bulunmaz. Doğrudan başvuru ve korumaları doğrulanmış otomatik katılım açıktır; yalnız seçilen kişilere görünür ilanlarda katılım yalnız davetle olur. Bu karar önceki private repo yalnız-davet sınırlamasının yerini alır.
 - Proje sahibi yalnızca seçtiği bilgileri ve dosyaları ilanda gösterebilir.
 - Gösterilen dosya yayımlandığı andaki kopyadır; repo değişince otomatik güncellenmez.
 - Dosya sayısına sınır düşünülüyor; en fazla 3 dosya önerisi henüz kesinleşmedi.

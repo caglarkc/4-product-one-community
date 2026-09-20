@@ -1,16 +1,19 @@
+from accounts.tests.fakes import BearerClient as Client
 import base64
 from datetime import timedelta
 from urllib.parse import parse_qs, urlparse
 from unittest.mock import Mock, patch
 from allauth.socialaccount.models import SocialAccount
 from cryptography.fernet import Fernet
-from django.test import TestCase, override_settings, Client
+from django.test import TestCase, override_settings
 from django.db import IntegrityError, transaction
 from django.utils import timezone
 from accounts.tests import test_auth
 from accounts.models import User
 from . import github
-from .models import Project, GitHubCredential
+from .models import Project, GitHubCredential, RepositoryCache, PreparedRepository
+from .taxonomy import STAGES
+import uuid
 
 KEY = Fernet.generate_key().decode()
 CONFIG = dict(GITHUB_APP_ENABLED=True, GITHUB_APP_ID='123', GITHUB_APP_SLUG='first-test', GITHUB_APP_CLIENT_ID='app-client', GITHUB_APP_CLIENT_SECRET='app-secret', GITHUB_APP_REDIRECT_URI='https://first.test/github-repo/callback', GITHUB_APP_TOKEN_KEY=KEY)
@@ -27,7 +30,18 @@ class ProjectTests(TestCase):
         self.user = User.objects.get(); self.user.email_verified = True; self.user.save()
         self.account = SocialAccount.objects.create(user=self.user, provider='github', uid='77')
     def create(self, **extra):
-        return self.post('projects', {'installation_id': 11, 'repository_id': 99, 'title': 'Projem', 'category': 'software', 'description': 'Ekip arıyorum.', 'readme_excerpt': 'One. Two. Three.', **extra})
+        preview_token = uuid.uuid4()
+        if SocialAccount.objects.filter(pk=self.account.pk).exists():
+            credential = github.save_tokens(self.account, TOKENS)
+            cache, _ = RepositoryCache.objects.get_or_create(credential=credential,
+                defaults={'repositories': [getattr(self, 'repo', REPO)], 'cached_at': timezone.now()})
+            PreparedRepository.objects.update_or_create(credential=credential, installation_id=11, repository_id=99,
+                defaults={'preview_token': preview_token, 'cache_generation': cache.generation,
+                    'repository': getattr(self, 'repo', REPO), 'readme_excerpt': 'One. Two. Three.'})
+        return self.post('projects', {'installation_id': 11, 'repository_id': 99, 'preview_token': str(preview_token),
+            'title': 'Projem', 'category': 'web-app', 'subcategory': 'community', 'stage': STAGES[0]['value'],
+            'need_type': 'teammate', 'participation_mode': 'application', 'visibility': 'public',
+            'description': 'Ekip arıyorum.', 'readme_excerpt': 'One. Two. Three.', **extra})
     def edit(self, pk, data):
         csrf = self.client.get('/api/auth/csrf/').json()['csrfToken']
         return self.client.patch(f'/api/auth/projects/{pk}/', data, content_type='application/json', HTTP_X_CSRFTOKEN=csrf)
@@ -40,12 +54,14 @@ class ProjectTests(TestCase):
         self.assertEqual(self.edit(pk, {'repository_id': 100}).status_code, 400)
         self.assertTrue(self.client.get('/api/auth/me/').json()['user']['capabilities']['can_create_listing'])
         repo.side_effect=github.GitHubAccessError()
-        self.assertEqual(self.edit(pk, {'title': 'Changed'}).status_code, 503)
+        self.assertEqual(self.edit(pk, {'title': 'Changed'}).status_code, 200)
+        repo.assert_not_called()
         self.assertEqual(self.edit(pk, {'is_active': False}).status_code, 200)
         self.post('logout'); self.assertEqual(self.client.get(f'/api/auth/projects/{pk}/').status_code, 404)
     @patch('projects.github.readme', return_value='One. Two. Three.')
     @patch('projects.github.repository', return_value=('token', {**REPO, 'private':True}))
     def test_private_and_revoked_public_serializer(self, repo, readme):
+        self.repo = {**REPO, 'private': True}
         pk=self.create().json()['project']['id']; self.post('logout')
         response=self.client.get(f'/api/auth/projects/{pk}/'); data=response.json()['project']
         self.assertIsNone(data['repository_url']); self.assertIsNone(data['repository_name'])
@@ -53,7 +69,7 @@ class ProjectTests(TestCase):
         for secret in ['owner/repo','installation_id','repository_id','html_url','token']:
             self.assertNotIn(secret,response.content.decode())
         repo.side_effect=github.GitHubAccessError()
-        self.assertEqual(self.client.get(f'/api/auth/projects/{pk}/').json()['project']['readme_excerpt'],'')
+        self.assertEqual(self.client.get(f'/api/auth/projects/{pk}/').json()['project']['readme_excerpt'],'One. Two. Three.')
     @patch('projects.github.readme', return_value='One. Two. Three.')
     @patch('projects.github.repository', return_value=('token', REPO))
     def test_excerpt_injection_and_ownership(self, repo, readme):
@@ -122,9 +138,11 @@ class ProjectTests(TestCase):
             response = self.post('projects/github/start', {'return_to':target})
             self.assertEqual(response.status_code, 200)
             params = parse_qs(urlparse(response.json()['authorization_url']).query)
+            rejected = self.client.get('/api/auth/projects/github/callback/', {
+                'state': params['state'][0], 'code': 'code', 'return_to': 'https://evil.test/'})
+            self.assertEqual(rejected.status_code, 400)
             response = self.client.get('/api/auth/projects/github/callback/', {
-                'state':params['state'][0], 'code':'code', 'return_to':'https://evil.test/',
-                'installation_id':'999', 'setup_action':'install'})
+                'state':params['state'][0], 'code':'code'})
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.json()['return_to'], target)
 
