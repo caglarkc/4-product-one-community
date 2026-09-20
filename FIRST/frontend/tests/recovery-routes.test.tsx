@@ -1,3 +1,5 @@
+import type {ReactNode} from 'react';
+vi.mock('../src/components/session-provider',async original=>({...await original<typeof import('../src/components/session-provider')>(),GuestOnly:({children}:{children:ReactNode})=>children}));
 vi.mock('../src/components/github-auth',()=>({GitHubButton:()=>null}));
 vi.mock('../src/components/google-auth',()=>({GoogleButton:()=>null}));
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
@@ -23,5 +25,5 @@ it.each([false,true])('allows20 Unicode codepoints even when UTF16 length exceed
   const password='Abc1!'+'😀'.repeat(15);const input=screen.getByLabelText(register?'Şifre':'Yeni şifre');
   await user.type(input,password);expect(input).toHaveValue(password);expect(input).not.toHaveAttribute('maxlength');expect(input).not.toHaveAttribute('minlength');
   if(register)for(const [label,value] of [['E-posta','a@example.test'],['Kullanıcı adı','testuser'],['Ad soyad','Test Üye'],['Doğum tarihi','2000-01-01'],['Cinsiyet','unspecified']])fireEvent.change(screen.getByLabelText(label),{target:{value}});
-  await user.click(screen.getByRole('button',{name:register?'Kayıt ol':'Şifreyi sıfırla'}));await waitFor(()=>expect(fetcher).toHaveBeenCalledTimes(2));expect(JSON.parse(fetcher.mock.calls[1][1].body).password).toBe(password);
+  await user.click(screen.getByRole('button',{name:register?'Hesap oluştur':'Şifreyi sıfırla'}));await waitFor(()=>expect(fetcher).toHaveBeenCalledTimes(2));expect(JSON.parse(fetcher.mock.calls[1][1].body).password).toBe(password);
 });

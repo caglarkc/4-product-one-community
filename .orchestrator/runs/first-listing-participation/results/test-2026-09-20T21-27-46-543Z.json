@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-listing-participation",
+  "itemId": "test",
+  "agent": {
+    "platform": "codex",
+    "identity": "test-team",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "202 backend tests and123 frontend tests pass. Migration consistency and TypeScript pass; lint0errors1preexisting warning. Evidence in test-evidence.md; provider responses mocked and PostgreSQL concurrency not claimed.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/tests",
+      "change": "modified",
+      "description": "202 backend tests and123 frontend tests pass. Migration consistency and TypeScript pass; lint0errors1preexisting warning. Evidence in test-evidence.md; provider responses mocked and PostgreSQL concurrency not claimed."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/tests.py",
+      "change": "modified",
+      "description": "202 backend tests and123 frontend tests pass. Migration consistency and TypeScript pass; lint0errors1preexisting warning. Evidence in test-evidence.md; provider responses mocked and PostgreSQL concurrency not claimed."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/tests_participation.py",
+      "change": "modified",
+      "description": "202 backend tests and123 frontend tests pass. Migration consistency and TypeScript pass; lint0errors1preexisting warning. Evidence in test-evidence.md; provider responses mocked and PostgreSQL concurrency not claimed."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/tests_provider.py",
+      "change": "modified",
+      "description": "202 backend tests and123 frontend tests pass. Migration consistency and TypeScript pass; lint0errors1preexisting warning. Evidence in test-evidence.md; provider responses mocked and PostgreSQL concurrency not claimed."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/frontend/tests",
+      "change": "modified",
+      "description": "202 backend tests and123 frontend tests pass. Migration consistency and TypeScript pass; lint0errors1preexisting warning. Evidence in test-evidence.md; provider responses mocked and PostgreSQL concurrency not claimed."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Test authorization/state transitions, integrations and frontend checks with explicit user authorization.",
+      "status": "passed",
+      "evidence": "202 backend tests and123 frontend tests pass. Migration consistency and TypeScript pass; lint0errors1preexisting warning. Evidence in test-evidence.md; provider responses mocked and PostgreSQL concurrency not claimed."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-20T21:27:46.543554+00:00"
+}

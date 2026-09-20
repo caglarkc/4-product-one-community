@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-listing-participation",
+  "itemId": "review",
+  "agent": {
+    "platform": "codex",
+    "identity": "acceptance",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Independent backend/frontend source review: no P0/P1 blockers; private caller authorization, durable decisions, migration and UI contracts verified. P2 automatic-protection guidance corrected by frontend. Runtime evidence is tracked separately in test node.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Independent source review of backend/frontend authorization, provider effects, visibility and complete user scenarios.",
+      "status": "passed",
+      "evidence": "Independent backend/frontend source review: no P0/P1 blockers; private caller authorization, durable decisions, migration and UI contracts verified. P2 automatic-protection guidance corrected by frontend. Runtime evidence is tracked separately in test node."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-20T21:21:41.436993+00:00"
+}

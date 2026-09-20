@@ -13,6 +13,7 @@ export function ProjectCard({project, manage = false, active, heading = 'h3'}: {
     <div className="repository-card-title"><RepositoryMark/><Heading><Link href={`/projeler/${project.id}`}>{project.title}</Link></Heading>{active !== undefined && <span className={`connection-status${active?' connection-status--connected':''}`}>{active?'Paylaşım aktif':'Arşivde'}</span>}</div>
     <p className="repository-description">{project.description || 'Bu proje için henüz bir açıklama eklenmedi.'}</p>
     <dl className="repository-topics"><div><dt>Üst kategori</dt><dd>{project.category_label || 'Belirtilmedi'}</dd></div><div><dt>Alt kategori</dt><dd>{project.subcategory_label || 'Belirtilmedi'}</dd></div></dl>
+    <dl className="repository-topics"><div><dt>Aranan katkı</dt><dd>{project.need_type_label || 'Belirtilmedi'}</dd></div><div><dt>Katılım</dt><dd>{project.participation_mode_label || 'Belirtilmedi'}</dd></div></dl>
     <div className="repository-card-meta"><span className="project-stage"><span className="stage-dot" aria-hidden="true"/>{project.stage_label || 'Proje durumu belirtilmedi'}</span>{dateLabel && <span>Güncellendi <time dateTime={project.updated_at}>{dateLabel}</time></span>}</div>
     <div className="repository-card-actions"><Link href={`/projeler/${project.id}`}>Projeyi incele <span aria-hidden="true">↗</span></Link>{manage && <ActionLink variant="quiet" href={`/projelerim/${project.id}/duzenle`}>Düzenle</ActionLink>}</div>
   </Surface>;

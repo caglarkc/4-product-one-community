@@ -1,0 +1,562 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-listing-participation",
+  "title": "FIRST ilan ve katılım entegrasyonu",
+  "goal": "Tek repo ilanı, ihtiyaç, görünürlük, başvuru, GitHub davet ve PR entegrasyonunu backend sonra frontend ve test ile yayınla",
+  "createdAt": "2026-09-20T21:02:44.591Z",
+  "updatedAt": "2026-09-20T21:27:47.687Z",
+  "revision": 26,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/rules.md",
+      "FIRST/README.md",
+      "FIRST/kararlar.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "56f7fe5acba6bb19359969725225a388b67ccadeb6646f4571be7d10efca8829",
+    "assumptions": [
+      "FIRST only. User explicitly authorizes tests, push, remote backend deployment and live site checks.",
+      "One active listing per repository, one need and immutable participation method. Private repositories allow applications except PR-first; selected-only listings are invitation-only.",
+      "Contributor statistics and chat deferred. Delete only identified preexisting test listing, never GitHub repository/issue/PR."
+    ]
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "provenance-correction",
+      "summary": "Correct backend-hardening result implementer identity to backend",
+      "reason": "Implementation was by backend agent; acceptance was independent source reviewer. Earlier result metadata accidentally used reviewer identity; evidence and result preserved.",
+      "decidedAt": "2026-09-20T21:21:41.393Z",
+      "actor": "manager"
+    }
+  ],
+  "items": [
+    {
+      "id": "provider",
+      "title": "GitHub collaboration provider",
+      "kind": "implement",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Implement live GitHub identity, Issue/PR/invite operations and fail-closed automatic-access protections.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Implement live GitHub identity, Issue/PR/invite operations and fail-closed automatic-access protections."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Authorization and external GitHub mutations"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/projects/github_participation.py"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/provider-2026-09-20T21-11-27-508Z.json"
+    },
+    {
+      "id": "backend",
+      "title": "backend",
+      "kind": "implement",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Implement listing participation models, strict visibility and authorization, applications/invitations, notifications, Issues/PR GitHub integration with fail-closed access protections.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Implement listing participation models, strict visibility and authorization, applications/invitations, notifications, Issues/PR GitHub integration with fail-closed access protections."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Authorization and external GitHub mutations"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/projects/models.py",
+          "FIRST/backend/projects/views.py",
+          "FIRST/backend/projects/urls.py",
+          "FIRST/backend/projects/participation.py",
+          "FIRST/backend/projects/participation_views.py",
+          "FIRST/backend/projects/migrations",
+          "FIRST/contracts/participation-api.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-20T21-12-03-547Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "frontend",
+      "kind": "implement",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Implement complete listing editor, discovery filters, participation dashboards and notifications against accepted backend contract.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Implement complete listing editor, discovery filters, participation dashboards and notifications against accepted backend contract."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "provider"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Authorization and external GitHub mutations"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-20T21-18-32-103Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Independent source review of backend/frontend authorization, provider effects, visibility and complete user scenarios.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Independent source review of backend/frontend authorization, provider effects, visibility and complete user scenarios."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "frontend",
+          "backend-hardening"
+        ],
+        "reviews": [
+          "backend",
+          "frontend",
+          "provider",
+          "backend-hardening"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authorization and external GitHub mutations"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-20T21-21-41-436Z.json"
+    },
+    {
+      "id": "test",
+      "title": "test",
+      "kind": "test",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Test authorization/state transitions, integrations and frontend checks with explicit user authorization.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Test authorization/state transitions, integrations and frontend checks with explicit user authorization."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "frontend",
+          "backend-hardening"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authorization and external GitHub mutations"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/accounts/tests",
+          "FIRST/backend/projects/tests.py",
+          "FIRST/backend/projects/tests_participation.py",
+          "FIRST/backend/projects/tests_provider.py",
+          "FIRST/frontend/tests"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/test-2026-09-20T21-27-46-543Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Verify acceptance and test evidence against approved product scope.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Verify acceptance and test evidence against approved product scope."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "test",
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend",
+          "provider",
+          "backend-hardening"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authorization and external GitHub mutations"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-20T21-27-46-930Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "integration",
+      "kind": "integration",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Integrate reviewed backend/frontend and record accepted artifacts.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Integrate reviewed backend/frontend and record accepted artifacts."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "backend",
+          "frontend",
+          "provider"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authorization and external GitHub mutations"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-20T21-27-47-336Z.json"
+    },
+    {
+      "id": "deploy",
+      "title": "deploy",
+      "kind": "delivery",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Commit/push, deploy matching backend release and verify live frontend and backend with user authorization.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Commit/push, deploy matching backend release and verify live frontend and backend with user authorization."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Authorization and external GitHub mutations"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "active",
+      "attempt": 1,
+      "resultRef": null
+    },
+    {
+      "id": "backend-hardening",
+      "title": "Backend review hardening",
+      "kind": "revision",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Resolve independent and manager source review findings without widening public feed data.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Public feed stays minimal and identified backend security/state findings are resolved."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "provider"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "backend"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Authorization and external GitHub mutations"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/projects/models.py",
+          "FIRST/backend/projects/views.py",
+          "FIRST/backend/projects/urls.py",
+          "FIRST/backend/projects/participation.py",
+          "FIRST/backend/projects/participation_views.py",
+          "FIRST/backend/projects/migrations",
+          "FIRST/contracts/participation-api.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/backend-hardening-2026-09-20T21-15-18-716Z.json"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-listing-participation",
+  "itemId": "backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "backend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Implemented models and additive migration, listing field validation/filters, visibility and permissions, participation decisions/durable retries, selected viewers, explicit collaboration and notifications; reviewed source and stable API contract. Runtime tests reserved after frontend.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/models.py",
+      "change": "modified",
+      "description": "Implemented models and additive migration, listing field validation/filters, visibility and permissions, participation decisions/durable retries, selected viewers, explicit collaboration and notifications; reviewed source and stable API contract. Runtime tests reserved after frontend."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/views.py",
+      "change": "modified",
+      "description": "Implemented models and additive migration, listing field validation/filters, visibility and permissions, participation decisions/durable retries, selected viewers, explicit collaboration and notifications; reviewed source and stable API contract. Runtime tests reserved after frontend."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/urls.py",
+      "change": "modified",
+      "description": "Implemented models and additive migration, listing field validation/filters, visibility and permissions, participation decisions/durable retries, selected viewers, explicit collaboration and notifications; reviewed source and stable API contract. Runtime tests reserved after frontend."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/participation.py",
+      "change": "modified",
+      "description": "Implemented models and additive migration, listing field validation/filters, visibility and permissions, participation decisions/durable retries, selected viewers, explicit collaboration and notifications; reviewed source and stable API contract. Runtime tests reserved after frontend."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/participation_views.py",
+      "change": "modified",
+      "description": "Implemented models and additive migration, listing field validation/filters, visibility and permissions, participation decisions/durable retries, selected viewers, explicit collaboration and notifications; reviewed source and stable API contract. Runtime tests reserved after frontend."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/migrations",
+      "change": "modified",
+      "description": "Implemented models and additive migration, listing field validation/filters, visibility and permissions, participation decisions/durable retries, selected viewers, explicit collaboration and notifications; reviewed source and stable API contract. Runtime tests reserved after frontend."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/contracts/participation-api.md",
+      "change": "modified",
+      "description": "Implemented models and additive migration, listing field validation/filters, visibility and permissions, participation decisions/durable retries, selected viewers, explicit collaboration and notifications; reviewed source and stable API contract. Runtime tests reserved after frontend."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Implement listing participation models, strict visibility and authorization, applications/invitations, notifications, Issues/PR GitHub integration with fail-closed access protections.",
+      "status": "passed",
+      "evidence": "Implemented models and additive migration, listing field validation/filters, visibility and permissions, participation decisions/durable retries, selected viewers, explicit collaboration and notifications; reviewed source and stable API contract. Runtime tests reserved after frontend."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-20T21:12:03.547918+00:00"
+}
