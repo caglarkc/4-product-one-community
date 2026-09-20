@@ -264,7 +264,7 @@ class ParticipationTests(TestCase):
             response = self.client.get('/api/auth/projects/?need_type=teammate&participation_mode=application')
             self.assertEqual(response.json()['count'], 1)
             summary = response.json()['projects'][0]
-            for field in ['owner_username', 'current_state', 'desired_outcome', 'issue_number', 'repository_id']:
+            for field in ['current_state', 'desired_outcome', 'issue_number', 'repository_id']:
                 self.assertNotIn(field, summary)
             self.client.get(f'/api/auth/projects/{self.project.pk}/')
             self.client.get('/api/auth/projects/mine/')

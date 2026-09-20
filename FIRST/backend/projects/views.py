@@ -72,6 +72,7 @@ def project_data(project, user=None):
 def public_project_summary(project):
     # Feed fields are intentionally independent of provider-backed detail data.
     return {'id': str(project.pk), 'title': project.title, 'description': project.description,
+        'owner_username': project.owner.username,
         'need_type': project.need_type,
         'need_type_label': next((i['label'] for i in participation.NEEDS if i['value'] == project.need_type), 'Belirtilmedi'),
         'participation_mode': project.participation_mode,
