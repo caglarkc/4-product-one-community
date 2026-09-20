@@ -1,49 +1,33 @@
 # FIRST — ortak tasarım dili
 
-18 Eylül 2026: Kullanıcı konseptin **renk tonlarını ve genel tema hissini** onayladı. Görseldeki yerleşimi, proje kartlarını veya örnek içerikleri onaylamadı. Bu belge FIRST'ün mevcut ve sonraki sayfalarının görsel ortak noktasıdır; yeni ürün özelliği veya ekran kapsamı oluşturmaz.
+20 Eylül 2026: Kullanıcı bütün FIRST arayüzünü kodlama ve GitHub ekosistemini yansıtan modern bir tasarımla yenilemeyi istedi. Bu karar 18 Eylül tarihli sıcak “Ortak Atölye” paletinin yerini alır. GitHub'dan esinlenen geliştirici arayüzü FIRST kimliğiyle uygulanır; GitHub logosu veya resmi ortaklık iddiası kullanılmaz.
 
 ## Görsel yön
 
-“Ortak Atölye”: sıcak, sakin, anlaşılır ve üretmeye davet eden bir arayüz. Kırık beyaz ana zemin, koyu mürekkep metin, orman yeşili aksiyonlar, adaçayı destek yüzeyleri ve küçük mercan vurgular. Büyük pazarlama hero'ları, gösterişli gradient'ler, ağır gölgeler veya dekorasyonla dolu ekranlar gerekmez. Sayfa düzenini gerçek kullanıcı işi belirler.
+Koyu grafit çalışma alanı; ince kenarlıklı repo panelleri, okunabilir açık metin, mavi bağlantılar, yeşil birincil aksiyonlar. Başlıklar ve içerik sade sistem sans; kategori, tarih, bölüm etiketi ve kod işaretlerinde ölçülü monospace. Geniş pazarlama panelleri yerine gerçek projeler, düzenli bilgi hiyerarşisi ve belirgin aksiyonlar öne çıkar.
+
+- Ana zemin yaklaşık `#0d1117`, yüzeyler `#161b22` / `#1c2128`, kenarlık `#30363d`.
+- Ana metin `#e6edf3`, yardımcı metin `#9da7b3`, bağlantı/odak `#79b8ff`.
+- Yeşil birincil aksiyonlar okunaklı metinle kullanılır; normal metin 4.5:1, gerekli kontrol sınırı ve odak 3:1 kontrast hedefler. Dekoratif yüzey kenarlığı ile etkileşimli kontrol sınırı ayrı token'dır.
+- Durum renkleri etiketlerle desteklenir. Aşama, repo gizliliği ve FIRST paylaşımının aktif/arşiv durumları birbirine karıştırılmaz.
+- Köşeler kontrollü, gölgeler hafif; kalabalık gradient, dekoratif terminal çıktısı veya sahte aktivite kullanılmaz.
 
 ## Merkezi tanımlar
 
-Uygulanabilir değerlerin tek kaynağı `frontend/src/app/tokens.css`; tekrar kullanılan React öğelerinin kaynağı `frontend/src/components/ui/` dizinidir. `globals.css` bu token'ları tüketir ve ortak kabuk/düzen stillerini tanımlar. Sayfalar ortak öğeleri birleştirir; aynı butonu, alanı veya durum kutusunu tekrar biçimlendirmez.
+Değerlerin tek kaynağı `frontend/src/app/tokens.css`, tekrar kullanılan kontrollerin kaynağı `frontend/src/components/ui/` dizinidir. `globals.css` ortak kabuk ve düzen stillerini tanımlar. Yeni renkler semantik token olarak eklenir; sayfalarda kopya buton/form stilleri veya ayrı temalar oluşturulmaz.
 
-| Rol | Başlangıç değeri | Kullanım |
-|---|---|---|
-| Ana zemin | `#F7F6F0` | Sayfa arka planı |
-| Yüzey | `#FFFFFF` | Form ve içerik yüzeyleri |
-| Mürekkep | `#202A27` | Başlık ve ana metin |
-| İkincil metin | `#57645D` | Yardım metni; okunaklı kontrast |
-| Ana aksiyon | `#225447` | Birincil buton, aktif öğe, bağlantı |
-| Ana aksiyon hover | `#193E34` | Hover/pressed |
-| Adaçayı yüzey | `#DCE8DE` | Bilgilendirme ve yardımcı yüzey |
-| Mercan vurgu | `#CB7257` | Küçük dekoratif vurgu; beyaz küçük yazıyla kullanma |
-| Koyu mercan | `#94432E` | Açık zeminde uyarı/vurgu yazısı |
-| Kenarlık | `#D4DAD1` | Yüzey ayrımı; kontrol ve odak için daha belirgin token gerekebilir |
+Sistem fontları Türkçe karakterleri destekler, harici font indirmesi gerekmez. 4/8 tabanlı boşluk ölçeği, en az 44px hedefli kontroller, görünür klavye odağı, disabled/loading/error durumları ve `prefers-reduced-motion` desteği korunur. Yeni UI veya ikon bağımlılığı gerekmez; küçük dekoratif SVG'ler erişilebilirlik ağacından gizlenir.
 
-Bu değerler onaylı yönün başlangıç paletidir. Hata, başarı, uyarı, kontrol kenarlığı ve disabled gibi semantik renkleri aynı merkezi dosyada tanımla. Normal metin için en az 4.5:1, büyük metin ile gerekli UI sınırları/odak için en az 3:1 kontrast hedefle. Erişilebilirlik için tonu koyulaştırmak temayı değiştirmek sayılmaz. Renk tek durum göstergesi olmasın.
+## Ana sayfa ve proje kartları
 
-- Tipografi: Türkçe karakterleri destekleyen sistem sans ailesi; dış font indirmesine bağımlılık yok. Başlık, gövde, etiket ve yardımcı yazı boyutları ortak token'lardan gelir. Gövde yaklaşık 16px ve rahat satır yüksekliğindedir.
-- Boşluk: 4/8 tabanlı tutarlı ölçek; form grupları arasında rahat nefes alanı. Gereksiz büyük boş paneller oluşturma.
-- Köşe: yüzeyler yaklaşık 12px, alan ve butonlar yaklaşık 8px. Değerleri merkezi değişkenlerden kullan.
-- Etkileşim: butonlar ve alanlar en az 44px kullanım yüksekliğini hedefler. Belirgin klavye odağı, hover, disabled ve bekleme durumları ortaktır; hareket varsa `prefers-reduced-motion` dikkate alınır.
+Ana sayfa ziyaretçi ve üyeye tüm aktif topluluk paylaşımlarını sunar. En yeni paylaşımlar önce gelir; gerçek toplam ve sayfalama vardır. Proje sayısı az olduğunda sahte kartlarla doldurulmaz. Başlık, kısa açıklama, üst/alt kategori, proje aşaması ve güncelleme tarihi taranabilir kartlarda gösterilir. Kartın ana bağlantısı FIRST proje detayına gider. Yıldız/fork/dil/katkıcı metrikleri yalnız gerçek veri kaynağı ve ayrı kapsam olduğunda eklenebilir.
 
-## Ortak bileşen sözleşmesi
+Public feed yalnız paylaşılmış proje metni ve sınıflandırmayı içerir. Repo URL/adı/gizliliği, README ve hesap verileri listede tahmin edilmez. Detay ekranındaki mevcut GitHub doğrulaması korunur. Liste boş, yükleniyor, hatalı veya sayfa değiştirme durumlarını açıkça gösterir.
 
-- `Button`: primary/secondary/quiet/danger gibi ihtiyaç duyulan varyantlar ve loading/disabled durumları tek uygulamada. Varsayılan `type="button"`; form gönderiminde `type="submit"` açık belirtilir.
-- Aksiyon bağlantısı: aynı görsel dili kullanır ancak gerçek bağlantı semantiğini korur. Sayfa geçişi buton taklidiyle yapılmaz.
-- Form öğeleri: ortak field/label/help/error, input/select/checkbox. Native `name`, `type`, `required`, `autoComplete`, `aria-*`, `disabled` ve form gönderim davranışları korunur. Birden fazla formdaki ID'ler çakışmaz.
-- Durum kutusu ve yüzey: hata, bilgi, başarı, yüklenme için anlamlı görünüm; `alert` veya `status` semantiği gerektiren yerlerde korunur. Her kutuyu canlı bölge yapma.
-- Sayfa kabuğu ve başlık: gezinme, içerik genişliği ve başlık hiyerarşisi ortak yaklaşımı izler. Form sayfaları dar/odaklı, hesap sayfası daha geniş olabilir; bütün sayfaları aynı yerleşime zorlama.
+## Bütün ekranlar
 
-Bir ortak öğeyi değiştirmek için sayfaları tek tek düzenlemek gerekmemelidir. Sayfaya özgü CSS yalnız gerçek düzen ihtiyacı için eklenir; hex renk, kopya kontrol stili veya ayrı tema yazılmaz. Yeni bağımlılık veya kapsamlı component framework'ü bu işin gereği değildir.
+Gezinme, giriş/kayıt/kurtarma, hesap/güvenlik, GitHub kurulumu, projelerim, proje oluşturma/düzenleme ve detay aynı tasarım dilini kullanır. Giriş durumuna göre menü kuralları korunur. Her sayfanın mevcut işlevleri, native form prop'ları, hata mesajları, gizlilik onayı ve güvenlik kontrolleri korunur. Mobilde okuma sırası, sarılan menüler ve tek sütun düzenler kullanılır. Başlık, klavye ve gerçek bağlantı semantiği dekorasyona feda edilmez.
 
-## Mevcut ekranlara uygulama
+## Kontrol
 
-Ana sayfa mevcut oturum özeti ve gerçek gezinmeyle sınırlı kalır. Giriş, kayıt, şifremi unuttum, şifre sıfırlama, e-posta doğrulama ve hesap yönetimi aynı görsel dili kullanır. Profil, telefon, yeniden doğrulama, parola/e-posta değişimi, e-posta hatırlatması ve oturum kapatma işlevleri korunur. Henüz uygulanmamış keşif/ekip/kişi sayfaları, sosyal giriş butonları ve mock proje kartları eklenmez.
-
-## Doğrulama
-
-Mevcut işlev testleri, lint, typecheck ve build korunur. Görsel kontrolde masaüstü ve dar ekran; uzun kayıt/hesap formları; hata, başarı, loading/disabled ve klavye odağı incelenir. Backend'i veya kullanıcı hesaplarını değiştirmeden görünüm için kullanılan test verisi ürün koduna girmez. Kontrol edilmemiş canlı akışları doğrulanmış sayma.
+Varsayılan kaynak/diff incelemesidir; kullanıcı istemedikçe test, lint/typecheck, yerel build veya tarayıcı çalıştırılmaz. Mevcut dağıtım kontrolleri teslimin parçasıdır. Görsel veya canlı kullanıcı akışı çalıştırılmadıysa doğrulanmış sayılmaz.

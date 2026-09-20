@@ -1,4 +1,6 @@
-export type Project = {id:string;title:string;category:string;subcategory?:string;stage?:string;category_label?:string;subcategory_label?:string;stage_label?:string;description:string;readme_excerpt:string;is_private:boolean;repository_url:string|null;repository_name:string|null;is_active:boolean;created_at:string;updated_at:string};
+export type ProjectSummary = {id:string;title:string;category:string;subcategory?:string;stage?:string;category_label?:string;subcategory_label?:string;stage_label?:string;description:string;created_at:string;updated_at:string};
+export type Project = ProjectSummary & {readme_excerpt:string;is_private:boolean;repository_url:string|null;repository_name:string|null;is_active:boolean};
+export type ProjectPage = {projects:ProjectSummary[];count:number;next_page:number|null;previous_page:number|null};
 export type Repository = {id:number;installation_id:number;full_name:string;name:string;private:boolean;description:string;html_url:string};
 export type TaxonomyOption = {value:string;label:string};
 // Optional additions allow the frontend to handle the previous API during rollout.

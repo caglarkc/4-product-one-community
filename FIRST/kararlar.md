@@ -30,6 +30,7 @@ Tamamlayıcı kayıtlar: [teknoloji ve yayın kararları](teknik-kararlar.md), [
 - Repo içeriği yazılımla sınırlı değildir; tasarım, dokümantasyon, araştırma veya yalnızca fikir aşamasındaki projeler de kapsamda olabilir. Çalışan kod veya geliştirilmiş ürün şartı yoktur; repo bağlama şartı korunur.
 - Repo bağlantısı, başlık, üst kategori, o üst kategoriye ait alt kategori ve proje durumu zorunludur. Açıklama ve diğer tanıtım bilgileri isteğe bağlıdır.
 - Repolar gezilebilir; kategori ve filtrelerle aranabilir. Kesin filtre listesi açık konudur.
+- 20 Eylül 2026 ana sayfa kararı: Ziyaretçiler ve üyeler tüm aktif sahiplerin aktif proje paylaşımlarını ana sayfada en yeni önce olacak şekilde sayfalı görür. Kişisel “Projelerim” ayrı kalır. Ana sayfa repo bağlantısı, README veya hesap verisi yerine paylaşılmış proje başlığı, açıklama ve sınıflandırma özetini sunar; repo verisinin güncel kontrolü detayda korunur.
 - Her repo için tek aktif ilan bulunabilir.
 - Proje sahibi ilanı silmeden yeni başvurulara kapatabilir ve sonra tekrar açabilir; katılım yöntemi değişmez.
 - Başvuruya kapalı ilanlar keşifte gösterilmez. Kapatılmadan önce alınmış başvurular değerlendirilmeye devam edebilir.

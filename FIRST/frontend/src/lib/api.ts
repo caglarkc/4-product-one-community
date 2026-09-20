@@ -72,11 +72,11 @@ async function boundary<T>(work:()=>Promise<T>):Promise<T> {
     throw new ApiError('Sunucuya ulaşılamadı. Bağlantınızı kontrol edip tekrar deneyin.',503);
   }
 }
-export function api<T>(path:string, body?:unknown, method='POST'):Promise<T> {
+export function api<T>(path:string, body?:unknown, method='POST', query?:URLSearchParams):Promise<T> {
   return boundary(()=> {
     const expected = sessionToken();
     return serialized(async()=> {
-      if(body === undefined) return request<T>(path);
+      if(body === undefined) return request<T>(path,{},query);
       // Bind queued form submissions to their original identity, then bind the
       // mutation to the exact session that issued CSRF (including anonymous bootstrap).
       if(sessionToken() !== expected) throw sessionChanged();

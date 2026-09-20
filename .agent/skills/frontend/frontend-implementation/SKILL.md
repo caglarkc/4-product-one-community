@@ -7,9 +7,9 @@ description: Implement or review frontend pages in this repository using the sel
 
 ## FIRST — tasarım aşaması açık
 
-18 Eylül 2026 kullanıcı kararı önceki tasarım ertelemesini **FIRST için** kaldırır. FIRST frontend işi öncesi repo kökünden `FIRST/tasarim-dili.md` oku. Onaylanan referansın renkleri ve genel hissi temel alınır; görseldeki yerleşim, içerikler ve henüz uygulanmamış özellikler onaylanmış sayılmaz.
+18 Eylül 2026 kullanıcı kararı önceki tasarım ertelemesini **FIRST için** kaldırır. 20 Eylül 2026 kullanıcı kararı görsel yönü GitHub ekosistemine yakın geliştirici arayüzü olarak yeniler. FIRST frontend işi öncesi repo kökünden `FIRST/tasarim-dili.md` oku; güncel ortak yön oradadır. Tasarım yönü henüz uygulanmamış özellikler için kapsam onayı değildir.
 
-- Kırık beyaz, mürekkep, orman yeşili, adaçayı ve ölçülü mercan paletini; ferah, sakin ve okunabilir yaklaşımı koru.
+- Güncel koyu grafit yüzey, okunaklı açık metin, mavi bağlantı ve yeşil aksiyon dilini koru. Proje/repo bilgisi ve kullanıcı işi önde olsun; sahte kod, aktivite veya metriklerle dekorasyon yapma.
 - Renk, yazı ölçeği, boşluk, kenarlık, köşe, gölge ve odak değerlerini `FIRST/frontend/src/app/tokens.css` içinde semantik CSS değişkenleriyle merkezileştir. Yeni sayfada aynı değerleri tekrar yazma; önce mevcut token'ı kullan, gerçek ihtiyaç varsa ortak tanımı genişlet.
 - Buton, aksiyon bağlantısı, form alanı, select, checkbox, uyarı ve yüzey gibi tekrar eden öğelerde `FIRST/frontend/src/components/ui/` altındaki ortak bileşenleri kullan. Native HTML prop'larını, erişilebilirliği ve form davranışını koru. Buton varyantı ve durumu bir yerde tanımlansın; sayfaya özel buton CSS'i veya kopya bileşen üretme.
 - Sayfalar sadece akışa özgü düzen ve içeriği birleştirir. Ortak görsel değişiklik token/bileşende yapılır. Yeni varyantı benzer öğelerin tümüne uygula; tek bir sayfayı ayrı tema haline getirme.
