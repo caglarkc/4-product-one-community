@@ -232,9 +232,10 @@ class ParticipationTests(TestCase):
         detail = self.candidate_client.get(f'/api/auth/projects/{self.project.pk}/').json()['project']
         self.assertIsNone(detail['repository_url']); self.assertIsNone(detail['issue_number'])
 
+    @patch(PROVIDER + 'require_public_issue_repository')
     @patch(PROVIDER + 'create_issue', side_effect=GitHubAccessError())
-    def test_issue_create_failure_persists_hidden_retryable_listing_and_uid(self, create_issue):
-        response = self.create(need_type='feature', current_state='Today', desired_outcome='Tomorrow', create_issue=True)
+    def test_issue_create_failure_persists_hidden_retryable_listing_and_uid(self, create_issue, public_repo):
+        response = self.create(need_type='bug', current_state='Today', desired_outcome='Tomorrow', create_issue=True)
         self.assertEqual(response.status_code, 201)
         project = Project.objects.get(repository_id=99)
         self.assertEqual((project.issue_status, project.issue_creator_uid), ('failed', '77'))
@@ -248,13 +249,14 @@ class ParticipationTests(TestCase):
         self.assertEqual(self.post(f'projects/{project.pk}/issue').status_code, 200)
         project.refresh_from_db(); self.assertEqual(project.issue_number, 12)
 
-    @patch(PROVIDER + 'issue', return_value={'number': 12})
+    @patch(PROVIDER + 'bug_issue', return_value={'number': 12})
     def test_existing_issue_validated_and_feature_fields_required(self, issue):
         self.assertEqual(self.create(need_type='bug').status_code, 400)
         response = self.create(need_type='bug', current_state='Broken', desired_outcome='Fixed', issue_number=12)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.json()['project']['issue_status'], 'ready')
-        self.assertEqual(issue.call_args.kwargs['reader_account'].uid, '77')
+        self.assertEqual(issue.call_args.args[0].uid, '77')
+        self.assertEqual(issue.call_count, 2)
 
     def test_feed_filters_strict_summary_and_ordinary_reads_never_call_provider(self):
         self.update_project(current_state='sensitive long text')
@@ -292,3 +294,45 @@ class ParticipationTests(TestCase):
             security.count('participation-actions', str(self.candidate.pk), ttl=60)
         self.assertEqual(self.post(f'projects/{self.project.pk}/collaboration', client=self.candidate_client).status_code, 429)
         pulls.assert_not_called()
+
+    def test_feature_needs_no_issue_and_is_discoverable_and_applicable(self):
+        response = self.create(need_type='feature', current_state='Now', desired_outcome='Next')
+        self.assertEqual(response.status_code, 201, response.content)
+        data = response.json()['project']
+        self.assertEqual(data['issue_status'], 'none')
+        self.assertIn(data['id'], [p['id'] for p in self.client.get('/api/auth/projects/').json()['projects']])
+        result = self.post(f"projects/{data['id']}/apply", {'explanation': 'I can build this'}, client=self.candidate_client)
+        self.assertEqual(result.status_code, 201)
+        self.assertEqual(self.create(need_type='feature', current_state='Now', desired_outcome='Next', issue_number=1).status_code, 400)
+
+    def test_private_bug_forbidden_but_legacy_can_archive(self):
+        from .tests import REPO
+        self.repo = {**REPO, 'private': True}
+        result = self.create(need_type='bug', current_state='Broken', desired_outcome='Fixed', issue_number=1)
+        self.assertEqual(result.status_code, 400)
+        self.assertFalse(Project.objects.filter(repository_id=99).exists())
+        self.update_project(is_private=True, need_type='bug', current_state='Old', desired_outcome='Fixed')
+        self.assertEqual(self.listing_patch(is_active=False).status_code, 200)
+        self.project.refresh_from_db(); self.assertFalse(self.project.is_active)
+
+    @patch(PROVIDER + 'selectable_issues', return_value=[{'number': 99, 'title': 'Newest'}])
+    def test_issue_selector_binds_cached_selection_and_returns_small_contract(self, choices):
+        from . import github
+        from .models import RepositoryCache
+        from .tests import TOKENS, REPO
+        from django.utils import timezone
+        credential = github.save_tokens(self.account, TOKENS)
+        RepositoryCache.objects.create(credential=credential, repositories=[REPO], cached_at=timezone.now())
+        result = self.post('projects/github/issues', {'repository_id': 99, 'installation_id': 11})
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json(), {'issues': [{'number': 99, 'title': 'Newest'}], 'limit': 50})
+        self.assertEqual(self.post('projects/github/issues', {'repository_id': 99, 'installation_id': 12}).status_code, 409)
+        self.assertEqual(choices.call_count, 1)
+        self.user.email_verified = False; self.user.save()
+        self.assertEqual(self.post('projects/github/issues', {'repository_id': 99, 'installation_id': 11}).status_code, 403)
+
+    @patch(PROVIDER + 'bug_issue', side_effect=GitHubAccessError({'code': 'github_public_issue_required'}))
+    def test_current_private_repo_overrides_stale_public_preview(self, issue):
+        result = self.create(need_type='bug', current_state='Broken', desired_outcome='Fixed', issue_number=1)
+        self.assertEqual(result.status_code, 503)
+        self.assertFalse(Project.objects.filter(repository_id=99).exists())

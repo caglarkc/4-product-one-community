@@ -244,6 +244,24 @@ class PreviewView(AuthView):
         return Response(snapshots.prepare(request, data))
 
 
+class IssueChoicesView(AuthView):
+    def post(self, request):
+        member(request, eligible=True)
+        data = validate(SelectionInput, request.data)
+        if security.count('github-issue-choices', str(request.user.pk), ttl=60) > 5:
+            raise RateLimited()
+        with transaction.atomic():
+            user, account, credential = snapshots.connection(request, eligible=True)
+            cache = RepositoryCache.objects.filter(credential=credential, cached_at__isnull=False).first()
+            selected = next((row for row in cache.repositories
+                if row.get('id') == data['repository_id'] and row.get('installation_id') == data['installation_id']), None) if cache else None
+            if not selected:
+                raise snapshots.SnapshotChanged()
+            project = Project(owner=user, repository_id=data['repository_id'], installation_id=data['installation_id'])
+            issues = provider.selectable_issues(account, project)
+            return Response({'issues': issues, 'limit': 50})
+
+
 class MineView(AuthView):
     def get(self, request):
         member(request)
@@ -266,7 +284,7 @@ class CreateView(AuthView):
             raise ValidationError({'page': ['Sayfa pozitif bir tam sayı olmalıdır.']})
         page_size = 12
         projects = Project.objects.filter(is_active=True, owner__is_active=True, visibility='public',
-            applications_open=True).exclude(need_type__in=['feature', 'bug'], issue_status__in=['pending', 'failed', 'none']).select_related('owner').order_by('-created_at', '-pk')
+            applications_open=True).exclude(need_type='bug', issue_status__in=['pending', 'failed', 'none']).select_related('owner').order_by('-created_at', '-pk')
         for field, choices in [('category', CATEGORY_LABELS), ('subcategory', SUBCATEGORY_CODES),
                 ('stage', STAGE_LABELS), ('need_type', [i['value'] for i in participation.NEEDS]),
                 ('participation_mode', [i['value'] for i in participation.MODES])]:
@@ -305,17 +323,23 @@ class CreateView(AuthView):
                 create_issue = data.pop('create_issue')
                 project = Project(owner=user, is_private=repo['private'],
                     repository_name=repo['full_name'], repository_url=repo['html_url'], **data)
+                if data['need_type'] == 'bug':
+                    with provider.operation_budget():
+                        if data.get('issue_number'):
+                            provider.bug_issue(account, project, data['issue_number'])
+                        else:
+                            provider.require_public_issue_repository(account, project)
                 if data['participation_mode'] == 'automatic':
                     provider.automatic_access_safety(account, project)
                 project = Project.objects.create(owner=user, is_private=repo['private'],
                     repository_name=repo['full_name'], repository_url=repo['html_url'],
                     issue_create_requested=create_issue, issue_creator_uid=account.uid if create_issue else '',
-                    issue_status='pending' if data['need_type'] in ['feature', 'bug'] else 'none', **data)
+                    issue_status='pending' if data['need_type'] == 'bug' else 'none', **data)
                 preview.delete()
         except IntegrityError:
             raise Conflict() from None
         setup_error = None
-        if project.need_type in ['feature', 'bug']:
+        if project.need_type == 'bug':
             project, setup_error = participation.setup_issue(request, project.pk)
         result = {'project': project_data(project, request.user)}
         if setup_error:
@@ -351,7 +375,8 @@ class DetailView(AuthView):
                         data.get('subcategory', project.subcategory),
                         data.get('stage', project.stage),
                     )
-                participation.validate_listing(data, project=project, private=project.is_private)
+                if not archive_only:
+                    participation.validate_listing(data, project=project, private=project.is_private)
                 for field, value in data.items():
                     setattr(project, field, value)
                 project.save()

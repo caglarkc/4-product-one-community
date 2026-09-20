@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-bug-issue-selector",
+  "itemId": "verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Source and diff verify bug-only selector, no feature Issue gates, private bug/PR filtering and backend rejection, exact cached repo/current admin proof, cap50 and no all-history traversal. Targeted tests passed.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Source acceptance checked against requested public/private and bug-only rules.",
+      "status": "passed",
+      "evidence": "Source and diff verify bug-only selector, no feature Issue gates, private bug/PR filtering and backend rejection, exact cached repo/current admin proof, cap50 and no all-history traversal. Targeted tests passed."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-20T21:48:23.947926+00:00"
+}

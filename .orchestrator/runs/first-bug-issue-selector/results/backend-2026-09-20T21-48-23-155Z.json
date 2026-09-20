@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-bug-issue-selector",
+  "itemId": "backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "backend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Public bug-only Issue validation and recent50 selector implemented; private bug rejected using persisted and fresh GitHub state; feature gates removed; 76 projects tests passed, no migration.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/",
+      "change": "modified",
+      "description": "Public bug-only Issue validation and recent50 selector implemented; private bug rejected using persisted and fresh GitHub state; feature gates removed; 76 projects tests passed, no migration."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/contracts/participation-api.md",
+      "change": "modified",
+      "description": "Public bug-only Issue validation and recent50 selector implemented; private bug rejected using persisted and fresh GitHub state; feature gates removed; 76 projects tests passed, no migration."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Public bug-only Issue contract and bounded owner-authorized recent Issue endpoint.",
+      "status": "passed",
+      "evidence": "Public bug-only Issue validation and recent50 selector implemented; private bug rejected using persisted and fresh GitHub state; feature gates removed; 76 projects tests passed, no migration."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-20T21:48:23.155567+00:00"
+}

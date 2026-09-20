@@ -82,7 +82,7 @@ def require_visible(project, user):
 def apply_available(project, user):
     return bool(project.is_active and project.applications_open and project.visibility != 'selected'
                 and project.participation_mode and project.owner.is_active
-                and (project.need_type not in ['feature', 'bug'] or project.issue_status == 'ready')
+                and (project.need_type != 'bug' or project.issue_status == 'ready')
                 and not (user.is_authenticated and user.pk == project.owner_id))
 
 
@@ -118,6 +118,8 @@ def validate_listing(data, project=None, private=False):
     mode = data.get('participation_mode', project.participation_mode if project else '')
     visibility = data.get('visibility', project.visibility if project else 'public')
     opened = data.get('applications_open', project.applications_open if project else True)
+    if private and need == 'bug':
+        raise ValidationError({'need_type': ['Private repo için hata/sorun ilanı açılamaz.']})
     if private and mode == 'pr':
         raise ValidationError({'participation_mode': ['Private repo için PR şartlı katılım kullanılamaz.']})
     if not opened and visibility == 'public':
@@ -126,10 +128,13 @@ def validate_listing(data, project=None, private=False):
         for field in ['current_state', 'desired_outcome']:
             if not data.get(field, getattr(project, field, '') if project else '').strip():
                 raise ValidationError({field: ['Bu alan özellik/hata ilanında zorunludur.']})
-        if project is None and bool(data.get('issue_number')) == bool(data.get('create_issue')):
+    elif project is None and any(data.get(key) for key in ['current_state', 'desired_outcome']):
+        raise ValidationError({'need_type': ['İhtiyaç açıklamaları yalnız özellik/hata ilanları içindir.']})
+    if project is None:
+        if need == 'bug' and bool(data.get('issue_number')) == bool(data.get('create_issue')):
             raise ValidationError({'issue_number': ['Mevcut Issue seçin veya yeni Issue oluşturun.']})
-    elif project is None and any(data.get(key) for key in ['issue_number', 'create_issue', 'current_state', 'desired_outcome']):
-        raise ValidationError({'need_type': ['Issue alanları yalnız özellik/hata ilanları içindir.']})
+        if need != 'bug' and any(data.get(key) for key in ['issue_number', 'create_issue']):
+            raise ValidationError({'issue_number': ['GitHub Issue yalnız hata/sorun ilanları içindir.']})
     if opened and not mode:
         raise ValidationError({'participation_mode': ['İlan katılım yöntemi eksik. Yeni ilan oluşturun.']})
 
@@ -140,7 +145,7 @@ def setup_issue(request, project_id):
         if actor.pk != project.owner_id:
             raise NotFound()
         eligible(actor)
-        if project.need_type not in ['feature', 'bug']:
+        if project.need_type != 'bug':
             raise ValidationError('Bu ilanda Issue yok.')
         if project.issue_status == 'ready':
             return project, None
@@ -159,7 +164,7 @@ def setup_issue(request, project_id):
                     f"Mevcut durum\n\n{project.current_state}\n\nBeklenen sonuç\n\n{project.desired_outcome}",
                     operation_key=str(project.pk))
             else:
-                issue = provider.issue(account, project, project.issue_number, reader_account=account)
+                issue = provider.bug_issue(account, project, project.issue_number)
             project.issue_number = issue['number']
             project.issue_status = 'ready'
         except APIException as exc:

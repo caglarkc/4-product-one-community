@@ -106,7 +106,7 @@ class InvitationView(AuthView):
             logic.eligible(actor)
             if not project.is_active:
                 raise PermissionDenied('Arşivlenmiş ilana davet gönderilemez.')
-            if project.need_type in ['feature', 'bug'] and project.issue_status != 'ready':
+            if project.need_type == 'bug' and project.issue_status != 'ready':
                 raise PermissionDenied('Önce GitHub Issue bağlantısını tamamlayın.')
             if target.pk == actor.pk:
                 raise ValidationError('Kendinizi davet edemezsiniz.')

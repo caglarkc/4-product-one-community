@@ -9,6 +9,7 @@ urlpatterns = [
     path('github/start/', views.StartView.as_view()),
     path('github/callback/', views.CallbackView.as_view()),
     path('github/repositories/', views.RepositoriesView.as_view()),
+    path('github/issues/', views.IssueChoicesView.as_view()),
     path('github/preview/', views.PreviewView.as_view()),
     path('participation/', participation.DashboardView.as_view()),
     path('participation/<uuid:participation_id>/action/', participation.ActionView.as_view()),

@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-bug-issue-selector",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "frontend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Bug-only recent50 selector and private need/mode filtering implemented; repo reset and late-response guard reviewed; 18 focused frontend tests and typecheck passed.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/frontend/src/components/projects.tsx",
+      "change": "modified",
+      "description": "Bug-only recent50 selector and private need/mode filtering implemented; repo reset and late-response guard reviewed; 18 focused frontend tests and typecheck passed."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/frontend/src/components/participation.tsx",
+      "change": "modified",
+      "description": "Bug-only recent50 selector and private need/mode filtering implemented; repo reset and late-response guard reviewed; 18 focused frontend tests and typecheck passed."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/frontend/src/lib/projects.ts",
+      "change": "modified",
+      "description": "Bug-only recent50 selector and private need/mode filtering implemented; repo reset and late-response guard reviewed; 18 focused frontend tests and typecheck passed."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/frontend/tests/",
+      "change": "modified",
+      "description": "Bug-only recent50 selector and private need/mode filtering implemented; repo reset and late-response guard reviewed; 18 focused frontend tests and typecheck passed."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Bug-only bounded Issue selector, private bug hidden, stale repo selections cleared.",
+      "status": "passed",
+      "evidence": "Bug-only recent50 selector and private need/mode filtering implemented; repo reset and late-response guard reviewed; 18 focused frontend tests and typecheck passed."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-20T21:47:03.937775+00:00"
+}
