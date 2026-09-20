@@ -50,6 +50,7 @@
   --shadow-surface: none;
   --width-page: 76rem;
   --width-form: 32rem;
+  --width-repo-picker: 52rem;
   --width-register: 40rem;
   --transition: 140ms ease;
 }
