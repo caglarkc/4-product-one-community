@@ -159,10 +159,10 @@ class CallbackView(OAuthDestinationMixin, AuthView):
         if type(identity.get('id')) is not int or str(identity['id']) != account.uid:
             raise PermissionDenied({'detail': 'Hesabınıza bağlı GitHub hesabını seçin.', 'code': 'github_identity_mismatch'})
         with transaction.atomic():
-            # Serialize against account recovery/deletion before storing a credential.
-            from accounts.models import User
-            user = User.objects.select_for_update().filter(pk=request.user.pk).first()
-            if not user or user.security_version != flow['security_version'] or not SocialAccount.objects.filter(pk=account.pk, user=user, uid=flow['uid']).exists():
+            # Recheck session expiry/revocation after GitHub requests and share
+            # the user-first lock order with logout and session revocation.
+            user = locked_user(request)
+            if user.security_version != flow['security_version'] or not SocialAccount.objects.filter(pk=account.pk, user=user, uid=flow['uid']).exists():
                 raise PermissionDenied('GitHub bağlantısı değişti.')
             github.save_tokens(account, tokens)
         return Response({'status': 'connected', 'return_to': flow.get('return_to', '/projelerim/yeni')})
