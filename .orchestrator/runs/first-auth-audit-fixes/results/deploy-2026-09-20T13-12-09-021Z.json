@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-auth-audit-fixes",
+  "itemId": "deploy",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Approved backend deployment completed successfully.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "send-machine exit 0; remote fast-forward and exact HEAD 98e2ac8e457dc9cf95c03b67794148b204bb5267 verified by script; release 20260920T131115-98e2ac8e457d healthy; Django check clean, no migrations pending, PostgreSQL/Redis connections passed, backend/db/redis healthy and health JSON status ok."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kabul edilen commit push edilir, uzak checkout aynı commite gelir ve mevcut dağıtım sağlık adımları tamamlanır.",
+      "status": "passed",
+      "evidence": "send-machine exit 0; remote fast-forward and exact HEAD 98e2ac8e457dc9cf95c03b67794148b204bb5267 verified by script; release 20260920T131115-98e2ac8e457d healthy; Django check clean, no migrations pending, PostgreSQL/Redis connections passed, backend/db/redis healthy and health JSON status ok."
+    }
+  ],
+  "checks": [
+    {
+      "name": "remote-release",
+      "status": "passed",
+      "evidence": "Existing send-machine completed with exit 0. Exact deployed source 98e2ac8; runtime image first-backend:20260920T131115-98e2ac8e457d."
+    },
+    {
+      "name": "deployment-health",
+      "status": "passed",
+      "evidence": "Django system checks clean; no migrations to apply; migrate --check passed; PostgreSQL/Redis connections passed; all three services healthy; health status ok."
+    },
+    {
+      "name": "oauth-concurrency-tests",
+      "status": "not_run",
+      "evidence": "Source review only for functional OAuth and concurrency behavior; no additional tests/browser."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Pre-deployment sessions retain previous recent-auth marker until its 10-minute window expires."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T13:12:09.021441+00:00"
+}
