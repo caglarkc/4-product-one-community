@@ -58,6 +58,7 @@ function AccountContent() {
   return <ReauthenticationContext.Provider value={{google: !!user.providers?.includes('google'), password: user.has_usable_password !== false}}><div className="account-page">
     <PageHeading title="Hesabım" description="Profilinizi, bağlantılarınızı ve güvenlik ayarlarınızı tek yerden yönetin."/>
     <div className="account-summary"><p>{user.full_name || user.username}</p><p className="account-email">{user.email} · {user.email_verified ? 'Doğrulandı' : 'Doğrulama bekliyor'}</p></div>
+    <div className="action-row"><ActionLink href="/profil/duzenle" variant="secondary">Topluluk profilimi düzenle</ActionLink><ActionLink href="/kaydedilenler" variant="quiet">Kaydedilen projeler</ActionLink></div>
     <nav className="section-nav" aria-label="Hesap bölümleri"><a href="#profil">Profil</a><a href="#baglantilar">Bağlantılar</a><a href="#guvenlik">Güvenlik</a><a href="#oturumlar">Oturumlar</a><a href="#hesap-islemleri">Hesap işlemleri</a></nav>
     {!user.email_verified && <EmailReminder/>}
     <div className="account-grid"><div className="account-column">

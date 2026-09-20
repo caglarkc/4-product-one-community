@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-community-discovery",
+  "itemId": "backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "people_backend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Backend implementation and source review complete; runtime not tested. Independent reviewer found no actionable backend issues.",
+  "artifacts": [
+    {
+      "type": "contract",
+      "path": "FIRST/contracts/community-api.md",
+      "change": "created",
+      "description": "Community endpoints and public shapes"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Implement approved privacy-safe community API and migrations",
+      "status": "passed",
+      "evidence": "Source includes strict profile allowlist, GitHub-only discovery, locked invite opt-out, shared SQL filters, scoped bookmarks, record-only reports and additive migrations."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-review",
+      "status": "passed",
+      "evidence": "Implementer and independent community_review inspected backend."
+    },
+    {
+      "name": "runtime-tests",
+      "status": "not_run",
+      "evidence": "Per user repository control preference."
+    }
+  ],
+  "risks": [
+    "Runtime behavior not separately tested."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T22:47:39.865625+00:00"
+}

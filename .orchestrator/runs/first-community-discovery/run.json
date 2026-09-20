@@ -1,0 +1,362 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-community-discovery",
+  "title": "FIRST profil keşif ve kaydetme",
+  "goal": "Onaylı profil, kişi keşfi, davet tercihleri, proje arama/kaydetme ve şikayet kaydını backend ve frontend ile yayınla",
+  "createdAt": "2026-09-20T22:42:45.625Z",
+  "updatedAt": "2026-09-20T22:50:29.610Z",
+  "revision": 15,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/rules.md",
+      "FIRST/kararlar.md",
+      ".orchestrator/runs/first-people-discovery-planning/plan.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "714b0ae1a50f06c5ac6579fe8ea18efccead3656bf0ebbedd88446dd5a3f6452",
+    "assumptions": []
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz.",
+    "No test/lint/typecheck/browser execution; source review only.",
+    "Exclude statistics, team pages, private showcase, moderation UI and enforcement."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [],
+  "items": [
+    {
+      "id": "backend",
+      "title": "Implement approved privacy-safe community API and migrations",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Implement approved privacy-safe community API and migrations",
+      "responsibility": "Own declared files only; no tests or browser checks; root delivers commits.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-people-discovery-planning/plan.md"
+        }
+      ],
+      "outputs": [
+        "Source or review evidence"
+      ],
+      "acceptanceCriteria": [
+        "Implement approved privacy-safe community API and migrations"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Privacy and authorization boundaries"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend",
+          "FIRST/contracts/community-api.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-20T22-47-39-865Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "Integrate approved profile discovery bookmarks and report UI",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Integrate approved profile discovery bookmarks and report UI",
+      "responsibility": "Own declared files only; no tests or browser checks; root delivers commits.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-people-discovery-planning/plan.md"
+        }
+      ],
+      "outputs": [
+        "Source or review evidence"
+      ],
+      "acceptanceCriteria": [
+        "Integrate approved profile discovery bookmarks and report UI"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Privacy and authorization boundaries"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-20T22-49-53-192Z.json"
+    },
+    {
+      "id": "review",
+      "title": "Independent source review of privacy authorization and contract",
+      "kind": "review",
+      "domains": [
+        "first"
+      ],
+      "objective": "Independent source review of privacy authorization and contract",
+      "responsibility": "Own declared files only; no tests or browser checks; root delivers commits.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-people-discovery-planning/plan.md"
+        }
+      ],
+      "outputs": [
+        "Source or review evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent source review of privacy authorization and contract"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "frontend"
+        ],
+        "reviews": [
+          "backend",
+          "frontend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Privacy and authorization boundaries"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-20T22-49-53-192Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "Verify acceptance from source and integration",
+      "kind": "verify",
+      "domains": [
+        "first"
+      ],
+      "objective": "Verify acceptance from source and integration",
+      "responsibility": "Own declared files only; no tests or browser checks; root delivers commits.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-people-discovery-planning/plan.md"
+        }
+      ],
+      "outputs": [
+        "Source or review evidence"
+      ],
+      "acceptanceCriteria": [
+        "Verify acceptance from source and integration"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Privacy and authorization boundaries"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-20T22-49-53-192Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "Integrate accepted backend and frontend",
+      "kind": "integration",
+      "domains": [
+        "first"
+      ],
+      "objective": "Integrate accepted backend and frontend",
+      "responsibility": "Own declared files only; no tests or browser checks; root delivers commits.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-people-discovery-planning/plan.md"
+        }
+      ],
+      "outputs": [
+        "Source or review evidence"
+      ],
+      "acceptanceCriteria": [
+        "Integrate accepted backend and frontend"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "backend",
+          "frontend"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Privacy and authorization boundaries"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-20T22-49-53-193Z.json"
+    },
+    {
+      "id": "deploy",
+      "title": "Commit push and standard production deployment",
+      "kind": "deployment",
+      "domains": [
+        "first"
+      ],
+      "objective": "Commit push and standard production deployment",
+      "responsibility": "Own declared files only; no tests or browser checks; root delivers commits.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-people-discovery-planning/plan.md"
+        }
+      ],
+      "outputs": [
+        "Source or review evidence"
+      ],
+      "acceptanceCriteria": [
+        "Commit push and standard production deployment"
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Privacy and authorization boundaries"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "active",
+      "attempt": 1,
+      "resultRef": null
+    }
+  ]
+}

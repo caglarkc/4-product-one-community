@@ -44,6 +44,8 @@ class Project(models.Model):
     category = models.CharField(max_length=40)
     subcategory = models.CharField(max_length=40, blank=True, default='')
     stage = models.CharField(max_length=40, blank=True, default='')
+    technologies = models.JSONField(default=list, blank=True)
+    required_skills = models.JSONField(default=list, blank=True)
     description = models.TextField(blank=True, default='')
     readme_excerpt = models.CharField(max_length=600, blank=True, default='')
     is_private = models.BooleanField(default=True)
@@ -111,3 +113,30 @@ class Notification(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+
+class Bookmark(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at', '-pk']
+        constraints = [models.UniqueConstraint(fields=['user', 'project'], name='one_bookmark_per_user_project')]
+
+
+class Report(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    reporter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='submitted_reports')
+    project = models.ForeignKey(Project, null=True, blank=True, on_delete=models.CASCADE)
+    profile = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE, related_name='profile_reports')
+    reason = models.CharField(max_length=20)
+    description = models.CharField(max_length=2000)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(condition=(models.Q(project__isnull=False, profile__isnull=True) | models.Q(project__isnull=True, profile__isnull=False)), name='report_exactly_one_target'),
+            models.UniqueConstraint(fields=['reporter', 'project'], name='one_report_per_project_reporter'),
+            models.UniqueConstraint(fields=['reporter', 'profile'], name='one_report_per_profile_reporter'),
+        ]

@@ -114,6 +114,8 @@ class InvitationView(AuthView):
             existing = Participation.objects.select_for_update().filter(project=project, user=target).first()
             if existing and existing.kind == 'invitation' and existing.status == 'invited':
                 return response_action(existing)
+            if not users[target.pk].invitations_open:
+                raise PermissionDenied({'detail': 'Bu kullanıcı yeni katılım davetlerini kapattı.', 'code': 'invitations_closed'})
             if existing:
                 if existing.operation_state != 'idle' or existing.status not in ['pending', 'rejected', 'withdrawn', 'declined']:
                     raise logic.StateConflict('Mevcut katılım veya GitHub işlemi var; yeni davet gönderilemez.')

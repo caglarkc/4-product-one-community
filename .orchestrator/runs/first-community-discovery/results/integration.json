@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-community-discovery",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "root",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Compared frontend request paths/payloads to backend serializers/routes and additive migrations. Confirmed deployment includes accounts/projects runtime files and all UI routes exist.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": null,
+      "change": "reported",
+      "description": "Compared frontend request paths/payloads to backend serializers/routes and additive migrations. Confirmed deployment includes accounts/projects runtime files and all UI routes exist."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Integrate accepted backend and frontend",
+      "status": "passed",
+      "evidence": "Compared frontend request paths/payloads to backend serializers/routes and additive migrations. Confirmed deployment includes accounts/projects runtime files and all UI routes exist."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-review",
+      "status": "passed",
+      "evidence": "Compared frontend request paths/payloads to backend serializers/routes and additive migrations. Confirmed deployment includes accounts/projects runtime files and all UI routes exist."
+    },
+    {
+      "name": "runtime-tests",
+      "status": "not_run",
+      "evidence": "Repository preference; no task-specific request."
+    }
+  ],
+  "risks": [
+    "Browser rendering and runtime scenarios not tested; deployment performs standard build and health checks only."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T22:49:53.193053+00:00"
+}

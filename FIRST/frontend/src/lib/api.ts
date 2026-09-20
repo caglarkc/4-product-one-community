@@ -21,8 +21,14 @@ function origin():string {
   return url.origin;
 }
 function sessionChanged():ApiError {return new ApiError('Oturumunuz değişti. Lütfen işlemi yeniden başlatın.',409,{},'session_changed');}
+// The sole variable text segment is an encoded username, never a raw URL/path.
+function validPeoplePath(path:string):boolean {
+  if(!path.startsWith('people/')) return false;
+  const segment=path.slice(7);
+  try {const username=decodeURIComponent(segment);return /^[\p{L}\p{N}_]{3,30}$/u.test(username)&&encodeURIComponent(username)===segment;} catch{return false;}
+}
 async function request<T>(path:string, options:RequestInit = {}, query?:URLSearchParams, session?:{expected:string|null; accepted?:(token:string|null)=>void}):Promise<T> {
-  if(!/^[a-z0-9-]+(?:\/[a-z0-9-]+)*$/.test(path)) throw new ApiError('Geçersiz API adresi.',400);
+  if(!/^[a-z0-9-]+(?:\/[a-z0-9-]+)*$/.test(path) && !validPeoplePath(path)) throw new ApiError('Geçersiz API adresi.',400);
   const sent = sessionToken();
   if(session && sent !== session.expected) throw sessionChanged();
   const headers = new Headers(options.headers);

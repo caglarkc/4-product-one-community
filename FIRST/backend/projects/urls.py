@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views, participation_views as participation
+from . import views, participation_views as participation, community_views as community
 
 urlpatterns = [
     path('', views.CreateView.as_view()),
@@ -20,5 +20,6 @@ urlpatterns = [
     path('<uuid:project_id>/viewers/', participation.ViewersView.as_view()),
     path('<uuid:project_id>/collaboration/', participation.CollaborationView.as_view()),
     path('<uuid:project_id>/issue/', participation.IssueView.as_view()),
+    path('<uuid:project_id>/bookmark/', community.BookmarkView.as_view()),
     path('<uuid:project_id>/', views.DetailView.as_view()),
 ]

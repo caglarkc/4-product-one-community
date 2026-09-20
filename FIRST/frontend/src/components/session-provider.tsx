@@ -74,11 +74,11 @@ export function SessionNavigation() {
   const current = (href: string) => pathname === href || (href !== '/' && pathname.startsWith(`${href}/`));
   return <div className="navigation-group"><nav className="site-nav" aria-label="Ana gezinme">
     {status === 'loading' ? <span className="nav-status" role="status">Hesap yükleniyor…</span> : status === 'error' ? <Button variant="quiet" onClick={() => void refresh()}>Hesabı yeniden kontrol et</Button> : user ? <>
-      {[['/', 'Projeleri keşfet'], ['/projelerim', 'Projelerim'], ['/basvurular', 'Başvurular'], ['/bildirimler', 'Bildirimler'], ['/hesap', 'Hesabım']].map(([href, label]) => <ActionLink key={href} href={href} variant="quiet" aria-current={current(href) ? 'page' : undefined}>{label}</ActionLink>)}
+      {[['/', 'Projeleri keşfet'], ['/kisiler', 'Kişiler'], ['/kaydedilenler', 'Kaydedilenler'], ['/projelerim', 'Projelerim'], ['/basvurular', 'Başvurular'], ['/bildirimler', 'Bildirimler'], ['/hesap', 'Hesabım']].map(([href, label]) => <ActionLink key={href} href={href} variant="quiet" aria-current={current(href) ? 'page' : undefined}>{label}</ActionLink>)}
       <Button variant="quiet" loading={busy} onClick={async () => {
         if(lock.current) return; lock.current = true; setBusy(true); setError('');
         try {await api('logout', {});} catch(caught) {setError((caught as Error).message);} finally {lock.current = false; setBusy(false);}
       }}>{busy ? 'Çıkış yapılıyor…' : 'Çıkış yap'}</Button>
-    </> : <><ActionLink href="/" variant="quiet" aria-current={current('/') ? 'page' : undefined}>Projeleri keşfet</ActionLink><ActionLink href="/giris" variant="quiet" aria-current={current('/giris') ? 'page' : undefined}>Giriş yap</ActionLink><ActionLink href="/kayit" aria-current={current('/kayit') ? 'page' : undefined}>Hesap oluştur</ActionLink></>}
+    </> : <><ActionLink href="/" variant="quiet" aria-current={current('/') ? 'page' : undefined}>Projeleri keşfet</ActionLink><ActionLink href="/kisiler" variant="quiet" aria-current={current('/kisiler') ? 'page' : undefined}>Kişiler</ActionLink><ActionLink href="/giris" variant="quiet" aria-current={current('/giris') ? 'page' : undefined}>Giriş yap</ActionLink><ActionLink href="/kayit" aria-current={current('/kayit') ? 'page' : undefined}>Hesap oluştur</ActionLink></>}
   </nav>{sessionError && status === 'ready' && <Alert role="alert" tone="error"><p>{sessionError}</p><Button variant="secondary" onClick={() => void refresh()}>Hesabı yeniden kontrol et</Button></Alert>}{error && <Alert role="alert" tone="error">{error}</Alert>}</div>;
 }

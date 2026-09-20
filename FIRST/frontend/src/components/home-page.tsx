@@ -4,12 +4,13 @@ import {api,publicProjectFeed} from '../lib/api';
 import type {ProjectPage,ProjectConfig} from '../lib/projects';
 import {ProjectCard, RepositoryMark} from './project-card';
 import {useSession} from './session-provider';
-import {ActionLink, Alert, Button, Field, Select, PageHeading, Surface} from './ui';
+import {ActionLink, Alert, Button, Field, Input, Select, PageHeading, Surface} from './ui';
 
 export function HomePage() {
   const {status, user} = useSession();
+  const [search,setSearch]=useState('');
   const [page, setPage] = useState(1);
-  const [config,setConfig]=useState<ProjectConfig|null>(null);const [configError,setConfigError]=useState('');const [filters,setFilters]=useState({category:'',subcategory:'',stage:'',need_type:'',participation_mode:''});
+  const [config,setConfig]=useState<ProjectConfig|null>(null);const [configError,setConfigError]=useState('');const [filters,setFilters]=useState({q:'',technology:'',skill:'',category:'',subcategory:'',stage:'',need_type:'',participation_mode:''});
   useEffect(()=>{let active=true;api<ProjectConfig>('projects/config').then(data=>{if(active)setConfig(data);}).catch(error=>{if(active)setConfigError((error as Error).message);});return()=>{active=false;};},[]);
   function filter(key:keyof typeof filters,value:string){setFeed(null);setError('');setFilters(previous=>({...previous,[key]:value,...(key==='category'?{subcategory:''}:{})}));setPage(1);}
 
@@ -36,9 +37,9 @@ export function HomePage() {
     </div>
     {status === 'ready' && user && !user.email_verified && <Alert><p>Proje paylaşmak için e-posta adresinizi doğrulayın. <a href="/hesap">Hesap ayarlarına git</a></p></Alert>}
     {configError&&<Alert role="alert" tone="error"><p>Filtre seçenekleri yüklenemedi: {configError}</p><Button variant="secondary" onClick={async()=>{try{setConfig(await api<ProjectConfig>('projects/config'));setConfigError('');}catch(error){setConfigError((error as Error).message);}}}>Filtreleri yeniden yükle</Button></Alert>}
-    {config&&<Surface className="project-panel"><h2>İlanları filtrele</h2><div className="listing-filters">{([
-      ['category','Üst kategori',config.categories],['subcategory','Alt kategori',config.categories.find(item=>item.value===filters.category)?.subcategories||[]],['stage','Proje aşaması',config.stages||[]],['need_type','Aranan katkı',config.need_types||[]],['participation_mode','Katılım yöntemi',config.participation_modes||[]]
-    ] as const).map(([key,label,options])=><Field key={key} id={`filter-${key}`} label={label}><Select id={`filter-${key}`} value={filters[key]} disabled={key==='subcategory'&&!filters.category} onChange={event=>filter(key,event.target.value)}><option value="">Tümü</option>{options.map(option=><option key={option.value} value={option.value}>{option.label}</option>)}</Select></Field>)}</div><Button variant="quiet" onClick={()=>{setFeed(null);setError('');setFilters({category:'',subcategory:'',stage:'',need_type:'',participation_mode:''});setPage(1);}}>Filtreleri temizle</Button><p className="field-help">Keşifte yalnız herkese açık, aktif ve başvuru alan ilanlar gösterilir.</p></Surface>}
+    {config&&<Surface className="project-panel"><h2>İlanları filtrele</h2><form className="community-search" onSubmit={event=>{event.preventDefault();filter('q',search.trim());}}><Field id="project-search" label="Proje ara"><Input id="project-search" type="search" maxLength={100} value={search} onChange={event=>setSearch(event.target.value)} placeholder="Başlık veya açıklama"/></Field><Button type="submit">Ara</Button></form><div className="listing-filters">{([
+      ['technology','Teknoloji',config.technologies||[]],['skill','Aranan beceri',config.skills||[]],['category','Üst kategori',config.categories],['subcategory','Alt kategori',config.categories.find(item=>item.value===filters.category)?.subcategories||[]],['stage','Proje aşaması',config.stages||[]],['need_type','Aranan katkı',config.need_types||[]],['participation_mode','Katılım yöntemi',config.participation_modes||[]]
+    ] as const).map(([key,label,options])=><Field key={key} id={`filter-${key}`} label={label}><Select id={`filter-${key}`} value={filters[key]} disabled={key==='subcategory'&&!filters.category} onChange={event=>filter(key,event.target.value)}><option value="">Tümü</option>{options.map(option=><option key={option.value} value={option.value}>{option.label}</option>)}</Select></Field>)}</div><Button variant="quiet" onClick={()=>{setFeed(null);setError('');setSearch('');setFilters({q:'',technology:'',skill:'',category:'',subcategory:'',stage:'',need_type:'',participation_mode:''});setPage(1);}}>Filtreleri temizle</Button><p className="field-help">Keşifte yalnız herkese açık, aktif ve başvuru alan ilanlar gösterilir.</p></Surface>}
     <section className="community-feed" aria-labelledby="feed-heading" aria-busy={!feed&&!error}>
       <div className="feed-toolbar"><div className="feed-title"><RepositoryMark/><h2 id="feed-heading" tabIndex={-1} ref={feedHeading}>Topluluk projeleri</h2>{feed && <span className="count-badge" aria-label={`${feed.count} aktif proje`}>{feed.count.toLocaleString('tr-TR')}</span>}</div><span className="feed-sort">En yeni paylaşımlar</span></div>
       {!feed && !error && <div className="feed-loading" role="status"><span className="loading-dot" aria-hidden="true"/>Projeler yükleniyor…</div>}
