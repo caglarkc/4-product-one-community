@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-community-discovery",
+  "itemId": "deploy",
+  "agent": {
+    "platform": "codex",
+    "identity": "root",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Commit a50ded8 pushed to origin/main; standard send-machine pulled matching commit and deployed release 20260920T225054-a50ded84b167. Django check, accounts.0004/projects.0005 migrations, PostgreSQL/Redis and backend health passed. Vercel commit status success.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Commit push and standard production deployment",
+      "status": "passed",
+      "evidence": "Commit a50ded8 pushed to origin/main; standard send-machine pulled matching commit and deployed release 20260920T225054-a50ded84b167. Django check, accounts.0004/projects.0005 migrations, PostgreSQL/Redis and backend health passed. Vercel commit status success."
+    }
+  ],
+  "checks": [
+    {
+      "name": "standard-deployment",
+      "status": "passed",
+      "evidence": "Commit a50ded8 pushed to origin/main; standard send-machine pulled matching commit and deployed release 20260920T225054-a50ded84b167. Django check, accounts.0004/projects.0005 migrations, PostgreSQL/Redis and backend health passed. Vercel commit status success."
+    },
+    {
+      "name": "user-scenarios",
+      "status": "not_run",
+      "evidence": "No browser, test suite, lint or local typecheck executed per repository preference."
+    }
+  ],
+  "risks": [
+    "Live user scenarios and visual rendering not separately verified."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T22:52:23.424516+00:00"
+}
