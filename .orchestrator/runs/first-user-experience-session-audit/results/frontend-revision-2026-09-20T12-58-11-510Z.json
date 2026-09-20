@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-user-experience-session-audit",
+  "itemId": "frontend-revision",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/frontend",
+    "sessionRef": "/root/frontend"
+  },
+  "outcome": "pass",
+  "summary": "P2 draft loss fixed using explicit background revalidation events for unchanged sessions.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "api.ts SessionChange revalidate flag and unchanged-key event classification; session-provider.tsx refresh(detail.revalidate===true); actual key/storage changes remain foreground."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Diğer oturumun kapatılması mevcut hesap form taslağını korur.",
+      "status": "passed",
+      "evidence": "api.ts SessionChange revalidate flag and unchanged-key event classification; session-provider.tsx refresh(detail.revalidate===true); actual key/storage changes remain foreground."
+    },
+    {
+      "criterion": "Gerçek kimlik değişimi ve çıkış eski özel içerikleri temizler.",
+      "status": "passed",
+      "evidence": "api.ts SessionChange revalidate flag and unchanged-key event classification; session-provider.tsx refresh(detail.revalidate===true); actual key/storage changes remain foreground."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "api.ts SessionChange revalidate flag and unchanged-key event classification; session-provider.tsx refresh(detail.revalidate===true); actual key/storage changes remain foreground."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Backend audit findings remain open; audit scope is read-only."
+  ],
+  "followUps": [
+    "Resolve separately documented backend P1/P2."
+  ],
+  "completedAt": "2026-09-20T12:58:11.510331+00:00"
+}

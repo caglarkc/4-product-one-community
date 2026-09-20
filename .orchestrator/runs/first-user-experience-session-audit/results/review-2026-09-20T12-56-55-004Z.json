@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-user-experience-session-audit",
+  "itemId": "review",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/independent_review",
+    "sessionRef": "/root/independent_review"
+  },
+  "outcome": "revise",
+  "summary": "Revision required: revoking another session discards current account form drafts.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "api.ts sessions event triggers foreground refresh; session-provider.tsx clears user and unmounts AccountContent. Backend findings independently confirmed."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Değişiklik ve denetim bulguları bağımsız kaynak incelemesinden geçer.",
+      "status": "failed",
+      "evidence": "api.ts sessions event triggers foreground refresh; session-provider.tsx clears user and unmounts AccountContent. Backend findings independently confirmed."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "failed",
+      "evidence": "api.ts sessions event triggers foreground refresh; session-provider.tsx clears user and unmounts AccountContent. Backend findings independently confirmed."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Backend audit findings remain open; audit scope is read-only.",
+    "P2: other-session revoke discards current account form drafts."
+  ],
+  "followUps": [
+    "Resolve separately documented backend P1/P2."
+  ],
+  "completedAt": "2026-09-20T12:56:55.004301+00:00"
+}

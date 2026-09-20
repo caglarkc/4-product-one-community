@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-user-experience-session-audit",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/frontend",
+    "sessionRef": "/root/frontend"
+  },
+  "outcome": "pass",
+  "summary": "Session-aware frontend implementation complete for independent source review.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "SessionProvider and API identity fence; home/account/projects/auth pages and shared CSS; frontend agent source review complete, runtime not run."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Ziyaretçi ve üye menüleri ayrılır; yüklenme/hata durumları güvenlidir.",
+      "status": "passed",
+      "evidence": "SessionProvider and API identity fence; home/account/projects/auth pages and shared CSS; frontend agent source review complete, runtime not run."
+    },
+    {
+      "criterion": "Mevcut sayfalar ortak tasarım diliyle düzenlenir; gerçek akışlar korunur.",
+      "status": "passed",
+      "evidence": "SessionProvider and API identity fence; home/account/projects/auth pages and shared CSS; frontend agent source review complete, runtime not run."
+    },
+    {
+      "criterion": "Giriş/çıkış, süre dolumu ve sekme değişimi ortak oturum durumuna yansır.",
+      "status": "passed",
+      "evidence": "SessionProvider and API identity fence; home/account/projects/auth pages and shared CSS; frontend agent source review complete, runtime not run."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "SessionProvider and API identity fence; home/account/projects/auth pages and shared CSS; frontend agent source review complete, runtime not run."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Backend audit findings remain open; audit scope is read-only."
+  ],
+  "followUps": [
+    "Resolve separately documented backend P1/P2."
+  ],
+  "completedAt": "2026-09-20T12:55:07.826083+00:00"
+}
