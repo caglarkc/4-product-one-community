@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-loading",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Loading fixes deployed to backend and frontend",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "caf2b2d pushed to origin/main hash matched; backend 20260920T183404-caf2b2dbeb86 healthy, Django/DB/Redis checks passed and no pending migrations. Vercel automatic deploy success. See delivery.md."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Accepted fixes deployed with matched git push and service/Vercel results.",
+      "status": "passed",
+      "evidence": "caf2b2d pushed to origin/main hash matched; backend 20260920T183404-caf2b2dbeb86 healthy, Django/DB/Redis checks passed and no pending migrations. Vercel automatic deploy success. See delivery.md."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "caf2b2d pushed to origin/main hash matched; backend 20260920T183404-caf2b2dbeb86 healthy, Django/DB/Redis checks passed and no pending migrations. Vercel automatic deploy success. See delivery.md."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "No schema change; standard deployment required."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T18:35:02.569285+00:00"
+}

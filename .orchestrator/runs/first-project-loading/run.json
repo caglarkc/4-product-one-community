@@ -1,0 +1,309 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-loading",
+  "title": "FIRST proje yükleme gecikmesi",
+  "goal": "Canlı API yönünü ve gecikmeyi incele; public feed kuyruk ve kişisel liste GitHub beklemesini kaldır",
+  "createdAt": "2026-09-20T18:31:53.799Z",
+  "updatedAt": "2026-09-20T18:35:02.683Z",
+  "revision": 14,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/rules.md",
+      "FIRST/README.md",
+      "FIRST/tasarim-dili.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "a1ff9ad39530e675d9e56ae61566fcd8376e1730373c5a196a1f204884f5944b",
+    "assumptions": [
+      "User requests live backend latency inspection; read-only HTTP timing and server health/resource observations authorized.",
+      "No test suite/lint/typecheck/local build/browser; source review plus normal deployment checks."
+    ]
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [],
+  "items": [
+    {
+      "id": "backend",
+      "title": "backend",
+      "kind": "implement",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Own project list requires authentication but no GitHub network roundtrip; detail proof stays unchanged.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Own project list requires authentication but no GitHub network roundtrip; detail proof stays unchanged."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/projects/views.py"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-20T18-32-17-039Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "frontend",
+      "kind": "implement",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Anonymous public feed bypasses authenticated queue and cannot mutate session; obsolete fetch aborted.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "frontend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Anonymous public feed bypasses authenticated queue and cannot mutate session; obsolete fetch aborted."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/src/lib/api.ts",
+          "FIRST/frontend/src/components/home-page.tsx"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-20T18-32-58-752Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Independent source review accepts privacy, session fences and latency fixes.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "review artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Independent source review accepts privacy, session fences and latency fixes."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "frontend"
+        ],
+        "reviews": [
+          "backend",
+          "frontend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-20T18-33-41-716Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Manager verifies source and records measured architecture/latency evidence without overstating user-specific timing.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "verify artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Manager verifies source and records measured architecture/latency evidence without overstating user-specific timing."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-20T18-33-42-101Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "integration",
+      "kind": "integration",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Accepted fixes deployed with matched git push and service/Vercel results.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "integration artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Accepted fixes deployed with matched git push and service/Vercel results."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "backend",
+          "frontend"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-20T18-35-02-569Z.json"
+    }
+  ]
+}
