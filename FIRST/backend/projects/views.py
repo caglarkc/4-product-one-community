@@ -12,6 +12,8 @@ from rest_framework.response import Response
 from accounts.oauth_response import OAuthDestinationMixin, validate_callback_query
 from accounts import security
 from accounts.serializers import StrictSerializer
+from accounts.community_catalog import SKILLS, SKILL_IDS, CatalogList, query_value, search
+from .community import discoverable_projects
 from accounts.account_views import locked_user
 from accounts.views import AuthView, RateLimited
 from accounts.proxy import client_ip
@@ -60,6 +62,7 @@ def project_data(project, user=None):
     private = project.is_private
     return {**participation.fields(project, user), 'id': str(project.pk), 'title': project.title, 'category': project.category,
         'subcategory': project.subcategory, 'stage': project.stage,
+        'technologies': project.technologies, 'required_skills': project.required_skills,
         'category_label': CATEGORY_LABELS.get(project.category, project.category or 'Belirtilmedi'),
         'subcategory_label': SUBCATEGORY_LABELS.get(project.category, {}).get(project.subcategory, project.subcategory or 'Belirtilmedi'),
         'stage_label': STAGE_LABELS.get(project.stage, project.stage or 'Belirtilmedi'),
@@ -78,6 +81,7 @@ def public_project_summary(project):
         'participation_mode': project.participation_mode,
         'participation_mode_label': next((i['label'] for i in participation.MODES if i['value'] == project.participation_mode), 'Belirtilmedi'),
         'category': project.category, 'subcategory': project.subcategory, 'stage': project.stage,
+        'technologies': project.technologies, 'required_skills': project.required_skills,
         'category_label': CATEGORY_LABELS.get(project.category, project.category or 'Belirtilmedi'),
         'subcategory_label': SUBCATEGORY_LABELS.get(project.category, {}).get(project.subcategory, project.subcategory or 'Belirtilmedi'),
         'stage_label': STAGE_LABELS.get(project.stage, project.stage or 'Belirtilmedi'),
@@ -94,6 +98,8 @@ class SelectionInput(StrictSerializer):
 
 
 class CreateInput(SelectionInput):
+    technologies = CatalogList(required=False, default=list)
+    required_skills = CatalogList(required=False, default=list)
     preview_token = serializers.UUIDField()
     title = serializers.CharField(max_length=200)
     category = serializers.ChoiceField(choices=list(CATEGORY_LABELS.items()))
@@ -118,6 +124,8 @@ class CreateInput(SelectionInput):
 
 
 class EditInput(StrictSerializer):
+    technologies = CatalogList(required=False)
+    required_skills = CatalogList(required=False)
     title = serializers.CharField(max_length=200, required=False)
     category = serializers.ChoiceField(choices=list(CATEGORY_LABELS.items()), required=False)
     subcategory = serializers.ChoiceField(choices=SUBCATEGORY_CODES, required=False)
@@ -150,7 +158,7 @@ class ConfigView(AuthView):
     def get(self, request):
         return Response({'categories': CATEGORIES, 'stages': STAGES, 'github_app_enabled': github.enabled(),
             'need_types': participation.NEEDS, 'participation_modes': participation.MODES,
-            'visibilities': participation.VISIBILITIES})
+            'visibilities': participation.VISIBILITIES, 'skills': SKILLS, 'technologies': SKILLS})
 
 
 class StatusView(AuthView):
@@ -284,8 +292,7 @@ class CreateView(AuthView):
         if page < 1:
             raise ValidationError({'page': ['Sayfa pozitif bir tam sayı olmalıdır.']})
         page_size = 12
-        projects = Project.objects.filter(is_active=True, owner__is_active=True, visibility='public',
-            applications_open=True).exclude(need_type='bug', issue_status__in=['pending', 'failed', 'none']).select_related('owner').order_by('-created_at', '-pk')
+        projects = discoverable_projects()
         for field, choices in [('category', CATEGORY_LABELS), ('subcategory', SUBCATEGORY_CODES),
                 ('stage', STAGE_LABELS), ('need_type', [i['value'] for i in participation.NEEDS]),
                 ('participation_mode', [i['value'] for i in participation.MODES])]:
@@ -294,6 +301,11 @@ class CreateView(AuthView):
                 raise ValidationError({field: ['Geçerli bir filtre seçin.']})
             if values:
                 projects = projects.filter(**{field: values[0]})
+        projects = search(projects, request, ['title', 'description'])
+        for parameter, field in [('technology', 'technologies'), ('skill', 'required_skills')]:
+            value = query_value(request, parameter, SKILL_IDS)
+            if value:
+                projects = projects.filter(**{field + '__contains': [value]})
         count = projects.count()
         start = (page - 1) * page_size
         # Avoid sending an oversized OFFSET to the database for absent pages.

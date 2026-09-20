@@ -2,7 +2,7 @@
 
 Proje ve açık kaynak topluluğu.
 
-Durum: Hesap yönetimi, Google/GitHub girişi, GitHub repo bağlantısı, proje paylaşımı/düzenleme/arşivleme, sınıflandırma ve sayfalı topluluk keşfi uygulanmıştır. İlan ve katılım entegrasyonu [aktif run](../.orchestrator/runs/first-listing-participation/run.json) ile yürütülür. Güncel kabul edilmiş kararlar, açık konular ve askıya alınan mesajlaşma kapsamı [kararlar.md](kararlar.md) dosyasındadır. Ürün kararı ile uygulanmış/test edilmiş davranış ayrı değerlendirilir.
+Durum: Hesap yönetimi, Google/GitHub girişi, GitHub repo bağlantısı, proje paylaşımı, ilan/başvuru/davet akışları ve sayfalı topluluk keşfi uygulanmıştır. Public profil, kişi keşfi, davet tercihleri, proje arama/kaydetme ve şikâyet kaydı [geliştirme run’ı](../.orchestrator/runs/first-community-discovery/run.json) ile izlenir. Bu yeni kapsamın API alanları [topluluk sözleşmesinde](contracts/community-api.md) tutulur. Güncel kabul edilmiş kararlar, açık konular ve askıya alınan mesajlaşma kapsamı [kararlar.md](kararlar.md) dosyasındadır. Ürün kararı ile uygulanmış/test edilmiş davranış ayrı değerlendirilir.
 
 ## Amaç
 

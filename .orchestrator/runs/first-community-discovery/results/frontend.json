@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-community-discovery",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "people_frontend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Complete frontend integration source-reviewed: public/edit profile, people filters, profile invitations, project text/catalog filters and editing, scoped saved projects and reports; token styles and compact selectors.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/frontend",
+      "change": "reported",
+      "description": "Complete frontend integration source-reviewed: public/edit profile, people filters, profile invitations, project text/catalog filters and editing, scoped saved projects and reports; token styles and compact selectors."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Integrate approved profile discovery bookmarks and report UI",
+      "status": "passed",
+      "evidence": "Complete frontend integration source-reviewed: public/edit profile, people filters, profile invitations, project text/catalog filters and editing, scoped saved projects and reports; token styles and compact selectors."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-review",
+      "status": "passed",
+      "evidence": "Complete frontend integration source-reviewed: public/edit profile, people filters, profile invitations, project text/catalog filters and editing, scoped saved projects and reports; token styles and compact selectors."
+    },
+    {
+      "name": "runtime-tests",
+      "status": "not_run",
+      "evidence": "Repository preference; no task-specific request."
+    }
+  ],
+  "risks": [
+    "Browser rendering and runtime scenarios not tested; deployment performs standard build and health checks only."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T22:49:53.192457+00:00"
+}

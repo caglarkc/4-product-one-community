@@ -1,4 +1,4 @@
-export type ProjectSummary = {id:string;owner_username?:string;title:string;category:string;subcategory?:string;stage?:string;category_label?:string;subcategory_label?:string;stage_label?:string;description:string;created_at:string;updated_at:string;need_type?:string;participation_mode?:string;need_type_label?:string;participation_mode_label?:string};
+export type ProjectSummary = {technologies?:string[];required_skills?:string[];id:string;owner_username?:string;title:string;category:string;subcategory?:string;stage?:string;category_label?:string;subcategory_label?:string;stage_label?:string;description:string;created_at:string;updated_at:string;need_type?:string;participation_mode?:string;need_type_label?:string;participation_mode_label?:string};
 export type Project = ProjectSummary & {readme_excerpt:string;is_private:boolean;repository_url:string|null;repository_name:string|null;is_active:boolean;visibility:string;applications_open:boolean;current_state:string;desired_outcome:string;issue_number:number|null;issue_status:string;is_owner:boolean;can_apply:boolean;owner_username:string};
 export type ProjectPage = {projects:ProjectSummary[];count:number;next_page:number|null;previous_page:number|null};
 export type Repository = {id:number;installation_id:number;full_name:string;name:string;private:boolean;description:string;html_url:string};
@@ -11,7 +11,7 @@ export function repositoryCacheCaption(cachedAt:string|null):string {
 }
 export type TaxonomyOption = {value:string;label:string};
 // Optional additions allow the frontend to handle the previous API during rollout.
-export type ProjectConfig = {categories:(TaxonomyOption & {subcategories?:TaxonomyOption[]})[];stages?:(TaxonomyOption & {description:string})[];github_app_enabled:boolean;need_types:TaxonomyOption[];participation_modes:TaxonomyOption[];visibilities:TaxonomyOption[]};
+export type ProjectConfig = {skills?:TaxonomyOption[];technologies?:TaxonomyOption[];categories:(TaxonomyOption & {subcategories?:TaxonomyOption[]})[];stages?:(TaxonomyOption & {description:string})[];github_app_enabled:boolean;need_types:TaxonomyOption[];participation_modes:TaxonomyOption[];visibilities:TaxonomyOption[]};
 export type GitHubStatus = {enabled:boolean;connected:boolean;github_linked:boolean;installation_url:string|null};
 export function githubUrl(value:string|null, installation=false):string|null {
   try {const url=new URL(value || '');

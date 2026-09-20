@@ -46,3 +46,15 @@ urlpatterns += [
     path('projects/github/disconnect/', reset.RepositoryDisconnectView.as_view()),
     path('account/', reset.AccountDeleteView.as_view()),
 ]
+
+
+from . import community_views as community
+from projects import community_views as project_community
+urlpatterns += [
+    path('community/config/', community.CommunityConfigView.as_view()),
+    path('community/profile/', community.CommunityProfileView.as_view()),
+    path('people/', community.PeopleView.as_view()),
+    path('people/<str:username>/', community.PersonView.as_view()),
+    path('bookmarks/', project_community.BookmarksView.as_view()),
+    path('reports/', project_community.ReportsView.as_view()),
+]

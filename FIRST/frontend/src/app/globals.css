@@ -299,3 +299,23 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   .project-editor-repo-heading .project-editor-repo-tools { margin-left: 0; width: 100%; }
   .project-editor-repo-controls { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Community discovery, profile and saved projects share the existing surfaces. */
+.community-search { display:flex; gap:var(--space-3); align-items:end; flex-wrap:wrap; margin-bottom:var(--space-4); }
+.community-search .field { flex:1; min-width:min(100%, 16rem); margin:0; }
+.community-search .button { margin-bottom:var(--space-1); }
+.community-choices { border:var(--border-width) solid var(--color-border); border-radius:var(--radius-control); padding:var(--space-3); margin-block:var(--space-3); min-width:0; }
+.community-choices legend { padding-inline:var(--space-2); font-weight:600; }
+.community-choices summary { cursor:pointer; color:var(--color-link); min-height:var(--control-height); padding-block:var(--space-2); }
+.community-choice-options { max-height:16rem; overflow:auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr)); gap:var(--space-2); }
+.community-choice-options .check { margin:0; min-height:var(--control-height); }
+.person-card { padding:var(--space-5); min-width:0; overflow-wrap:anywhere; }
+.person-identity { display:flex; align-items:center; gap:var(--space-3); }
+.person-identity h2,.person-identity p { margin:0; }
+.person-initial { display:grid; place-items:center; width:var(--space-12); height:var(--space-12); flex-shrink:0; border-radius:var(--radius-pill); background:var(--color-elevated); border:var(--border-width) solid var(--color-border); font-size:var(--font-size-section); }
+.repository-owner-link { position:relative; z-index:2; display:inline-flex; align-items:center; min-height:var(--control-height); }
+.community-report,.community-invite { margin-block:var(--space-3); }
+.community-report form,.community-invite form { padding-block:var(--space-3); max-width:var(--width-repo-picker); }
+.saved-project { min-width:0; display:flex; flex-direction:column; align-items:stretch; gap:var(--space-2); }
+.saved-project .repository-card { flex:1; }
+@media(max-width:600px) { .community-search .button { width:100%; } .person-card { padding:var(--space-4); } }

@@ -30,6 +30,12 @@ class User(AbstractUser):
     phone = models.CharField(max_length=16, blank=True)
     email_verified = models.BooleanField(default=False)
     phone_verified = models.BooleanField(default=False)
+    bio = models.CharField(max_length=1000, blank=True, default='')
+    website = models.URLField(max_length=500, blank=True, default='')
+    skills = models.JSONField(default=list, blank=True)
+    interests = models.JSONField(default=list, blank=True)
+    discoverable = models.BooleanField(default=True)
+    invitations_open = models.BooleanField(default=True)
     security_version = models.PositiveIntegerField(default=1)
     email_change_nonce = models.CharField(max_length=64, blank=True, editable=False)
     USERNAME_FIELD = 'email'
