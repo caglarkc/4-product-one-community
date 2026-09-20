@@ -67,9 +67,9 @@ export function AccountReset({user, onChanged, onDeleted}: {user: User; onChange
   const [activeAction, setActiveAction] = useState<Action | null>(null);
   const [result, setResult] = useState<ResetResult | null>(null);
   function changed(updated: ResetResult) {setActiveAction(null); setResult(updated); if (updated.user) onChanged(updated.user);}
-  return <Surface className="account-section account-reset"><h2>Bağlantıları ve hesabı sıfırla</h2>
+  return <Surface className="account-section account-reset"><h2>Bağlantıları kaldırma ve hesap silme</h2>
     {result && <Alert tone={result.github_cleanup_required ? 'info' : 'success'} role="status">{result.detail}{result.github_cleanup_required && <p><a href="https://github.com/settings/applications" target="_blank" rel="noopener noreferrer">GitHub’da kalan izni kaldırın (yeni sekme)</a></p>}</Alert>}
-    <p>GitHub hesabınız ve repolarınız bu işlemlerle silinmez. GitHub üzerindeki uygulama kurulumu ayrıca kalır.</p>
+    <p>Bu işlemler erişimlerinizi veya hesabınızı kaldırır. Devam etmeden önce her işlemin etkisini gözden geçirin. GitHub hesabınız ve repolarınız silinmez.</p>
     {github && <>
       <ConfirmedAction action="github" activeAction={activeAction} setActiveAction={setActiveAction} onChanged={changed} onDeleted={onDeleted}/>
       <ConfirmedAction action="repositories" activeAction={activeAction} setActiveAction={setActiveAction} onChanged={changed} onDeleted={onDeleted}/>

@@ -1,12 +1,13 @@
 'use client';
 import Link from 'next/link';
+import {GuestOnly} from './session-provider';
 import { useEffect, useId, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { api, ApiError, oauthDestination } from '../lib/api';
 import { Alert, Button, Field, Input, PageHeading, Select, Surface } from './ui';
 
 type Pending = {profile: {email: string; full_name: string; username: string; birth_date: string; gender: string; phone: string}; email_verified: boolean; email_editable: boolean};
-export function SocialSignup({provider}: {provider: 'google' | 'github'}) {
+function SocialSignupContent({provider}: {provider: 'google' | 'github'}) {
   const label = provider === 'google' ? 'Google' : 'GitHub';
   const router = useRouter();
   const id = useId();
@@ -61,4 +62,8 @@ export function SocialSignup({provider}: {provider: 'google' | 'github'}) {
     </fieldset></form>}
     <div className="form-links"><Link href="/giris">Girişe dön</Link></div>
   </Surface>;
+}
+
+export function SocialSignup(props: Parameters<typeof SocialSignupContent>[0]) {
+  return <GuestOnly><SocialSignupContent {...props}/></GuestOnly>;
 }

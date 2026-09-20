@@ -3,13 +3,15 @@ export type User = {id:number;email:string;username:string;full_name:string;birt
 export class ApiError extends Error {
   constructor(message:string, public status:number, public errors:Record<string,string[]> = {}, public code?:string, public redirectTo?:string){super(message);}
 }
-const sessionKey = 'first.api.session';
+export const sessionKey = 'first.api.session';
+export const sessionChangedEvent = 'first:session-changed';
+export type SessionChange = {user?: User | null; revalidate?: boolean};
 const keyPattern = /^[a-z0-9]{32}$/;
 let queue:Promise<unknown> = Promise.resolve();
 function serialized<T>(work:()=>Promise<T>):Promise<T> {
   const next = queue.then(work, work); queue = next.catch(()=>undefined); return next;
 }
-function token():string|null {
+export function sessionToken():string|null {
   const value = localStorage.getItem(sessionKey);
   return value && keyPattern.test(value) ? value : null;
 }
@@ -18,35 +20,50 @@ function origin():string {
   if(url.protocol !== 'https:' || url.username || url.password || url.pathname !== '/' || url.search || url.hash) throw new Error('Invalid API origin');
   return url.origin;
 }
-async function request<T>(path:string, options:RequestInit = {}, query?:URLSearchParams):Promise<T> {
+function sessionChanged():ApiError {return new ApiError('Oturumunuz değişti. Lütfen işlemi yeniden başlatın.',409,{},'session_changed');}
+async function request<T>(path:string, options:RequestInit = {}, query?:URLSearchParams, session?:{expected:string|null; accepted?:(token:string|null)=>void}):Promise<T> {
   if(!/^[a-z0-9-]+(?:\/[a-z0-9-]+)*$/.test(path)) throw new ApiError('Geçersiz API adresi.',400);
-  const sent = token();
+  const sent = sessionToken();
+  if(session && sent !== session.expected) throw sessionChanged();
   const headers = new Headers(options.headers);
   if(sent) headers.set('Authorization', `Bearer ${sent}`);
   const response = await fetch(`${origin()}/api/auth/${path}/${query?.size ? `?${query}` : ''}`, {
     ...options, headers, credentials:'omit', cache:'no-store', redirect:'error', signal:AbortSignal.timeout(30000),
   });
+  if(sessionToken() !== sent) throw sessionChanged();
   const updated = response.headers.get('X-First-Session');
-  // An old response must never replace a newer login from this or another tab.
-  if(updated !== null && token() === sent) {
+  const body = await response.json().catch(()=>null);
+  // Parsing a response can yield to a login/logout in another tab as well.
+  if(sessionToken() !== sent) throw sessionChanged();
+  let changed = false;
+  if(updated !== null) {
     if(updated === '') localStorage.removeItem(sessionKey);
     else if(keyPattern.test(updated)) localStorage.setItem(sessionKey, updated);
     else throw new ApiError('Geçersiz oturum yanıtı.',502);
+    changed = sessionToken() !== sent;
   }
-  const body = await response.json().catch(()=>null);
+  if(!response.ok && body?.code === 'invalid_session') {
+    localStorage.removeItem(sessionKey);
+    window.dispatchEvent(new CustomEvent<SessionChange>(sessionChangedEvent, {detail: {user: null}}));
+  } else if(response.ok && path !== 'me' && body && Object.hasOwn(body, 'user')) {
+    window.dispatchEvent(new CustomEvent<SessionChange>(sessionChangedEvent, {detail: {user: body.user}}));
+  } else if((changed && path !== 'csrf') || (response.ok && options.method && /^(logout|password\/(change|reset)|email\/verify|sessions(?:\/|$)|account$)/.test(path))) {
+    // Revoking another device or verifying this email does not replace the
+    // current identity. Revalidate without discarding in-progress account forms.
+    // A rotated key or any other unknown auth transition still clears private UI.
+    const revalidate = !changed && (/^sessions\/(?!revoke$)[a-z0-9-]+$/.test(path) || path === 'email/verify' || path === 'password/reset');
+    window.dispatchEvent(new CustomEvent<SessionChange>(sessionChangedEvent, {detail: sessionToken() ? {revalidate} : {user: null}}));
+  }
   if(!response.ok) throw new ApiError(body?.detail || 'İşlem tamamlanamadı. Lütfen tekrar deneyin.',response.status,body?.errors,body?.code,body?.redirect_to);
   if(!body) throw new ApiError('Sunucudan geçersiz yanıt alındı.',502);
+  session?.accepted?.(updated === null ? sent : updated || null);
   return body as T;
 }
-async function csrf():Promise<string> {
-  let result:{csrfToken:string};
-  try {result = await request('csrf');}
-  catch(error) {
-    if(!(error instanceof ApiError) || error.code !== 'invalid_session') throw error;
-    result = await request('csrf');
-  }
+async function csrf(expected:string|null):Promise<{csrfToken:string; session:string|null}> {
+  let accepted = expected;
+  const result = await request<{csrfToken:string}>('csrf',{},undefined,{expected,accepted:value=>{accepted=value;}});
   if(!result.csrfToken) throw new ApiError('Güvenlik doğrulaması alınamadı.',403);
-  return result.csrfToken;
+  return {csrfToken:result.csrfToken,session:accepted};
 }
 async function boundary<T>(work:()=>Promise<T>):Promise<T> {
   try {return await work();}
@@ -56,14 +73,23 @@ async function boundary<T>(work:()=>Promise<T>):Promise<T> {
   }
 }
 export function api<T>(path:string, body?:unknown, method='POST'):Promise<T> {
-  return boundary(()=>serialized(async()=> {
-    if(body === undefined) return request<T>(path);
-    const csrfToken = await csrf();
-    return request<T>(path,{method,headers:{'Content-Type':'application/json','X-CSRFToken':csrfToken},body:JSON.stringify(body)});
-  }));
+  return boundary(()=> {
+    const expected = sessionToken();
+    return serialized(async()=> {
+      if(body === undefined) return request<T>(path);
+      // Bind queued form submissions to their original identity, then bind the
+      // mutation to the exact session that issued CSRF (including anonymous bootstrap).
+      if(sessionToken() !== expected) throw sessionChanged();
+      const proof = await csrf(expected);
+      return request<T>(path,{method,headers:{'Content-Type':'application/json','X-CSRFToken':proof.csrfToken},body:JSON.stringify(body)},undefined,{expected:proof.session});
+    });
+  });
 }
 export function oauthCallback(path:string, query:URLSearchParams):Promise<{redirect_to:string}> {
-  return boundary(()=>serialized(()=>request<{redirect_to:string}>(path,{},query)));
+  return boundary(()=> {
+    const expected = sessionToken();
+    return serialized(()=>request<{redirect_to:string}>(path,{},query,{expected}));
+  });
 }
 export function oauthDestination(value:unknown):string {
   const fixed = ['/', '/hesap', '/kayit/google', '/kayit/github', '/github-kurulum?next=%2F', '/github-kurulum?next=%2Fhesap', '/github-kurulum?github=failed'];
