@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-snapshots",
+  "itemId": "backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/backend_audit",
+    "sessionRef": "/root/backend_audit"
+  },
+  "outcome": "pass",
+  "summary": "Persisted project and repository snapshots implemented",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Four files source reviewed: DB-only project serializers/detail/PATCH/create/status; credential scoped persistent collection with generation guards and failure preservation; exact single-use prepared token; additive 0003 models aligned; cascade/reconnect invalidation. No DB commands."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Persist project snapshots and repo collections/previews; DB-only project reads/edits/create with exact preview consent and safe refresh isolation.",
+      "status": "passed",
+      "evidence": "Four files source reviewed: DB-only project serializers/detail/PATCH/create/status; credential scoped persistent collection with generation guards and failure preservation; exact single-use prepared token; additive 0003 models aligned; cascade/reconnect invalidation. No DB commands."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Four files source reviewed: DB-only project serializers/detail/PATCH/create/status; credential scoped persistent collection with generation guards and failure preservation; exact single-use prepared token; additive 0003 models aligned; cascade/reconnect invalidation. No DB commands."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Additive schema migration is part of normal deployment."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T18:42:12.169917+00:00"
+}

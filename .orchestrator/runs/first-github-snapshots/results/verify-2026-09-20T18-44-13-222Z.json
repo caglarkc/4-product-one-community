@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-snapshots",
+  "itemId": "verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Manager verified final persistence contract and GitHub inventory",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Read final snapshots/views/models/0003 and frontend consumers/recovery. Source search shows only callback external identity and initial/manual import + explicit README calls in projects. Updated inventory management/reauthorize rows verified; private links suppressed and unknown existing links not backfilled."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Manager verifies DB-only project paths and all remaining GitHub connection inventory against source.",
+      "status": "passed",
+      "evidence": "Read final snapshots/views/models/0003 and frontend consumers/recovery. Source search shows only callback external identity and initial/manual import + explicit README calls in projects. Updated inventory management/reauthorize rows verified; private links suppressed and unknown existing links not backfilled."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Read final snapshots/views/models/0003 and frontend consumers/recovery. Source search shows only callback external identity and initial/manual import + explicit README calls in projects. Updated inventory management/reauthorize rows verified; private links suppressed and unknown existing links not backfilled."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Additive schema migration is part of normal deployment."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T18:44:13.222263+00:00"
+}

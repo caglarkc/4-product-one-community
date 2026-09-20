@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-snapshots",
+  "itemId": "inventory",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/taxonomy",
+    "sessionRef": "/root/taxonomy"
+  },
+  "outcome": "pass",
+  "summary": "Complete remaining GitHub API and browser connection inventory documented",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "FIRST/contracts/github-connections.md maps OAuth, App callback, first/manual repository import, README prepare, conditional token refresh, explicit revocation, manual backfill, avatar and clicked links to actual source. DB-only endpoints listed."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Document every remaining GitHub API, redirect and browser asset trigger from source.",
+      "status": "passed",
+      "evidence": "FIRST/contracts/github-connections.md maps OAuth, App callback, first/manual repository import, README prepare, conditional token refresh, explicit revocation, manual backfill, avatar and clicked links to actual source. DB-only endpoints listed."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "FIRST/contracts/github-connections.md maps OAuth, App callback, first/manual repository import, README prepare, conditional token refresh, explicit revocation, manual backfill, avatar and clicked links to actual source. DB-only endpoints listed."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Additive schema migration is part of normal deployment."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T18:42:12.478869+00:00"
+}

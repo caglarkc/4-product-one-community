@@ -1,0 +1,369 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-github-snapshots",
+  "title": "FIRST kalıcı proje ve repo verisi",
+  "goal": "Proje okuma/düzenlemeyi GitHubdan ayır; repo listesini backendde sakla ve kullanıcı yenilemesine bağla",
+  "createdAt": "2026-09-20T18:36:31.620Z",
+  "updatedAt": "2026-09-20T18:45:57.431Z",
+  "revision": 16,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/rules.md",
+      "FIRST/README.md",
+      "FIRST/tasarim-dili.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "014e548ae972a2a880680fe275f136497f132081b4ab62c8e3f0b748a30aca1e",
+    "assumptions": [
+      "User explicitly replaces live provider proof after project creation with persisted publication snapshot.",
+      "Repository collection is imported once, refreshed only by explicit user action, empty snapshot is valid.",
+      "Additive schema migration required for persistent repository collection/previews/project link snapshots; normal deployment authorized.",
+      "Source/diff checks only, no tests/lint/typecheck/browser/local build."
+    ]
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [],
+  "items": [
+    {
+      "id": "backend",
+      "title": "backend",
+      "kind": "implement",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Persist project snapshots and repo collections/previews; DB-only project reads/edits/create with exact preview consent and safe refresh isolation.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Persist project snapshots and repo collections/previews; DB-only project reads/edits/create with exact preview consent and safe refresh isolation."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/projects"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-20T18-42-12-169Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "frontend",
+      "kind": "implement",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Initial cached repo read and explicit refresh controls preserve drafts, display saved time and submit exact preview token; edits independent of GitHub binding.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "frontend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Initial cached repo read and explicit refresh controls preserve drafts, display saved time and submit exact preview token; edits independent of GitHub binding."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/src/components/projects.tsx",
+          "FIRST/frontend/src/components/github-onboarding.tsx",
+          "FIRST/frontend/src/lib/projects.ts"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-20T18-43-13-606Z.json"
+    },
+    {
+      "id": "inventory",
+      "title": "GitHub bağlantı envanteri",
+      "kind": "documentation",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Document every remaining GitHub API, redirect and browser asset trigger from source.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Document every remaining GitHub API, redirect and browser asset trigger from source."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Read-only inventory with owned doc output"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/contracts/github-connections.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/inventory-2026-09-20T18-42-12-478Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Independent source review accepts snapshot privacy/consent, refresh concurrency, cleanup, frontend and additive schema.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "review artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Independent source review accepts snapshot privacy/consent, refresh concurrency, cleanup, frontend and additive schema."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "frontend",
+          "inventory"
+        ],
+        "reviews": [
+          "backend",
+          "frontend",
+          "inventory"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-20T18-44-12-836Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Manager verifies DB-only project paths and all remaining GitHub connection inventory against source.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "verify artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Manager verifies DB-only project paths and all remaining GitHub connection inventory against source."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend",
+          "inventory"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-20T18-44-13-222Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "integration",
+      "kind": "integration",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Accepted frontend/backend persistence changes and additive migration deployed with evidence.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "integration artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Accepted frontend/backend persistence changes and additive migration deployed with evidence."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "backend",
+          "frontend",
+          "inventory"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-20T18-45-57-311Z.json"
+    }
+  ]
+}
