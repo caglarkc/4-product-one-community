@@ -10,7 +10,7 @@ export function ProjectCard({project, manage = false, active, heading = 'h3'}: {
   const date = new Date(project.updated_at);
   const dateLabel = Number.isNaN(date.getTime()) ? null : new Intl.DateTimeFormat('tr-TR', {day:'numeric', month:'short', year:'numeric', timeZone:'UTC'}).format(date);
   return <Surface className="repository-card">
-    <div className="repository-card-title"><RepositoryMark/><Heading><Link href={`/projeler/${project.id}`}>{project.title}</Link></Heading>{active !== undefined && <span className={`connection-status${active?' connection-status--connected':''}`}>{active?'Paylaşım aktif':'Arşivde'}</span>}</div>
+    <div className="repository-card-title"><RepositoryMark/><Heading><Link className="repository-card-link" href={`/projeler/${project.id}`}>{project.title}</Link></Heading>{active !== undefined && <span className={`connection-status${active?' connection-status--connected':''}`}>{active?'Paylaşım aktif':'Arşivde'}</span>}</div>
     <p className="repository-description">{project.description || 'Bu proje için henüz bir açıklama eklenmedi.'}</p>
     <dl className="repository-topics"><div><dt>Üst kategori</dt><dd>{project.category_label || 'Belirtilmedi'}</dd></div><div><dt>Alt kategori</dt><dd>{project.subcategory_label || 'Belirtilmedi'}</dd></div></dl>
     <dl className="repository-topics"><div><dt>Aranan katkı</dt><dd>{project.need_type_label || 'Belirtilmedi'}</dd></div><div><dt>Katılım</dt><dd>{project.participation_mode_label || 'Belirtilmedi'}</dd></div></dl>
