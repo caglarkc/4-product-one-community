@@ -54,7 +54,7 @@ Tamamlayıcı kayıtlar: [teknoloji ve yayın kararları](teknik-kararlar.md), [
 Kullanıcı tarafından onaylandı; uygulama ve test kanıtı ayrı run kaydındadır.
 
 - Repo başına tek aktif ilan ve ilan başına tek ihtiyaç türü: ekip arkadaşı, contributor, belirli özellik geliştirme veya belirli hata/sorun çözme. Birden fazla ihtiyaç seçilmez.
-- Özellik/hata ilanında mevcut durum ve beklenen sonuç zorunludur; mevcut GitHub Issue bağlanır veya FIRST üzerinden yeni Issue oluşturulur.
+- Özellik/hata ilanında mevcut durum ve beklenen sonuç zorunludur. 21 Eylül 2026 revizyonu: GitHub Issue yalnız hata/sorun çözme ilanına bağlanır veya FIRST üzerinden oluşturulur; özellik geliştirme için gerekmez. Mevcut kayıt seçiminde reponun son 50 açık Issue kaydı gösterilir, PR kayıtları dışlanır. Gizli repolarda hata/sorun çözme türü hem arayüzde hem API’de kapalıdır.
 - Proje sınıflandırması ile aranan katkı türü ayrıdır. Keşifte kategori ve ihtiyaç/katılım yöntemi bazlı filtreler bulunur.
 - Katılım yöntemi değiştirilemez. Başvuru kabulü GitHub repo erişim daveti gönderir; davetin GitHub tarafında kabulü ayrı aşamadır. Başvuru açıklaması zorunludur; sohbet açılmaz.
 - Otomatik katılım sahip incelemesi beklemeden GitHub erişim daveti gönderir. Contributor atanabilen bir GitHub rolü değildir. Yazma erişimi, doğrulanmış dal korumaları ile sınırlandırılır; gerekli korumalar doğrulanamıyorsa otomatik katılım açılmaz. FIRST kurulum gereksinimlerini gösterir; sağlayıcı ayarlarını örtük olarak değiştirmez.

@@ -4,7 +4,7 @@
 
 ## İlan oluşturma
 
-Repo başına tek aktif ilan açılır. Projenin üst/alt kategorisi ve aşaması ile birlikte tek bir ihtiyaç seçilir: ekip arkadaşı, contributor, özellik geliştirme veya hata/sorun çözme. Özellik/hata için mevcut durum, beklenen sonuç ve GitHub Issue gerekir. Mevcut Issue seçilebilir veya yeni Issue oluşturulabilir. GitHub işlemi başarısızsa eksik kurulum açıkça gösterilir; işlem yeniden denenir.
+Repo başına tek aktif ilan açılır. Projenin üst/alt kategorisi ve aşaması ile birlikte tek bir ihtiyaç seçilir: ekip arkadaşı, contributor, özellik geliştirme veya hata/sorun çözme. Özellik/hata için mevcut durum ve beklenen sonuç gerekir. GitHub Issue yalnız hata/sorun çözme ilanında gerekir; özellik geliştirme ilanında Issue bağlanmaz. Açık reponun son 50 açık Issue kaydı seçim listesinde gösterilir (PR kayıtları dahil edilmez); mevcut kayıt seçilebilir veya yeni Issue oluşturulabilir. Gizli repolarda hata/sorun çözme ilanı açılamaz. GitHub işlemi başarısızsa eksik kurulum açıkça gösterilir; işlem yeniden denenir.
 
 Tek katılım yöntemi seçilir ve yayımlandıktan sonra değiştirilemez. Farklı yöntem için mevcut ilan arşivlenip yeni ilan açılır; aynı repo için iki aktif ilan bulunamaz. İlanın kapanması mevcut GitHub Issue/PR veya erişim yetkilerini kaldırmaz.
 

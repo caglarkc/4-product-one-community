@@ -205,3 +205,34 @@ class ProviderTests(SimpleTestCase):
         with patch.object(p,'_api',return_value=[{'id':n} for n in range(100)]) as api, p.operation_budget():
             self.failure('github_collection_limit',p._list,'t','/repos/owner/repo/invitations')
             self.assertEqual(api.call_count,10)
+
+    def test_selector_uses_one_anonymous_page_of_50_without_bodies(self):
+        rows = [{'id': n + 1, 'number': n + 1, 'title': f'Issue {n}', 'state': 'open',
+                 'body': 'never expose', 'repository_url': 'https://api.github.com/repos/owner/repo'} for n in range(50)]
+        with self.owner_context(), patch.object(p, '_api', return_value={'incomplete_results': False, 'items': rows}) as api:
+            result = p.selectable_issues(self.owner, self.project)
+            self.assertEqual(len(result), 50)
+            self.assertEqual(set(result[0]), {'number', 'title'})
+            api.assert_called_once_with(None, '/search/issues', params={
+                'q': 'repo:owner/repo is:issue is:open', 'sort': 'created', 'order': 'desc', 'per_page': 50, 'page': 1})
+
+    def test_selector_rejects_private_pr_wrong_repo_and_incomplete_search(self):
+        with self.owner_context({**self.repo, 'private': True}), patch.object(p, '_api') as api:
+            self.failure('github_public_issue_required', p.selectable_issues, self.owner, self.project)
+            api.assert_not_called()
+        item = {'id': 1, 'number': 1, 'title': 'Test', 'state': 'open',
+                'repository_url': 'https://api.github.com/repos/owner/repo'}
+        cases = [({'incomplete_results': True, 'items': []}, 'github_issue_list_incomplete'),
+                 ({'incomplete_results': False, 'items': [item] * 51}, 'github_issue_list_incomplete'),
+                 ({'incomplete_results': False, 'items': [{**item, 'pull_request': {}}]}, 'github_issue_list_mismatch'),
+                 ({'incomplete_results': False, 'items': [{**item, 'repository_url': 'https://api.github.com/repos/other/repo'}]}, 'github_issue_list_mismatch')]
+        for result, code in cases:
+            with self.owner_context(), patch.object(p, '_api', return_value=result):
+                self.failure(code, p.selectable_issues, self.owner, self.project)
+
+    def test_selected_bug_issue_must_still_be_open_and_not_pr(self):
+        item = {'id': 1, 'number': 1, 'title': 'Test', 'state': 'closed'}
+        with self.owner_context(), patch.object(p, '_api', return_value=item):
+            self.failure('github_issue_not_open', p.bug_issue, self.owner, self.project, 1)
+        with self.owner_context(), patch.object(p, '_api', return_value={**item, 'state': 'open', 'pull_request': {}}):
+            self.failure('github_issue_required', p.bug_issue, self.owner, self.project, 1)

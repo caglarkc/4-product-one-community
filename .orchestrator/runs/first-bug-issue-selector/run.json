@@ -1,0 +1,375 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-bug-issue-selector",
+  "title": "FIRST bug-only bounded Issue selection",
+  "goal": "Restrict Issues to public bug listings, add bounded Issue selector and verify public/private flows live",
+  "createdAt": "2026-09-20T21:43:38.913Z",
+  "updatedAt": "2026-09-20T21:48:24.290Z",
+  "revision": 14,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "c5908224e6869b2baa5e53edee8d65e214f83482764f01491a5b6e2667b1ad4c",
+    "assumptions": []
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "scope",
+      "summary": "Issue only for public bug listings; feature descriptions retained; recent50 open issues selector",
+      "reason": "Explicit user correction; backend and frontend contract updated together; existing deployment/browser authorization applies",
+      "decidedAt": "2026-09-20T21:46:01.898Z",
+      "actor": "manager"
+    }
+  ],
+  "items": [
+    {
+      "id": "backend",
+      "title": "backend",
+      "kind": "implement",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Public bug-only Issue contract and bounded owner-authorized recent Issue endpoint.",
+      "responsibility": "Only owned scope; manager handles commit/deploy.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "Public bug-only Issue contract and bounded owner-authorized recent Issue endpoint."
+      ],
+      "acceptanceCriteria": [
+        "Public bug-only Issue contract and bounded owner-authorized recent Issue endpoint."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "API and visibility contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/projects/",
+          "FIRST/contracts/participation-api.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-20T21-48-23-155Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "frontend",
+      "kind": "implement",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Bug-only bounded Issue selector, private bug hidden, stale repo selections cleared.",
+      "responsibility": "Only owned scope; manager handles commit/deploy.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "Bug-only bounded Issue selector, private bug hidden, stale repo selections cleared."
+      ],
+      "acceptanceCriteria": [
+        "Bug-only bounded Issue selector, private bug hidden, stale repo selections cleared."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "API and visibility contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/src/components/projects.tsx",
+          "FIRST/frontend/src/components/participation.tsx",
+          "FIRST/frontend/src/lib/projects.ts",
+          "FIRST/frontend/tests/"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-20T21-47-03-937Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Independent source review finds no blocking security or contract defects.",
+      "responsibility": "Only owned scope; manager handles commit/deploy.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "Independent source review finds no blocking security or contract defects."
+      ],
+      "acceptanceCriteria": [
+        "Independent source review finds no blocking security or contract defects."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "frontend"
+        ],
+        "reviews": [
+          "backend",
+          "frontend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "API and visibility contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-20T21-48-23-543Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Source acceptance checked against requested public/private and bug-only rules.",
+      "responsibility": "Only owned scope; manager handles commit/deploy.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "Source acceptance checked and live public/private form scenarios verified."
+      ],
+      "acceptanceCriteria": [
+        "Source acceptance checked against requested public/private and bug-only rules."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "API and visibility contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-20T21-48-23-947Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "integration",
+      "kind": "integration",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Accepted backend and frontend committed pushed and deployed successfully.",
+      "responsibility": "Only owned scope; manager handles commit/deploy.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "Accepted backend and frontend committed pushed and deployed successfully."
+      ],
+      "acceptanceCriteria": [
+        "Accepted backend and frontend committed pushed and deployed successfully."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "backend",
+          "frontend"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "API and visibility contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "active",
+      "attempt": 1,
+      "resultRef": null
+    },
+    {
+      "id": "live",
+      "title": "live",
+      "kind": "live-verification",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Authenticated live public/private repo preparation and need/mode/Issue UI verified.",
+      "responsibility": "Only owned scope; manager handles commit/deploy.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "Source acceptance checked and live public/private form scenarios verified."
+      ],
+      "acceptanceCriteria": [
+        "Authenticated live public/private repo preparation and need/mode/Issue UI verified."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "API and visibility contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    }
+  ]
+}

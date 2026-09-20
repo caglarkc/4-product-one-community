@@ -28,3 +28,5 @@ export function githubResourceUrl(value:string|null):string|null {
 }
 export const participationStatus:Record<string,string>={pending:'Değerlendirme bekliyor',invited:'FIRST daveti gönderildi',accepted:'Kabul edildi',rejected:'Reddedildi',withdrawn:'Geri çekildi',declined:'Davet reddedildi'};
 export const githubStatus:Record<string,string>={invited:'GitHub daveti kabul bekliyor',active:'GitHub erişimi aktif',missing:'GitHub erişimi / daveti bulunamadı'};
+
+export type RepositoryIssues = {issues:{number:number;title:string}[];limit:50};

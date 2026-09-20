@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-bug-issue-selector",
+  "itemId": "review",
+  "agent": {
+    "platform": "codex",
+    "identity": "acceptance",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Independent final source review accepted with no P0/P1/P2 findings; bounded exact-repo Issue query, privacy, identity, feature gates and frontend race checks verified; archive regression fixed.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Independent source review finds no blocking security or contract defects.",
+      "status": "passed",
+      "evidence": "Independent final source review accepted with no P0/P1/P2 findings; bounded exact-repo Issue query, privacy, identity, feature gates and frontend race checks verified; archive regression fixed."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-20T21:48:23.543686+00:00"
+}

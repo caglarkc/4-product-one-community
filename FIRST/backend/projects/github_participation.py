@@ -185,6 +185,48 @@ def _issue_data(item, repo):
             'state': item.get('state'), 'url': 'https://github.com/' + repo['full_name'] + '/issues/' + str(number)}
 
 
+def _public_issue_repository(owner_account, project):
+    token, path, repo = _owner(owner_account, project)
+    if repo['private']:
+        _error('github_public_issue_required', 'Hata/sorun ilanı yalnız public repolarda kullanılabilir.')
+    return token, path, repo
+
+
+@bounded
+def require_public_issue_repository(owner_account, project):
+    _public_issue_repository(owner_account, project)
+
+
+@bounded
+def selectable_issues(owner_account, project):
+    _, _, repo = _public_issue_repository(owner_account, project)
+    # One anonymous search page: never download all issues or return PRs.
+    result = _dict(_api(None, '/search/issues', params={
+        'q': 'repo:' + repo['full_name'] + ' is:issue is:open',
+        'sort': 'created', 'order': 'desc', 'per_page': 50, 'page': 1}))
+    rows = result.get('items')
+    if result.get('incomplete_results') is not False or not isinstance(rows, list) or len(rows) > 50:
+        _error('github_issue_list_incomplete', 'GitHub Issue listesi doğrulanamadı. Yeniden deneyin.')
+    output = []
+    expected_repository = 'https://api.github.com/repos/' + repo['full_name']
+    for row in rows:
+        row = _dict(row)
+        if row.get('repository_url') != expected_repository or 'pull_request' in row or row.get('state') != 'open':
+            _error('github_issue_list_mismatch')
+        issue = _issue_data(row, repo)
+        output.append({'number': issue['number'], 'title': issue['title']})
+    return output
+
+
+@bounded
+def bug_issue(owner_account, project, number):
+    _, path, repo = _public_issue_repository(owner_account, project)
+    item = _issue_data(_api(None, path + '/issues/' + str(_number(number))), repo)
+    if item['state'] != 'open':
+        _error('github_issue_not_open', 'İlan için açık bir GitHub Issue seçin.')
+    return item
+
+
 @bounded
 def issues(owner_account, project, reader_account=None):
     token, path, repo = _owner(owner_account, project)
@@ -201,7 +243,7 @@ def issue(owner_account, project, number, reader_account=None):
 
 @bounded
 def create_issue(owner_account, project, title, body, operation_key):
-    token, path, repo = _owner(owner_account, project)
+    token, path, repo = _public_issue_repository(owner_account, project)
     if not isinstance(operation_key, str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,100}', operation_key):
         _error('github_operation_key_invalid')
     marker = '<!-- FIRST issue operation: ' + operation_key + ' -->'
