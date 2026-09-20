@@ -16,7 +16,7 @@ Normal Google girişinin üç yolu ve GitHub girişleri yakın kimlik işareti o
 
 ## Beklenen eklemeler
 
-Canlı dağıtım açık kullanıcı onayını bekliyor. ./send-machine iki kez otomatik onay denetimince yürütülmeden reddedildi. İkinci başvuruda .agent/rules.md:44 ve FIRST/deployment.md kalıcı yetki kanıtı sunuldu; reviewer bu dosya talimatını canlı rebuild/migration/restart için yeterli açık kullanıcı onayı saymadı. Kullanıcıya onay sorusu iletildi. Sunucuda bu görev tarafından mutasyon yapılmadı.
+Canlı dağıtım kullanıcının açık onayından sonra 20 Eylül 2026 tarihinde tamamlandı. Önceki engelin geçmişi: ./send-machine iki kez otomatik onay denetimince yürütülmeden reddedildi. İkinci başvuruda .agent/rules.md:44 ve FIRST/deployment.md kalıcı yetki kanıtı sunuldu; reviewer bu dosya talimatını canlı rebuild/migration/restart için yeterli açık kullanıcı onayı saymadı. Kullanıcı onaylıyorum yanıtını verdi; aynı ./send-machine komutu daha sonra başarıyla yürütüldü.
 
 Dağıtım öncesi Google oturumlarına verilmiş eski yakın-kanıt işaretleri geriye dönük temizlenmez; oluşturulmalarından itibaren en fazla 10 dakika geçerli kalabilir. Toplu oturum iptali veya migration eklenmedi.
 
@@ -24,4 +24,4 @@ Dağıtım öncesi Google oturumlarına verilmiş eski yakın-kanıt işaretleri
 
 Üç dosya diff'i, tüm start_session çağrıları, yakın kanıt yazımları ve kullanıcı kilidi sırası incelendi; git diff --check geçti. Test, lint/typecheck, yerel build, browser veya gerçek OAuth/eşzamanlılık senaryosu çalıştırılmadı.
 
-Kod commit'i e77671bf6a7ef33dddcb5049dc4d18fcdb5b4c85, origin/main push başarılı ve uzak hash eşleşti. Backend deployment/health henüz çalıştırılmadı.
+Kod commit'i e77671bf6a7ef33dddcb5049dc4d18fcdb5b4c85, origin/main push başarılı ve uzak hash eşleşti. Dağıtılan kaynak commit 98e2ac8e457dc9cf95c03b67794148b204bb5267 (e77671b düzeltmesini içerir). Uzak checkout bu commite fast-forward edildi ve script tam hash eşleşmesini doğruladı. Release 20260920T131115-98e2ac8e457d: Docker build başarılı, Django system check temiz, migration beklemiyor, PostgreSQL/Redis bağlantıları başarılı, backend/db/redis healthy ve HTTP sağlık yanıtı status=ok. Script exit code 0. Kalıcı veriler korundu. Bu sağlık kontrolü gerçek OAuth/eşzamanlılık senaryosu testi değildir.

@@ -4,8 +4,8 @@
   "title": "FIRST backend auth bulgularını düzelt",
   "goal": "Google yakın kimlik kanıtını ve GitHub callback oturum iptali yarışını düzelt, incele ve dağıt",
   "createdAt": "2026-09-20T13:04:28.232Z",
-  "updatedAt": "2026-09-20T13:08:45.374Z",
-  "revision": 12,
+  "updatedAt": "2026-09-20T13:12:09.293Z",
+  "revision": 16,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -26,7 +26,22 @@
   "policy": {
     "requiresIntegration": false
   },
-  "decisions": [],
+  "decisions": [
+    {
+      "id": "production-deploy-approved",
+      "summary": "Kullanıcı canlı backend dağıtımını açıkça onayladı.",
+      "reason": "Canlı Docker build, migration ve yeniden başlatma sorusuna kullanıcı onaylıyorum yanıtını verdi.",
+      "decidedAt": "2026-09-20T13:11:25.458Z",
+      "actor": "user",
+      "extensions": {
+        "type": "approval",
+        "itemId": "deploy",
+        "boundary": "production-write",
+        "outcome": "approved",
+        "provenance": "user-confirmed"
+      }
+    }
+  ],
   "items": [
     {
       "id": "fix",
@@ -229,7 +244,9 @@
         "reasons": [
           "Authentication fix"
         ],
-        "approvalBoundaries": []
+        "approvalBoundaries": [
+          "production-write"
+        ]
       },
       "execution": {
         "mode": "inline",
@@ -242,9 +259,9 @@
         ],
         "owner": null
       },
-      "status": "blocked",
+      "status": "done",
       "attempt": 1,
-      "resultRef": "results/deploy-2026-09-20T13-08-45-098Z.json"
+      "resultRef": "results/deploy-2026-09-20T13-12-09-021Z.json"
     }
   ]
 }
