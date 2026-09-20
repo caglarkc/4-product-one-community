@@ -2,6 +2,7 @@
 import {useEffect,useRef,useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {api,ApiError} from '../lib/api';
+import {ProjectCard} from './project-card';
 import {RequireSession, SessionPending, useSession} from './session-provider';
 import {githubUrl,GitHubStatus,Project,ProjectConfig,Repository} from '../lib/projects';
 import {ActionLink,Alert,Button,Checkbox,Field,Input,PageHeading,Select,Surface} from './ui';
@@ -21,7 +22,7 @@ function MyProjectsContent(){
  return <div className="account-page project-page"><div className="page-toolbar"><PageHeading title="Projelerim" eyebrow="FIRST / PROJELER" description="Paylaşımlarınızı görüntüleyin, güncelleyin ve yeni projelerinizi tanıtın."/><ActionLink href="/projelerim/yeni">Proje paylaş</ActionLink></div>
  {error&&<Alert role="alert" tone="error"><p>{error}</p><Button variant="secondary" onClick={()=>setRetry(value=>value+1)}>Yeniden dene</Button></Alert>}{!projects&&!error&&<Alert role="status">Projeleriniz yükleniyor…</Alert>}
  {projects?.length===0&&<Surface className="empty-state"><p className="eyebrow">İLK PAYLAŞIMINIZ</p><h2>Projelerinizi burada bir araya getirin.</h2><p>Henüz bir proje paylaşmadınız. GitHub hesabınızdan bir repo seçerek ilk paylaşımınızı hazırlayabilirsiniz.</p><ActionLink href="/projelerim/yeni">İlk projemi paylaş</ActionLink></Surface>}
- <div className="project-grid">{projects?.map(project=><Surface key={project.id} className="project-card"><div className="project-card-heading"><h2><a href={`/projeler/${project.id}`}>{project.title}</a></h2></div><ProjectContent project={project}/><div className="action-row"><ActionLink variant="secondary" href={`/projeler/${project.id}`}>Paylaşımı görüntüle</ActionLink><ActionLink variant="quiet" href={`/projelerim/${project.id}/duzenle`}>Düzenle</ActionLink></div></Surface>)}</div></div>;
+ <div className="repository-grid">{projects?.map(project=><ProjectCard key={project.id} project={project} manage active={project.is_active} heading="h2"/>)}</div></div>;
 }
 export function ProjectDetail({id}:{id:string}) {
  const {status,user}=useSession();

@@ -68,6 +68,16 @@ def project_data(project, repo=None, visible=True):
         'is_active': project.is_active, 'created_at': project.created_at.isoformat(), 'updated_at': project.updated_at.isoformat()}
 
 
+def public_project_summary(project):
+    # Feed fields are intentionally independent of provider-backed detail data.
+    return {'id': str(project.pk), 'title': project.title, 'description': project.description,
+        'category': project.category, 'subcategory': project.subcategory, 'stage': project.stage,
+        'category_label': CATEGORY_LABELS.get(project.category, project.category or 'Belirtilmedi'),
+        'subcategory_label': SUBCATEGORY_LABELS.get(project.category, {}).get(project.subcategory, project.subcategory or 'Belirtilmedi'),
+        'stage_label': STAGE_LABELS.get(project.stage, project.stage or 'Belirtilmedi'),
+        'created_at': project.created_at.isoformat(), 'updated_at': project.updated_at.isoformat()}
+
+
 class StartInput(StrictSerializer):
     return_to = serializers.ChoiceField(choices=['/', '/hesap', '/projelerim/yeni'], required=False, default='/projelerim/yeni')
 
@@ -227,6 +237,27 @@ class MineView(AuthView):
 
 
 class CreateView(AuthView):
+    def get(self, request):
+        if security.count('project-public-feed', client_ip(request), ttl=60) > 30:
+            raise RateLimited()
+        pages = request.query_params.getlist('page')
+        page_value = pages[0] if pages else '1'
+        if (len(pages) > 1 or not page_value.isascii() or not page_value.isdecimal()
+                or len(page_value) > 1000):
+            raise ValidationError({'page': ['Sayfa pozitif bir tam sayı olmalıdır.']})
+        page = int(page_value)
+        if page < 1:
+            raise ValidationError({'page': ['Sayfa pozitif bir tam sayı olmalıdır.']})
+        page_size = 12
+        projects = Project.objects.filter(is_active=True, owner__is_active=True).order_by('-created_at', '-pk')
+        count = projects.count()
+        start = (page - 1) * page_size
+        # Avoid sending an oversized OFFSET to the database for absent pages.
+        rows = projects[start:start + page_size] if start < count else []
+        return Response({'projects': [public_project_summary(project) for project in rows],
+            'count': count, 'next_page': page + 1 if start + page_size < count else None,
+            'previous_page': page - 1 if page > 1 else None})
+
     def post(self, request):
         account = member(request, eligible=True)
         data = validate(CreateInput, request.data)

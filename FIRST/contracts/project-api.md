@@ -21,3 +21,9 @@ Mevcut alanlara ek olarak `subcategory`, `stage`, `category_label`, `subcategory
 ## Şema
 
 Mevcut `category` sütunu korunur. Yeni `subcategory` ve `stage` sütunları için additive migration hazırlanır. Eski initial migration değiştirilmez. Kullanıcının mevcut proje bulunmadığı bilgisi nedeniyle veri dönüştürme/backfill işlemi tasarlanmamıştır; Kullanıcı 20 Eylül 2026 tarihinde yalnız gerekli şema migration’ının dağıtımda uygulanmasını onayladı.
+
+## Topluluk ana sayfası — 20 Eylül 2026
+
+`GET /api/auth/projects/?page=N`, giriş gerektirmeden tüm aktif sahiplerin aktif paylaşımlarını en yeni oluşturulandan başlayarak listeler. Sayfa varsayılanı 1, sabit sayfa boyutu 12'dir. Yanıt `projects`, `count`, `next_page`, `previous_page` taşır; son/ilk sayfada ilgili sayfa değeri `null` olur. Geçersiz sayfa değeri 400'dür.
+
+Liste özeti yalnız `id`, `title`, `description`, üç sınıflandırma kodu/etiketi, `created_at` ve `updated_at` içerir. Hesap bilgileri, repo kimliği/adı/URL/gizlilik durumu ve README listede bulunmaz. Listeleme GitHub çağrısı yapmaz; mevcut detay ekranı repo verisini kendi güncel yetki kontrolünden sonra verir. Bu ekleme için şema migration'ı yoktur.
