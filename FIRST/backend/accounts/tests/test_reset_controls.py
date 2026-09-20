@@ -1,9 +1,10 @@
+from .fakes import BearerClient as Client
 import time
 from datetime import timedelta
 from unittest.mock import Mock, patch
 from urllib.parse import parse_qs, urlparse
 from allauth.socialaccount.models import SocialAccount
-from django.test import TestCase, Client, override_settings
+from django.test import TestCase, override_settings
 from django.utils import timezone
 from accounts import security
 from accounts.models import User, SessionRecord
@@ -160,16 +161,15 @@ class ResetControlTests(TestCase):
         exchange.assert_not_called()
         self.assertFalse(GitHubCredential.objects.exists())
 
-    @patch('projects.github.readme', return_value='')
-    @patch('projects.github.repository', return_value=('token', REPO))
-    def test_inflight_create_cannot_survive_disconnect(self, repo, readme):
-        # Simulate disconnect winning the User lock after provider verification.
-        def disconnect_during_read(*args):
+    def test_inflight_create_cannot_survive_disconnect(self):
+        from projects.tests import ProjectTests
+        # Disconnect wins just before the durable publication user lock.
+        from accounts.account_views import locked_user as real_lock
+        def disconnect_before_lock(request, **kwargs):
             User.objects.filter(pk=self.user.pk).update(security_version=self.user.security_version + 1)
-            return ''
-        readme.side_effect = disconnect_during_read
-        response = self.post('projects', {'installation_id': 11, 'repository_id': 100,
-                                         'title': 'Race', 'category': 'software'})
+            return real_lock(request, **kwargs)
+        with patch('projects.snapshots.locked_user', side_effect=disconnect_before_lock):
+            response = ProjectTests.create(self, title='Race')
         self.assertEqual(response.status_code, 401)
         self.assertFalse(Project.objects.filter(title='Race').exists())
 
@@ -179,18 +179,19 @@ class ResetControlTests(TestCase):
         response = self.client.get('/api/auth/projects/github/status/')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()['credential_stored'])
-        self.assertFalse(response.json()['connected'])
+        self.assertTrue(response.json()['connected'])
+        api.assert_not_called()
 
-    @patch('projects.github.repository')
-    def test_inflight_reactivation_cannot_survive_disconnect(self, repo):
+    def test_inflight_reactivation_cannot_survive_disconnect(self):
         self.project.is_active = False; self.project.save()
-        def disconnect_during_proof(*args):
+        from accounts.account_views import locked_user as real_lock
+        def disconnect_before_lock(request, **kwargs):
             User.objects.filter(pk=self.user.pk).update(security_version=self.user.security_version + 1)
-            return 'token', REPO
-        repo.side_effect = disconnect_during_proof
+            return real_lock(request, **kwargs)
         csrf = self.client.get('/api/auth/csrf/').json()['csrfToken']
-        response = self.client.patch(f'/api/auth/projects/{self.project.pk}/', {'is_active': True},
-                                     content_type='application/json', HTTP_X_CSRFTOKEN=csrf)
+        with patch('projects.views.locked_user', side_effect=disconnect_before_lock):
+            response = self.client.patch(f'/api/auth/projects/{self.project.pk}/', {'is_active': True},
+                content_type='application/json', HTTP_X_CSRFTOKEN=csrf)
         self.assertEqual(response.status_code, 401)
         self.project.refresh_from_db(); self.assertFalse(self.project.is_active)
 

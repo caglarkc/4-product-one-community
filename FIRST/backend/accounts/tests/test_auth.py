@@ -1,7 +1,8 @@
+from .fakes import BearerClient as Client
 from datetime import date, timedelta
 from unittest.mock import patch
 from django.core import mail
-from django.test import TestCase, Client, override_settings
+from django.test import TestCase, override_settings
 from django.utils import timezone
 import redis
 from accounts.models import User, SessionRecord
@@ -32,9 +33,9 @@ class AuthTests(TestCase):
     def test_register_me_logout_and_login_unverified(self):
         response = self.register()
         self.assertFalse(response.json()['user']['email_verified'])
-        self.assertTrue(response.cookies['sessionid']['httponly'])
-        self.assertTrue(response.cookies['sessionid']['secure'])
-        self.assertAlmostEqual(response.cookies['sessionid']['max-age'], 86400, delta=2)
+        self.assertNotIn('sessionid', response.cookies)
+        self.assertRegex(response['X-First-Session'], r'^[a-z0-9]{32}$')
+        self.assertAlmostEqual(self.client.session.get_expiry_age(), 86400, delta=2)
         self.assertEqual(self.client.get('/api/auth/me/').json()['user']['email'], self.data['email'])
         self.assertEqual(self.post('logout').status_code, 200)
         self.assertIsNone(self.client.get('/api/auth/me/').json()['user'])
@@ -44,7 +45,7 @@ class AuthTests(TestCase):
         self.register()
         self.post('logout')
         response = self.post('login', {'email': self.data['email'], 'password': self.data['password'], 'remember_me': True})
-        self.assertAlmostEqual(response.cookies['sessionid']['max-age'], 30 * 86400, delta=2)
+        self.assertAlmostEqual(self.client.session.get_expiry_age(), 30 * 86400, delta=2)
         self.assertLess(abs((SessionRecord.objects.latest('created_at').expires_at - timezone.now()).total_seconds() - 30 * 86400), 3)
 
     def test_csrf_required_for_anonymous_mutations(self):
@@ -140,8 +141,9 @@ class AuthTests(TestCase):
         self.assertEqual(SessionRecord.objects.count(), 0)
 
     def test_redis_failure_is_closed(self):
+        csrf = self.client.get('/api/auth/csrf/').json()['csrfToken']
         with patch('accounts.security.client', side_effect=redis.ConnectionError('secret')):
-            response = self.post('register', self.data)
+            response = self.client.post('/api/auth/register/', self.data, content_type='application/json', HTTP_X_CSRFTOKEN=csrf)
         self.assertEqual(response.status_code, 503)
         self.assertNotIn('secret', response.content.decode())
         self.assertEqual(User.objects.count(), 0)
@@ -181,14 +183,14 @@ class AuthTests(TestCase):
 
     def test_repeated_login_rotates_and_revokes_previous_session(self):
         self.register()
-        old_cookie = self.client.cookies['sessionid'].value
+        old_session_key = self.client.session.session_key
         response = self.post('login', {'email': self.data['email'], 'password': self.data['password']})
         self.assertEqual(response.status_code, 200)
-        self.assertNotEqual(self.client.cookies['sessionid'].value, old_cookie)
-        self.assertTrue(SessionRecord.objects.get(key_hash=security.digest(old_cookie)).revoked)
+        self.assertNotEqual(self.client.session.session_key, old_session_key)
+        self.assertTrue(SessionRecord.objects.get(key_hash=security.digest(old_session_key)).revoked)
         other = Client(enforce_csrf_checks=True)
-        other.cookies['sessionid'] = old_cookie
-        self.assertIsNone(other.get('/api/auth/me/').json()['user'])
+        other.defaults['HTTP_AUTHORIZATION'] = 'Bearer ' + old_session_key
+        self.assertEqual(other.get('/api/auth/me/').status_code, 401)
 
     def test_inflight_password_proof_rejects_concurrent_attempt(self):
         owner = security.acquire_password_lock(self.data['email'])

@@ -198,3 +198,9 @@ Test: `python manage.py test accounts --settings=config.test_settings`.
 allauth imza/issuer/audience/süre/nonce kontrollerini test eder; gerçek Google hesap etkileşiminin yerine geçmez.
 
 Gunicorn erişim logları yalnız method, sorgusuz URL path, durum ve süre içerir; OAuth code/state, cookie ve referrer loglanmaz.
+
+## Listing participation integration — 21 September 2026
+
+`projects` adds listing needs, immutable participation methods, visibility grants, applications/invitations, site notifications and explicit Issue/PR operations. Migration `0004_participation` is additive; existing legacy listings default to applications closed. Ordinary project reads remain database-only. GitHub effects have persisted decisions, stable identities and retry reconciliation; automatic invitations require provable current protections and fail closed otherwise.
+
+Contract: [participation-api.md](../contracts/participation-api.md). Operator/product behavior: [ilan-katilim.md](../ilan-katilim.md). Tests, deployed revision and live verification boundaries: [integration run](../../.orchestrator/runs/first-listing-participation/run.json). The test transport follows the current Bearer session header; no cookie/proxy authentication was reintroduced.

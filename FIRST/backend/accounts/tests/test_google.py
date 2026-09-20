@@ -1,7 +1,8 @@
+from .fakes import BearerClient as Client
 import time
 from urllib.parse import urlparse, parse_qs
 from unittest.mock import patch, Mock
-from django.test import Client, TestCase, override_settings
+from django.test import TestCase, override_settings
 from allauth.socialaccount.models import SocialAccount
 from accounts.google_views import exchange, GoogleError
 from accounts.models import User, SessionRecord
@@ -30,7 +31,8 @@ class GoogleTests(TestCase):
                 'gender': 'unspecified', **extra}
 
     @override_settings(GOOGLE_LOCAL_REDIRECT_URI='http://127.0.0.1:3101/accounts/google/login/callback/',
-                       CSRF_TRUSTED_ORIGINS=['https://first.test', 'http://127.0.0.1:3101'])
+                       CSRF_TRUSTED_ORIGINS=['https://first.test', 'http://127.0.0.1:3101'],
+                       CORS_ALLOWED_ORIGINS=['https://first.test', 'http://127.0.0.1:3101'])
     def test_local_redirect_is_opt_in_exact_origin_and_pinned_to_flow(self):
         for origin, expected in [
             ('https://first.test', 'https://first.test/accounts/google/login/callback/'),
@@ -49,15 +51,19 @@ class GoogleTests(TestCase):
                         'accounts.google_views._verify_and_decode', return_value={
                             'sub': 'test', 'nonce': flow['nonce'], 'iat': 1, 'exp': 2}):
                     post.return_value.json.return_value = {'id_token': 'opaque'}
+                    # Callback cannot override the state-bound redirect URI.
+                    rejected = self.client.get('/api/auth/google/callback/', {
+                        'state': params['state'][0], 'code': 'valid', 'redirect_uri': 'https://evil.test/callback'})
+                    self.assertEqual(rejected.status_code, 400)
+                    post.assert_not_called()
                     # Callback has no Origin; code exchange must use the start flow.
                     callback = self.client.get('/api/auth/google/callback/', {
                         'state': params['state'][0], 'code': 'valid',
-                        'redirect_uri': 'https://evil.test/callback',
                     })
                     self.assertEqual(callback.status_code, 200, callback.content)
                     self.assertEqual(post.call_args.kwargs['data']['redirect_uri'], expected)
                     self.assertEqual(post.call_args.kwargs['data']['code_verifier'], flow['verifier'])
-                self.assertTrue(result.cookies['sessionid']['secure'])
+                self.assertNotIn('sessionid', result.cookies)
 
     @override_settings(GOOGLE_LOCAL_REDIRECT_URI='http://127.0.0.1:3101/accounts/google/login/callback/',
                        CSRF_TRUSTED_ORIGINS=['http://127.0.0.1:3101'])
@@ -71,7 +77,8 @@ class GoogleTests(TestCase):
                 self.assertEqual(result.status_code, 403)
         self.assertEqual(self.post('google/start', {'redirect_uri': 'https://evil.test'}).status_code, 400)
 
-    @override_settings(GOOGLE_LOCAL_REDIRECT_URI='', CSRF_TRUSTED_ORIGINS=['http://127.0.0.1:3101'])
+    @override_settings(GOOGLE_LOCAL_REDIRECT_URI='', CSRF_TRUSTED_ORIGINS=['http://127.0.0.1:3101'],
+                       CORS_ALLOWED_ORIGINS=['http://127.0.0.1:3101'])
     def test_csrf_allowlist_alone_does_not_enable_local_google(self):
         csrf = self.client.get('/api/auth/csrf/').json()['csrfToken']
         result = self.client.post('/api/auth/google/start/', {}, content_type='application/json',
@@ -126,7 +133,7 @@ class GoogleTests(TestCase):
         self.assertEqual(result.json()['user']['providers'], ['google'])
         self.assertFalse(result.json()['user']['has_usable_password'])
         self.assertTrue(result.json()['user']['email_verified'])
-        self.assertAlmostEqual(result.cookies['sessionid']['max-age'], 30 * 86400, delta=2)
+        self.assertAlmostEqual(self.client.session.get_expiry_age(), 30 * 86400, delta=2)
         self.assertEqual(len(mail.outbox), 0)
         self.assertEqual(self.post('google/signup', self.signup_data(username='another')).status_code, 400)
 

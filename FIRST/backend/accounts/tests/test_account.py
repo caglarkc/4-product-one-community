@@ -1,8 +1,9 @@
+from .fakes import BearerClient as Client
 import time
 from urllib.parse import urlparse, parse_qs
 from unittest.mock import patch
 from django.core import mail
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.utils import timezone
 from datetime import timedelta
 from accounts.models import User, SessionRecord
@@ -270,10 +271,10 @@ class AccountTests(TestCase):
         self.assertEqual(response.json()['code'], 'email_delivery_failed')
         self.assertNotIn('secret', response.content.decode())
 
-    def test_f_rate_limit_uses_signed_proxy_ip_for_reset(self):
+    def test_f_rate_limit_uses_trusted_ingress_ip_for_reset(self):
         from django.test import override_settings
-        from .test_proxy import SECRET, assertion
-        with override_settings(AUTH_PROXY_SECRET=SECRET):
+        from .test_proxy import assertion
+        with override_settings(TRUST_NGINX_PROXY=True):
             csrf = self.client.get('/api/auth/csrf/', **assertion('203.0.113.8', '/api/auth/csrf/', 'GET')).json()['csrfToken']
             response = self.client.post('/api/auth/password/reset/', {'email':'none@example.com'},
                 content_type='application/json', HTTP_X_CSRFTOKEN=csrf,

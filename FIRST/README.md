@@ -2,7 +2,7 @@
 
 Proje ve açık kaynak topluluğu.
 
-Durum: Genel kapsam ve temel ürün akışları görüşmeyle netleştiriliyor. Güncel kabul edilmiş kararlar, açık konular ve askıya alınan mesajlaşma kapsamı [kararlar.md](kararlar.md) dosyasındadır. Aşağıdaki özellik önerileri bu güncel kayıtla birlikte okunmalıdır; normal auth ve hesap yönetimi backend/web uygulaması tamamlandı; son bağımsız kontrol kanıtları aşağıdaki run kaydındadır.
+Durum: Hesap yönetimi, Google/GitHub girişi, GitHub repo bağlantısı, proje paylaşımı/düzenleme/arşivleme, sınıflandırma ve sayfalı topluluk keşfi uygulanmıştır. İlan ve katılım entegrasyonu [aktif run](../.orchestrator/runs/first-listing-participation/run.json) ile yürütülür. Güncel kabul edilmiş kararlar, açık konular ve askıya alınan mesajlaşma kapsamı [kararlar.md](kararlar.md) dosyasındadır. Ürün kararı ile uygulanmış/test edilmiş davranış ayrı değerlendirilir.
 
 ## Amaç
 
@@ -46,6 +46,6 @@ Aşağıdakiler ürün yönünü destekleyen önerilerdir; kesin özellik listes
 
 ## Normal auth uygulama durumu
 
-E-posta/şifre kaydı ve girişi, beni hatırla, oturum sorgulama/çıkış, profil/telefon güncelleme, parola kurtarma/değiştirme, yeniden doğrulama, e-posta doğrulama/değiştirme ve oturum yönetimi backend ile webde uygulandı. Ana sayfa temel gezinme ve oturum durumuyla boş bırakıldı; `/hesap` gerçek API'ye bağlı işlevsel profil ekranıdır. OAuth, repo/ilan ve öğrenci doğrulama bu teslimin dışındadır.
+E-posta/şifre kaydı ve girişi, beni hatırla, oturum sorgulama/çıkış, profil/telefon güncelleme, parola kurtarma/değiştirme, yeniden doğrulama, e-posta doğrulama/değiştirme ve oturum yönetimi backend ile webde uygulandı. `/hesap` gerçek API'ye bağlı profil ekranıdır. İlk auth tesliminden sonra Google/GitHub OAuth, repo bağlantısı ve proje paylaşımı eklendi; ana sayfa gerçek sayfalı topluluk akışıdır. Öğrenci doğrulaması hâlâ sonraki kapsamdadır.
 
 [Backend](backend/README.md), [web](frontend/README.md), [API sözleşmesi](contracts/auth-api.md) ve [run checklist](../.orchestrator/runs/first-auth/checklist.md) uygulama, test ve bağımsız kontrol kanıtlarını içerir. İzole backend/frontend testleri ile lint/typecheck/build çalıştırıldı. Gerçek PostgreSQL/Redis/SMTP, ingress/proxy/HTTPS-cookie, tarayıcı E2E ve deploy **not_verified**; kod kontrolleri canlı ortam doğrulaması değildir.

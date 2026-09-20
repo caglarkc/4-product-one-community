@@ -1,7 +1,8 @@
+from .fakes import BearerClient as Client
 import time
 from urllib.parse import urlparse, parse_qs
 from unittest.mock import patch, Mock
-from django.test import Client, TestCase, override_settings
+from django.test import TestCase, override_settings
 from allauth.socialaccount.models import SocialAccount
 from accounts.github_views import exchange, GitHubError
 from accounts.models import User, SessionRecord
@@ -66,7 +67,7 @@ class GitHubTests(TestCase):
         self.assertEqual(result.json()['user']['providers'], ['github'])
         self.assertFalse(result.json()['user']['has_usable_password'])
         self.assertTrue(result.json()['user']['email_verified'])
-        self.assertAlmostEqual(result.cookies['sessionid']['max-age'], 30 * 86400, delta=2)
+        self.assertAlmostEqual(self.client.session.get_expiry_age(), 30 * 86400, delta=2)
         self.assertEqual(len(mail.outbox), 0)
         self.assertEqual(self.post('github/signup', self.signup_data(username='another')).status_code, 400)
 
@@ -286,7 +287,7 @@ class GitHubTests(TestCase):
         session = self.client.session
         session.cycle_key()
         session.save()
-        self.client.cookies['sessionid'] = session.session_key
+        self.client.defaults['HTTP_AUTHORIZATION'] = 'Bearer ' + session.session_key
         # Keep the rotated session valid so the OAuth session binding itself is exercised.
         SessionRecord.objects.update(key_hash=security.digest(session.session_key))
         self.assertEqual(self.callback(params).status_code, 400)

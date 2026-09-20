@@ -53,3 +53,19 @@ Repo liste snapshot'ı ve yayımlanan proje birbirinden ayrıdır. Repo listesin
 ## Kontrol kapsamı
 
 Kaynak dosyalarındaki dış HTTP çağrıları, bunları çağıran view/helper'lar, route bağlantıları, tarayıcı yönlendirmeleri ve görsel/link öğeleri okundu. GitHub'a istek gönderilmedi; test, lint/typecheck, build veya tarayıcı doğrulaması yapılmadı. Bu belge çalışma zamanı ağ kaydı değildir.
+
+## İlan katılımı ekleri — 21 Eylül 2026
+
+`projects/github_participation.py` yalnız saklı GitHub App kullanıcı erişim tokenını kullanır. Yeni katılım işlemleri normal proje GET/snapshot okumasından ayrıdır. Repo kimliği sayısal ID ile ve işlem yapan sahibin güncel GitHub kimliği/admin yetkisiyle doğrulanır. Ayrıntılı iç API [participation-api.md](participation-api.md) içindedir.
+
+| Kullanıcı aksiyonu | GitHub bağlantısı | Etki |
+|---|---|---|
+| Feature/bug ilanı hazırlama veya Issue kurulumunu yeniden deneme | Repo kimliği, mevcut Issue okuma veya `POST /repos/{owner}/{repo}/issues` | Issue oluşturma sabit işlem işaretiyle uzlaştırılır; belirsiz sonuçta körlemesine tekrar oluşturulmaz. Oluşturucu GitHub UID sabittir. |
+| PR şartlı başvuru | Güncel repo ve `GET /repos/{owner}/{repo}/pulls/{number}` | Public, açık, taslak olmayan ve adayın sayısal GitHub kimliğine ait PR doğrulanır. |
+| PR kabulü | Aynı PR okuma, `PUT .../pulls/{number}/merge` | Sahibin incelediği head SHA gönderilir. Merge-only ile merge+erişim daveti ayrı işlemdir. |
+| Başvuru/davet kabulü veya otomatik katılım | Hedef sayısal kimlik/login doğrulama, collaborator yetkisi ve davet listesi, gerektiğinde `PUT .../collaborators/{username}` | GitHub `push` erişim daveti; FIRST kabulü GitHub davet kabulü değildir. Mevcut erişim/davet uzlaştırılır. |
+| Otomatik ilan oluşturma ve otomatik erişim daveti | Repo, etkin ruleset ayrıntıları, dallar; private için plan bilgisi | Mevcut dallar ve etiketlerde gerekli koruma ispatlanamazsa işlem durur. GitHub ayarları değiştirilmez. |
+| PR/Issue bölümünü açıkça yenileme | Güncel repo erişimi, açık PR listesi ve bağlı Issue | Public içerik anonim alınır; private içerik okuyucunun App tokenıyla alınır. Sahip tokenı okuyucuya private erişim vermez. |
+| GitHub davet durumunu yenileme | Collaborator permission ve invitation listesi | Bekleyen davet, aktif yazma erişimi veya bulunamayan davet ayrı döner. |
+
+API çağrıları sabit GitHub HTTPS hedefinde, redirect izlenmeden, süre/çağrı/yanıt boyutu/sayfalama sınırlarıyla yürür. Repo ve kullanıcı isimlerinden üretilen bağlantılar doğrulanır. Gizli tokenlar frontend'e gönderilmez. Katılım kayıtları durumu saklar; contributor istatistikleri veya zamanlayıcılı istatistik yenileme eklenmedi. Kaynak okuyarak doğrulama ile gerçek GitHub mutasyon testi ayrı kanıtlanır.

@@ -15,7 +15,8 @@ from accounts.serializers import StrictSerializer
 from accounts.account_views import locked_user
 from accounts.views import AuthView, RateLimited
 from accounts.proxy import client_ip
-from . import github, snapshots
+from . import github, snapshots, participation
+from . import github_participation as provider
 from .models import GitHubCredential, PreparedRepository, Project, RepositoryCache
 from .taxonomy import CATEGORIES, STAGES
 
@@ -54,10 +55,10 @@ def installation_url():
     return 'https://github.com/apps/' + settings.GITHUB_APP_SLUG + '/installations/new' if github.enabled() else None
 
 
-def project_data(project):
+def project_data(project, user=None):
     # A publication is the owner's approved snapshot, independent of GitHub.
     private = project.is_private
-    return {'id': str(project.pk), 'title': project.title, 'category': project.category,
+    return {**participation.fields(project, user), 'id': str(project.pk), 'title': project.title, 'category': project.category,
         'subcategory': project.subcategory, 'stage': project.stage,
         'category_label': CATEGORY_LABELS.get(project.category, project.category or 'Belirtilmedi'),
         'subcategory_label': SUBCATEGORY_LABELS.get(project.category, {}).get(project.subcategory, project.subcategory or 'Belirtilmedi'),
@@ -71,6 +72,10 @@ def project_data(project):
 def public_project_summary(project):
     # Feed fields are intentionally independent of provider-backed detail data.
     return {'id': str(project.pk), 'title': project.title, 'description': project.description,
+        'need_type': project.need_type,
+        'need_type_label': next((i['label'] for i in participation.NEEDS if i['value'] == project.need_type), 'Belirtilmedi'),
+        'participation_mode': project.participation_mode,
+        'participation_mode_label': next((i['label'] for i in participation.MODES if i['value'] == project.participation_mode), 'Belirtilmedi'),
         'category': project.category, 'subcategory': project.subcategory, 'stage': project.stage,
         'category_label': CATEGORY_LABELS.get(project.category, project.category or 'Belirtilmedi'),
         'subcategory_label': SUBCATEGORY_LABELS.get(project.category, {}).get(project.subcategory, project.subcategory or 'Belirtilmedi'),
@@ -96,7 +101,17 @@ class CreateInput(SelectionInput):
     description = serializers.CharField(max_length=5000, required=False, allow_blank=True, default='')
     readme_excerpt = serializers.CharField(max_length=600, required=False, allow_blank=True, default='', trim_whitespace=False)
 
+    need_type = serializers.ChoiceField(choices=[i['value'] for i in participation.NEEDS])
+    participation_mode = serializers.ChoiceField(choices=[i['value'] for i in participation.MODES])
+    visibility = serializers.ChoiceField(choices=[i['value'] for i in participation.VISIBILITIES])
+    applications_open = serializers.BooleanField(required=False, default=True)
+    current_state = serializers.CharField(max_length=5000, required=False, allow_blank=True, default='')
+    desired_outcome = serializers.CharField(max_length=5000, required=False, allow_blank=True, default='')
+    issue_number = serializers.IntegerField(min_value=1, required=False)
+    create_issue = serializers.BooleanField(required=False, default=False)
+
     def validate(self, data):
+        participation.validate_listing(data)
         validate_classification(data['category'], data['subcategory'], data['stage'])
         return data
 
@@ -108,6 +123,10 @@ class EditInput(StrictSerializer):
     stage = serializers.ChoiceField(choices=list(STAGE_LABELS.items()), required=False)
     description = serializers.CharField(max_length=5000, required=False, allow_blank=True)
     is_active = serializers.BooleanField(required=False)
+    visibility = serializers.ChoiceField(choices=[i['value'] for i in participation.VISIBILITIES], required=False)
+    applications_open = serializers.BooleanField(required=False)
+    current_state = serializers.CharField(max_length=5000, required=False, allow_blank=True)
+    desired_outcome = serializers.CharField(max_length=5000, required=False, allow_blank=True)
 
     def validate_is_active(self, value):
         if type(self.initial_data.get('is_active')) is not bool:
@@ -128,7 +147,9 @@ class Conflict(APIException):
 
 class ConfigView(AuthView):
     def get(self, request):
-        return Response({'categories': CATEGORIES, 'stages': STAGES, 'github_app_enabled': github.enabled()})
+        return Response({'categories': CATEGORIES, 'stages': STAGES, 'github_app_enabled': github.enabled(),
+            'need_types': participation.NEEDS, 'participation_modes': participation.MODES,
+            'visibilities': participation.VISIBILITIES})
 
 
 class StatusView(AuthView):
@@ -227,8 +248,8 @@ class MineView(AuthView):
     def get(self, request):
         member(request)
         # Reading an existing publication never contacts its external source.
-        return Response({'projects': [project_data(project)
-            for project in Project.objects.filter(owner=request.user)]})
+        return Response({'projects': [project_data(project, request.user)
+            for project in Project.objects.filter(owner=request.user).select_related('owner')]})
 
 
 class CreateView(AuthView):
@@ -244,7 +265,16 @@ class CreateView(AuthView):
         if page < 1:
             raise ValidationError({'page': ['Sayfa pozitif bir tam sayı olmalıdır.']})
         page_size = 12
-        projects = Project.objects.filter(is_active=True, owner__is_active=True).order_by('-created_at', '-pk')
+        projects = Project.objects.filter(is_active=True, owner__is_active=True, visibility='public',
+            applications_open=True).exclude(need_type__in=['feature', 'bug'], issue_status__in=['pending', 'failed', 'none']).select_related('owner').order_by('-created_at', '-pk')
+        for field, choices in [('category', CATEGORY_LABELS), ('subcategory', SUBCATEGORY_CODES),
+                ('stage', STAGE_LABELS), ('need_type', [i['value'] for i in participation.NEEDS]),
+                ('participation_mode', [i['value'] for i in participation.MODES])]:
+            values = request.query_params.getlist(field)
+            if len(values) > 1 or (values and values[0] not in choices):
+                raise ValidationError({field: ['Geçerli bir filtre seçin.']})
+            if values:
+                projects = projects.filter(**{field: values[0]})
         count = projects.count()
         start = (page - 1) * page_size
         # Avoid sending an oversized OFFSET to the database for absent pages.
@@ -255,11 +285,13 @@ class CreateView(AuthView):
 
     def post(self, request):
         member(request, eligible=True)
+        if security.count('participation-actions', str(request.user.pk), ttl=60) > 15:
+            raise RateLimited()
         data = validate(CreateInput, request.data)
         preview_token = data.pop('preview_token')
         try:
             with transaction.atomic():
-                user, _, credential = snapshots.connection(request, eligible=True)
+                user, account, credential = snapshots.connection(request, eligible=True)
                 preview = PreparedRepository.objects.select_for_update().filter(credential=credential,
                     installation_id=data['installation_id'], repository_id=data['repository_id'],
                     preview_token=preview_token).first()
@@ -269,24 +301,38 @@ class CreateView(AuthView):
                 if data['readme_excerpt'] and data['readme_excerpt'] != preview.readme_excerpt:
                     raise ValidationError({'readme_excerpt': ['Onayladığınız README özeti eşleşmiyor. Paylaşımı yeniden hazırlayın.']})
                 repo = preview.repository
-                project = Project.objects.create(owner=user, is_private=repo['private'],
+                participation.validate_listing(data, private=repo['private'])
+                create_issue = data.pop('create_issue')
+                project = Project(owner=user, is_private=repo['private'],
                     repository_name=repo['full_name'], repository_url=repo['html_url'], **data)
+                if data['participation_mode'] == 'automatic':
+                    provider.automatic_access_safety(account, project)
+                project = Project.objects.create(owner=user, is_private=repo['private'],
+                    repository_name=repo['full_name'], repository_url=repo['html_url'],
+                    issue_create_requested=create_issue, issue_creator_uid=account.uid if create_issue else '',
+                    issue_status='pending' if data['need_type'] in ['feature', 'bug'] else 'none', **data)
                 preview.delete()
         except IntegrityError:
             raise Conflict() from None
-        return Response({'project': project_data(project)}, status=201)
+        setup_error = None
+        if project.need_type in ['feature', 'bug']:
+            project, setup_error = participation.setup_issue(request, project.pk)
+        result = {'project': project_data(project, request.user)}
+        if setup_error:
+            result['setup_error'] = 'GitHub Issue hazırlanamadı. İlan detayından yeniden deneyin.'
+        return Response(result, status=201)
 
 
 class DetailView(AuthView):
     def get(self, request, project_id):
         if security.count('project-public-view', client_ip(request), ttl=60) > 30:
             raise RateLimited()
-        project = get_object_or_404(Project, pk=project_id)
-        own = request.user.is_authenticated and request.user.pk == project.owner_id
-        if not project.is_active and not own:
-            from rest_framework.exceptions import NotFound
-            raise NotFound()
-        return Response({'project': project_data(project)})
+        project = get_object_or_404(Project.objects.select_related('owner'), pk=project_id)
+        participation.require_visible(project, request.user)
+        from .models import Participation
+        row = Participation.objects.filter(project=project, user=request.user).select_related('project', 'user').first() if request.user.is_authenticated else None
+        return Response({'project': project_data(project, request.user),
+            'participation': participation.participation_data(row) if row else None})
 
     def patch(self, request, project_id):
         member(request)
@@ -305,9 +351,10 @@ class DetailView(AuthView):
                         data.get('subcategory', project.subcategory),
                         data.get('stage', project.stage),
                     )
+                participation.validate_listing(data, project=project, private=project.is_private)
                 for field, value in data.items():
                     setattr(project, field, value)
                 project.save()
         except IntegrityError:
             raise Conflict() from None
-        return Response({'project': project_data(project)})
+        return Response({'project': project_data(project, request.user)})
