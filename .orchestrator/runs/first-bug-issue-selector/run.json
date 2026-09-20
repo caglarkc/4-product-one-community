@@ -4,8 +4,8 @@
   "title": "FIRST bug-only bounded Issue selection",
   "goal": "Restrict Issues to public bug listings, add bounded Issue selector and verify public/private flows live",
   "createdAt": "2026-09-20T21:43:38.913Z",
-  "updatedAt": "2026-09-20T21:48:24.290Z",
-  "revision": 14,
+  "updatedAt": "2026-09-20T21:51:37.581Z",
+  "revision": 18,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -311,9 +311,9 @@
         ],
         "owner": null
       },
-      "status": "active",
+      "status": "done",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/integration-2026-09-20T21-49-50-279Z.json"
     },
     {
       "id": "live",
@@ -367,9 +367,9 @@
         ],
         "owner": null
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/live-2026-09-20T21-51-37-468Z.json"
     }
   ]
 }

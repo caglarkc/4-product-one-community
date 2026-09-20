@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-bug-issue-selector",
+  "itemId": "live",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Authenticated production Chrome public/private preparation and need/mode switches passed; bug Issue load returned correct empty result; feature no Issue; private bug/PR absent and prior selections cleared. Desktop visual checked, no publications or GitHub mutations.",
+  "artifacts": [],
+  "acceptance": [
+    {
+      "criterion": "Authenticated live public/private repo preparation and need/mode/Issue UI verified.",
+      "status": "passed",
+      "evidence": "Authenticated production Chrome public/private preparation and need/mode switches passed; bug Issue load returned correct empty result; feature no Issue; private bug/PR absent and prior selections cleared. Desktop visual checked, no publications or GitHub mutations."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-20T21:51:37.468073+00:00"
+}
