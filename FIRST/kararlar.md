@@ -193,3 +193,16 @@ Kararlar görüşmenin bütünüyle karşılaştırıldı. Keşif, repo ilanı, 
 2. PR değerlendirmesindeki “Kabul et” değişiklikleri merge edecek; “Kabul et ve repoya ekle” ayrıca repo erişim daveti gönderecek. Bu onay, yalnızca FIRST katılım başvurusunu onaylamak anlamına gelmiyor.
 
 Dosya limitleri, rol yetkileri, sahiplik devri, şikâyet işleyişi ve senkronizasyon gibi kayıtlı açık konular uygulama öncesi ayrıntılandırılacaktır. Bu inceleme teknik entegrasyon doğrulaması veya uygulamaya hazır ayrıntılı şartname değildir.
+
+## Profil, kişi keşfi ve şikâyet planlama kararları — 21 Eylül 2026
+
+Bu bölüm yeni kullanıcı yanıtlarını kaydeder; uygulamanın tamamlandığı anlamına gelmez.
+
+- Bu geliştirme kapsamı: public profil, kişi keşfi/arama, davete açıklık ve profilden projeye davet, proje metin/teknoloji/beceri araması, proje kaydetme, ilan/profil şikâyeti oluşturma.
+- Katkıcılar/istatistik, ekip sayfaları ve private repo vitrini bu kapsam dışında. Mesajlaşma, öğrenci doğrulama ve ayrıntılı sertifika vitrininin önceki ertelemeleri korunur.
+- Profiller ziyaretçilere de açıktır; kişi aramasında görünme kullanıcı tarafından kapatılabilir. Görünen ad, kullanıcı adı, kısa tanıtım, beceriler, ilgi alanları, GitHub ve isteğe bağlı web bağlantısı gösterilir. E-posta, telefon ve doğum tarihi public profile taşınmaz.
+- Kişi keşfinde yalnız GitHub hesabı bağlı, aktif ve keşfe açık kullanıcılar listelenir.
+- Davet alma varsayılan açıktır. Kapatıldığında profil ve kullanıcı adıyla gönderim dahil tüm yeni katılım davetleri backend tarafından engellenir; mevcut davetler ve kişinin kendi başvuruları etkilenmez. GitHub bağlantısı/doğrulanmış e-posta koşulları korunur.
+- Beceri ve teknoloji ortak listeden çoklu seçilir; serbest etiket ekleme yoktur. İlgi alanları mevcut proje kategorilerinden seçilir.
+- Şikâyet kapsamı form, backend doğrulaması ve veritabanı kaydıdır. Yönetim ekranı, yönetici inceleme/yaptırım akışı ve karar bildirimi sonraya bırakılır. Şikâyet otomatik ceza oluşturmaz.
+- Ayrıntılı uygulama taslağı: [.orchestrator planı](../.orchestrator/runs/first-people-discovery-planning/plan.md).
