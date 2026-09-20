@@ -4,8 +4,8 @@
   "title": "FIRST ilan ve katılım entegrasyonu",
   "goal": "Tek repo ilanı, ihtiyaç, görünürlük, başvuru, GitHub davet ve PR entegrasyonunu backend sonra frontend ve test ile yayınla",
   "createdAt": "2026-09-20T21:02:44.591Z",
-  "updatedAt": "2026-09-20T21:27:47.687Z",
-  "revision": 26,
+  "updatedAt": "2026-09-20T21:35:53.916Z",
+  "revision": 27,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -490,9 +490,9 @@
         ],
         "owner": null
       },
-      "status": "active",
+      "status": "done",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/deploy-2026-09-20T21-35-53-805Z.json"
     },
     {
       "id": "backend-hardening",
