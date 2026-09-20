@@ -77,7 +77,7 @@ class MeView(AuthView):
         return Response({'user': user_data(user) if user.is_authenticated else None})
 
 
-def start_session(request, user, remember=False):
+def start_session(request, user, remember=False, *, password_authenticated=False):
     if request.session.session_key:
         SessionRecord.objects.filter(key_hash=security.digest(request.session.session_key)).update(revoked=True)
     login(request._request, user, backend='django.contrib.auth.backends.ModelBackend')
@@ -85,7 +85,11 @@ def start_session(request, user, remember=False):
     duration = 30 * 86400 if remember else 86400
     expires_at = timezone.now() + timedelta(seconds=duration)
     request.session.set_expiry(expires_at)
-    request.session['reauthenticated_at'] = time.time()
+    # A provider login may reuse an old browser session. Only a password proof
+    # grants freshness here; Google reauthentication verifies auth_time itself.
+    request.session.pop('reauthenticated_at', None)
+    if password_authenticated:
+        request.session['reauthenticated_at'] = time.time()
     request.session.save()
     SessionRecord.objects.create(user=user, key_hash=security.digest(request.session.session_key),
         expires_at=expires_at, security_version=user.security_version)
@@ -145,7 +149,7 @@ class RegisterView(AuthView):
             with transaction.atomic():
                 user = User.objects.create_user(**serializer.validated_data)
                 send_verification(user)
-                start_session(request, user)
+                start_session(request, user, password_authenticated=True)
         except IntegrityError:
             raise ValidationError({'non_field_errors': ['E-posta veya kullanıcı adı kullanılıyor.']})
         return Response({'user': user_data(user)}, status=201)
@@ -159,7 +163,7 @@ class LoginView(AuthView):
         user = check_password_proof(request, data['email'], data['password'])
         if not user:
             return Response({'detail': 'E-posta veya şifre hatalı.'}, status=400)
-        start_session(request, user, data['remember_me'])
+        start_session(request, user, data['remember_me'], password_authenticated=True)
         return Response({'user': user_data(user)})
 
 
@@ -167,7 +171,13 @@ class LogoutView(AuthView):
     def post(self, request):
         serializer = StrictSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        if request.session.session_key:
-            SessionRecord.objects.filter(key_hash=security.digest(request.session.session_key)).update(revoked=True)
-        logout(request._request)
+        with transaction.atomic():
+            if request.user.is_authenticated:
+                # Match the user-first lock order of protected writes and
+                # OAuth callback persistence before invalidating the session.
+                from .account_views import locked_user
+                locked_user(request)
+            if request.session.session_key:
+                SessionRecord.objects.filter(key_hash=security.digest(request.session.session_key)).update(revoked=True)
+            logout(request._request)
         return Response({'detail': 'Oturum kapatıldı.'})

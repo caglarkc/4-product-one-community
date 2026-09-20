@@ -279,8 +279,10 @@ class SessionsView(ProtectedView):
 class SessionRevokeView(ProtectedView):
     def delete(self, request, session_id):
         validated(StrictSerializer, request)
-        if not SessionRecord.objects.filter(pk=session_id, user=request.user, revoked=False).update(revoked=True):
-            raise NotFound('Oturum bulunamadı.')
+        with transaction.atomic():
+            user = locked_user(request)
+            if not SessionRecord.objects.filter(pk=session_id, user=user, revoked=False).update(revoked=True):
+                raise NotFound('Oturum bulunamadı.')
         return Response({'detail': 'Oturum kapatıldı.'})
 
 
