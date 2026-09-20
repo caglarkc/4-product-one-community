@@ -1,15 +1,17 @@
-import { describe,it,expect,vi } from 'vitest';
-import { api, ApiError } from '../src/lib/api';
-describe('auth API transport',()=>{
- it('fetches fresh CSRF for every mutation and sends cookies/no-store',async()=>{
-  const fetcher=vi.fn().mockResolvedValueOnce(Response.json({csrfToken:'a'})).mockResolvedValueOnce(Response.json({user:{}})).mockResolvedValueOnce(Response.json({csrfToken:'b'})).mockResolvedValueOnce(Response.json({detail:'ok'}));vi.stubGlobal('fetch',fetcher);
+import {describe,it,expect,vi} from 'vitest';
+import {api,ApiError,publicProjectFeed,sessionKey} from '../src/lib/api';
+describe('direct backend API transport',()=>{
+ it('obtains fresh CSRF per mutation and sends bearer with credentials omitted',async()=>{
+  localStorage.setItem(sessionKey,'a'.repeat(32));const fetcher=vi.fn().mockResolvedValueOnce(Response.json({csrfToken:'a'})).mockResolvedValueOnce(Response.json({detail:'ok'})).mockResolvedValueOnce(Response.json({csrfToken:'b'})).mockResolvedValueOnce(Response.json({detail:'ok'}));vi.stubGlobal('fetch',fetcher);
   await api('login',{remember_me:true});await api('logout',{});
-  expect(fetcher.mock.calls.map(call=>call[0])).toEqual(['/api/auth/csrf/','/api/auth/login/','/api/auth/csrf/','/api/auth/logout/']);
-  expect(fetcher.mock.calls[1][1]).toMatchObject({credentials:'same-origin',cache:'no-store',headers:{'X-CSRFToken':'a'},body:'{"remember_me":true}'});
-  expect(fetcher.mock.calls[3][1].headers['X-CSRFToken']).toBe('b');
+  expect(fetcher.mock.calls.map(call=>call[0])).toEqual(['csrf','login','csrf','logout'].map(path=>`https://api.first.test/api/auth/${path}/`));
+  expect(fetcher.mock.calls[1][1]).toMatchObject({credentials:'omit',cache:'no-store',redirect:'error',body:'{"remember_me":true}'});
+  expect(fetcher.mock.calls[1][1].headers.get('X-CSRFToken')).toBe('a');expect(fetcher.mock.calls[3][1].headers.get('X-CSRFToken')).toBe('b');expect(fetcher.mock.calls[1][1].headers.get('Authorization')).toBe(`Bearer ${'a'.repeat(32)}`);
  });
  it('does not submit when CSRF fails',async()=>{const fetcher=vi.fn().mockResolvedValue(Response.json({detail:'CSRF hata'},{status:403}));vi.stubGlobal('fetch',fetcher);await expect(api('login',{})).rejects.toMatchObject({status:403});expect(fetcher).toHaveBeenCalledTimes(1);});
- it('retains field errors and response codes',async()=>{vi.stubGlobal('fetch',vi.fn().mockResolvedValueOnce(Response.json({csrfToken:'a'})).mockResolvedValueOnce(Response.json({detail:'Alanlar',errors:{email:['Kullanılıyor']}},{status:400})));await expect(api('register',{})).rejects.toMatchObject({errors:{email:['Kullanılıyor']},status:400});});
- it('uses GET for session and returns anonymous state',async()=>{const fetcher=vi.fn().mockResolvedValue(Response.json({user:null}));vi.stubGlobal('fetch',fetcher);expect(await api('me')).toEqual({user:null});expect(fetcher).toHaveBeenCalledWith('/api/auth/me/',{credentials:'same-origin',cache:'no-store'});});
- it('reports network failure without success',async()=>{vi.stubGlobal('fetch',vi.fn().mockRejectedValue(new Error('private server detail')));await expect(api('me')).rejects.toBeInstanceOf(ApiError);});
+ it('retains field errors and response codes',async()=>{vi.stubGlobal('fetch',vi.fn().mockResolvedValueOnce(Response.json({csrfToken:'a'})).mockResolvedValueOnce(Response.json({detail:'Alanlar',errors:{email:['Kullanılıyor']},code:'invalid'},{status:400})));await expect(api('register',{})).rejects.toMatchObject({errors:{email:['Kullanılıyor']},status:400,code:'invalid'});});
+ it('uses GET for session and returns anonymous state',async()=>{const fetcher=vi.fn().mockResolvedValue(Response.json({user:null}));vi.stubGlobal('fetch',fetcher);expect(await api('me')).toEqual({user:null});expect(fetcher).toHaveBeenCalledWith('https://api.first.test/api/auth/me/',expect.objectContaining({credentials:'omit',cache:'no-store'}));});
+ it('reports network failure without provider details',async()=>{vi.stubGlobal('fetch',vi.fn().mockRejectedValue(new Error('private server detail')));await expect(api('me')).rejects.toBeInstanceOf(ApiError);});
+ it('public discovery never sends session credentials or accepts session rotation',async()=>{localStorage.setItem(sessionKey,'a'.repeat(32));const fetcher=vi.fn().mockResolvedValue(Response.json({projects:[]},{headers:{'X-First-Session':'b'.repeat(32)}}));vi.stubGlobal('fetch',fetcher);await publicProjectFeed(new URLSearchParams({need_type:'bug'}),new AbortController().signal);expect(fetcher.mock.calls[0][0]).toContain('?need_type=bug');expect(fetcher.mock.calls[0][1].headers).toEqual({Accept:'application/json'});expect(localStorage.getItem(sessionKey)).toBe('a'.repeat(32));});
+ it('rejects a queued mutation after session identity changes',async()=>{let finish!:(response:Response)=>void;const fetcher=vi.fn().mockImplementationOnce(()=>new Promise<Response>(resolve=>{finish=resolve;}));vi.stubGlobal('fetch',fetcher);localStorage.setItem(sessionKey,'a'.repeat(32));const pending=api('projects/123/apply',{explanation:'test'});await vi.waitFor(()=>expect(fetcher).toHaveBeenCalledTimes(1));localStorage.setItem(sessionKey,'b'.repeat(32));finish(Response.json({csrfToken:'proof'}));await expect(pending).rejects.toMatchObject({code:'session_changed'});expect(fetcher).toHaveBeenCalledTimes(1);});
 });

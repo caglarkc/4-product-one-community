@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-listing-participation",
+  "itemId": "provider",
+  "agent": {
+    "platform": "codex",
+    "identity": "provider",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Implemented bounded GitHub Issue/PR/invitation helper; stable identity and reviewed SHA, reader-authorized content retrieval, strict fail-closed automatic protection checks. Source-reviewed; execution tests scheduled after frontend.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/github_participation.py",
+      "change": "modified",
+      "description": "Implemented bounded GitHub Issue/PR/invitation helper; stable identity and reviewed SHA, reader-authorized content retrieval, strict fail-closed automatic protection checks. Source-reviewed; execution tests scheduled after frontend."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Implement live GitHub identity, Issue/PR/invite operations and fail-closed automatic-access protections.",
+      "status": "passed",
+      "evidence": "Implemented bounded GitHub Issue/PR/invitation helper; stable identity and reviewed SHA, reader-authorized content retrieval, strict fail-closed automatic protection checks. Source-reviewed; execution tests scheduled after frontend."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-20T21:11:27.508247+00:00"
+}

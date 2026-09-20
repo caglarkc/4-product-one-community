@@ -23,17 +23,19 @@ it('skips consent for already authorized repos', async () => {
  setup(true, [{id: 1}]);render(<GitHubOnboarding next="/"/>);
  await waitFor(() => expect(router.replace).toHaveBeenCalledWith('/'));expect(navigateToGitHub).not.toHaveBeenCalled();
 });
-it('sends missing installation to repo selection preserving destination', async () => {
+it('opens missing installation only on explicit action and preserves destination', async () => {
  setup(true);render(<GitHubOnboarding next="/hesap"/>);
+ fireEvent.click(await screen.findByRole('button',{name:'Repo izinlerini yönet'}));
  await waitFor(() => expect(navigateToGitHub).toHaveBeenCalledWith(status.installation_url, true));expect(sessionStorage.getItem('first.github.setup.next')).toBe('/hesap');
 });
 it('stops after installation return with no repos including retry', async () => {
  setup(true);render(<GitHubOnboarding installationReturn/>);
- expect(await screen.findByText(/Henüz erişilebilir repo/)).toBeInTheDocument();expect(navigateToGitHub).not.toHaveBeenCalled();
- fireEvent.click(screen.getByRole('button', {name: 'Repo listesini yeniden kontrol et'}));expect(await screen.findByText(/Henüz erişilebilir repo/)).toBeInTheDocument();expect(navigateToGitHub).not.toHaveBeenCalled();
+ expect(await screen.findByText(/GitHub izinlerinden döndünüz/)).toBeInTheDocument();expect(navigateToGitHub).not.toHaveBeenCalled();
+ fireEvent.click(screen.getByRole('button', {name: 'Repo listesini yenile'}));expect(await screen.findByText(/GitHub izinlerinden döndünüz/)).toBeInTheDocument();expect(navigateToGitHub).not.toHaveBeenCalled();
 });
 it('preserves safe destination across installation return', async () => {
  setup(true, [{id: 1}]);sessionStorage.setItem('first.github.setup.next', '/hesap');render(<GitHubOnboarding installationReturn/>);
+ fireEvent.click(await screen.findByRole('button',{name:'Kayıtlı repolarla devam et'}));
  await waitFor(() => expect(router.replace).toHaveBeenCalledWith('/hesap'));expect(sessionStorage.getItem('first.github.setup.next')).toBeNull();
 });
 it('requires explicit retry after cancelled authorization', async () => {
@@ -47,8 +49,8 @@ it.each([null, {providers: ['google']}])('requires linked identity', async user 
 it('bounds external next to fixed local paths', async () => {
  setup(true, [{id: 1}]);render(<GitHubOnboarding next="https://evil.example/"/>);await waitFor(() => expect(router.replace).toHaveBeenCalledWith('/projelerim/yeni'));
 });
-it('manage opens installation even with existing repos', async () => {
- setup(true, [{id: 1}]);render(<GitHubOnboarding next="/projelerim/yeni" manage/>);await waitFor(() => expect(navigateToGitHub).toHaveBeenCalledWith(status.installation_url, true));expect(router.replace).not.toHaveBeenCalled();
+it('manage requires explicit installation action even with existing repos', async () => {
+ setup(true, [{id: 1}]);render(<GitHubOnboarding next="/projelerim/yeni" manage/>);expect(navigateToGitHub).not.toHaveBeenCalled();fireEvent.click(await screen.findByRole('button',{name:'Repo izinlerini yönet'}));await waitFor(() => expect(navigateToGitHub).toHaveBeenCalledWith(status.installation_url, true));expect(router.replace).not.toHaveBeenCalled();
 });
 it('does not navigate after unmount during pending start', async () => {
  setup();let resolve!: (value: unknown) => void;const normal = vi.mocked(api).getMockImplementation()!;
@@ -56,15 +58,15 @@ it('does not navigate after unmount during pending start', async () => {
  const view = render(<GitHubOnboarding/>);await waitFor(() => expect(resolve).toBeDefined());view.unmount();resolve({authorization_url: 'https://github.com/login/oauth/authorize'});await new Promise(done => setTimeout(done, 0));expect(navigateToGitHub).not.toHaveBeenCalled();
 });
 it('storage denial cannot block an authorized login', async () => {
- setup(true, [{id: 1}]);vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {throw new Error('denied');});vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => {throw new Error('denied');});
- render(<GitHubOnboarding installationReturn/>);await waitFor(() => expect(router.replace).toHaveBeenCalledWith('/projelerim/yeni'));vi.restoreAllMocks();
+ setup(true, [{id: 1}]);vi.spyOn(sessionStorage, 'getItem').mockImplementation(() => {throw new Error('denied');});vi.spyOn(sessionStorage, 'removeItem').mockImplementation(() => {throw new Error('denied');});
+ render(<GitHubOnboarding installationReturn/>);fireEvent.click(await screen.findByRole('button',{name:'Kayıtlı repolarla devam et'}));await waitFor(() => expect(router.replace).toHaveBeenCalledWith('/projelerim/yeni'));vi.restoreAllMocks();
 });
 it.each([{authorizationReturn: true}, {installationReturn: true}])('stops reauthorization loop after provider return %j', async props => {
  setup();render(<GitHubOnboarding {...props}/>);expect(await screen.findByRole('button', {name: 'İzinleri tamamlamayı yeniden dene'})).toBeInTheDocument();expect(navigateToGitHub).not.toHaveBeenCalled();
 });
-it('retains manage intent through OAuth then clears it before installation', async () => {
+it('retains manage intent through OAuth until explicit continuation', async () => {
  setup(true, [{id: 1}]);sessionStorage.setItem('first.github.setup.manage', '1');render(<GitHubOnboarding authorizationReturn/>);
- await waitFor(() => expect(navigateToGitHub).toHaveBeenCalledWith(status.installation_url, true));expect(sessionStorage.getItem('first.github.setup.manage')).toBeNull();
+ expect(await screen.findByRole('button',{name:'Repo izinlerini yönet'})).toBeInTheDocument();expect(navigateToGitHub).not.toHaveBeenCalled();expect(sessionStorage.getItem('first.github.setup.manage')).toBe('1');fireEvent.click(screen.getByRole('button',{name:'Devam et'}));expect(sessionStorage.getItem('first.github.setup.manage')).toBeNull();
 });
 it('fresh login ignores abandoned manage intent', async () => {
  setup(true, [{id: 1}]);sessionStorage.setItem('first.github.setup.manage', '1');render(<GitHubOnboarding next="/"/>);await waitFor(() => expect(router.replace).toHaveBeenCalledWith('/'));expect(navigateToGitHub).not.toHaveBeenCalled();

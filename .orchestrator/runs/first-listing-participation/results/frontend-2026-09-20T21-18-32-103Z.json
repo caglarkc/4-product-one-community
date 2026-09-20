@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-listing-participation",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "frontend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Implemented listing editor, visibility controls, discovery filters, detail application and explicit collaboration, participation dashboard with durable retries and reviewed SHA, notifications and navigation. Source checked against backend contract; ready for tests.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/frontend",
+      "change": "modified",
+      "description": "Implemented listing editor, visibility controls, discovery filters, detail application and explicit collaboration, participation dashboard with durable retries and reviewed SHA, notifications and navigation. Source checked against backend contract; ready for tests."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Implement complete listing editor, discovery filters, participation dashboards and notifications against accepted backend contract.",
+      "status": "passed",
+      "evidence": "Implemented listing editor, visibility controls, discovery filters, detail application and explicit collaboration, participation dashboard with durable retries and reviewed SHA, notifications and navigation. Source checked against backend contract; ready for tests."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-20T21:18:32.103264+00:00"
+}

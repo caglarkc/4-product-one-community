@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-listing-participation",
+  "itemId": "backend-hardening",
+  "agent": {
+    "platform": "codex",
+    "identity": "backend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Independent source verification passed: minimal public feed allowlist; persisted Issue creator UID blocks relink before provider call; idle prior participation converts to actual invitation with notification while in-flight effects remain protected. No runtime tests yet.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/models.py",
+      "change": "modified",
+      "description": "Independent source verification passed: minimal public feed allowlist; persisted Issue creator UID blocks relink before provider call; idle prior participation converts to actual invitation with notification while in-flight effects remain protected. No runtime tests yet."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/views.py",
+      "change": "modified",
+      "description": "Independent source verification passed: minimal public feed allowlist; persisted Issue creator UID blocks relink before provider call; idle prior participation converts to actual invitation with notification while in-flight effects remain protected. No runtime tests yet."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/urls.py",
+      "change": "modified",
+      "description": "Independent source verification passed: minimal public feed allowlist; persisted Issue creator UID blocks relink before provider call; idle prior participation converts to actual invitation with notification while in-flight effects remain protected. No runtime tests yet."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/participation.py",
+      "change": "modified",
+      "description": "Independent source verification passed: minimal public feed allowlist; persisted Issue creator UID blocks relink before provider call; idle prior participation converts to actual invitation with notification while in-flight effects remain protected. No runtime tests yet."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/participation_views.py",
+      "change": "modified",
+      "description": "Independent source verification passed: minimal public feed allowlist; persisted Issue creator UID blocks relink before provider call; idle prior participation converts to actual invitation with notification while in-flight effects remain protected. No runtime tests yet."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/migrations",
+      "change": "modified",
+      "description": "Independent source verification passed: minimal public feed allowlist; persisted Issue creator UID blocks relink before provider call; idle prior participation converts to actual invitation with notification while in-flight effects remain protected. No runtime tests yet."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/contracts/participation-api.md",
+      "change": "modified",
+      "description": "Independent source verification passed: minimal public feed allowlist; persisted Issue creator UID blocks relink before provider call; idle prior participation converts to actual invitation with notification while in-flight effects remain protected. No runtime tests yet."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Public feed stays minimal and identified backend security/state findings are resolved.",
+      "status": "passed",
+      "evidence": "Independent source verification passed: minimal public feed allowlist; persisted Issue creator UID blocks relink before provider call; idle prior participation converts to actual invitation with notification while in-flight effects remain protected. No runtime tests yet."
+    }
+  ],
+  "checks": [],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-20T21:15:18.716754+00:00"
+}

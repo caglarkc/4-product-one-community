@@ -1,3 +1,4 @@
+import {SessionProvider} from '../src/components/session-provider';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { AccountForm } from '../src/components/account-form';
@@ -5,7 +6,7 @@ import { AccountStatus, SessionList } from '../src/components/account-status';
 import { ForgotPassword, ResetPassword, VerifyEmail } from '../src/components/recovery-forms';
 const nav = vi.hoisted(() => ({replace: vi.fn(), refresh: vi.fn()}));
 vi.mock('next/navigation', () => ({useRouter: () => nav}));
-const member = {id: 1, email: 'member@example.test', full_name: 'Test Üye', username: 'üye', birth_date: '2000-01-01', gender: 'unspecified', phone: '', phone_verified: false, email_verified: true};
+const member = {id: 1, email: 'member@example.test', full_name: 'Test Üye', username: 'üye', birth_date: '2000-01-01', gender: 'unspecified', phone: '', phone_verified: false, email_verified: true, providers:[], has_usable_password:true};
 function mockRequests(handler: (path: string, options?: RequestInit) => Response | Promise<Response>) {
   const fetcher = vi.fn((path: string, options?: RequestInit) => path.endsWith('/csrf/') ? Promise.resolve(Response.json({csrfToken: 'fresh'})) : Promise.resolve(handler(path, options)));
   vi.stubGlobal('fetch', fetcher); return fetcher;
@@ -16,16 +17,16 @@ function fill(label: string, value: string) {fireEvent.change(screen.getByLabelT
 describe('account mutations', () => {
   it('only saves changed profile data, resets after save, and blocks unchanged form submissions', async () => {
     const fetcher = mockRequests((path, options) => path.endsWith('/sessions/') ? Response.json({sessions: []}) : Response.json({user: path.endsWith('/profile/') ? {...member, ...JSON.parse(options!.body as string)} : member}));
-    render(<AccountStatus profile/>); await screen.findByLabelText('Ad soyad');
-    const button = screen.getByRole('button', {name: 'Profili kaydet'});
+    render(<SessionProvider><AccountStatus profile/></SessionProvider>); await screen.findByLabelText('Ad soyad');
+    const button = screen.getByRole('button', {name: 'Değişiklikleri kaydet'});
     expect(button).toBeDisabled();
-    submit('Profili kaydet');
+    submit('Değişiklikleri kaydet');
     expect(fetcher.mock.calls.some(([path]) => path.endsWith('/profile/'))).toBe(false);
     fill('Ad soyad', 'Yeni Üye'); expect(button).toBeEnabled();
     fill('Ad soyad', member.full_name); expect(button).toBeDisabled();
     fill('Cinsiyet', 'other'); expect(button).toBeEnabled();
     fill('Cinsiyet', member.gender); expect(button).toBeDisabled();
-    fill('Ad soyad', 'Yeni Üye'); submit('Profili kaydet');
+    fill('Ad soyad', 'Yeni Üye'); submit('Değişiklikleri kaydet');
     await screen.findByText('Bilgiler güncellendi.');
     await waitFor(() => expect(button).toBeDisabled());
     expect(screen.getByLabelText('Ad soyad')).toHaveValue('Yeni Üye');
@@ -33,27 +34,27 @@ describe('account mutations', () => {
   });
   it('keeps unsaved profile changes available after a failed save', async () => {
     mockRequests(path => path.endsWith('/me/') ? Response.json({user: member}) : path.endsWith('/sessions/') ? Response.json({sessions: []}) : Response.json({detail: 'Kaydedilemedi'}, {status: 503}));
-    render(<AccountStatus profile/>); await screen.findByLabelText('Ad soyad');
-    fill('Ad soyad', 'Yeni Üye'); submit('Profili kaydet');
+    render(<SessionProvider><AccountStatus profile/></SessionProvider>); await screen.findByLabelText('Ad soyad');
+    fill('Ad soyad', 'Yeni Üye'); submit('Değişiklikleri kaydet');
     await screen.findByText('Kaydedilemedi');
     expect(screen.getByLabelText('Ad soyad')).toHaveValue('Yeni Üye');
-    expect(screen.getByRole('button', {name: 'Profili kaydet'})).toBeEnabled();
+    expect(screen.getByRole('button', {name: 'Değişiklikleri kaydet'})).toBeEnabled();
   });
 
   it('submits real profile data via PATCH with NFC username and unverified phone', async () => {
     const fetcher = mockRequests(path => path.endsWith('/sessions/') ? Response.json({sessions: []}) : Response.json({user: member}));
-    render(<AccountStatus profile/>); await screen.findByLabelText('Ad soyad');
-    fill('Kullanıcı adı', 'o\u0308grenci'); fill('Telefon (isteğe bağlı, doğrulanmaz)', '+905551234567'); submit('Profili kaydet');
+    render(<SessionProvider><AccountStatus profile/></SessionProvider>); await screen.findByLabelText('Ad soyad');
+    fill('Kullanıcı adı', 'o\u0308grenci'); fill('Telefon (isteğe bağlı)', '+905551234567'); submit('Değişiklikleri kaydet');
     await screen.findByText('Bilgiler güncellendi.');
     const request = fetcher.mock.calls.find(([path]) => path.endsWith('/profile/'))!;
     expect(request[1]?.method).toBe('PATCH');
     expect(JSON.parse(request[1]?.body as string)).toEqual({full_name:'Test Üye', username:'ögrenci', birth_date:'2000-01-01', gender:'unspecified', phone:'+905551234567'});
-    expect(request[1]?.headers).toEqual({'Content-Type':'application/json','X-CSRFToken':'fresh'});
+    expect(new Headers(request[1]?.headers).get('X-CSRFToken')).toBe('fresh');
   });
   it('keeps the old email visible after requesting a new one', async () => {
     const fetcher = mockRequests(path => path.endsWith('/me/') ? Response.json({user:member}) : path.endsWith('/sessions/') ? Response.json({sessions:[]}) : Response.json({detail:'Yeni adrese gönderildi.'}));
-    render(<AccountStatus profile/>); await screen.findByLabelText('Yeni e-posta'); fill('Yeni e-posta','new@example.test'); submit('Yeni adrese doğrulama gönder');
-    await screen.findByText('Yeni adrese gönderildi.'); expect(screen.getByText(/E-posta: member@example.test/)).toBeInTheDocument();
+    render(<SessionProvider><AccountStatus profile/></SessionProvider>); await screen.findByLabelText('Yeni e-posta'); fill('Yeni e-posta','new@example.test'); submit('Doğrulama bağlantısı gönder');
+    await screen.findByText('Yeni adrese gönderildi.'); expect(screen.getByText(/member@example.test · Doğrulandı/)).toBeInTheDocument();
     expect(JSON.parse(fetcher.mock.calls.find(([path]) => path.endsWith('/email/change/'))![1]?.body as string)).toEqual({email:'new@example.test'});
   });
   it('requires explicit retry after successful reauthentication and preserves the operation fields', async () => {
@@ -84,13 +85,13 @@ describe('account mutations', () => {
     expect(screen.getByLabelText('Kullanıcı adı')).toHaveAccessibleDescription('Bu kullanıcı adı kullanılıyor.');
   });
   it('blocks duplicate mutations while waiting',async()=>{
-    const fetcher=mockRequests(()=>new Promise(()=>{})); render(<ForgotPassword/>); fill('E-posta','a@example.test');
+    let resolve!:(response:Response)=>void;const fetcher=mockRequests(()=>new Promise<Response>(done=>{resolve=done;})); render(<ForgotPassword/>); fill('E-posta','a@example.test');
     submit('Sıfırlama bağlantısı gönder'); fireEvent.submit(screen.getByRole('form'));
-    await waitFor(()=>expect(fetcher).toHaveBeenCalledTimes(2)); expect(screen.getByRole('button')).toBeDisabled();
+    await waitFor(()=>expect(fetcher).toHaveBeenCalledTimes(2)); expect(screen.getByRole('button')).toBeDisabled();resolve(Response.json({detail:'Tamam'}));await screen.findByText('Tamam');
   });
   it('changes password and returns to login only on success',async()=>{
     nav.replace.mockClear();const fetcher=mockRequests(path=>path.endsWith('/me/')?Response.json({user:member}):path.endsWith('/sessions/')?Response.json({sessions:[]}):Response.json({detail:'Şifre değişti'}));
-    render(<AccountStatus profile/>); await screen.findByLabelText('Eski şifre'); fill('Eski şifre','Eski42!x'); fill('Yeni şifre','Yeni42!x'); submit('Şifreyi değiştir');
+    render(<SessionProvider><AccountStatus profile/></SessionProvider>); await screen.findByLabelText('Mevcut şifre'); fill('Mevcut şifre','Eski42!x'); fill('Yeni şifre','Yeni42!x'); submit('Şifreyi değiştir');
     await waitFor(()=>expect(nav.replace).toHaveBeenCalledWith('/giris'));
     expect(JSON.parse(fetcher.mock.calls.find(([path])=>path.endsWith('/password/change/'))![1]?.body as string)).toEqual({old_password:'Eski42!x',password:'Yeni42!x'});
   });
@@ -107,7 +108,7 @@ describe('email links and password recovery',()=>{
   it.each([member,null])('verifies explicitly then refetches session %s',async(user)=>{
     const fetcher=mockRequests(path=>path.endsWith('/me/')?Response.json({user}):Response.json({detail:'Doğrulandı'}));render(<VerifyEmail token="secret"/>);submit('E-posta adresini onayla');
     await screen.findByText('E-posta adresi doğrulandı.');await waitFor(()=>expect(fetcher).toHaveBeenCalledTimes(3));
-    expect(fetcher.mock.calls.map(([path])=>path)).toEqual(['/api/auth/csrf/','/api/auth/email/verify/','/api/auth/me/']);
+    expect(fetcher.mock.calls.map(([path])=>path)).toEqual(['https://api.first.test/api/auth/csrf/','https://api.first.test/api/auth/email/verify/','https://api.first.test/api/auth/me/']);
     expect(JSON.parse(fetcher.mock.calls[1][1]?.body as string)).toEqual({key:'secret'});
     expect(await screen.findByRole('link',{name:user?'Hesabıma dön':'Giriş yapın'})).toBeInTheDocument();
   });

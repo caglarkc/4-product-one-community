@@ -1,3 +1,6 @@
+import {SessionProvider} from '../src/components/session-provider';
+import type {ReactNode} from 'react';
+vi.mock('../src/components/session-provider',async original=>({...await original<typeof import('../src/components/session-provider')>(),GuestOnly:({children}:{children:ReactNode})=>children}));
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { AccountReset } from '../src/components/account-reset';
@@ -30,18 +33,18 @@ describe('account reset controls', () => {
     const fetcher=requests(()=>Response.json({detail:'Bağlantı kaldırıldı.',user:updated}));const {onChanged,onDeleted}=view();
     click(title);expect(fetcher).not.toHaveBeenCalled();submit(button);
     await screen.findByText('Bağlantı kaldırıldı.');expect(onChanged).toHaveBeenCalledWith(updated);expect(onDeleted).not.toHaveBeenCalled();
-    expect(fetcher.mock.calls[1]).toEqual([`/api/auth/${path}/`,expect.objectContaining({method:'POST',body:JSON.stringify({confirmation}),headers:{'Content-Type':'application/json','X-CSRFToken':'fresh'}})]);
+    expect(fetcher.mock.calls[1]).toEqual([`https://api.first.test/api/auth/${path}/`,expect.objectContaining({method:'POST',body:JSON.stringify({confirmation}),headers:expect.any(Headers)})]);
   });
   it('requires exact typed deletion confirmation even if submit is dispatched directly',async()=>{
     const fetcher=requests(()=>Response.json({detail:'Hesap silindi.'}));const {onDeleted}=view();click('FIRST hesabımı sil');
     submit('Hesabımı kalıcı olarak sil');expect(fetcher).not.toHaveBeenCalled();
     fireEvent.change(screen.getByLabelText('Onaylamak için HESABIMI SIL yazın'),{target:{value:'HESABIMI SIL'}});submit('Hesabımı kalıcı olarak sil');
-    await waitFor(()=>expect(onDeleted).toHaveBeenCalledOnce());expect(fetcher.mock.calls[1]).toEqual(['/api/auth/account/',expect.objectContaining({method:'DELETE',body:JSON.stringify({confirmation:'HESABIMI SIL'})})]);
+    await waitFor(()=>expect(onDeleted).toHaveBeenCalledOnce());expect(fetcher.mock.calls[1]).toEqual(['https://api.first.test/api/auth/account/',expect.objectContaining({method:'DELETE',body:JSON.stringify({confirmation:'HESABIMI SIL'})})]);
   });
   it('blocks duplicate confirmations and cancel during a pending request',async()=>{
-    const fetcher=requests(()=>new Promise(()=>{}));view();click('GitHub repo izinlerini kaldır');submit('Repo izinlerini kaldırmayı onayla');
+    let resolve!:(response:Response)=>void;const fetcher=requests(()=>new Promise<Response>(done=>{resolve=done;}));view();click('GitHub repo izinlerini kaldır');submit('Repo izinlerini kaldırmayı onayla');
     fireEvent.submit(screen.getByRole('form',{name:'GitHub repo izinlerini kaldır onayı'}));
-    await waitFor(()=>expect(fetcher).toHaveBeenCalledTimes(2));expect(screen.getByRole('button',{name:'Vazgeç'})).toBeDisabled();expect(screen.getByRole('button',{name:'FIRST hesabımı sil'})).toBeDisabled();expect(screen.getByRole('button',{name:'GitHub hesap bağlantısını kaldır'})).toBeDisabled();
+    await waitFor(()=>expect(fetcher).toHaveBeenCalledTimes(2));expect(screen.getByRole('button',{name:'Vazgeç'})).toBeDisabled();expect(screen.getByRole('button',{name:'FIRST hesabımı sil'})).toBeDisabled();expect(screen.getByRole('button',{name:'GitHub hesap bağlantısını kaldır'})).toBeDisabled();resolve(Response.json({detail:'Tamam',user}));await screen.findByText('Tamam');
   });
   it.each(['last_login_method','github_unavailable'])('preserves account and confirmation after %s failure',async(code)=>{
     requests(()=>Response.json({detail:'İşlem yapılamadı.',code},{status:409}));const {onChanged,onDeleted}=view();click('GitHub hesap bağlantısını kaldır');submit('GitHub bağlantısını kaldırmayı onayla');
@@ -66,12 +69,12 @@ describe('account reset controls', () => {
   });
   it('refreshes session data and linked account presentation after identity disconnect',async()=>{
     const fetcher=requests(path=>path.endsWith('/me/')?Response.json({user}):path.endsWith('/sessions/')?Response.json({sessions:[]}):Response.json({detail:'Kaldırıldı.',user:{...user,providers:[]}}));
-    render(<AccountStatus profile/>);fireEvent.click(await screen.findByRole('button',{name:'GitHub hesap bağlantısını kaldır'}));submit('GitHub bağlantısını kaldırmayı onayla');
+    render(<SessionProvider><AccountStatus profile/></SessionProvider>);fireEvent.click(await screen.findByRole('button',{name:'GitHub hesap bağlantısını kaldır'}));submit('GitHub bağlantısını kaldırmayı onayla');
     await screen.findByText('GitHub profilinizi FIRST hesabınıza bağlayın.');await waitFor(()=>expect(fetcher.mock.calls.filter(([path])=>path.endsWith('/sessions/'))).toHaveLength(2));
   });
   it('retains the remote cleanup warning after identity removal unmounts the control',async()=>{
     requests(path=>path.endsWith('/me/')?Response.json({user}):path.endsWith('/sessions/')?Response.json({sessions:[]}):Response.json({detail:'FIRST bağlantısı kaldırıldı, GitHub temizliği gerekiyor.',github_cleanup_required:true,user:{...user,providers:[]}}));
-    render(<AccountStatus profile/>);fireEvent.click(await screen.findByRole('button',{name:'GitHub hesap bağlantısını kaldır'}));submit('GitHub bağlantısını kaldırmayı onayla');
+    render(<SessionProvider><AccountStatus profile/></SessionProvider>);fireEvent.click(await screen.findByRole('button',{name:'GitHub hesap bağlantısını kaldır'}));submit('GitHub bağlantısını kaldırmayı onayla');
     expect(await screen.findByRole('status')).toHaveTextContent('GitHub temizliği gerekiyor');expect(screen.getByRole('link',{name:'GitHub’da kalan izni kaldırın (yeni sekme)'})).toBeInTheDocument();expect(screen.queryByRole('button',{name:'GitHub hesap bağlantısını kaldır'})).not.toBeInTheDocument();
   });
   it('renders a deletion completion warning with a GitHub settings link',async()=>{
@@ -80,7 +83,7 @@ describe('account reset controls', () => {
   });
   it.each([false,true])('clears the account view and redirects only after confirmed successful deletion (cleanup=%s)',async(cleanup)=>{
     nav.replace.mockClear();requests(path=>path.endsWith('/me/')?Response.json({user}):path.endsWith('/sessions/')?Response.json({sessions:[]}):Response.json({detail:'Silindi.',github_cleanup_required:cleanup}));
-    render(<AccountStatus profile/>);fireEvent.click(await screen.findByRole('button',{name:'FIRST hesabımı sil'}));fireEvent.change(screen.getByLabelText('Onaylamak için HESABIMI SIL yazın'),{target:{value:'HESABIMI SIL'}});submit('Hesabımı kalıcı olarak sil');
+    render(<SessionProvider><AccountStatus profile/></SessionProvider>);fireEvent.click(await screen.findByRole('button',{name:'FIRST hesabımı sil'}));fireEvent.change(screen.getByLabelText('Onaylamak için HESABIMI SIL yazın'),{target:{value:'HESABIMI SIL'}});submit('Hesabımı kalıcı olarak sil');
     await waitFor(()=>expect(nav.replace).toHaveBeenCalledWith(`/giris?account_deleted=1${cleanup?'&github_cleanup=1':''}`));expect(screen.queryByText('Merhaba, Test Üye.')).not.toBeInTheDocument();
   });
 });

@@ -224,3 +224,11 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   .repository-card { padding: var(--space-5); }
   .feed-toolbar { align-items: flex-start; }
 }
+
+/* Listing and participation workflows share the established surfaces and controls. */
+.participation-section { margin-top: var(--space-6); border-top: 1px solid var(--color-border); padding-top: var(--space-6); }
+.participation-grid, .listing-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: var(--space-4); }
+.commit-sha { overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--font-size-small); }
+.plain-list { list-style: none; padding: 0; }
+.plain-list li { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; margin-block: var(--space-2); }
+.participation-section .action-row { flex-wrap: wrap; }
