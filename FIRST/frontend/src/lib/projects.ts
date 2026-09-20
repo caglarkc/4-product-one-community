@@ -2,6 +2,13 @@ export type ProjectSummary = {id:string;title:string;category:string;subcategory
 export type Project = ProjectSummary & {readme_excerpt:string;is_private:boolean;repository_url:string|null;repository_name:string|null;is_active:boolean};
 export type ProjectPage = {projects:ProjectSummary[];count:number;next_page:number|null;previous_page:number|null};
 export type Repository = {id:number;installation_id:number;full_name:string;name:string;private:boolean;description:string;html_url:string};
+export type RepositoryCache = {repositories:Repository[];cached_at:string|null};
+export type ProjectPreview = {repository:Repository;readme_excerpt:string;preview_token:string};
+export function repositoryCacheCaption(cachedAt:string|null):string {
+  if(!cachedAt) return 'Repo listesi henüz kaydedilmedi';
+  const date=new Date(cachedAt);
+  return Number.isNaN(date.getTime()) ? 'FIRST’te kayıtlı repo listesi' : `FIRST’te kayıtlı liste · Son alım: ${date.toLocaleString('tr-TR')}`;
+}
 export type TaxonomyOption = {value:string;label:string};
 // Optional additions allow the frontend to handle the previous API during rollout.
 export type ProjectConfig = {categories:(TaxonomyOption & {subcategories?:TaxonomyOption[]})[];stages?:(TaxonomyOption & {description:string})[];github_app_enabled:boolean};

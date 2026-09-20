@@ -1,6 +1,6 @@
 # FIRST — Ürün kararları
 
-Son güncelleme: 17 Eylül 2026. Kaynak: kullanıcıyla ürün kapsamı görüşmesi.
+Son güncelleme: 20 Eylül 2026. Kaynak: kullanıcıyla ürün kapsamı görüşmesi.
 Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ayırır; uygulanmış özellik veya teknik sözleşme değildir.
 
 Tamamlayıcı kayıtlar: [teknoloji ve yayın kararları](teknik-kararlar.md), [kayıt/giriş ve hesap bağlantısı](auth-kararlari.md), [öğrenci doğrulaması araştırması](ogrenci-dogrulama-arastirmasi.md).
@@ -29,8 +29,10 @@ Tamamlayıcı kayıtlar: [teknoloji ve yayın kararları](teknik-kararlar.md), [
 - Public ve private repolar bağlanabilir.
 - Repo içeriği yazılımla sınırlı değildir; tasarım, dokümantasyon, araştırma veya yalnızca fikir aşamasındaki projeler de kapsamda olabilir. Çalışan kod veya geliştirilmiş ürün şartı yoktur; repo bağlama şartı korunur.
 - Repo bağlantısı, başlık, üst kategori, o üst kategoriye ait alt kategori ve proje durumu zorunludur. Açıklama ve diğer tanıtım bilgileri isteğe bağlıdır.
+- 20 Eylül 2026 kalıcı veri kararı: Proje yayımlandıktan sonra kart, detay ve düzenleme bilgileri yalnız FIRST veritabanından gelir; GitHub yeniden sorgulanmaz. Repo adı/bağlantısı, gizlilik durumu ve onaylanan README metni oluşturma anındaki kayıtlı kopyadır. GitHub üzerindeki sonraki değişiklikler bu paylaşıma otomatik uygulanmaz.
+- Repo seçim listesi ilk alınışta backend’de kalıcı saklanır; boş liste de kayıt sayılır. Sonraki açılışlar kayıtlı listeyi gösterir. Kullanıcı “Repo listesini yenile” dediğinde GitHub’dan tekrar alınır; başarısız yenileme önceki listeyi silmez.
 - Repolar gezilebilir; kategori ve filtrelerle aranabilir. Kesin filtre listesi açık konudur.
-- 20 Eylül 2026 ana sayfa kararı: Ziyaretçiler ve üyeler tüm aktif sahiplerin aktif proje paylaşımlarını ana sayfada en yeni önce olacak şekilde sayfalı görür. Kişisel “Projelerim” ayrı kalır. Ana sayfa repo bağlantısı, README veya hesap verisi yerine paylaşılmış proje başlığı, açıklama ve sınıflandırma özetini sunar; repo verisinin güncel kontrolü detayda korunur.
+- 20 Eylül 2026 ana sayfa kararı: Ziyaretçiler ve üyeler tüm aktif sahiplerin aktif proje paylaşımlarını ana sayfada en yeni önce olacak şekilde sayfalı görür. Kişisel “Projelerim” ayrı kalır. Ana sayfa repo bağlantısı, README veya hesap verisi yerine paylaşılmış proje başlığı, açıklama ve sınıflandırma özetini sunar; detay da kayıtlı proje kopyasını kullanır.
 - Her repo için tek aktif ilan bulunabilir.
 - Proje sahibi ilanı silmeden yeni başvurulara kapatabilir ve sonra tekrar açabilir; katılım yöntemi değişmez.
 - Başvuruya kapalı ilanlar keşifte gösterilmez. Kapatılmadan önce alınmış başvurular değerlendirilmeye devam edebilir.
