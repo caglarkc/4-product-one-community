@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-taxonomy",
+  "itemId": "verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Acceptance verified by manager source inspection",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Compared models/migration and CreateInput/DetailView with contract; read frontend diff and shared Field/token usage; reviewed 25-parent 394-child catalog and six stages. No runtime or browser execution."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kabul maddeleri kaynak/diff ile doğrulanır.",
+      "status": "passed",
+      "evidence": "Compared models/migration and CreateInput/DetailView with contract; read frontend diff and shared Field/token usage; reviewed 25-parent 394-child catalog and six stages. No runtime or browser execution."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Compared models/migration and CreateInput/DetailView with contract; read frontend diff and shared Field/token usage; reviewed 25-parent 394-child catalog and six stages. No runtime or browser execution."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Database migration/deployment follow explicit user clarification."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T13:42:48.488733+00:00"
+}
