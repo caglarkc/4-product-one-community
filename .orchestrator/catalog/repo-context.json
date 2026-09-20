@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-09-20T13:51:16.439Z",
+  "generatedAt": "2026-09-20T18:31:53.658Z",
   "repository": {
     "root": ".",
     "name": "4-product-one-community",
-    "commit": "40f99752d09954992a16847c083f32fe9b772d72",
+    "commit": "1427a60809ea58b4eb247e7cb103a6c3d00298b6",
     "layers": {
       "FIRST": true,
       "STEP": true,
@@ -35,7 +35,7 @@
       "path": ".agent/skills/frontend/frontend-implementation/SKILL.md",
       "root": ".agent/skills",
       "disableModelInvocation": false,
-      "fingerprint": "7e6e6d1a97b4d8beded5365d57d6f7fbc7fe9bde0df77fa14893c1b035364ba2"
+      "fingerprint": "c759e5276a8777efb578b0489e63105e18291d633d22c3d13ddee804b76df675"
     },
     {
       "name": "code-implementation-mode",
@@ -98,7 +98,7 @@
   },
   "mapHealth": {
     "stale": true,
-    "sourceFingerprint": "4dc18369cd66c3fe6e1147dedb22dc83e8f237ff95584f63068af3de0f6d70c3",
+    "sourceFingerprint": "e9c2ad0723ca00d311f182f9d45d61a34bddf67f91f54fcc9ef3e3a118452795",
     "mapSourceFingerprint": "9748310452121736b3bcfed61ab28fdadd48fd0546cca8edbb539fa646385c77",
     "dependencyMapGeneratedAt": null,
     "note": "Tazelik, checkout mtime yerine deterministik kaynak ağacı fingerprint’i ile ölçülür."
@@ -138,5 +138,5 @@
       }
     }
   ],
-  "snapshot": "b5c8b211c9e9b6bae6cc6817de0c8d6c15d5dacdce239557d40841b269306178"
+  "snapshot": "a1ff9ad39530e675d9e56ae61566fcd8376e1730373c5a196a1f204884f5944b"
 }

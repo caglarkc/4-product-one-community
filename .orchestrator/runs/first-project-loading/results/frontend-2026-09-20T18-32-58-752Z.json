@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-loading",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/frontend",
+    "sessionRef": "/root/frontend"
+  },
+  "outcome": "pass",
+  "summary": "Public feed uses isolated anonymous abortable transport",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Fixed projects GET outside serialized authenticated api, no Authorization/localStorage/session header actions. Home cleanup aborts obsolete request; timeout/listener cleanup; auth queue and fences unchanged."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Anonymous public feed bypasses authenticated queue and cannot mutate session; obsolete fetch aborted.",
+      "status": "passed",
+      "evidence": "Fixed projects GET outside serialized authenticated api, no Authorization/localStorage/session header actions. Home cleanup aborts obsolete request; timeout/listener cleanup; auth queue and fences unchanged."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Fixed projects GET outside serialized authenticated api, no Authorization/localStorage/session header actions. Home cleanup aborts obsolete request; timeout/listener cleanup; auth queue and fences unchanged."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "No schema change; standard deployment required."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T18:32:58.752452+00:00"
+}
