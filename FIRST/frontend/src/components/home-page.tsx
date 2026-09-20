@@ -1,6 +1,6 @@
 'use client';
 import {useEffect, useRef, useState} from 'react';
-import {api, ApiError} from '../lib/api';
+import {publicProjectFeed} from '../lib/api';
 import type {ProjectPage} from '../lib/projects';
 import {ProjectCard, RepositoryMark} from './project-card';
 import {useSession} from './session-provider';
@@ -17,18 +17,13 @@ export function HomePage() {
   const [error, setError] = useState('');
   useEffect(() => {
     let active = true;
+    const controller = new AbortController();
     setFeed(null); setError('');
-    async function load() {
-      const query = new URLSearchParams({page:String(page)});
-      try {return await api<ProjectPage>('projects',undefined,'GET',query);}
-      catch(caught) {
-        // A public list remains available after an expired bearer is cleared.
-        if(caught instanceof ApiError && ['invalid_session','session_changed'].includes(caught.code || '')) return api<ProjectPage>('projects',undefined,'GET',query);
-        throw caught;
-      }
-    }
-    void load().then(data => {if(active) setFeed(data);}).catch(caught => {if(active) setError((caught as Error).message);});
-    return () => {active = false;};
+    const query = new URLSearchParams({page:String(page)});
+    void publicProjectFeed<ProjectPage>(query,controller.signal)
+      .then(data => {if(active) setFeed(data);})
+      .catch(caught => {if(active && !controller.signal.aborted) setError((caught as Error).message);});
+    return () => {active = false; controller.abort();};
   }, [page,retry]);
   useEffect(() => {if(feed && focusOnLoad.current) {feedHeading.current?.focus(); focusOnLoad.current = false;}}, [feed]);
   return <div className="community-page">

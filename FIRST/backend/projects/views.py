@@ -224,15 +224,10 @@ class PreviewView(AuthView):
 
 class MineView(AuthView):
     def get(self, request):
-        account = member(request)
-        repos = {}
-        if account and github.enabled():
-            try:
-                _, rows = github.authorized_repositories(account)
-                repos = {(row['installation_id'], row['id']): row for row in rows}
-            except github.GitHubAccessError:
-                pass
-        return Response({'projects': [project_data(project, repos.get((project.installation_id, project.repository_id)))
+        member(request)
+        # Own cards and editor fields need no live provider data. Keep repo
+        # links hidden here; the detail endpoint proves current GitHub access.
+        return Response({'projects': [project_data(project)
             for project in Project.objects.filter(owner=request.user)]})
 
 

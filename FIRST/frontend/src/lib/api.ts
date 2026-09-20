@@ -85,6 +85,29 @@ export function api<T>(path:string, body?:unknown, method='POST', query?:URLSear
     });
   });
 }
+/** The public feed never joins the authenticated queue or reads/writes session state. */
+export function publicProjectFeed<T>(query:URLSearchParams, signal:AbortSignal):Promise<T> {
+  return boundary(async()=> {
+    const controller = new AbortController();
+    const cancel = () => controller.abort(signal.reason);
+    if(signal.aborted) cancel();
+    else signal.addEventListener('abort',cancel,{once:true});
+    const timeout = setTimeout(()=>controller.abort(new DOMException('Request timed out','TimeoutError')),30000);
+    try {
+      const response = await fetch(`${origin()}/api/auth/projects/${query.size ? `?${query}` : ''}`, {
+        method:'GET', headers:{Accept:'application/json'}, credentials:'omit', cache:'no-store', redirect:'error', signal:controller.signal,
+      });
+      const body = await response.json().catch(()=>null);
+      if(controller.signal.aborted) throw controller.signal.reason;
+      if(!response.ok) throw new ApiError(body?.detail || 'Projeler yüklenemedi. Lütfen tekrar deneyin.',response.status,body?.errors,body?.code);
+      if(!body) throw new ApiError('Sunucudan geçersiz yanıt alındı.',502);
+      return body as T;
+    } finally {
+      clearTimeout(timeout);
+      signal.removeEventListener('abort',cancel);
+    }
+  });
+}
 export function oauthCallback(path:string, query:URLSearchParams):Promise<{redirect_to:string}> {
   return boundary(()=> {
     const expected = sessionToken();
