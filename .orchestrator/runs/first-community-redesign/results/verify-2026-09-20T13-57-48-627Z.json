@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-community-redesign",
+  "itemId": "verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Manager accepted final public feed and whole-site design source",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Read backend allowlist/query and frontend final diff including api query extension, session navigation, home effect cleanup/focus, shared card, tokens/CSS and docs. Runtime/visual checks not run."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Manager verifies final source against feed and redesign acceptance.",
+      "status": "passed",
+      "evidence": "Read backend allowlist/query and frontend final diff including api query extension, session navigation, home effect cleanup/focus, shared card, tokens/CSS and docs. Runtime/visual checks not run."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Read backend allowlist/query and frontend final diff including api query extension, session navigation, home effect cleanup/focus, shared card, tokens/CSS and docs. Runtime/visual checks not run."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "No schema change; standard deployment required."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T13:57:48.627706+00:00"
+}
