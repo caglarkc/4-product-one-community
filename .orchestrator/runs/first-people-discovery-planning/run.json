@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-people-discovery-planning",
+  "title": "FIRST profil ve keşif planlaması",
+  "goal": "Profil, kişi keşfi, davet, arama, kaydetme ve şikayet kapsamını açık kararlarla planla; uygulama başlatma",
+  "createdAt": "2026-09-20T22:36:53.841Z",
+  "updatedAt": "2026-09-20T22:36:53.841Z",
+  "revision": 0,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/rules.md",
+      "FIRST/README.md",
+      "FIRST/kararlar.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "714b0ae1a50f06c5ac6579fe8ea18efccead3656bf0ebbedd88446dd5a3f6452",
+    "assumptions": []
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz.",
+    "Planning only; no implementation until decisions are resolved.",
+    "Exclude contributors/statistics, teams and private file showcase."
+  ],
+  "policy": {
+    "requiresIntegration": false
+  },
+  "decisions": [],
+  "items": [
+    {
+      "id": "decisions",
+      "title": "Resolve user product decisions",
+      "kind": "specification",
+      "domains": [
+        "first"
+      ],
+      "objective": "Resolve user product decisions",
+      "responsibility": "Plan only; do not implement or invent product approvals.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-people-discovery-planning/plan.md"
+        }
+      ],
+      "outputs": [
+        "Planning document and open decisions"
+      ],
+      "acceptanceCriteria": [
+        "User scope exclusions are preserved; unconfirmed decisions are labelled."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Documentation only"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          ".orchestrator/runs/first-people-discovery-planning"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "delivery-plan",
+      "title": "Finalize backend/frontend/review delivery plan",
+      "kind": "specification",
+      "domains": [
+        "first"
+      ],
+      "objective": "Finalize backend/frontend/review delivery plan",
+      "responsibility": "Plan only; do not implement or invent product approvals.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/first-people-discovery-planning/plan.md"
+        }
+      ],
+      "outputs": [
+        "Planning document and open decisions"
+      ],
+      "acceptanceCriteria": [
+        "User scope exclusions are preserved; unconfirmed decisions are labelled."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "decisions"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Documentation only"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          ".orchestrator/runs/first-people-discovery-planning"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    }
+  ]
+}
