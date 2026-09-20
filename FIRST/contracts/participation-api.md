@@ -47,6 +47,6 @@ Site invitation acceptance sends GitHub invitation; UI must direct user to GitHu
 
 PR stale-SHA or non-mergeable preflight returns 409 with `github_pull_changed` / `github_pull_not_mergeable`, operation reset to idle for a new reviewed decision. Unknown provider outcomes stay pending/failed with decision pinned. New invitations to archived listings are rejected; existing applications/invitations can still be processed (archive does not revoke existing invitations or GitHub access).
 
-Feed response is a strict allowlist: existing id/title/description/taxonomy/labels/timestamps plus need_type/need_type_label/participation_mode/participation_mode_label. It does not include owner identity, detailed requirement text, repository metadata, or Issue/PR identifiers.
+Feed response is a strict allowlist: existing id/title/description/taxonomy/labels/timestamps plus owner_username and need_type/need_type_label/participation_mode/participation_mode_label. The owner username is the public FIRST handle; email and other account data remain excluded. It does not include detailed requirement text, repository metadata, or Issue/PR identifiers.
 
 Owner invitation can explicitly replace an idle pending/rejected/withdrawn/declined FIRST record, retaining its explanation/PR reference and recording the currently linked GitHub UID for the new invitation. It emits a new invitation notification and grants selected-listing visibility. A pending/failed external operation or successful membership cannot be replaced. Repeating the same outstanding invitation is idempotent.
