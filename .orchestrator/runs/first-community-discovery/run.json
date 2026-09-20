@@ -4,8 +4,8 @@
   "title": "FIRST profil keşif ve kaydetme",
   "goal": "Onaylı profil, kişi keşfi, davet tercihleri, proje arama/kaydetme ve şikayet kaydını backend ve frontend ile yayınla",
   "createdAt": "2026-09-20T22:42:45.625Z",
-  "updatedAt": "2026-09-20T22:50:29.610Z",
-  "revision": 15,
+  "updatedAt": "2026-09-20T22:52:23.538Z",
+  "revision": 16,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -354,9 +354,9 @@
         ],
         "owner": null
       },
-      "status": "active",
+      "status": "done",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/deploy-2026-09-20T22-52-23-424Z.json"
     }
   ]
 }
