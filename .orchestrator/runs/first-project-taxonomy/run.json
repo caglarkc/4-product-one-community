@@ -1,0 +1,382 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-taxonomy",
+  "title": "FIRST proje kategori ve geliştirme aşaması",
+  "goal": "Üst kategoriye özel ayrıntılı alt kategori kataloğu ve geliştirme aşamasını backend/frontend üzerinde uygula",
+  "createdAt": "2026-09-20T13:30:30.338Z",
+  "updatedAt": "2026-09-20T13:44:30.714Z",
+  "revision": 19,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/rules.md",
+      "FIRST/README.md",
+      "FIRST/kararlar.md",
+      "FIRST/tasarim-dili.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "9e56e1e77561d3c227d532ce1b84472721b5e04188b51ebd5e05de4c1fd69ce3",
+    "assumptions": [
+      "No tests/lint/typecheck/browser; source inspection only.",
+      "User requested no database migration; schema migration execution and deployment await explicit clarification."
+    ]
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "schema-approved",
+      "summary": "User approved only the required two-column schema migration during deployment.",
+      "reason": "Explicit reply: Yalnız gerekli şema migration’ını uygula. Supersedes initial pending-clarification assumption; no data migration.",
+      "decidedAt": "2026-09-20T13:40:26.332Z",
+      "actor": "manager"
+    }
+  ],
+  "items": [
+    {
+      "id": "catalog",
+      "title": "catalog",
+      "kind": "specification",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Ürün türlerine ait ayrıntılı amaca yönelik alt kategoriler ve altı aşama tek katalogda tanımlıdır.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "catalog artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Ürün türlerine ait ayrıntılı amaca yönelik alt kategoriler ve altı aşama tek katalogda tanımlıdır."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/projects/taxonomy.py",
+          "FIRST/proje-kategorileri.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/catalog-2026-09-20T13-35-38-092Z.json"
+    },
+    {
+      "id": "backend",
+      "title": "backend",
+      "kind": "implement",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Create ve partial edit üst/alt kategori eşleşmesini ve aşamayı doğrular; API etiketleri katalogdan verir.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "backend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Create ve partial edit üst/alt kategori eşleşmesini ve aşamayı doğrular; API etiketleri katalogdan verir.",
+        "Şema migration dosyası hazırlanır; açık onay olmadan DB migration çalıştırılmaz."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "catalog"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/projects/models.py",
+          "FIRST/backend/projects/views.py",
+          "FIRST/backend/projects/migrations/0002_project_classification.py"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-20T13-39-58-711Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "frontend",
+      "kind": "implement",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Bağımlı kategori seçimleri ve durum create/edit/list/detail ekranlarında tutarlıdır.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "frontend artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Bağımlı kategori seçimleri ve durum create/edit/list/detail ekranlarında tutarlıdır."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "backend"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/src/lib/projects.ts",
+          "FIRST/frontend/src/components/projects.tsx",
+          "FIRST/frontend/src/app/globals.css"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-20T13-42-09-856Z.json"
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "kind": "review",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Katalog, API doğrulaması, şema ve frontend bağımsız kaynak incelemesinden geçer.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "review artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Katalog, API doğrulaması, şema ve frontend bağımsız kaynak incelemesinden geçer."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "frontend"
+        ],
+        "reviews": [
+          "backend",
+          "frontend",
+          "catalog"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-20T13-42-47-753Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "verify",
+      "kind": "verify",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Kabul maddeleri kaynak/diff ile doğrulanır.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "verify artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Kabul maddeleri kaynak/diff ile doğrulanır."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "frontend",
+          "catalog"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-20T13-42-48-488Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "integration",
+      "kind": "integration",
+      "domains": [
+        "projects"
+      ],
+      "objective": "Uyumlu backend/frontend teslim edilir; DB ve dağıtım kullanıcı kararına uygun yürütülür.",
+      "responsibility": "Only explicitly owned files; no independent commit/push or execution checks.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/"
+        }
+      ],
+      "outputs": [
+        "integration artifacts"
+      ],
+      "acceptanceCriteria": [
+        "Uyumlu backend/frontend teslim edilir; DB ve dağıtım kullanıcı kararına uygun yürütülür."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "backend",
+          "frontend",
+          "catalog"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Cross-layer project classification contract"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-20T13-44-30-397Z.json"
+    }
+  ]
+}

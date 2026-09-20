@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-taxonomy",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/frontend",
+    "sessionRef": "/root/frontend"
+  },
+  "outcome": "pass",
+  "summary": "Dependent categories and stage implemented across forms and project views",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Source inspection of three scoped files; canonical config, dependent selection, required payload, stage help, API errors and rolling-config guard. No runtime execution."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Bağımlı kategori seçimleri ve durum create/edit/list/detail ekranlarında tutarlıdır.",
+      "status": "passed",
+      "evidence": "Source inspection of three scoped files; canonical config, dependent selection, required payload, stage help, API errors and rolling-config guard. No runtime execution."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Source inspection of three scoped files; canonical config, dependent selection, required payload, stage help, API errors and rolling-config guard. No runtime execution."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Database migration/deployment follow explicit user clarification."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T13:42:09.856911+00:00"
+}

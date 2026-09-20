@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-project-taxonomy",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Application pushed and backend/frontend deployment completed",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "5fd73e4 pushed to origin/main with matching remote hash. Release 20260920T134328-5fd73e4d1834 healthy; approved projects.0002 migration OK, Django/DB/Redis/health checks passed. Vercel automatic deployment success. See delivery.md."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Uyumlu backend/frontend teslim edilir; DB ve dağıtım kullanıcı kararına uygun yürütülür.",
+      "status": "passed",
+      "evidence": "5fd73e4 pushed to origin/main with matching remote hash. Release 20260920T134328-5fd73e4d1834 healthy; approved projects.0002 migration OK, Django/DB/Redis/health checks passed. Vercel automatic deployment success. See delivery.md."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "5fd73e4 pushed to origin/main with matching remote hash. Release 20260920T134328-5fd73e4d1834 healthy; approved projects.0002 migration OK, Django/DB/Redis/health checks passed. Vercel automatic deployment success. See delivery.md."
+    },
+    {
+      "name": "runtime",
+      "status": "not_run",
+      "evidence": "No test, lint, typecheck, local build or browser per repository preference."
+    }
+  ],
+  "risks": [
+    "Runtime and visual behavior unverified.",
+    "Database migration/deployment follow explicit user clarification."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-20T13:44:30.397874+00:00"
+}
