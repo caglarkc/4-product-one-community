@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-release-completion",
+  "itemId": "feature-ui",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Team discovery/detail/actions and paginated lists, public task cursor discovery and owner Issue controls, private showcase preview consent/replacement/removal integrate with real APIs. Session identity keys, exact task request IDs and compact tokens are source reviewed. No runtime claim.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/frontend",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Connect team showcase task UI to approved backend contracts supported by source and documented boundaries",
+      "status": "passed",
+      "evidence": "Team discovery/detail/actions and paginated lists, public task cursor discovery and owner Issue controls, private showcase preview consent/replacement/removal integrate with real APIs. Session identity keys, exact task request IDs and compact tokens are source reviewed. No runtime claim."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-review",
+      "status": "passed",
+      "evidence": "Team discovery/detail/actions and paginated lists, public task cursor discovery and owner Issue controls, private showcase preview consent/replacement/removal integrate with real APIs. Session identity keys, exact task request IDs and compact tokens are source reviewed. No runtime claim."
+    },
+    {
+      "name": "runtime-tests",
+      "status": "not_run",
+      "evidence": "User source-only control preference; no tests, lint/typecheck or browser checks."
+    }
+  ],
+  "risks": [
+    "Runtime behavior unverified; production deployment evidence recorded separately."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-25T08:40:09.035124+00:00"
+}

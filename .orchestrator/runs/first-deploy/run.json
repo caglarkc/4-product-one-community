@@ -4,8 +4,8 @@
   "title": "FIRST backend deployment",
   "goal": "Deploy only FIRST backend to existing Hetzner host, provide send-machine, configure frontend and verify live auth safely",
   "createdAt": "2026-09-17T16:13:41.347Z",
-  "updatedAt": "2026-09-17T16:19:30.988Z",
-  "revision": 16,
+  "updatedAt": "2026-09-25T08:26:12.211Z",
+  "revision": 26,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -375,7 +375,7 @@
         ],
         "owner": "/root"
       },
-      "status": "active",
+      "status": "cancelled",
       "attempt": 1,
       "resultRef": null
     },
@@ -434,7 +434,7 @@
         ],
         "owner": "/root/security_verify"
       },
-      "status": "draft",
+      "status": "cancelled",
       "attempt": 0,
       "resultRef": null
     },
@@ -494,7 +494,7 @@
         ],
         "owner": "/root/security_verify"
       },
-      "status": "draft",
+      "status": "cancelled",
       "attempt": 0,
       "resultRef": null
     },
@@ -561,7 +561,7 @@
         ],
         "owner": "/root"
       },
-      "status": "draft",
+      "status": "cancelled",
       "attempt": 0,
       "resultRef": null
     },
@@ -626,7 +626,7 @@
         ],
         "owner": "/root"
       },
-      "status": "draft",
+      "status": "cancelled",
       "attempt": 0,
       "resultRef": null
     },
@@ -685,7 +685,7 @@
         ],
         "owner": "/root/security_verify"
       },
-      "status": "draft",
+      "status": "cancelled",
       "attempt": 0,
       "resultRef": null
     },
@@ -750,7 +750,7 @@
         ],
         "owner": "/root/security_verify"
       },
-      "status": "draft",
+      "status": "cancelled",
       "attempt": 0,
       "resultRef": null
     },
@@ -815,7 +815,7 @@
         ],
         "owner": "/root"
       },
-      "status": "draft",
+      "status": "cancelled",
       "attempt": 0,
       "resultRef": null
     },
@@ -891,7 +891,7 @@
         ],
         "owner": "/root"
       },
-      "status": "draft",
+      "status": "cancelled",
       "attempt": 2,
       "resultRef": null
     },
@@ -951,7 +951,7 @@
         ],
         "owner": "/root/security_verify"
       },
-      "status": "draft",
+      "status": "cancelled",
       "attempt": 0,
       "resultRef": null
     }

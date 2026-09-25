@@ -14,4 +14,4 @@ Bu elle hazırlanmış bağlam haritasıdır; üretilmiş kod haritası değildi
 | `.agent/skills/` | Ortak uygulama ve ürün bağlamı skill'leri |
 | `.cursor/` | Hafif PM girişi ve bağlam haritaları |
 
-Ürün bağlantıları: `products.md`. Teknoloji durumu ve açık seçimler: `technology.md`. Henüz uygulama kodu, route listesi, DB şeması veya deploy altyapısı yoktur.
+Ürün bağlantıları: `products.md`. Teknoloji durumu ve açık seçimler: `technology.md`. FIRST Django/DRF backend, Next.js frontend, API sözleşmeleri, migration ve deploy altyapısı mevcuttur. Harita kapsam özeti olup gerçek durum için FIRST kaynakları ve teslim kayıtları doğrulanır.

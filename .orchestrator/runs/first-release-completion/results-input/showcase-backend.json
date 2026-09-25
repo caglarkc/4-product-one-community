@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-release-completion",
+  "itemId": "showcase-backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "showcase_backend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Snapshots enforce approved file quotas, actor/project identity, publish consent and current listing visibility; isolated raster conversion; 12s provider budget, cancel route and JSON delete response corrected. Runtime conversion unverified.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/backend/showcase",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Implement private file snapshots and safe preview serving supported by source and documented boundaries",
+      "status": "passed",
+      "evidence": "Snapshots enforce approved file quotas, actor/project identity, publish consent and current listing visibility; isolated raster conversion; 12s provider budget, cancel route and JSON delete response corrected. Runtime conversion unverified."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-review",
+      "status": "passed",
+      "evidence": "Snapshots enforce approved file quotas, actor/project identity, publish consent and current listing visibility; isolated raster conversion; 12s provider budget, cancel route and JSON delete response corrected. Runtime conversion unverified."
+    },
+    {
+      "name": "runtime-tests",
+      "status": "not_run",
+      "evidence": "User source-only control preference; no tests, lint/typecheck or browser checks."
+    }
+  ],
+  "risks": [
+    "Runtime behavior unverified; production deployment evidence recorded separately."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-25T08:38:55.826781+00:00"
+}

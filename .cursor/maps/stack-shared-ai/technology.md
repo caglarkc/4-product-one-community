@@ -2,11 +2,11 @@
 
 ## Kesin durum
 
-Repo henüz uygulama kodu içermiyor; FIRST için teknoloji seçildi: backend Python + Django + Django REST Framework, Hetzner üzerinde Docker; ayrı frontend TypeScript + React + Next.js, Vercel üzerinde. İlk hedef web sitesidir. Kaynak: `FIRST/teknik-kararlar.md`.
+FIRST uygulaması backend/frontend dizinlerinde mevcuttur: backend Python + Django + Django REST Framework, Hetzner üzerinde Docker; ayrı frontend TypeScript + React + Next.js, Vercel üzerinde. İlk hedef web sitesidir. Kaynak: `FIRST/teknik-kararlar.md`.
 
-Giriş/kayıt Google, GitHub ve e-posta/şifre ile olacak. Repo başvurusu için doğrulanmış e-posta ve bağlı GitHub; ilan oluşturmak için ayrıca doğrulanmış telefon ve repo yetkisi gerekiyor. Kaynak: `FIRST/auth-kararlari.md`.
+Giriş/kayıt Google, GitHub ve e-posta/şifre ile uygulanmıştır. Repo başvurusu için doğrulanmış e-posta ve bağlı GitHub; ilan oluşturmak için ayrıca repo yönetici yetkisi gerekir. Telefon doğrulaması şu an şart değildir. Kaynak: `FIRST/auth-kararlari.md`.
 
-Veritabanı, auth kütüphanesi, oturum modeli, e-posta ve telefon doğrulama sağlayıcıları seçilmedi. Öğrenci doğrulama hizmetleri araştırıldı, satın alma/entegrasyon kararı yok: `FIRST/ogrenci-dogrulama-arastirmasi.md`. Orchestrator'ın Node CLI/CI sürümü ürün runtime sürümü kararı değildir.
+PostgreSQL, Redis oturum/güvenlik verisi, django-allauth, SMTP ve doğrudan HTTPS IP API kullanılır. Oturum Bearer ile taşınır; Next.js proxy yoktur. Telefon doğrulaması kapalıdır. Öğrenci doğrulama hizmetleri araştırıldı, satın alma/entegrasyon kararı yok: `FIRST/ogrenci-dogrulama-arastirmasi.md`. Orchestrator'ın Node CLI/CI sürümü ürün runtime sürümü kararı değildir.
 
 ## Ürün gereksiniminden değerlendirilecek alanlar
 

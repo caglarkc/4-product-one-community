@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-release-completion",
+  "itemId": "compact-ui",
+  "agent": {
+    "platform": "codex",
+    "identity": "compact_frontend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Frontend agent implemented 1280px shell,14px body,22–28px titles,16–20px panels,56px avatars,compact navigation/footer while preserving 44px controls and responsive layouts. Source diff reviewed; no runtime claims.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/frontend/src/app/globals.css",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    },
+    {
+      "type": "source",
+      "path": "FIRST/frontend/src/app/tokens.css",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    },
+    {
+      "type": "source",
+      "path": "FIRST/frontend/src/app/layout.tsx",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    },
+    {
+      "type": "source",
+      "path": "FIRST/frontend/src/components",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    },
+    {
+      "type": "source",
+      "path": "FIRST/tasarim-dili.md",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Existing FIRST screens use compact responsive shared spacing and readable typography",
+      "status": "passed",
+      "evidence": "Frontend agent implemented 1280px shell,14px body,22–28px titles,16–20px panels,56px avatars,compact navigation/footer while preserving 44px controls and responsive layouts. Source diff reviewed; no runtime claims."
+    },
+    {
+      "criterion": "Existing API actions and accessibility states preserved by source inspection",
+      "status": "passed",
+      "evidence": "Frontend agent implemented 1280px shell,14px body,22–28px titles,16–20px panels,56px avatars,compact navigation/footer while preserving 44px controls and responsive layouts. Source diff reviewed; no runtime claims."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-review",
+      "status": "passed",
+      "evidence": "Frontend agent implemented 1280px shell,14px body,22–28px titles,16–20px panels,56px avatars,compact navigation/footer while preserving 44px controls and responsive layouts. Source diff reviewed; no runtime claims."
+    },
+    {
+      "name": "runtime-tests",
+      "status": "not_run",
+      "evidence": "User source-only control preference; no tests, lint/typecheck or browser checks."
+    }
+  ],
+  "risks": [
+    "Runtime behavior unverified; production deployment evidence recorded separately."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-25T08:21:50.830431+00:00"
+}

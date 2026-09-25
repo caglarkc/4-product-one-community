@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-release-completion",
+  "itemId": "teams-backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "teams_backend",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Team model/migration/endpoints implement owner/admin/member permissions, independent membership, applications/invitations, ownership transfer, project links and bookmarks; current source adds visibility-filtered pagination and corrected invitation preference. Runtime unverified.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/backend/teams",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Implement independent team domain and authorization supported by source and documented boundaries",
+      "status": "passed",
+      "evidence": "Team model/migration/endpoints implement owner/admin/member permissions, independent membership, applications/invitations, ownership transfer, project links and bookmarks; current source adds visibility-filtered pagination and corrected invitation preference. Runtime unverified."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-review",
+      "status": "passed",
+      "evidence": "Team model/migration/endpoints implement owner/admin/member permissions, independent membership, applications/invitations, ownership transfer, project links and bookmarks; current source adds visibility-filtered pagination and corrected invitation preference. Runtime unverified."
+    },
+    {
+      "name": "runtime-tests",
+      "status": "not_run",
+      "evidence": "User source-only control preference; no tests, lint/typecheck or browser checks."
+    }
+  ],
+  "risks": [
+    "Runtime behavior unverified; production deployment evidence recorded separately."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-25T08:38:55.673287+00:00"
+}

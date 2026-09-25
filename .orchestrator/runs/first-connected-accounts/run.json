@@ -4,8 +4,8 @@
   "title": "FIRST connected provider profiles",
   "goal": "Show GitHub profile and Google linked account on account page; deploy and verify",
   "createdAt": "2026-09-18T20:08:46.063Z",
-  "updatedAt": "2026-09-18T20:28:27.301Z",
-  "revision": 16,
+  "updatedAt": "2026-09-25T08:26:42.514Z",
+  "revision": 17,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -353,8 +353,9 @@
         ],
         "owner": "manager"
       },
-      "status": "active",
-      "attempt": 1
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/deploy-2026-09-25T08-28-00-000Z.json"
     }
   ]
 }

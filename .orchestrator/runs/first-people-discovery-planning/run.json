@@ -4,8 +4,8 @@
   "title": "FIRST profil ve keşif planlaması",
   "goal": "Profil, kişi keşfi, davet, arama, kaydetme ve şikayet kapsamını açık kararlarla planla; uygulama başlatma",
   "createdAt": "2026-09-20T22:36:53.841Z",
-  "updatedAt": "2026-09-20T22:36:53.841Z",
-  "revision": 0,
+  "updatedAt": "2026-09-25T08:26:12.433Z",
+  "revision": 2,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -77,7 +77,7 @@
         ],
         "owner": null
       },
-      "status": "draft",
+      "status": "cancelled",
       "attempt": 0,
       "resultRef": null
     },
@@ -132,7 +132,7 @@
         ],
         "owner": null
       },
-      "status": "draft",
+      "status": "cancelled",
       "attempt": 0,
       "resultRef": null
     }
