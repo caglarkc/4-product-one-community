@@ -56,3 +56,32 @@
   --width-register: 40rem;
   --transition: 140ms ease;
 }
+
+/* The selected discovery direction is scoped until the remaining pages are approved. */
+body:has(.home-discovery) {
+  --color-canvas: #ffffff;
+  --color-surface: #ffffff;
+  --color-ink: #101d39;
+  --color-muted: #536484;
+  --color-primary: #2458ed;
+  --color-primary-hover: #1744ca;
+  --color-link: #1555ed;
+  --color-link-hover: #103da9;
+  --color-border: #dde5f0;
+  --color-control-border: #858fa3;
+  --color-elevated: #f5f7fb;
+  --color-info-surface: #eaf1ff;
+  --shadow-surface: none;
+  --radius-control: .375rem;
+  --font-size-body: 1rem;
+  --font-size-label: .9375rem;
+  --font-size-title: clamp(1.75rem, 3.2vw, 2.75rem);
+  --home-sidebar-width: 11.25rem;
+  --home-sidebar-color: #152c49;
+  --home-sidebar-active: #203f62;
+  --home-sidebar-text: #f0f5ff;
+  --home-header-height: 4.25rem;
+  --home-content-gutter: 2rem;
+  --home-row-title-size: 1.5rem;
+  --home-row-min-height: 6.25rem;
+}
