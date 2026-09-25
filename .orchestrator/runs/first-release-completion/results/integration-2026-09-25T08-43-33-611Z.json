@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-release-completion",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Accepted source integration, scopes/docs/history reconciled; de95d27 and80dfbcb pushed to origin/main and remote hash verified. Standard release20260925T084216-80dfbcb82b74 built, three migrations applied, PostgreSQL/Redis and HTTP/container health passed. Vercel80dfbcb success. No extra tests/browser/live GitHub scenarios.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    },
+    {
+      "type": "source",
+      "path": ".cursor/maps/stack-shared-ai",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    },
+    {
+      "type": "source",
+      "path": ".orchestrator/runs",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Reconcile docs and records and deliver accepted integration supported by source and documented boundaries",
+      "status": "passed",
+      "evidence": "Accepted source integration, scopes/docs/history reconciled; de95d27 and80dfbcb pushed to origin/main and remote hash verified. Standard release20260925T084216-80dfbcb82b74 built, three migrations applied, PostgreSQL/Redis and HTTP/container health passed. Vercel80dfbcb success. No extra tests/browser/live GitHub scenarios."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-review",
+      "status": "passed",
+      "evidence": "Accepted source integration, scopes/docs/history reconciled; de95d27 and80dfbcb pushed to origin/main and remote hash verified. Standard release20260925T084216-80dfbcb82b74 built, three migrations applied, PostgreSQL/Redis and HTTP/container health passed. Vercel80dfbcb success. No extra tests/browser/live GitHub scenarios."
+    },
+    {
+      "name": "runtime-tests",
+      "status": "not_run",
+      "evidence": "User source-only control preference; no tests, lint/typecheck or browser checks."
+    }
+  ],
+  "risks": [
+    "Runtime behavior unverified; production deployment evidence recorded separately."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-25T08:43:33.611907+00:00"
+}

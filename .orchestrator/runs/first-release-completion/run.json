@@ -4,8 +4,8 @@
   "title": "FIRST release gaps and compact UI",
   "goal": "Complete approved team and private showcase features, resolve task scope, reconcile documentation and compact frontend",
   "createdAt": "2026-09-25T08:17:54.552Z",
-  "updatedAt": "2026-09-25T08:40:10.150Z",
-  "revision": 34,
+  "updatedAt": "2026-09-25T08:43:33.733Z",
+  "revision": 35,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -624,9 +624,9 @@
           "codex"
         ]
       },
-      "status": "active",
+      "status": "done",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/integration-2026-09-25T08-43-33-611Z.json"
     },
     {
       "id": "backend-review-initial",
