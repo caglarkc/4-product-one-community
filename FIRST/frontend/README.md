@@ -14,7 +14,7 @@ Review for this revision is source-only. No tests, lint, typecheck, browser scen
 
 ## Shared FIRST design language
 
-[FIRST design language](../tasarim-dili.md) is the visual contract for all current and future screens. The current dark graphite, blue-link and green-action palette is implemented in `src/app/tokens.css`. That file owns semantic colors, typography, spacing, radii, focus and control sizes; `src/app/globals.css` consumes them for shared controls and responsive layouts.
+[FIRST design language](../tasarim-dili.md) is the visual contract for all current and future screens. The current Stitch-inspired light lavender, white-surface and blue-action palette is implemented in `src/app/tokens.css`. That file owns semantic colors, typography, spacing, radii, focus and control sizes; `src/app/globals.css` consumes them for shared controls and responsive layouts.
 
 Use the typed primitives in `src/components/ui/index.tsx`: `Button`, `ActionLink`, `Field`, `Input`, `Select`, `Checkbox`, `Alert`, `Surface`, and `PageHeading`. Button and action-link variants share one CSS definition. `Button` defaults to `type="button"`; form submission must explicitly use `type="submit"`. Native attributes remain available and loading disables buttons. Give `Field` and its control the same unique ID and connect help/errors with `aria-describedby`; the auth and account forms demonstrate this pattern. Keep navigation as links and provide `role="alert"` / `role="status"` only for relevant feedback, not every decorative surface.
 

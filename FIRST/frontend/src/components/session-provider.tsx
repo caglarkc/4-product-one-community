@@ -74,7 +74,8 @@ export function SessionNavigation() {
   const current = (href: string) => pathname === href || (href !== '/' && pathname.startsWith(`${href}/`));
   return <div className="navigation-group"><nav className="site-nav" aria-label="Ana gezinme">
     {status === 'loading' ? <span className="nav-status" role="status">Hesap yükleniyor…</span> : status === 'error' ? <Button variant="quiet" onClick={() => void refresh()}>Hesabı yeniden kontrol et</Button> : user ? <>
-      {[['/', 'Projeleri keşfet'], ['/kisiler', 'Kişiler'], ['/kaydedilenler', 'Kaydedilenler'], ['/projelerim', 'Projelerim'], ['/basvurular', 'Başvurular'], ['/bildirimler', 'Bildirimler'], ['/hesap', 'Hesabım']].map(([href, label]) => <ActionLink key={href} href={href} variant="quiet" aria-current={current(href) ? 'page' : undefined}>{label}</ActionLink>)}
+      {[['/', 'Projeler'], ['/kisiler', 'Kişiler'], ['/kaydedilenler', 'Kaydedilenler'], ['/projelerim', 'Projelerim'], ['/basvurular', 'Başvurular'], ['/bildirimler', 'Bildirimler'], ['/hesap', 'Hesabım']].map(([href, label]) => <ActionLink key={href} href={href} variant="quiet" aria-current={current(href) ? 'page' : undefined}>{label}</ActionLink>)}
+      <ActionLink href="/projelerim/yeni">Proje paylaş</ActionLink>
       <Button variant="quiet" loading={busy} onClick={async () => {
         if(lock.current) return; lock.current = true; setBusy(true); setError('');
         try {await api('logout', {});} catch(caught) {setError((caught as Error).message);} finally {lock.current = false; setBusy(false);}

@@ -16,9 +16,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </span>
         FIRST
       </Link>
+      <span className="brand-tagline">Birlikte üretelim</span>
       <SessionNavigation/>
     </div></header>
     <main id="main">{children}</main>
-    <footer className="site-footer"><span>FIRST <span aria-hidden="true">/</span> Birlikte üretmek için.</span><span>Fikirden ilk paylaşıma.</span></footer>
+    <footer className="site-footer"><div className="footer-inner"><div><strong>FIRST Topluluğu</strong><p>Üniversite öğrencileri, araştırmacılar ve açık kaynak geliştiricileri için ücretsiz işbirliği alanı.</p></div><nav aria-label="Alt gezinme"><Link href="/">Projeler</Link><Link href="/kisiler">Kişiler</Link></nav></div><div className="footer-bottom"><span>FIRST · Birlikte üretmek için.</span><span>Açık kaynak ve ekip projeleri</span></div></footer>
   </SessionProvider></body></html>;
 }
