@@ -53,11 +53,23 @@ def create_or_reconcile(project, task, may_create, authorization):
     if not may_create:
         # A mutable marker cannot offer provider-level exactly-once delivery.
         # Reconciliation never issues another POST, even after a complete empty scan.
-        for row in gh._list(token, path + '/issues', {'state': 'all', 'sort': 'created', 'direction': 'desc'}):
-            if 'pull_request' not in row and marker in str(row.get('body') or ''):
-                if str(gh._dict(row.get('user')).get('id')) != str(task.github_uid):
-                    gh._error('task_creator_changed')
-                return read_issue(project, gh._number(row.get('number')))
+        # Inspect each bounded page before fetching the next: a recent match
+        # must not depend on the total number of historical issues and PRs.
+        for page in range(1, 11):
+            rows = gh._api(token, path + '/issues', params={
+                'state': 'all', 'sort': 'created', 'direction': 'desc',
+                'page': page, 'per_page': 100})
+            if not isinstance(rows, list) or any(not isinstance(row, dict) for row in rows):
+                gh._error()
+            for row in rows:
+                if 'pull_request' not in row and marker in str(row.get('body') or ''):
+                    if str(gh._dict(row.get('user')).get('id')) != str(task.github_uid):
+                        gh._error('task_creator_changed')
+                    return read_issue(project, gh._number(row.get('number')))
+            if len(rows) < 100:
+                break
+        else:
+            gh._error('github_collection_limit', 'GitHub liste sınırı aşıldı; işlem güvenle doğrulanamadı.')
         gh._error('task_result_unknown', 'Issue sonucu doğrulanamadı. GitHub’da kontrol edip mevcut Issue numarasını bağlayın; otomatik ikinci Issue oluşturulmaz.')
     row = gh._api(token, path + '/issues', method='POST', data={
         'title': task.requested_title, 'body': task.requested_body + '\n\n' + marker})

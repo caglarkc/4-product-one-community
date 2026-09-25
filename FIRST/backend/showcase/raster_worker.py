@@ -53,8 +53,14 @@ def restrict():
 
 
 def encoded(image):
-    image = image.convert('RGB')
+    # Preserve alpha (including palette transparency) during resizing, then
+    # composite onto white because JPEG cannot represent transparent pixels.
+    image = image.convert('RGBA')
     image.thumbnail((1200, 1200))
+    background = Image.new('RGB', image.size, 'white')
+    background.paste(image, mask=image.getchannel('A'))
+    image.close()
+    image = background
     output = io.BytesIO()
     image.save(output, format='JPEG', quality=80, optimize=False)
     if output.tell() > MIB:
