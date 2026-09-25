@@ -2,15 +2,17 @@
 
 20 Eylül 2026: Kullanıcı bütün FIRST arayüzünü kodlama ve GitHub ekosistemini yansıtan modern bir tasarımla yenilemeyi istedi. Bu karar 18 Eylül tarihli sıcak “Ortak Atölye” paletinin yerini alır. GitHub'dan esinlenen geliştirici arayüzü FIRST kimliğiyle uygulanır; GitHub logosu veya resmi ortaklık iddiası kullanılmaz.
 
+25 Eylül 2026: Kullanıcının `stitch_first_topluluk_platformu_tasar_m` referansı, önceki koyu tema yönünün yerini alır. Proje keşfi, proje detayı ve kullanıcı profili ekranları temel alınır; ortak kontroller aynı açık temayı tüm FIRST ekranlarına taşır.
+
 ## Görsel yön
 
-Koyu grafit çalışma alanı; ince kenarlıklı repo panelleri, okunabilir açık metin, mavi bağlantılar, yeşil birincil aksiyonlar. Başlıklar ve içerik sade sistem sans; kategori, tarih, bölüm etiketi ve kod işaretlerinde ölçülü monospace. Geniş pazarlama panelleri yerine gerçek projeler, düzenli bilgi hiyerarşisi ve belirgin aksiyonlar öne çıkar.
+Açık lavanta çalışma alanı, beyaz paneller, koyu lacivert metin ve mavi birincil aksiyonlar. Yeşil yalnız olumlu durum ve davete açıklık gibi etiketlerde kullanılır. Referanstaki kompakt bilgi hiyerarşisi, ölçülü monospace etiketler ve hafif gölgeler korunur.
 
-- Ana zemin yaklaşık `#0d1117`, yüzeyler `#161b22` / `#1c2128`, kenarlık `#30363d`.
-- Ana metin `#e6edf3`, yardımcı metin `#9da7b3`, bağlantı/odak `#79b8ff`.
-- Yeşil birincil aksiyonlar okunaklı metinle kullanılır; normal metin 4.5:1, gerekli kontrol sınırı ve odak 3:1 kontrast hedefler. Dekoratif yüzey kenarlığı ile etkileşimli kontrol sınırı ayrı token'dır.
-- Durum renkleri etiketlerle desteklenir. Aşama, repo gizliliği ve FIRST paylaşımının aktif/arşiv durumları birbirine karıştırılmaz.
-- Köşeler kontrollü, gölgeler hafif; kalabalık gradient, dekoratif terminal çıktısı veya sahte aktivite kullanılmaz.
+- Ana zemin `#faf8ff`, yüzey `#ffffff`, ikincil yüzey `#f2f3ff`, kenarlık `#e8e9f4`.
+- Ana metin `#131b2e`, yardımcı metin `#596174`, bağlantı `#004ac6`, birincil aksiyon `#2563eb`.
+- Başarı metni `#006c49`; hata ve disabled durumları açık temaya uygun ortak token kullanır.
+- Panel köşeleri 16px, kontroller 8px; masaüstünde keşif üç sütun, tablette iki, mobilde tek sütun olur.
+- Referanstaki örnek insanlar, avatar fotoğrafları, yıldız/katkı sayıları, API sağlık iddiası ve uygulanmamış navigasyon bağlantıları ürün verisi değildir; arayüze taşınmaz. Mevcut FIRST marka işareti ve sistem fontları korunur.
 
 ## Merkezi tanımlar
 
@@ -23,6 +25,12 @@ Sistem fontları Türkçe karakterleri destekler, harici font indirmesi gerekmez
 Ana sayfa ziyaretçi ve üyeye tüm aktif topluluk paylaşımlarını sunar. En yeni paylaşımlar önce gelir; gerçek toplam ve sayfalama vardır. Proje sayısı az olduğunda sahte kartlarla doldurulmaz. Başlık, kısa açıklama, üst/alt kategori, proje aşaması ve güncelleme tarihi taranabilir kartlarda gösterilir. Kartın ana bağlantısı FIRST proje detayına gider. Yıldız/fork/dil/katkıcı metrikleri yalnız gerçek veri kaynağı ve ayrı kapsam olduğunda eklenebilir.
 
 Public feed yalnız paylaşılmış proje metni ve sınıflandırmayı içerir. Repo URL/adı/gizliliği, README ve hesap verileri listede tahmin edilmez. Detay ekranındaki mevcut GitHub doğrulaması korunur. Liste boş, yükleniyor, hatalı veya sayfa değiştirme durumlarını açıkça gösterir.
+
+## Referansa uyarlanan yerleşimler
+
+- Keşif: kısa başlık, arama, açılır filtre alanı, kaldırılabilir aktif filtreler ve gerçek sonuç sayısı. Kartlarda kategori/aşama, başlık, açıklama, katılım etiketleri, sahip ve güncelleme tarihi.
+- Proje detayı: üst başlık/aksiyon paneli; içerik ve katılım yan yana. Sahip yönetiminde geniş panel kullanılır; bütün API ve yetki kontrolleri korunur.
+- Profil: kimlik ve davet alanı üstte; hakkında/beceri/ilgi alanları solda, gerçek paylaşımlar sağda. Dar ekranda tek sütuna iner.
 
 ## Bütün ekranlar
 

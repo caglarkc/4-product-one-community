@@ -32,5 +32,5 @@ export function Surface({ className, ...props }: HTMLAttributes<HTMLElement>) {
   return <section {...props} className={classes('surface', className)} />;
 }
 export function PageHeading({ title, description, eyebrow = 'FIRST / HESAP' }: { title: string; description?: string; eyebrow?: string }) {
-  return <div className="page-heading"><p className="eyebrow">{eyebrow}</p><h1>{title}</h1>{description && <p className="page-description">{description}</p>}</div>;
+  return <div className="page-heading">{eyebrow && <p className="eyebrow">{eyebrow}</p>}<h1>{title}</h1>{description && <p className="page-description">{description}</p>}</div>;
 }
