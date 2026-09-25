@@ -5,7 +5,7 @@ from django.utils.cache import patch_vary_headers
 
 
 class CorsMiddleware:
-    methods = {'GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'}
+    methods = {'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'}
     headers = {'authorization', 'content-type', 'x-csrftoken'}
 
     def __init__(self, get_response):

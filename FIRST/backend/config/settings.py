@@ -12,7 +12,7 @@ ALLOWED_HOSTS = [host.strip() for host in os.environ.get(
 ).split(",") if host.strip()]
 ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
-INSTALLED_APPS = ["django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "rest_framework", "accounts", "projects", "allauth", "allauth.account", "allauth.socialaccount", "allauth.socialaccount.providers.google"]
+INSTALLED_APPS = ["django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "rest_framework", "accounts", "projects", "teams", "showcase", "tasks", "allauth", "allauth.account", "allauth.socialaccount", "allauth.socialaccount.providers.google"]
 MIDDLEWARE = [
     "accounts.cors.CorsMiddleware",
     "accounts.middleware.AuthBoundaryMiddleware",

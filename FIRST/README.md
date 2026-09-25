@@ -48,4 +48,12 @@ Aşağıdakiler ürün yönünü destekleyen önerilerdir; kesin özellik listes
 
 E-posta/şifre kaydı ve girişi, beni hatırla, oturum sorgulama/çıkış, profil/telefon güncelleme, parola kurtarma/değiştirme, yeniden doğrulama, e-posta doğrulama/değiştirme ve oturum yönetimi backend ile webde uygulandı. `/hesap` gerçek API'ye bağlı profil ekranıdır. İlk auth tesliminden sonra Google/GitHub OAuth, repo bağlantısı ve proje paylaşımı eklendi; ana sayfa gerçek sayfalı topluluk akışıdır. Öğrenci doğrulaması hâlâ sonraki kapsamdadır.
 
-[Backend](backend/README.md), [web](frontend/README.md), [API sözleşmesi](contracts/auth-api.md) ve [run checklist](../.orchestrator/runs/first-auth/checklist.md) uygulama, test ve bağımsız kontrol kanıtlarını içerir. İzole backend/frontend testleri ile lint/typecheck/build çalıştırıldı. Gerçek PostgreSQL/Redis/SMTP, ingress/proxy/HTTPS-cookie, tarayıcı E2E ve deploy **not_verified**; kod kontrolleri canlı ortam doğrulaması değildir.
+[Backend](backend/README.md), [web](frontend/README.md), [API sözleşmesi](contracts/auth-api.md) ve [run checklist](../.orchestrator/runs/first-auth/checklist.md) uygulama, test ve bağımsız kontrol kanıtlarını içerir. İzole backend/frontend testleri ile lint/typecheck/build çalıştırıldı. İlk auth teslimindeki PostgreSQL/Redis/SMTP, ingress ve deploy **not_verified** kaydı tarihsel kapsamdır. Sonraki gerçek yayın ve kontrol kanıtları [deployment.md](deployment.md) içindedir. Gerçek GitHub davet kabulü, Issue oluşturma ve PR merge uçtan uca doğrulaması hâlâ ayrı sınırdır; kaynak incelemesi bunları doğrulamaz.
+
+## İlk sürüm tamamlaması — 25 Eylül 2026
+
+Bağımsız ekip sistemi (`/ekipler`), private repodan seçili dosya vitrini (proje detayı) ve public GitHub Issue görev keşfi (`/gorevler`) uygulandı. Ekip sahibi/yöneticisi/üyesi yetkileri, başvuru/davet, sahiplik devri ve proje bağlama ayrı ekip alanındadır; üyelik GitHub erişimi sağlamaz. Vitrin onaylanan dosya sürümünü saklar; ilan görünürlüğünü izler ve otomatik güncellenmez. Görevler elle bağlanır/oluşturulur ve durumları elle yenilenir; atama veya rezervasyon yoktur.
+
+API sınırları: [ekip](contracts/teams-api.md), [vitrin](contracts/showcase-api.md), [görev](contracts/tasks-api.md). Ortak arayüz daha kompakt yazı, panel ve kart ölçülerine indirildi; hesap bağlantıları menüde toplandı. Bu değişikliklerin kontrolü kaynak/diff incelemesidir; yeni test, tarayıcı veya gerçek GitHub işlem senaryosu çalıştırılmadı. Yayın sonucu ve sınırlar [teslim kaydında](../.orchestrator/runs/first-release-completion/delivery.md) izlenir.
+
+Mesajlaşma, öğrenci doğrulaması, katkı istatistikleri, ayrıntılı profil/sertifika vitrini ve şikâyet yönetim paneli bilerek ertelenmiş kapsam olarak kalır.

@@ -1,8 +1,7 @@
 # FIRST backend
 
 Django 5.2 / DRF normal auth API. Production settings require PostgreSQL and Redis;
-SMTP is configured using environment variables. No real credentials belong in Git.
-Use `.env.example` for required names. Docker Compose runs Django/Gunicorn,
+SMTP is configured using real environment files under the owner’s private-repository protocol in `.agent/rules.md`; never print credentials or include them in images. Docker Compose runs Django/Gunicorn,
 PostgreSQL and password-protected Redis together; SMTP remains an external service.
 Compose supplies `.env` to the backend at runtime. Migrations run explicitly before
 starting the backend. Database and Redis data persist in named Docker volumes.
@@ -10,9 +9,7 @@ starting the backend. Database and Redis data persist in named Docker volumes.
 ## Docker startup
 
 Run these commands from `FIRST/backend` with Docker Engine and Compose available.
-The prepared local `.env` contains private settings and must stay outside Git and
-the Docker image. For a fresh checkout, copy `.env.example` to `.env`, fill every
-blank required credential and replace the example frontend origin before starting.
+The real `.env` files are managed directly under `.agent/rules.md`; preserve server-specific values. Real env inclusion in the verified private remote follows the owner’s explicit protocol; env files stay outside Docker images. For a fresh environment, configure the actual `.env` before starting; example files are not a completed setup.
 Use distinct random hex values for Django (at least 50 characters), PostgreSQL and
 Redis credentials. `AUTH_REDIS_URL` must match `REDIS_PASSWORD` and address service
 `redis`; `POSTGRES_HOST` must be `db`. Existing database volumes retain their original
@@ -204,3 +201,9 @@ Gunicorn erişim logları yalnız method, sorgusuz URL path, durum ve süre içe
 `projects` adds listing needs, immutable participation methods, visibility grants, applications/invitations, site notifications and explicit Issue/PR operations. Migration `0004_participation` is additive; existing legacy listings default to applications closed. Ordinary project reads remain database-only. GitHub effects have persisted decisions, stable identities and retry reconciliation; automatic invitations require provable current protections and fail closed otherwise.
 
 Contract: [participation-api.md](../contracts/participation-api.md). Operator/product behavior: [ilan-katilim.md](../ilan-katilim.md). Tests, deployed revision and live verification boundaries: [integration run](../../.orchestrator/runs/first-listing-participation/run.json). The test transport follows the current Bearer session header; no cookie/proxy authentication was reintroduced.
+
+## Independent teams, snapshots and public tasks
+
+Apps `teams`, `showcase`, `tasks` each include an initial schema migration. URL roots are `/api/auth/teams/`, `/api/auth/showcase/`, `/api/auth/tasks/`; see `FIRST/contracts/*-api.md`. Team ownership is checked before account deletion and GitHub revocation. Selected-file original bytes and safe previews are private PostgreSQL snapshot fields covered by existing backups; no public media bucket or raw download endpoint exists. Expired unpublished previews are removed on the next prepare operation. Public task read paths recheck GitHub repository privacy before exposing cached Issue content, and ambiguous creates reconcile a persisted request marker rather than issuing another POST.
+
+Docker installs libseccomp2, Pillow and pypdfium2 for isolated resource-limited raster conversion. Converter stdin/stdout has bounded content, environment has no credentials, and filesystem/network/process syscalls are denied after dependencies load. Some PDF fonts can differ, unsupported/oversized content is rejected, and preview consent is required. Converter compatibility and 512MiB container headroom have not been tested by this source-only delivery.

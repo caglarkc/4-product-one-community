@@ -21,10 +21,11 @@ function origin():string {
   return url.origin;
 }
 function sessionChanged():ApiError {return new ApiError('Oturumunuz değişti. Lütfen işlemi yeniden başlatın.',409,{},'session_changed');}
-// The sole variable text segment is an encoded username, never a raw URL/path.
+// Variable username segments remain encoded and validated, never raw URLs/paths.
 function validPeoplePath(path:string):boolean {
-  if(!path.startsWith('people/')) return false;
-  const segment=path.slice(7);
+  const match = /^(?:people\/|teams\/[a-f0-9-]{36}\/members\/)([^/]+)(?:\/role)?$/.exec(path);
+  if(!match || (path.startsWith('people/') && path.endsWith('/role'))) return false;
+  const segment=match[1];
   try {const username=decodeURIComponent(segment);return /^[\p{L}\p{N}_]{3,30}$/u.test(username)&&encodeURIComponent(username)===segment;} catch{return false;}
 }
 async function request<T>(path:string, options:RequestInit = {}, query?:URLSearchParams, session?:{expected:string|null; accepted?:(token:string|null)=>void}):Promise<T> {
