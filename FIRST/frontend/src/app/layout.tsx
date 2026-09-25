@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import { SessionNavigation, SessionProvider } from '../components/session-provider';
 import './globals.css';
+import './home-discovery.css';
 
 export const metadata = { title: 'FIRST', description: 'FIRST — topluluğun geliştirdiği projeler ve birlikte üretmek için bir alan', robots: { index: false, follow: false } };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return <html lang="tr"><body><SessionProvider>
     <a className="skip" href="#main">İçeriğe geç</a>
+    <a className="skip home-skip" href="#home-content">İçeriğe geç</a>
     <header className="site-header"><div className="header-inner">
       <Link className="brand" href="/" aria-label="FIRST ana sayfa">
         <span className="brand-mark" aria-hidden="true">

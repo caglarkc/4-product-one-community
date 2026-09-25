@@ -6,6 +6,8 @@
 
 ## Görsel yön
 
+25 Eylül 2026 ana sayfa revizyonu: Kullanıcı sunulan tasarımlardan **2. seçeneği** seçti. İlk aşama yalnız `/` sayfasıdır; diğer ekranlar kullanıcı değerlendirmesinden sonra ele alınır. Ana sayfada lacivert sabit yan gezinme, beyaz içerik, büyük başlık, üç temel filtre ve yatay proje satırları kullanılır. Ek filtreler açılır; mobilde gezinme üstte dört sütuna, proje satırları tek sütuna geçer. Bu aşamanın token değerleri `body:has(.home-discovery)` altında, yerleşimi `home-discovery.css` içinde kapsamlandırılır. Ortak form bileşenleri, gerçek proje verisi ve sayfa başına 12 kayıt korunur. Aşağıdaki önceki yerleşim kararları diğer ekranlar için geçerlidir.
+
 Açık lavanta çalışma alanı, beyaz paneller, koyu lacivert metin ve mavi birincil aksiyonlar. Yeşil yalnız olumlu durum ve davete açıklık gibi etiketlerde kullanılır. Referanstaki kompakt bilgi hiyerarşisi, ölçülü monospace etiketler ve hafif gölgeler korunur.
 
 - Ana zemin `#faf8ff`, yüzey `#ffffff`, ikincil yüzey `#f2f3ff`, kenarlık `#e8e9f4`.
