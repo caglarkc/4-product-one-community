@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-release-completion",
+  "itemId": "product-spec",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "User explicitly approved all three scope questions. Teams/showcase/tasks API contracts define authorization, snapshots, limits, lifecycle and provider behavior. Deferred messaging/statistics/student verification excluded.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/contracts",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    },
+    {
+      "type": "source",
+      "path": "FIRST/kararlar.md",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Record approved team, showcase and task scope supported by source and documented boundaries",
+      "status": "passed",
+      "evidence": "User explicitly approved all three scope questions. Teams/showcase/tasks API contracts define authorization, snapshots, limits, lifecycle and provider behavior. Deferred messaging/statistics/student verification excluded."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-review",
+      "status": "passed",
+      "evidence": "User explicitly approved all three scope questions. Teams/showcase/tasks API contracts define authorization, snapshots, limits, lifecycle and provider behavior. Deferred messaging/statistics/student verification excluded."
+    },
+    {
+      "name": "runtime-tests",
+      "status": "not_run",
+      "evidence": "User source-only control preference; no tests, lint/typecheck or browser checks."
+    }
+  ],
+  "risks": [
+    "Runtime behavior unverified; production deployment evidence recorded separately."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-25T08:21:05.591323+00:00"
+}

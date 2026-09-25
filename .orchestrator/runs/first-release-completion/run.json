@@ -1,0 +1,752 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-release-completion",
+  "title": "FIRST release gaps and compact UI",
+  "goal": "Complete approved team and private showcase features, resolve task scope, reconcile documentation and compact frontend",
+  "createdAt": "2026-09-25T08:17:54.552Z",
+  "updatedAt": "2026-09-25T08:40:10.150Z",
+  "revision": 34,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "FIRST/README.md",
+      "FIRST/kararlar.md",
+      "FIRST/teknik-kararlar.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "456c7cec94b019a2e5d19d1b28c9a1a41cd1d609e33698513dd0c631f232417c",
+    "assumptions": []
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz.",
+    "FIRST only. No tests, lint/typecheck, browser/computer use or local production builds. Existing deployment migration/build/health allowed.",
+    "No subagent commits/pushes. Disjoint files only; main owns contracts and integration.",
+    "Critical open product decisions wait for user answers. Preserve deliberately deferred features."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "approved-scope",
+      "summary": "User approved team roles/ownership, three-file snapshot limits and public Issue task scope",
+      "reason": "Explicit async answers: apply proposed model, proposed limits, proposed task scope",
+      "decidedAt": "2026-09-25T08:24:30.135Z",
+      "actor": "user"
+    },
+    {
+      "id": "snapshot-storage",
+      "summary": "Bounded private snapshot bytes and safe previews in PostgreSQL; PDF/image raster worker isolated",
+      "reason": "Reuse protected access and existing backups without introducing public media storage; active documents never execute in FIRST origin",
+      "decidedAt": "2026-09-25T08:24:30.245Z",
+      "actor": "manager"
+    }
+  ],
+  "items": [
+    {
+      "id": "scope-audit",
+      "title": "Identify missing implementation, open decisions and stale records",
+      "kind": "discovery",
+      "domains": [
+        "first"
+      ],
+      "objective": "Identify missing implementation, open decisions and stale records",
+      "responsibility": "Only assigned files; source-only checks; no deployment or independent push.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Identify missing implementation, open decisions and stale records evidence"
+      ],
+      "acceptanceCriteria": [
+        "Identify missing implementation, open decisions and stale records supported by source and documented boundaries"
+      ],
+      "capabilities": [
+        "discovery"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "User requested release gap completion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/scope-audit-2026-09-25T08-21-05-187Z.json"
+    },
+    {
+      "id": "compact-ui",
+      "title": "Compact existing FIRST frontend",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Compact existing FIRST frontend",
+      "responsibility": "Only assigned files; source-only checks; no deployment or independent push.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Compact existing FIRST frontend evidence"
+      ],
+      "acceptanceCriteria": [
+        "Existing FIRST screens use compact responsive shared spacing and readable typography",
+        "Existing API actions and accessibility states preserved by source inspection"
+      ],
+      "capabilities": [
+        "implement"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "User requested release gap completion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/src/app/globals.css",
+          "FIRST/frontend/src/app/tokens.css",
+          "FIRST/frontend/src/app/layout.tsx",
+          "FIRST/frontend/src/components",
+          "FIRST/tasarim-dili.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/compact-ui-2026-09-25T08-21-50-830Z.json"
+    },
+    {
+      "id": "product-spec",
+      "title": "Record approved team, showcase and task scope",
+      "kind": "specification",
+      "domains": [
+        "first"
+      ],
+      "objective": "Record approved team, showcase and task scope",
+      "responsibility": "Only assigned files; source-only checks; no deployment or independent push.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Record approved team, showcase and task scope evidence"
+      ],
+      "acceptanceCriteria": [
+        "Record approved team, showcase and task scope supported by source and documented boundaries"
+      ],
+      "capabilities": [
+        "specification"
+      ],
+      "relations": {
+        "dependsOn": [
+          "scope-audit"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "User requested release gap completion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/contracts",
+          "FIRST/kararlar.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/product-spec-2026-09-25T08-21-05-591Z.json"
+    },
+    {
+      "id": "teams-backend",
+      "title": "Implement independent team domain and authorization",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Implement independent team domain and authorization",
+      "responsibility": "Only assigned files; source-only checks; no deployment or independent push.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Implement independent team domain and authorization evidence"
+      ],
+      "acceptanceCriteria": [
+        "Implement independent team domain and authorization supported by source and documented boundaries"
+      ],
+      "capabilities": [
+        "implement"
+      ],
+      "relations": {
+        "dependsOn": [
+          "product-spec"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "User requested release gap completion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/teams"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/teams-backend-2026-09-25T08-38-55-673Z.json"
+    },
+    {
+      "id": "showcase-backend",
+      "title": "Implement private file snapshots and safe preview serving",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Implement private file snapshots and safe preview serving",
+      "responsibility": "Only assigned files; source-only checks; no deployment or independent push.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Implement private file snapshots and safe preview serving evidence"
+      ],
+      "acceptanceCriteria": [
+        "Implement private file snapshots and safe preview serving supported by source and documented boundaries"
+      ],
+      "capabilities": [
+        "implement"
+      ],
+      "relations": {
+        "dependsOn": [
+          "product-spec"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "User requested release gap completion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/showcase"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/showcase-backend-2026-09-25T08-38-55-826Z.json"
+    },
+    {
+      "id": "tasks-backend",
+      "title": "Implement or explicitly document user-selected task scope",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Implement or explicitly document user-selected task scope",
+      "responsibility": "Only assigned files; source-only checks; no deployment or independent push.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Implement or explicitly document user-selected task scope evidence"
+      ],
+      "acceptanceCriteria": [
+        "Implement or explicitly document user-selected task scope supported by source and documented boundaries"
+      ],
+      "capabilities": [
+        "implement"
+      ],
+      "relations": {
+        "dependsOn": [
+          "product-spec"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "User requested release gap completion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/tasks"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/tasks-backend-2026-09-25T08-38-55-983Z.json"
+    },
+    {
+      "id": "feature-ui",
+      "title": "Connect team showcase task UI to approved backend contracts",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Connect team showcase task UI to approved backend contracts",
+      "responsibility": "Only assigned files; source-only checks; no deployment or independent push.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Connect team showcase task UI to approved backend contracts evidence"
+      ],
+      "acceptanceCriteria": [
+        "Connect team showcase task UI to approved backend contracts supported by source and documented boundaries"
+      ],
+      "capabilities": [
+        "implement"
+      ],
+      "relations": {
+        "dependsOn": [
+          "compact-ui",
+          "teams-backend",
+          "showcase-backend",
+          "tasks-backend",
+          "backend-revision"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "User requested release gap completion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/feature-ui-2026-09-25T08-40-09-035Z.json"
+    },
+    {
+      "id": "source-review",
+      "title": "Independent source review of new features and compact UI",
+      "kind": "review",
+      "domains": [
+        "first"
+      ],
+      "objective": "Independent source review of new features and compact UI",
+      "responsibility": "Only assigned files; source-only checks; no deployment or independent push.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Independent source review of new features and compact UI evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent source review of new features and compact UI supported by source and documented boundaries"
+      ],
+      "capabilities": [
+        "review"
+      ],
+      "relations": {
+        "dependsOn": [
+          "feature-ui"
+        ],
+        "reviews": [
+          "teams-backend",
+          "showcase-backend",
+          "tasks-backend",
+          "feature-ui",
+          "backend-revision"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "User requested release gap completion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/source-review-2026-09-25T08-40-09-417Z.json"
+    },
+    {
+      "id": "source-verify",
+      "title": "Independent acceptance verification from source",
+      "kind": "verify",
+      "domains": [
+        "first"
+      ],
+      "objective": "Independent acceptance verification from source",
+      "responsibility": "Only assigned files; source-only checks; no deployment or independent push.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Independent acceptance verification from source evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent acceptance verification from source supported by source and documented boundaries"
+      ],
+      "capabilities": [
+        "verify"
+      ],
+      "relations": {
+        "dependsOn": [
+          "source-review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "teams-backend",
+          "showcase-backend",
+          "tasks-backend",
+          "feature-ui",
+          "backend-revision"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "User requested release gap completion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/source-verify-2026-09-25T08-40-09-812Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "Reconcile docs and records and deliver accepted integration",
+      "kind": "integration",
+      "domains": [
+        "first"
+      ],
+      "objective": "Reconcile docs and records and deliver accepted integration",
+      "responsibility": "Only assigned files; source-only checks; no deployment or independent push.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Reconcile docs and records and deliver accepted integration evidence"
+      ],
+      "acceptanceCriteria": [
+        "Reconcile docs and records and deliver accepted integration supported by source and documented boundaries"
+      ],
+      "capabilities": [
+        "integration"
+      ],
+      "relations": {
+        "dependsOn": [
+          "source-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "compact-ui",
+          "teams-backend",
+          "showcase-backend",
+          "tasks-backend",
+          "feature-ui"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "User requested release gap completion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST",
+          ".cursor/maps/stack-shared-ai",
+          ".orchestrator/runs"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "active",
+      "attempt": 1,
+      "resultRef": null
+    },
+    {
+      "id": "backend-review-initial",
+      "title": "Independent initial backend source review",
+      "kind": "review",
+      "domains": [
+        "first"
+      ],
+      "objective": "Independent initial backend source review",
+      "responsibility": "Only assigned files; source-only checks; no deployment or independent push.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Independent initial backend source review source evidence"
+      ],
+      "acceptanceCriteria": [
+        "Independent initial backend source review confirmed from source; runtime checks not claimed"
+      ],
+      "capabilities": [
+        "implement"
+      ],
+      "relations": {
+        "dependsOn": [
+          "teams-backend",
+          "showcase-backend",
+          "tasks-backend"
+        ],
+        "reviews": [
+          "teams-backend",
+          "showcase-backend",
+          "tasks-backend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "User requested release gap completion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/backend-review-initial-2026-09-25T08-38-56-142Z.json"
+    },
+    {
+      "id": "backend-revision",
+      "title": "Fix initial backend review findings",
+      "kind": "revision",
+      "domains": [
+        "first"
+      ],
+      "objective": "Fix initial backend review findings",
+      "responsibility": "Only assigned files; source-only checks; no deployment or independent push.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        }
+      ],
+      "outputs": [
+        "Fix initial backend review findings source evidence"
+      ],
+      "acceptanceCriteria": [
+        "Fix initial backend review findings confirmed from source; runtime checks not claimed"
+      ],
+      "capabilities": [
+        "implement"
+      ],
+      "relations": {
+        "dependsOn": [
+          "backend-review-initial"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "backend-review-initial"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "User requested release gap completion"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/teams",
+          "FIRST/backend/showcase",
+          "FIRST/backend/tasks"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ]
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/backend-revision-2026-09-25T08-39-03-581Z.json"
+    }
+  ]
+}

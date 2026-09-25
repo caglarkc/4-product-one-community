@@ -1,3 +1,5 @@
+> 25 Eylül 2026: Bu belge tarihsel planlamadır. Uygulama ve yayın first-community-discovery/delivery.md ile teslim edilmiştir; aşağıdaki başlangıç durumu güncel eksik olarak okunmamalıdır.
+
 # FIRST — Profil ve keşif geliştirme taslağı
 
 Durum: Kullanıcı yanıtlarıyla uygulama planı hazır. Uygulama başlamadı.

@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-09-20T22:36:53.690Z",
+  "generatedAt": "2026-09-25T08:40:30.119Z",
   "repository": {
     "root": ".",
     "name": "4-product-one-community",
-    "commit": "b0655a8f35f57ea3cc7e13849467de81e9d048a8",
+    "commit": "7f9e626b76b59a17a742c48f5d68df2ced14ceac",
     "layers": {
       "FIRST": true,
       "STEP": true,
@@ -35,7 +35,7 @@
       "path": ".agent/skills/frontend/frontend-implementation/SKILL.md",
       "root": ".agent/skills",
       "disableModelInvocation": false,
-      "fingerprint": "c759e5276a8777efb578b0489e63105e18291d633d22c3d13ddee804b76df675"
+      "fingerprint": "f5dfc1c559a806b33516c52a9bb017cf6b6239fcc972dfff92442939a04355f7"
     },
     {
       "name": "code-implementation-mode",
@@ -51,7 +51,7 @@
       "path": ".agent/skills/meta/repo-context/SKILL.md",
       "root": ".agent/skills",
       "disableModelInvocation": false,
-      "fingerprint": "3a89df6e5017d19e02a7e298964284ac096783704b389f4b0747e8b90f34480f"
+      "fingerprint": "b49e66ff6043fe96c95325174d4fa2081f3d9ab25e44673ea0141ad42dabe906"
     },
     {
       "name": "orchestrate-project",
@@ -83,7 +83,7 @@
     "semantic": [
       {
         "path": ".cursor/maps/stack-shared-ai/overview.md",
-        "fingerprint": "b8a1a592a7be9d285f4613541a80db04aff53defff67ecab9078bb8b7862f96d"
+        "fingerprint": "6881f052eb7677b4daf73d7d4405d6c2632bf7c2e4b6faffdcdfaac6e07d6a86"
       },
       {
         "path": ".cursor/maps/stack-shared-ai/products.md",
@@ -91,15 +91,15 @@
       },
       {
         "path": ".cursor/maps/stack-shared-ai/technology.md",
-        "fingerprint": "8627acac9b93207fafe34dd58cc5cb07668a67ed6703692dc076ec3ceac63bb8"
+        "fingerprint": "c2ae34588d96198617de12edf63af3697bf2ef5d34b1b292495082b68639e632"
       }
     ],
     "dependency": null
   },
   "mapHealth": {
-    "stale": true,
-    "sourceFingerprint": "63b0d58e03c46cb9baa2187af0dd15efb6cda2195a7362b6bd75fa1bcb2e28bb",
-    "mapSourceFingerprint": "9748310452121736b3bcfed61ab28fdadd48fd0546cca8edbb539fa646385c77",
+    "stale": false,
+    "sourceFingerprint": "8460436b4bf1351ec36db041dfb1558beed2455b86aec2184ec9f123e5f050fe",
+    "mapSourceFingerprint": "8460436b4bf1351ec36db041dfb1558beed2455b86aec2184ec9f123e5f050fe",
     "dependencyMapGeneratedAt": null,
     "note": "Tazelik, checkout mtime yerine deterministik kaynak ağacı fingerprint’i ile ölçülür."
   },
@@ -138,5 +138,5 @@
       }
     }
   ],
-  "snapshot": "714b0ae1a50f06c5ac6579fe8ea18efccead3656bf0ebbedd88446dd5a3f6452"
+  "snapshot": "6ca1c03abe86831421e81c6230ee3db9f73a4cb3fdffa6367e25914291d07501"
 }

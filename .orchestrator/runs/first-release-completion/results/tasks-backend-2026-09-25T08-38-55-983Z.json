@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-release-completion",
+  "itemId": "tasks-backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Public Issue tasks use provider privacy checks, bounded signed cursor, attach/create/manual refresh; durable request_id and preflight before POST intent preserve ambiguous reconciliation-only retry. Source reviewed, no external Issue mutations.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/backend/tasks",
+      "change": "reported",
+      "description": "Source evidence reviewed"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Implement or explicitly document user-selected task scope supported by source and documented boundaries",
+      "status": "passed",
+      "evidence": "Public Issue tasks use provider privacy checks, bounded signed cursor, attach/create/manual refresh; durable request_id and preflight before POST intent preserve ambiguous reconciliation-only retry. Source reviewed, no external Issue mutations."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-review",
+      "status": "passed",
+      "evidence": "Public Issue tasks use provider privacy checks, bounded signed cursor, attach/create/manual refresh; durable request_id and preflight before POST intent preserve ambiguous reconciliation-only retry. Source reviewed, no external Issue mutations."
+    },
+    {
+      "name": "runtime-tests",
+      "status": "not_run",
+      "evidence": "User source-only control preference; no tests, lint/typecheck or browser checks."
+    }
+  ],
+  "risks": [
+    "Runtime behavior unverified; production deployment evidence recorded separately."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-25T08:38:55.983134+00:00"
+}

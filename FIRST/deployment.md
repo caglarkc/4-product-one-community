@@ -211,8 +211,9 @@ as deployment `cDKJJvYtNnJuTGBxCMpL6M3JWHaH` (Ready, Production/Staged).
 A Promote request targeting the existing production domains was submitted.
 Vercel subsequently reported "A promotion is already pending/in-progress";
 the live account page still showed the previous frontend during verification.
-The connected-account run remains active until the domain promotion finishes and
-live visual verification passes. No local production build was run.
+This was the status at that delivery attempt. The connected-account run was
+reconciled on 25 September using the later 19 September verification below;
+the original pending-promotion observation is retained as historical evidence. No local production build was run.
 
 ### Local frontend against the existing backend
 
