@@ -1,6 +1,6 @@
 # FIRST — Ürün kararları
 
-Son güncelleme: 21 Eylül 2026. Kaynak: kullanıcıyla ürün kapsamı görüşmesi.
+Son güncelleme: 25 Eylül 2026. Kaynak: kullanıcıyla ürün kapsamı görüşmesi.
 Bu belge kabul edilmiş ürün kararlarını, önerileri ve açık konuları ayırır; uygulanmış özellik veya teknik sözleşme değildir.
 
 Tamamlayıcı kayıtlar: [teknoloji ve yayın kararları](teknik-kararlar.md), [kayıt/giriş ve hesap bağlantısı](auth-kararlari.md), [öğrenci doğrulaması araştırması](ogrenci-dogrulama-arastirmasi.md).
@@ -73,7 +73,7 @@ Kullanıcı tarafından onaylandı; uygulama ve test kanıtı ayrı run kaydınd
 - FIRST'te görev verme/atama yoktur. Kullanıcı ön onay beklemeden çalışmaya başlayabilir; private repo erişimi için mevcut izin koşulları geçerlidir.
 - Aynı görev üzerinde birden fazla kişi bağımsız çalışabilir; görev bir kişiye ayrılıp diğerlerine kapatılmaz.
 - Bu karar katılım politikası veya katkının kabul koşulunu değiştirmez; işe başlamak ve katkının kabulü ayrı aşamalardır.
-- Görev durumlarının gösterimi ve GitHub senkronizasyon ayrıntıları henüz belirlenmedi.
+- 25 Eylül 2026: Genel görevler public FIRST projelerine bağlı gerçek GitHub Issue kayıtlarıdır. Sahip mevcut Issue bağlayabilir veya oluşturabilir; açık/kapalı durumunu elle yeniler. Private görev keşfi ve görev atama/rezervasyon yoktur.
 
 ## Katılım yöntemleri
 
@@ -97,7 +97,7 @@ Her ilanda aynı anda yalnızca bir yöntem aktif olabilir ve yöntem sonradan d
 - 21 Eylül 2026: Private repolarda “önce katkını göster” bulunmaz. Doğrudan başvuru ve korumaları doğrulanmış otomatik katılım açıktır; yalnız seçilen kişilere görünür ilanlarda katılım yalnız davetle olur. Bu karar önceki private repo yalnız-davet sınırlamasının yerini alır.
 - Proje sahibi yalnızca seçtiği bilgileri ve dosyaları ilanda gösterebilir.
 - Gösterilen dosya yayımlandığı andaki kopyadır; repo değişince otomatik güncellenmez.
-- Dosya sayısına sınır düşünülüyor; en fazla 3 dosya önerisi henüz kesinleşmedi.
+- 25 Eylül 2026: En fazla 3 dosya; metin/kod/Markdown/CSV dosya başına 1 MiB, görsel/PDF dosya başına 10 MiB, ilan toplamı 20 MiB. İlk sürümde orijinal indirme düğmesi yoktur.
 - İlandaki dosyaları görebilmek, private reponun tamamına erişim vermez; repo erişimini yetkili kişi belirler.
 - Proje sahibi kişileri keşfedip destek veya katılım daveti gönderebilir; mesajlaşma ayrıntıları askıdadır.
 
@@ -107,9 +107,9 @@ Her ilanda aynı anda yalnızca bir yöntem aktif olabilir ve yöntem sonradan d
 - Ekip kurmak için mevcut proje gerekmez.
 - Bir kişi birden fazla ekibe katılabilir.
 - Bir proje birden fazla ekibe bağlanamaz; ekip bağlantısı varsa tek ekibe aittir.
-- Ekipten ayrılmak serbesttir. Sahip ayrılırken sahiplik devrinin nasıl yapılacağı ayrıca netleştirilecek; “serbest” yanıtı zorunlu devir kararı olarak yorumlanmaz.
+- 25 Eylül 2026: Üye/yönetici ekipten ayrılabilir. Sahip mevcut bir üyeye sahipliği devretmeden ayrılamaz; ekipte tek üyeyse ekibi kapatabilir.
 - Ekip üyeliği, ekibin repolarına otomatik erişim vermez; repo erişimleri ayrı yönetilir.
-- Roller: sahip, yönetici, üye. Ayrıntılı rol yetkileri açık konudur.
+- 25 Eylül 2026: Sahip ekip/sahiplik/kapatma ve yönetici atamalarını yönetir. Yönetici profil, üye arama ilanı ve sıradan üye başvuru/davetlerini yönetir; sahip/yönetici yetkisini değiştiremez. Projeyi bağlamak için hem proje sahibi hem ekip sahibi/yöneticisi olmak gerekir.
 - Katılım başvuru veya davet ile mümkündür.
 - GitHub organization bağlantısı isteğe bağlıdır.
 - Ekibin keşfedilebilir sayfası ve “üye arıyoruz” ilanı bulunur.
@@ -156,7 +156,7 @@ Her ilanda aynı anda yalnızca bir yöntem aktif olabilir ve yöntem sonradan d
 
 ## Proje entegrasyonu aşamasında sorulacaklar
 
-17 Eylül 2026 kararı: Aşağıdaki açık ayrıntılar bilerek ertelenen özellikler olarak sınıflandırılmaz. İlgili proje entegrasyonu yapılırken kullanıcıya sorulup netleştirilecektir; cevapları varsayılarak uygulama yapılmaz. İlk çalışma auth (giriş, kayıt ve hesap bağlantısı) akışlarıdır. Giriş yöntemleri ve teknoloji seçilmiştir; kabul edilmiş kurallar [auth-kararlari.md](auth-kararlari.md) ve [teknik-kararlar.md](teknik-kararlar.md) belgelerindedir. Uygulama henüz yapılmadı.
+17 Eylül 2026 kararı: Aşağıdaki açık ayrıntılar bilerek ertelenen özellikler olarak sınıflandırılmaz. İlgili proje entegrasyonu yapılırken kullanıcıya sorulup netleştirilecektir; cevapları varsayılarak uygulama yapılmaz. İlk çalışma auth (giriş, kayıt ve hesap bağlantısı) akışlarıdır. Giriş yöntemleri ve teknoloji seçilmiştir; kabul edilmiş kurallar [auth-kararlari.md](auth-kararlari.md) ve [teknik-kararlar.md](teknik-kararlar.md) belgelerindedir. Bu ifade ilk auth planlamasının tarihsel durumudur; auth ve proje çekirdeği uygulanmıştır. Güncel kapsam için README ve teslim kayıtlarına bakın.
 
 - Ekip rol yetkileri, sahip ayrıldığında sahiplik işlemleri, proje–ekip bağlantısının yönetimi ve organization eşlemesi.
 - GitHub izinleri, merge işleminin teknik koşulları, otomatik kabul ve iki sistemde PR/davet durumlarının senkronizasyonu.
@@ -181,7 +181,7 @@ Bu bölümdeki mevcut erteleme kararları korunur; yukarıdaki entegrasyon sorul
 - [GitHub collaborators API](https://docs.github.com/en/rest/collaborators)
 - [GitHub repository invitations API](https://docs.github.com/en/rest/collaborators/invitations)
 
-Teknik referanslar ürün kararlarının uygulanabilirliğini araştırmak içindir; entegrasyon henüz uygulanmadı.
+Teknik referanslar ürün kararlarının uygulanabilirliğini araştırmak içindir; entegrasyonun güncel uygulama ve doğrulama durumu README ve ilgili teslim kayıtlarında ayrılır.
 
 ## Genel kapsam incelemesi — 15 Eylül 2026
 
@@ -206,3 +206,15 @@ Bu bölüm yeni kullanıcı yanıtlarını kaydeder; uygulamanın tamamlandığ�
 - Beceri ve teknoloji ortak listeden çoklu seçilir; serbest etiket ekleme yoktur. İlgi alanları mevcut proje kategorilerinden seçilir.
 - Şikâyet kapsamı form, backend doğrulaması ve veritabanı kaydıdır. Yönetim ekranı, yönetici inceleme/yaptırım akışı ve karar bildirimi sonraya bırakılır. Şikâyet otomatik ceza oluşturmaz.
 - Ayrıntılı uygulama taslağı: [.orchestrator planı](../.orchestrator/runs/first-people-discovery-planning/plan.md).
+
+
+## İlk sürüm tamamlama kararları — 25 Eylül 2026
+
+Kullanıcı bağımsız ekip yapısı, private dosya vitrini ve genel public görev kapsamını onayladı. Uygulama/teslim kanıtı `.orchestrator/runs/first-release-completion/` içindedir; bu onay tek başına tamamlanma kanıtı değildir.
+
+- Ekipler: [teams-api.md](contracts/teams-api.md). Bağımsız oluşturma, keşif/sayfa, sahip/yönetici/üye, üyelik başvurusu/davet, üye arama ilanı, tek ekibe proje bağlama, kaydetme. GitHub organization bağlantısı isteğe bağlı bilgi bağlantısı; organization üyelik senkronizasyonu veya repo yetkisi vermez.
+- Private vitrin: [showcase-api.md](contracts/showcase-api.md). Kod/metin, Markdown, görsel, PDF ve CSV. Sahip dosyayı seçer, ziyaretçinin göreceği kopyayı önizler ve açıkça yayımlar. İlan erişim koşulları dosyalarda da geçerlidir. Güncelleme elle, kaldırma FIRST kopyasına yöneliktir. Görünen içerik kopyalanabilir; indirme düğmesi olmaması kopyalama engeli değildir. Office, video/ses, arşiv/CAD/model dosyaları ve SVG ilk sürümde desteklenmez.
+- Genel görevler: [tasks-api.md](contracts/tasks-api.md). Public proje Issue keşfi, sahibin bağlama/oluşturması, elle açık/kapalı güncellemesi. Mevcut hata ilanı Issue akışından ayrı kapsamdır; değişmez katılım yöntemini değiştirmez. Birden fazla kişi aynı göreve katkı yapabilir; FIRST görev atamaz.
+- Ekip üyeliği görünürlüğü kısıtlı ilanlara veya private GitHub reposuna otomatik erişim sağlamaz.
+- Mesajlaşma, öğrenci doğrulaması, katkı istatistikleri, ayrıntılı profil/sertifika vitrini ve şikâyet yönetim paneli önceki erteleme kararlarında kalır.
+- Kontrol sınırı: kaynak/diff incelemesi. Eski gerçek davet kabulü/Issue oluşturma/PR merge canlı doğrulama eksikleri bu teslimde otomatik olarak giderilmiş sayılmaz.

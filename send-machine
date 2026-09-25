@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parent
 BACKEND = ROOT / 'FIRST/backend'
 REMOTE = '/opt/first/backend'
 TOP_FILES = {'manage.py', 'requirements.txt', 'Dockerfile', '.dockerignore', 'compose.yaml'}
-SOURCE_DIRS = {'accounts', 'projects', 'config', 'deploy'}
+SOURCE_DIRS = {'accounts', 'projects', 'teams', 'showcase', 'tasks', 'config', 'deploy'}
 OAUTH_KEYS = {'GOOGLE_ENABLED', 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REDIRECT_URI',
               'GOOGLE_LOCAL_REDIRECT_URI',
               'GITHUB_ENABLED', 'GITHUB_CLIENT_ID', 'GITHUB_CLIENT_SECRET', 'GITHUB_REDIRECT_URI',

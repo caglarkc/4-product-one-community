@@ -86,6 +86,8 @@ class AccountDeleteView(ProtectedView):
         confirm(request, 'HESABIMI SIL')
         with transaction.atomic():
             user = locked_user(request, sensitive=True)
+            from teams.services import assert_account_deletable
+            assert_account_deletable(user)
             _, cleanup = disconnect_repositories(user)
             user.delete()
         logout(request)

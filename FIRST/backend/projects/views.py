@@ -60,6 +60,8 @@ def installation_url():
 def project_data(project, user=None):
     # A publication is the owner's approved snapshot, independent of GitHub.
     private = project.is_private
+    from teams.models import TeamProject
+    link = TeamProject.objects.select_related("team").filter(project=project, team__is_active=True, team__owner__is_active=True).first()
     return {**participation.fields(project, user), 'id': str(project.pk), 'title': project.title, 'category': project.category,
         'subcategory': project.subcategory, 'stage': project.stage,
         'technologies': project.technologies, 'required_skills': project.required_skills,
@@ -67,6 +69,7 @@ def project_data(project, user=None):
         'subcategory_label': SUBCATEGORY_LABELS.get(project.category, {}).get(project.subcategory, project.subcategory or 'Belirtilmedi'),
         'stage_label': STAGE_LABELS.get(project.stage, project.stage or 'Belirtilmedi'),
         'description': project.description, 'readme_excerpt': project.readme_excerpt,
+        'team': {'id': str(link.team_id), 'name': link.team.name} if link else None,
         'is_private': private, 'repository_url': (project.repository_url or None) if not private else None,
         'repository_name': (project.repository_name or None) if not private else None,
         'is_active': project.is_active, 'created_at': project.created_at.isoformat(), 'updated_at': project.updated_at.isoformat()}

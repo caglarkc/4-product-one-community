@@ -11,8 +11,10 @@ Açık lavanta çalışma alanı, beyaz paneller, koyu lacivert metin ve mavi bi
 - Ana zemin `#faf8ff`, yüzey `#ffffff`, ikincil yüzey `#f2f3ff`, kenarlık `#e8e9f4`.
 - Ana metin `#131b2e`, yardımcı metin `#596174`, bağlantı `#004ac6`, birincil aksiyon `#2563eb`.
 - Başarı metni `#006c49`; hata ve disabled durumları açık temaya uygun ortak token kullanır.
-- Panel köşeleri 16px, kontroller 8px; masaüstünde keşif üç sütun, tablette iki, mobilde tek sütun olur.
+- Panel köşeleri 12px, kontroller 8px; masaüstünde keşif üç sütun, tablette iki, mobilde tek sütun olur.
 - Referanstaki örnek insanlar, avatar fotoğrafları, yıldız/katkı sayıları, API sağlık iddiası ve uygulanmamış navigasyon bağlantıları ürün verisi değildir; arayüze taşınmaz. Mevcut FIRST marka işareti ve sistem fontları korunur.
+
+25 Eylül 2026 kompaktlık düzeltmesi: içerik kabuğu en fazla 1280px; gövde 14px, kart başlıkları 16px, sayfa başlıkları 22–28px. Panel iç boşlukları 16–20px, kart araları 16px. Profil avatarı 56px; geniş dekoratif üst alanlar yerine gerçek içerik öne çıkar. Masaüstü menü 1100px altında sarılır; proje keşfi 960px altında iki, 640px altında tek sütuna iner. Buton ve alanlar en az 44px kalır; mobil form alanları 16px yazıyla gösterilir. Alt bilgi tek ve kısa satır grubudur.
 
 ## Merkezi tanımlar
 

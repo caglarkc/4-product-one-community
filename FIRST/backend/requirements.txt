@@ -6,3 +6,8 @@ psycopg[binary]>=3.2,<4
 django-allauth[socialaccount]==65.19.4
 
 cryptography>=44,<47
+
+Pillow>=12.3,<13
+pypdfium2>=5.13,<6
+
+urllib3>=2.8,<3

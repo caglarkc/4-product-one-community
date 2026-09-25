@@ -58,3 +58,9 @@ urlpatterns += [
     path('bookmarks/', project_community.BookmarksView.as_view()),
     path('reports/', project_community.ReportsView.as_view()),
 ]
+
+urlpatterns += [
+    path("teams/", include("teams.urls")),
+    path("showcase/", include("showcase.urls")),
+    path("tasks/", include("tasks.urls")),
+]
