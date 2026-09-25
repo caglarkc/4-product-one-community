@@ -295,3 +295,10 @@ identity, sessions and repository operations remain in Django. Backend configura
 allows the production frontend and the previously approved local origin. OAuth
 provider callback registrations do not change; frontend callback pages forward to
 Django directly. Existing cookie users must sign in again.
+
+
+## FIRST release completion — 25 September 2026
+
+Application `de95d27` plus delivery records `80dfbcb82b74a495864bb89c16bc0a392fd0f00c` were pushed to origin/main; remote hash verified. `./send-machine` fast-forwarded the remote checkout to 80dfbcb and deployed `20260925T084216-80dfbcb82b74`. Docker build and Django system check passed; showcase/tasks/teams initial migrations applied. PostgreSQL/Redis connections, all three containers and HTTP health passed. Vercel reported automatic frontend deployment success for 80dfbcb. Persistent data and other projects were preserved.
+
+No extra tests, lint/typecheck, browser scenarios or local production build ran. Real GitHub mutations and converter rendering/memory behavior remain unverified beyond source review and normal deploy health. Final documentation-only follow-up does not change deployed backend sources. See [delivery](../.orchestrator/runs/first-release-completion/delivery.md).
