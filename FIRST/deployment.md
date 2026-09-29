@@ -302,3 +302,13 @@ Django directly. Existing cookie users must sign in again.
 Application `de95d27` plus delivery records `80dfbcb82b74a495864bb89c16bc0a392fd0f00c` were pushed to origin/main; remote hash verified. `./send-machine` fast-forwarded the remote checkout to 80dfbcb and deployed `20260925T084216-80dfbcb82b74`. Docker build and Django system check passed; showcase/tasks/teams initial migrations applied. PostgreSQL/Redis connections, all three containers and HTTP health passed. Vercel reported automatic frontend deployment success for 80dfbcb. Persistent data and other projects were preserved.
 
 No extra tests, lint/typecheck, browser scenarios or local production build ran. Real GitHub mutations and converter rendering/memory behavior remain unverified beyond source review and normal deploy health. Final documentation-only follow-up does not change deployed backend sources. See [delivery](../.orchestrator/runs/first-release-completion/delivery.md).
+
+### FIRST tamamlama yayını — 30 Eylül 2026
+
+- Kaynak commit: `3b7497bf3cb551615ada5a60a86de1f9489a44c0`; `origin/main` aynı hash ile doğrulandı.
+- Backend release: `20260929T230123-3b7497bf3cb5`, mevcut `send-machine` akışı başarıyla tamamlandı. Django deployment check, üç yeni uygulamanın migrationları, PostgreSQL/Redis bağlantısı ve servis sağlık kontrolü geçti. Kalıcı veri ve diğer projeler korundu.
+- Vercel otomatik yayını: aynı commit için GitHub `Vercel` status `success` / `Deployment has completed`.
+- Doğrulanmış ana hesaba exclusive yönetici yetkisi atandı. FIRST Nginx body limiti yedekli olarak `4m` yapıldı; `nginx -t`, reload ve backend health başarılı.
+- Canlı kullanıcı senaryolarının kanıtı ayrı run QA sonucunda tutulur; bu dağıtım kaydı tüm akışların test edildiği anlamına gelmez.
+
+Canlı QA etiket düzeltmeleri `7ed1f3a` ve `ca4b795` ile origin/main'e pushlandı; ikisinin Vercel otomatik status'u başarılı. Şikâyet nedenleri ve işlem geçmişi etiketleri canlı domainde Türkçe doğrulandı. QA kapsamı ve yanıt bekleyen kontroller `.orchestrator/runs/first-full-completion/delivery.md` içinde; gerçek öğrenci e-postası, dosyalı sertifika ve hesap kısıtlama testleri tümü geçmiş sayılmaz.

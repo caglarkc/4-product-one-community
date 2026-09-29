@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "live-qa",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "blocked",
+  "summary": "Geliştirme ve yayın tamamlandı; çoklu canlı akışlar doğrulandı. Tam kapsamlı QA, gerçek öğrenci adresi ve iki somut işlem onayını bekliyor. Tüm senaryolar geçti iddiası yok.",
+  "artifacts": [
+    {
+      "type": "evidence-summary",
+      "path": null,
+      "change": "reported",
+      "description": "Güvenli kapsam/kanıt özeti .orchestrator/runs/first-full-completion/delivery.md; screenshot içerikleri repoya yazılmadı."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Canlı kullanıcı akışları ve sınırlar açık kanıtla raporlanır.",
+      "status": "not_verified",
+      "evidence": "Gözlenen akışlar açıkça raporlandı; gerçek mail, dosya sınırları ve hesap kısıtlama henüz doğrulanmadı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "two-account-google-dm",
+      "status": "passed",
+      "evidence": "İki hesap Google giriş; doğrudan mesaj alma/yanıt, unread sayacı ve self-send reddi."
+    },
+    {
+      "name": "profile-contributions-portfolio",
+      "status": "passed",
+      "evidence": "Hesap açılışından itibaren yenileme; private toplam off/on; repo owner add, noncontributor deny."
+    },
+    {
+      "name": "administrator-reports-moderation",
+      "status": "passed",
+      "evidence": "Admin/ikinci hesap/anonim sınırı; rapor sonuçlandırma; profil/proje hide/unhide; audit; geçici durumlar geri alındı."
+    },
+    {
+      "name": "public-search-student-filter",
+      "status": "passed",
+      "evidence": "Türkçe kişi/proje araması ve öğrenci filtresi; 500 görülmedi."
+    },
+    {
+      "name": "invalid-student-input",
+      "status": "passed",
+      "evidence": "Gmail format ve sentetik geçersiz onay anahtarı reddedildi."
+    },
+    {
+      "name": "standalone-team",
+      "status": "passed",
+      "evidence": "Create/invite/accept iki hesap üyeliği; GitHub grant yok."
+    },
+    {
+      "name": "responsive",
+      "status": "passed",
+      "evidence": "Profil390/320, DM768/320, admin/editor320 ölçülen scrollWidth=viewport; override reset."
+    },
+    {
+      "name": "live-label-fixes",
+      "status": "passed",
+      "evidence": "7ed1f3a/ca4b795 Vercel success; canlı canonical domainde Türkçe etiketler."
+    },
+    {
+      "name": "real-student-email",
+      "status": "not_run",
+      "evidence": "Erişilebilir .edu.tr adresi bekleniyor; gerçek gönderim/onay/yenileme kanıtı yok."
+    },
+    {
+      "name": "certificate-file-and-quota",
+      "status": "not_run",
+      "evidence": "Sentetik PDF/JPG upload onayı bekleniyor; PNG/2MiB/kota/anonimpreview runtime test edilmedi."
+    },
+    {
+      "name": "suspension-session-cleanup",
+      "status": "not_run",
+      "evidence": "İkinci hesap geçici kısıtlama onayı bekleniyor; confirm iptal edildi, hesap kısıtlanmadı."
+    },
+    {
+      "name": "credential-and-github-mutations",
+      "status": "not_run",
+      "evidence": "Yeni credential, repo grant/private publication, kalıcı silme, signup/reset/PRmerge bu turda yapılmadı."
+    },
+    {
+      "name": "stress-concurrency",
+      "status": "not_run",
+      "evidence": "Read yarışı, 30+ mesaj pagination ve kota stresi kaynak review ile sınırlı."
+    }
+  ],
+  "risks": [
+    "Gerçek mail, dosya ve oturum kısıtlama senaryolarına runtime başarı iddiası verilemez."
+  ],
+  "followUps": [
+    "Erişilebilir .edu.tr adresini bekle.",
+    "Sentetik PDF/JPG yükleme onayını bekle.",
+    "İkinci test hesabını kısa süre kısıtlama ve geri açma onayını bekle."
+  ],
+  "completedAt": "2026-09-29T23:22:53.256491+00:00",
+  "extensions": {
+    "evidenceReviewIdentity": "/root/final_source_gate",
+    "temporaryStatesRestored": true,
+    "liveOperatorIsIndependent": false
+  }
+}

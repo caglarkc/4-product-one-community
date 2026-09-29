@@ -4,8 +4,8 @@
   "title": "FIRST tam kapsam tamamlama",
   "goal": "Onaylanan mesajlaşma, öğrenci e-postası, katkı profili, belge vitrini, yönetim ve canlı QA eksiklerini tamamla",
   "createdAt": "2026-09-29T22:42:40.364Z",
-  "updatedAt": "2026-09-29T23:00:10.900Z",
-  "revision": 25,
+  "updatedAt": "2026-09-29T23:22:54.305Z",
+  "revision": 43,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -529,9 +529,9 @@
         ],
         "owner": null
       },
-      "status": "active",
+      "status": "done",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/deploy-2026-09-29T23-02-44-826Z.json"
     },
     {
       "id": "deploy-review",
@@ -584,9 +584,9 @@
         ],
         "owner": null
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/deploy-review-2026-09-29T23-03-04-428Z.json"
     },
     {
       "id": "deploy-verify",
@@ -639,9 +639,9 @@
         ],
         "owner": null
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/deploy-verify-2026-09-29T23-03-04-488Z.json"
     },
     {
       "id": "live-qa",
@@ -651,7 +651,7 @@
         "first"
       ],
       "objective": "İki hesaplı canlı computer use QA",
-      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "responsibility": "Canlı computer use operatörü root; kayıtların ve sınırların tutarlılığı bağımsız final_source_gate tarafından incelendi.",
       "inputs": [
         {
           "type": "file",
@@ -687,16 +687,16 @@
         "mode": "inline",
         "isolation": "shared",
         "readOnly": true,
-        "independent": true,
+        "independent": false,
         "writeScopes": [],
         "preferredPlatforms": [
           "codex"
         ],
-        "owner": null
+        "owner": "/root"
       },
-      "status": "draft",
-      "attempt": 0,
-      "resultRef": null
+      "status": "blocked",
+      "attempt": 1,
+      "resultRef": "results/live-qa-2026-09-29T23-22-53-256Z.json"
     },
     {
       "id": "messages-admin-revision",
@@ -836,9 +836,186 @@
       "status": "done",
       "attempt": 2,
       "resultRef": "results/core-revision-2026-09-29T22-57-24-711Z.json"
+    },
+    {
+      "id": "qa-labels",
+      "title": "Canlı QA yönetici etiket düzeltmeleri",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Şikâyet nedenleri, audit işlemleri ve hedef türleri Türkçe gösterilir; API ve referanslar korunur.",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/administration.tsx"
+        }
+      ],
+      "outputs": [
+        "FIRST/frontend/src/components/administration.tsx"
+      ],
+      "acceptanceCriteria": [
+        "Türkçe etiketler backend kodlarıyla eşleşir; API, referans ID ve gerekçeler değişmez."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "frontend",
+          "integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "frontend"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Yalnız yönetici ekranında görünen metin etiketleri"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/src/components/administration.tsx"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/completion_frontend"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/qa-labels-2026-09-29T23-20-46-117Z.json"
+    },
+    {
+      "id": "qa-labels-review",
+      "title": "Canlı QA yönetici etiket düzeltmeleri bağımsız review",
+      "kind": "review",
+      "domains": [
+        "first"
+      ],
+      "objective": "Şikâyet nedenleri, audit işlemleri ve hedef türleri Türkçe gösterilir; API ve referanslar korunur.",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/administration.tsx"
+        }
+      ],
+      "outputs": [
+        "source-review-report"
+      ],
+      "acceptanceCriteria": [
+        "Türkçe etiketler backend kodlarıyla eşleşir; API, referans ID ve gerekçeler değişmez."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "qa-labels"
+        ],
+        "reviews": [
+          "qa-labels"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Yalnız yönetici ekranında görünen metin etiketleri"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/final_source_gate"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/qa-labels-review-2026-09-29T23-20-50-456Z.json"
+    },
+    {
+      "id": "qa-labels-verify",
+      "title": "Canlı QA yönetici etiket düzeltmeleri bağımsız verify",
+      "kind": "verify",
+      "domains": [
+        "first"
+      ],
+      "objective": "Şikâyet nedenleri, audit işlemleri ve hedef türleri Türkçe gösterilir; API ve referanslar korunur.",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/administration.tsx"
+        }
+      ],
+      "outputs": [
+        "source-review-report"
+      ],
+      "acceptanceCriteria": [
+        "Türkçe etiketler backend kodlarıyla eşleşir; API, referans ID ve gerekçeler değişmez."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "qa-labels-review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "qa-labels"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Yalnız yönetici ekranında görünen metin etiketleri"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/final_source_gate"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/qa-labels-verify-2026-09-29T23-20-55-030Z.json"
     }
   ],
   "extensions": {
-    "revisionHistory": "İlk iki uygulama denemesi bağımsız inceleme bulgularıyla failed olarak korunur; kabul edilen revisionlar teslim kapsamıdır."
+    "revisionHistory": "İlk iki uygulama denemesi bağımsız inceleme bulgularıyla failed olarak korunur; kabul edilen revisionlar teslim kapsamıdır.",
+    "qaLabelCommits": [
+      "7ed1f3a",
+      "ca4b795"
+    ],
+    "liveQaEvidenceReview": {
+      "identity": "/root/final_source_gate",
+      "outcome": "pass",
+      "scope": "Kaynak, yayın çıktısı ve sağlanan UI gözlem notlarının tutarlılığı; bağımsız canlı test değildir."
+    }
   }
 }

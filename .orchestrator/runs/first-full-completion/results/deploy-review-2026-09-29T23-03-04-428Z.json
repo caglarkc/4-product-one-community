@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "deploy-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/final_source_gate",
+    "sessionRef": "/root/final_source_gate"
+  },
+  "outcome": "pass",
+  "summary": "Bağımsız operasyon kaynak ve sonuç incelemesi: standart yayın, yedek, veri/anahtar koruması, yalnız FIRST Nginx body limit değişikliği geçti.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": null,
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Yayın komutları mevcut veri/anahtarları korur.",
+      "status": "passed",
+      "evidence": "Bağımsız operasyon kaynak ve sonuç incelemesi: standart yayın, yedek, veri/anahtar koruması, yalnız FIRST Nginx body limit değişikliği geçti."
+    }
+  ],
+  "checks": [
+    {
+      "name": "deployment-evidence-review",
+      "status": "passed",
+      "evidence": "Bağımsız operasyon kaynak ve sonuç incelemesi: standart yayın, yedek, veri/anahtar koruması, yalnız FIRST Nginx body limit değişikliği geçti."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-29T23:03:04.428999+00:00"
+}

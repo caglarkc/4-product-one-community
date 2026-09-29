@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "deploy-verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/final_source_gate",
+    "sessionRef": "/root/final_source_gate"
+  },
+  "outcome": "pass",
+  "summary": "Bağımsız kanıt incelemesi: HEAD ve origin/main3b7497bf3cb5; aynı commit release20260929T230123-3b7497bf3cb5 healthy; Vercel success; owneradmin ve nginx health geçti.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": null,
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Aynı commit release ve sağlık kanıtı kayıtlı.",
+      "status": "passed",
+      "evidence": "Bağımsız kanıt incelemesi: HEAD ve origin/main3b7497bf3cb5; aynı commit release20260929T230123-3b7497bf3cb5 healthy; Vercel success; owneradmin ve nginx health geçti."
+    }
+  ],
+  "checks": [
+    {
+      "name": "deployment-evidence-review",
+      "status": "passed",
+      "evidence": "Bağımsız kanıt incelemesi: HEAD ve origin/main3b7497bf3cb5; aynı commit release20260929T230123-3b7497bf3cb5 healthy; Vercel success; owneradmin ve nginx health geçti."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-29T23:03:04.488085+00:00"
+}

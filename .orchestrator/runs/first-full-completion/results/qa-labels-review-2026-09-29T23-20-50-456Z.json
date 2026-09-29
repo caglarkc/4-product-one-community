@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "qa-labels-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/final_source_gate",
+    "sessionRef": "/root/final_source_gate"
+  },
+  "outcome": "pass",
+  "summary": "Backend kodlarıyla eşleşen Türkçe reason/action/target etiketleri; API, referanslar ve gerekçeler korunur. Kaynak review/verify geçti; Vercel yayın ve canlı görünüm ayrıca doğrulandı.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": null,
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Türkçe etiketler backend kodlarıyla eşleşir; API, referans ID ve gerekçeler değişmez.",
+      "status": "passed",
+      "evidence": "Backend kodlarıyla eşleşen Türkçe reason/action/target etiketleri; API, referanslar ve gerekçeler korunur. Kaynak review/verify geçti; Vercel yayın ve canlı görünüm ayrıca doğrulandı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Backend kodlarıyla eşleşen Türkçe reason/action/target etiketleri; API, referanslar ve gerekçeler korunur. Kaynak review/verify geçti; Vercel yayın ve canlı görünüm ayrıca doğrulandı."
+    }
+  ],
+  "risks": [
+    "Çalışma zamanı test edilmedi; canlı computer use doğrulaması ayrı düğümdür."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-29T23:20:50.456893+00:00"
+}
