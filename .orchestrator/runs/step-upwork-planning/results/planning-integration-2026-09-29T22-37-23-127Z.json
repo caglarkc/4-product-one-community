@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-upwork-planning",
+  "itemId": "planning-integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Resmî Upwork araştırması, kullanıcı ürün yönü ve altı yanıt, iki bağımsız incelemeyle STEP belgelerinde birleştirildi. Tam kapsamın kalan ayrıntıları açık bırakıldı.",
+  "artifacts": [
+    {
+      "type": "analysis",
+      "path": null,
+      "change": "reported",
+      "description": "Kabul edilmiş STEP karar ve araştırma belgeleri bağımsız inceleme sonuçlarıyla birleştirildi; ürün dosyalarının yazma sahipleri decision-docs/decision-update düğümleridir."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Araştırma bulguları kaynaklı özetlenir; kritik açık sorular kullanıcıya sunulur.",
+      "status": "passed",
+      "evidence": "Upwork resmî kaynak araştırmaları kabul edildi; gerçek para/kredi/OS ve Türkiye/aşama/takip kullanımı için iki üçlü soru sunuldu ve yanıtlandı. Kalan ayrıntılar STEP/kararlar.md son bölümünde açık."
+    },
+    {
+      "criterion": "Yalnız kabul edilen STEP belgeleri ve görev kayıtları kaynak/diff incelemesiyle teslim kapsamına alınır; FIRST kaynağı ve ilgisiz değişiklikler korunur.",
+      "status": "passed",
+      "evidence": "İki bağımsız incelemede P1/P2 bulgu yok. Dosya kapsamı STEP belgeleri, yalnız STEP skill/harita güncellemeleri, katalog ve bu run kayıtları; FIRST session-provider değişikliği teslim kapsamı dışındadır."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak ve bağımsız review",
+      "status": "passed",
+      "evidence": "decision-review ve decision-update-review sonuçları kabul edildi."
+    },
+    {
+      "name": "Harita/katalog metadata",
+      "status": "passed",
+      "evidence": "map-manifest ardından discover sıralı tamamlandı; son snapshot mapHealth.stale=false."
+    },
+    {
+      "name": "Test/lint/typecheck/tarayıcı",
+      "status": "not_run",
+      "evidence": "Yalnız planlama/dokümantasyon; kullanıcı kontrol tercihi."
+    }
+  ],
+  "risks": [
+    "E-posta hesabı erişimi aktif öğrencilik kaydını sorgulamaz; öğrenci alan adı politikası açık.",
+    "Kredi maliyetleri/iade, takım yetkisi/kazanç hesabı, ödeme/itiraz süreleri ve takip veri politikası henüz tam ürün şartnamesine dönüşmedi."
+  ],
+  "followUps": [
+    "Kredi dağıtım/maliyet/iade, komisyon, takım hesabı ve teslim/onay/itiraz ayrıntılarını kullanıcıyla netleştir."
+  ],
+  "completedAt": "2026-09-29T22:37:23.127Z",
+  "extensions": {
+    "acceptedAnswers": {
+      "jobMoney": "Platformda gerçek para; kredi yalnız platform işlemleri.",
+      "creditAcquisition": "Başlangıç veya aylık ücretsiz dağıtım + satın alma; miktar/periyot açık.",
+      "desktopPlatforms": [
+        "Windows",
+        "macOS",
+        "Linux"
+      ],
+      "firstLiveGeography": "Türkiye üniversiteleri ve Türkiye işverenleri.",
+      "fixedPrice": "Tek/çok aşama, aşama başına ön fonlama ve teslim onayıyla ödeme.",
+      "trackingUse": "Saatlik zorunlu; sabit işte tarafların tercihine bağlı."
+    },
+    "delivery": {
+      "yapilanIs": "Upwork araştırması, STEP kararlarının kaydı ve bağımsız review.",
+      "degisenDosyalar": "STEP README/kararlar/araştırma, yalnız STEP bağlam skill/haritaları, katalog ve bu run.",
+      "aktifDavranislar": "Uygulama değişikliği yok; ilk ürün testinin gerçek özellikleri henüz uygulanmadı.",
+      "beklenenEklemeler": "Kalan kredi, takım, ödeme ve veri politikası kararları.",
+      "manuelKontrol": "Resmî kaynaklar ve belge/diff incelemesi; workflow kayıt doğrulaması. Test/browser çalıştırılmadı."
+    },
+    "recordInputCorrection": "İlk record girdisinde parent ürün dosyaları integration writeScopes dışında artifact olarak işaretlenmişti; integration çıktısı rapor olarak düzeltildi. Ürün sonucu veya kapsam değişmedi."
+  }
+}

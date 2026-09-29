@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-upwork-planning",
+  "itemId": "tracking-research",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/product_links",
+    "sessionRef": "/root/product_links"
+  },
+  "outcome": "pass",
+  "summary": "Saatlik süre/günlük ve sabit ücretli aşama/onay modelleri ile masaüstü tracker araştırıldı.",
+  "artifacts": [
+    {
+      "type": "research",
+      "path": null,
+      "change": "reported",
+      "description": "Resmî kaynak araştırması; STEP fiyat veya ayrıntı kararı yapılmadı."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Saatlik/sabit iş ve tracker/work diary ayrımı resmî URL kanıtlarıyla sunulur.",
+      "status": "passed",
+      "evidence": "Saatlik limit/haftalık döngü, sabit milestone ve tracker kılavuzları URL listesiyle gösterildi."
+    },
+    {
+      "criterion": "Takip sıklığı, saklama, ödeme ve işletim sistemi ayrıntıları STEP kararı sayılmaz.",
+      "status": "passed",
+      "evidence": "10 dakikalık Upwork referansı, bir yıllık saklama, haftalık takvim, manuel/offline süre ve OS desteği STEP kararı sayılmadı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Resmî kaynak araştırması",
+      "status": "passed",
+      "evidence": "Upwork Help Center kaynakları web üzerinden okundu."
+    },
+    {
+      "name": "Test/lint/typecheck/tarayıcı",
+      "status": "not_run",
+      "evidence": "Planlama araştırması; kullanıcı kontrol tercihi."
+    }
+  ],
+  "risks": [
+    "Upwork referans davranışı STEP için otomatik kabul değildir."
+  ],
+  "followUps": [
+    "Kredi ekonomisi, iş ödeme modeli ve tracker ayrıntılarını kullanıcıyla netleştir."
+  ],
+  "completedAt": "2026-09-29T22:29:12.505Z",
+  "extensions": {
+    "sources": [
+      "https://support.upwork.com/hc/en-us/articles/211062418-How-to-set-a-weekly-limit-for-freelancer-hours",
+      "https://support.upwork.com/hc/en-us/articles/211063698-How-to-manage-the-weekly-billing-cycle",
+      "https://support.upwork.com/hc/en-us/articles/211068218-How-to-use-milestones-in-fixed-price-jobs",
+      "https://support.upwork.com/hc/en-us/articles/211064098-How-to-log-time-with-the-time-tracker",
+      "https://support.upwork.com/hc/en-us/articles/18926255847443--How-hourly-contracts-work"
+    ],
+    "findings": [
+      "Saatlik çalışma süre/haftalık limit/inceleme akışı içerir.",
+      "Sabit iş aşama teslimatı ve müşteri onayıyla yürür.",
+      "Tracker sözleşme seçimi, başlat/durdur, çalışma açıklaması, screenshot ve etkinlik özetini çalışma günlüğüne bağlar.",
+      "Erişim, silme ve süre hesabı ilişkisi ürün politikasıdır; STEP için ayrıca kararlaştırılmalı."
+    ]
+  }
+}

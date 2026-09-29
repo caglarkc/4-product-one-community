@@ -1,0 +1,555 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-upwork-planning",
+  "title": "STEP Upwork referansı ve yeni ürün kararları",
+  "goal": "Üniversite öğrencilerine özel Upwork benzeri STEP yönünü ve kullanıcı kararlarını kaydetmek; resmî kaynaklarla kredi, sözleşme ve takip modelini inceleyerek açık kararları sormak.",
+  "createdAt": "2026-09-29T22:27:01.117Z",
+  "updatedAt": "2026-09-29T22:37:51.569Z",
+  "revision": 20,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "optionalPaths": [
+      "STEP/README.md",
+      "STEP/kararlar.md",
+      "STEP/upwork-karsilastirmasi.md",
+      ".orchestrator/runs/step-scope-discovery/run.json"
+    ],
+    "catalogSnapshot": ".orchestrator/catalog/repo-context.json",
+    "assumptions": [
+      "FIRST başka AI tarafından geliştiriliyor; FIRST dosyalarına dokunulmaz.",
+      "Üniversite e-posta hesabına erişim aktif öğrenci kaydıyla aynı kanıt değildir; ürün doğrulama politikası bunun üzerine açıkça kurulmalıdır."
+    ],
+    "extensions": {
+      "catalogSnapshot": "6c6a41b3cd4fdc0ace7c1b15f579056bf7817769fe9c97745d4b8bde62ed55eb",
+      "sourceFingerprint": "6b76ad99ae6ac25e5f3ba2b5f5e7122627934cf983c0b14dd951093a3ee0619c",
+      "mapHealthStale": false,
+      "gitDelivery": "Kaynak/graph kabulü sonrası mevcut origin/main hedefine ana agent teslimi; sonuç final yanıtta doğrulanır."
+    }
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz.",
+    "Yalnız ürün karar belgeleri ve run kayıtları yazılır; uygulama veya sağlayıcı entegrasyonu geliştirilmez.",
+    "Test/lint/typecheck/tarayıcı/computer use çalıştırılmaz. Resmî web kaynaklarından araştırma yapılır.",
+    "Upwork benzerliği bütün davranış ve fiyatların otomatik kabulü değildir; kullanıcının özgün kredi modeli korunur.",
+    "İlk testte e-posta girişi; üniversite e-postası ve işveren ek doğrulamaları ürün hazırlandıktan sonraki aşamadır."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "student-upwork-direction",
+      "summary": "STEP üniversite öğrencilerine özel Upwork benzeri pazar olarak planlanır. İlan başlık/açıklama; başvuru, ilan açma ve öne çıkarma kredi üzerinden; saatlik/sabit iş ve Upwork benzeri çalışma takibi kapsam yönüdür.",
+      "reason": "Kullanıcının son mesajındaki açık ürün yönü; ayrıntı maliyet/ödeme/takip kararları ayrıca sorulacak.",
+      "decidedAt": "2026-09-29T22:27:01.784Z",
+      "actor": "manager",
+      "extensions": {
+        "provenance": "user-confirmed"
+      }
+    },
+    {
+      "id": "money-credit-tracker-platforms",
+      "summary": "İş bedeli platformda gerçek parayla; kredi yalnız platform işlemlerinde. Başlangıç veya aylık ücretsiz kredi ve satın alma. Tracker Windows, macOS, Linux birlikte.",
+      "reason": "Kullanıcının üç araştırma sorusuna açık yanıtı; miktar, dağıtım periyodu, sağlayıcı ve teknik framework seçilmedi.",
+      "decidedAt": "2026-09-29T22:31:03.237Z",
+      "actor": "manager",
+      "extensions": {
+        "provenance": "user-confirmed"
+      }
+    },
+    {
+      "id": "turkey-funded-milestones-tracking-use",
+      "summary": "İlk canlı sürüm Türkiye üniversiteleri ve Türkiye işverenleri. Sabit iş tek/çok aşama; her aşama önceden fonlanıp teslim onayıyla ödenir. Saatlikte tracker zorunlu, sabit işte isteğe bağlı.",
+      "reason": "Kullanıcının ikinci üçlü karar yanıtı.",
+      "decidedAt": "2026-09-29T22:34:30.153Z",
+      "actor": "manager",
+      "extensions": {
+        "provenance": "user-confirmed"
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "market-research",
+      "title": "Upwork ilan ve kredi araştırması",
+      "kind": "research",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "Upwork ilan/teklif, Connects ve ücretli görünürlük modelini resmî kaynaklarla incelemek.",
+      "responsibility": "Mevcut kullanıcı kararını koru; açık ayrıntıyı karar sayma; FIRST dosyalarına dokunma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/README.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/step-upwork-planning/results/market-research-2026-09-29T22-29-12-503Z.json"
+      ],
+      "acceptanceCriteria": [
+        "İlan, teklif ve Connects araştırması resmî URL kanıtlarıyla sunulur.",
+        "STEP ilan açma kredisi Upwork davranışından ayrılır; fiyatlar STEP kararı yapılmaz."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Kredi, doğrulama ve takip ürün kararları inceleniyor; entegrasyon uygulaması veya kişisel veri işlenmiyor."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/market-research-2026-09-29T22-29-12-503Z.json"
+    },
+    {
+      "id": "tracking-research",
+      "title": "Upwork sözleşme ve takip araştırması",
+      "kind": "research",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "Saatlik/sabit sözleşme, ödeme yaşam döngüsü ve masaüstü takip bileşenlerini resmî kaynaklarla incelemek.",
+      "responsibility": "Mevcut kullanıcı kararını koru; açık ayrıntıyı karar sayma; FIRST dosyalarına dokunma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/README.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/step-upwork-planning/results/tracking-research-2026-09-29T22-29-12-505Z.json"
+      ],
+      "acceptanceCriteria": [
+        "Saatlik/sabit iş ve tracker/work diary ayrımı resmî URL kanıtlarıyla sunulur.",
+        "Takip sıklığı, saklama, ödeme ve işletim sistemi ayrıntıları STEP kararı sayılmaz."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Kredi, doğrulama ve takip ürün kararları inceleniyor; entegrasyon uygulaması veya kişisel veri işlenmiyor."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/tracking-research-2026-09-29T22-29-12-505Z.json"
+    },
+    {
+      "id": "decision-docs",
+      "title": "STEP yeni ürün kararları ve araştırma belgesi",
+      "kind": "specification",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "Kullanıcının kesin yönünü ve araştırmayı STEP belgelerine işlemek; açık kararları listelemek.",
+      "responsibility": "Mevcut kullanıcı kararını koru; açık ayrıntıyı karar sayma; FIRST dosyalarına dokunma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/README.md"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-upwork-planning/results/market-research-2026-09-29T22-29-12-503Z.json"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-upwork-planning/results/tracking-research-2026-09-29T22-29-12-505Z.json"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/step-upwork-planning/results/decision-docs-2026-09-29T22-31-39-853Z.json"
+      ],
+      "acceptanceCriteria": [
+        "Öğrenci doğrulama ve e-posta test aşaması ayrı yazılır.",
+        "Krediyle ilan/başvuru/öne çıkarma, saatlik/sabit ve tracker yönü kaydedilir.",
+        "Referans Upwork davranışları ile STEP kararları ve açık sorular ayrılır."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "market-research",
+          "tracking-research"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Kredi, doğrulama ve takip ürün kararları inceleniyor; entegrasyon uygulaması veya kişisel veri işlenmiyor."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/README.md",
+          "STEP/kararlar.md",
+          "STEP/upwork-karsilastirmasi.md",
+          ".agent/skills/cross/product-boundaries/SKILL.md",
+          ".cursor/maps/stack-shared-ai/overview.md",
+          ".cursor/maps/stack-shared-ai/products.md",
+          ".cursor/maps/stack-shared-ai/technology.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/decision-docs-2026-09-29T22-31-39-853Z.json"
+    },
+    {
+      "id": "decision-review",
+      "title": "Bağımsız belge incelemesi",
+      "kind": "review",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "Yeni karar ve araştırma belgelerini kullanıcı mesajıyla karşılaştırmak.",
+      "responsibility": "Mevcut kullanıcı kararını koru; açık ayrıntıyı karar sayma; FIRST dosyalarına dokunma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/README.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/step-upwork-planning/results/decision-review-2026-09-29T22-32-38-563Z.json"
+      ],
+      "acceptanceCriteria": [
+        "Kullanıcıca belirlenmeyen kredi, ödeme, kimlik, test veya tracker ayrıntısı kesinleştirilmez.",
+        "Ürün sınırları ve yalnız STEP yazma kapsamı korunur."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "decision-docs"
+        ],
+        "reviews": [
+          "decision-docs"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Kredi, doğrulama ve takip ürün kararları inceleniyor; entegrasyon uygulaması veya kişisel veri işlenmiyor."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/decision-review-2026-09-29T22-32-38-563Z.json"
+    },
+    {
+      "id": "decision-update",
+      "title": "İkinci karar yanıtlarının belge güncellemesi",
+      "kind": "specification",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "Türkiye kapsamı, fonlanan aşamalar ve takip zorunluluğunu belgelere işlemek.",
+      "responsibility": "Mevcut kullanıcı kararını koru; açık ayrıntıyı karar sayma; FIRST dosyalarına dokunma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/README.md"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-upwork-planning/results/market-research-2026-09-29T22-29-12-503Z.json"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-upwork-planning/results/tracking-research-2026-09-29T22-29-12-505Z.json"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/step-upwork-planning/results/decision-update-2026-09-29T22-35-00-580Z.json"
+      ],
+      "acceptanceCriteria": [
+        "Türkiye ilk canlı kapsamı ve fonlanan aşamalar kullanıcı yanıtına uygun kaydedilir.",
+        "Saatlik zorunlu/sabit isteğe bağlı takip ve halen açık süre/veri ayrıntıları ayrılır."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "decision-review"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Kredi, doğrulama ve takip ürün kararları inceleniyor; entegrasyon uygulaması veya kişisel veri işlenmiyor."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/README.md",
+          "STEP/kararlar.md",
+          "STEP/upwork-karsilastirmasi.md",
+          ".agent/skills/cross/product-boundaries/SKILL.md",
+          ".cursor/maps/stack-shared-ai/overview.md",
+          ".cursor/maps/stack-shared-ai/products.md",
+          ".cursor/maps/stack-shared-ai/technology.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/decision-update-2026-09-29T22-35-00-580Z.json"
+    },
+    {
+      "id": "decision-update-review",
+      "title": "İkinci yanıtların bağımsız incelemesi",
+      "kind": "review",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "İkinci karar yanıtlarını güncel belge diffiyle karşılaştırmak.",
+      "responsibility": "Mevcut kullanıcı kararını koru; açık ayrıntıyı karar sayma; FIRST dosyalarına dokunma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/README.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/step-upwork-planning/results/decision-update-review-2026-09-29T22-37-21-316Z.json"
+      ],
+      "acceptanceCriteria": [
+        "Türkiye, fonlanan aşamalar ve takip kullanım kararı doğru yansıtılır.",
+        "Kredi fiyatı, onay/itiraz süresi veya veri politikası gibi ek ayrıntı onaylanmış sayılmaz."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "decision-update"
+        ],
+        "reviews": [
+          "decision-update"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Kredi, doğrulama ve takip ürün kararları inceleniyor; entegrasyon uygulaması veya kişisel veri işlenmiyor."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/decision-update-review-2026-09-29T22-37-21-316Z.json"
+    },
+    {
+      "id": "planning-integration",
+      "title": "Planlama sentezi ve açık karar soruları",
+      "kind": "integration",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "Araştırmayı ve incelenmiş belgeleri teslim etmek; kritik eksikleri kullanıcıya sormak.",
+      "responsibility": "Mevcut kullanıcı kararını koru; açık ayrıntıyı karar sayma; FIRST dosyalarına dokunma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/kararlar.md"
+        },
+        {
+          "type": "path",
+          "value": "STEP/upwork-karsilastirmasi.md"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-upwork-planning/results/market-research-2026-09-29T22-29-12-503Z.json"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-upwork-planning/results/tracking-research-2026-09-29T22-29-12-505Z.json"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-upwork-planning/results/decision-docs-2026-09-29T22-31-39-853Z.json"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-upwork-planning/results/decision-review-2026-09-29T22-32-38-563Z.json"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-upwork-planning/results/decision-update-2026-09-29T22-35-00-580Z.json"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-upwork-planning/results/decision-update-review-2026-09-29T22-37-21-316Z.json"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/step-upwork-planning/results/planning-integration-2026-09-29T22-37-23-127Z.json"
+      ],
+      "acceptanceCriteria": [
+        "Araştırma bulguları kaynaklı özetlenir; kritik açık sorular kullanıcıya sunulur.",
+        "Yalnız kabul edilen STEP belgeleri ve görev kayıtları kaynak/diff incelemesiyle teslim kapsamına alınır; FIRST kaynağı ve ilgisiz değişiklikler korunur."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "market-research",
+          "tracking-research",
+          "decision-docs",
+          "decision-review",
+          "decision-update-review"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "decision-docs",
+          "decision-review",
+          "decision-update",
+          "decision-update-review"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Kredi, doğrulama ve takip ürün kararları inceleniyor; entegrasyon uygulaması veya kişisel veri işlenmiyor."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          ".orchestrator/runs/step-upwork-planning",
+          ".orchestrator/catalog/repo-context.json",
+          ".orchestrator/catalog/map-manifest.json"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/planning-integration-2026-09-29T22-37-23-127Z.json"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-upwork-planning",
+  "itemId": "decision-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/step_decision_review",
+    "sessionRef": "/root/step_decision_review"
+  },
+  "outcome": "pass",
+  "summary": "P1/P2 bulgu yok; kullanıcı kararları, ilk test ertelemesi ve referans/açık ayrıntı ayrımı doğru.",
+  "artifacts": [
+    {
+      "type": "review",
+      "path": null,
+      "change": "reported",
+      "description": "Bağımsız salt okunur kaynak/diff incelemesi."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kullanıcıca belirlenmeyen kredi, ödeme, kimlik, test veya tracker ayrıntısı kesinleştirilmez.",
+      "status": "passed",
+      "evidence": "STEP/kararlar.md:15–26 e-posta/test ayrımı; :38–50 kredi/gerçek para ve üç OS kabulü; Upwork fiyat/süre/veri ayrıntıları açık bırakıldı."
+    },
+    {
+      "criterion": "Ürün sınırları ve yalnız STEP yazma kapsamı korunur.",
+      "status": "passed",
+      "evidence": "STEP/kararlar.md:55–58 ekosistem sınırlarını korur; skill ve harita diffleri yalnız STEP bağlamını günceller. FIRST/INTO/PATH ürün dosyaları değişmedi."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Bağımsız kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "Kullanıcı mesajı ve üç yanıt kabul kriterleriyle karşılaştırıldı."
+    },
+    {
+      "name": "Test/lint/typecheck/tarayıcı",
+      "status": "not_run",
+      "evidence": "Kullanıcı tercihi ve salt okunur belge review."
+    }
+  ],
+  "risks": [],
+  "followUps": [
+    "Son üç açık ürün kararı sorusuna gelen yanıtları sonraki kabul kaydında işle."
+  ],
+  "completedAt": "2026-09-29T22:32:38.563Z"
+}

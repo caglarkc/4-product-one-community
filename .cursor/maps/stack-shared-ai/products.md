@@ -1,11 +1,11 @@
 # Ürün ve bağlantı haritası
 
-Kaynak: `platform-urun-fikirleri.md` ve dört ürün README'si.
+Kaynak: `platform-urun-fikirleri.md`, dört ürün README'si ve STEP için güncel `STEP/kararlar.md`.
 
 | Ürün | Mevcut kapsam | Açık konular |
 |---|---|---|
 | FIRST | Proje keşfi, ekip/ortak, açık kaynak katkısı | Ayrıntılı özellikler ve GitHub entegrasyon biçimi |
-| STEP | Çok alanlı öğrenci/takım freelance işleri; saatlik/sabit bütçe | AI tahmini, anlaşma/ödeme, takip sıklığı/kontrolü/erişimi/saklaması |
+| STEP | Türkiye'de üniversite öğrencilerine özel Upwork benzeri pazar; kredili başvuru/ilan/öne çıkarma, gerçek para, ön fonlanan sabit iş aşamaları; Windows/macOS/Linux takip saatlikte zorunlu, sabit işte isteğe bağlı | Kredi miktarı/iadesi, öğrenci adresleri, anlaşma/ödeme ayrıntıları, takip verisi/kontrolü/erişimi/saklaması, AI ayrıntıları |
 | INTO | Ücretli/gönüllü proje mentorluğu; ücretli kişisel gelişim; kabul gerektiren öneri | Görüşme, ücretlendirme, eşleştirme ayrıntıları |
 | PATH | Tek probleme yarışan farklı çözümler; son ürün | Format, ölçüm, ödül, veri ve teknik altyapı |
 

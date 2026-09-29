@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-upwork-planning",
+  "itemId": "decision-update",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "İkinci karar yanıtları eklendi: ilk canlı Türkiye; ön fonlanan tek/çok aşama; saatlik takip zorunlu, sabit isteğe bağlı.",
+  "artifacts": [
+    {
+      "type": "documentation",
+      "path": "STEP/kararlar.md",
+      "change": "modified",
+      "description": "İkinci karar yanıtı README, araştırma ve ilgili bağlam kayıtlarıyla birlikte yansıtıldı."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Türkiye ilk canlı kapsamı ve fonlanan aşamalar kullanıcı yanıtına uygun kaydedilir.",
+      "status": "passed",
+      "evidence": "STEP/kararlar.md ürün yönü/doğrulama ve ilan çalışma bölümleri; STEP/README.md ilk canlı coğrafya ve her aşama ön fonlama/onay kabulünü taşır."
+    },
+    {
+      "criterion": "Saatlik zorunlu/sabit isteğe bağlı takip ve halen açık süre/veri ayrıntıları ayrılır.",
+      "status": "passed",
+      "evidence": "STEP/kararlar.md takip bölümünde saatlik zorunlu/sabit tercih kararı kayıtlı; manuel/offline/veri/silme/saklama ayrıntıları açık bırakıldı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "İkinci yanıtlarla değiştirilen STEP metinleri okundu; ilk test ertelemesi korundu."
+    },
+    {
+      "name": "Test/lint/typecheck/tarayıcı",
+      "status": "not_run",
+      "evidence": "Yalnız ürün planlama belgeleri."
+    }
+  ],
+  "risks": [],
+  "followUps": [
+    "İkinci yanıtlar için bağımsız review."
+  ],
+  "completedAt": "2026-09-29T22:35:00.580Z"
+}

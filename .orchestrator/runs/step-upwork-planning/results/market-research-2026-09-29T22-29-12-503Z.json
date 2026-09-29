@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-upwork-planning",
+  "itemId": "market-research",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/step_inventory",
+    "sessionRef": "/root/step_inventory"
+  },
+  "outcome": "pass",
+  "summary": "İlan/teklif, Connects ve agency modeli resmî kaynaklarla incelendi; STEP ilan açma kredisi özgün karardır.",
+  "artifacts": [
+    {
+      "type": "research",
+      "path": null,
+      "change": "reported",
+      "description": "Resmî kaynak araştırması; STEP fiyat veya ayrıntı kararı yapılmadı."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "İlan, teklif ve Connects araştırması resmî URL kanıtlarıyla sunulur.",
+      "status": "passed",
+      "evidence": "Upwork ilan, teklif ve Connects kılavuzları başvuru/ilan akışını destekler; URL listesi extensions.sources içinde."
+    },
+    {
+      "criterion": "STEP ilan açma kredisi Upwork davranışından ayrılır; fiyatlar STEP kararı yapılmaz.",
+      "status": "passed",
+      "evidence": "Standart Upwork ilanı ücretsiz; STEP ilan açma ve öne çıkarma krediyle. Upwork fiyatları ve ücret oranları STEP kararına aktarılmadı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Resmî kaynak araştırması",
+      "status": "passed",
+      "evidence": "Upwork Help Center kaynakları web üzerinden okundu."
+    },
+    {
+      "name": "Test/lint/typecheck/tarayıcı",
+      "status": "not_run",
+      "evidence": "Planlama araştırması; kullanıcı kontrol tercihi."
+    }
+  ],
+  "risks": [
+    "Upwork referans davranışı STEP için otomatik kabul değildir."
+  ],
+  "followUps": [
+    "Kredi ekonomisi, iş ödeme modeli ve tracker ayrıntılarını kullanıcıyla netleştir."
+  ],
+  "completedAt": "2026-09-29T22:29:12.503Z",
+  "extensions": {
+    "sources": [
+      "https://support.upwork.com/hc/en-us/articles/211063408-How-to-post-a-job",
+      "https://support.upwork.com/hc/en-us/articles/211062898-Understanding-and-using-Connects",
+      "https://support.upwork.com/hc/en-us/articles/115010165067-Featured-Jobs-attract-top-talent",
+      "https://support.upwork.com/hc/en-us/articles/211063618-How-to-send-an-offer-from-a-job-post",
+      "https://support.upwork.com/hc/en-us/articles/211062608-How-agencies-work-for-freelancers"
+    ],
+    "findings": [
+      "İlan başlık/açıklamaya ek bütçe, beceri ve çalışma türü bilgisi taşır.",
+      "Teklif ücret/süre/başvuru metniyle gelir; işverenin sözleşme teklifi karşı taraf kabul edince anlaşma olur.",
+      "Connects başvuru ve görünürlük için; iade koşulları ayrı.",
+      "Agency ortak Connects ve finans hesabı kullanır; STEP takım yetkileri ve para paylaşımı açık."
+    ]
+  }
+}

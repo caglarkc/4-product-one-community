@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-upwork-planning",
+  "itemId": "decision-update-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/step_decision_review",
+    "sessionRef": "/root/step_decision_review"
+  },
+  "outcome": "pass",
+  "summary": "P1/P2 bulgu yok; ikinci yanıtların Türkiye, aşama fonlama ve takip kullanım kararları doğru taşındı.",
+  "artifacts": [
+    {
+      "type": "review",
+      "path": null,
+      "change": "reported",
+      "description": "İkinci karar yanıtlarına göre bağımsız belge incelemesi."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Türkiye, fonlanan aşamalar ve takip kullanım kararı doğru yansıtılır.",
+      "status": "passed",
+      "evidence": "STEP/README.md:13,27,49 ve STEP/kararlar.md:11,18,35,52–53 Türkiye, ön fonlanan tek/çok aşama ve saatlik zorunlu/sabit tercih takibini doğru kaydeder."
+    },
+    {
+      "criterion": "Kredi fiyatı, onay/itiraz süresi veya veri politikası gibi ek ayrıntı onaylanmış sayılmaz.",
+      "status": "passed",
+      "evidence": "STEP/kararlar.md:41–44,51–54,68 kredi periyodu/miktarı, ödeme/itiraz süreleri ve veri politikalarını açık tutar; Upwork karşılaştırması referans ayrımını korur."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Bağımsız kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "Güncel belgeler ikinci kullanıcı yanıtlarıyla karşılaştırıldı."
+    },
+    {
+      "name": "Test/lint/typecheck/tarayıcı",
+      "status": "not_run",
+      "evidence": "Kullanıcı kontrol tercihi."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-29T22:37:21.316Z"
+}

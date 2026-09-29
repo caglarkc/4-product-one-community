@@ -1,14 +1,30 @@
 # STEP — Student Talent Entry Platform
 
-Freelance pazarı.
+Üniversite öğrencilerine özel, Upwork benzeri freelance pazarı.
 
-Durum: Genel fikir kaydedildi. Özellikle AI asistanı ve çalışma takibinin kapsamı ve sınırları daha sonra netleştirilecek.
+Durum: 30 Eylül 2026 görüşmesinde ürün yönü, doğrulama aşamaları, kredi modeli, gerçek para ile iş ödemesi ve üç işletim sisteminde çalışma takibi hedefi belirlendi. Tam iş akışı ve ayrıntılı kurallar henüz tamamlanmadı; STEP uygulaması geliştirilmedi. Kabul edilen kararlar [kararlar.md](kararlar.md), resmî kaynak araştırması ve açık başlıklar [upwork-karsilastirmasi.md](upwork-karsilastirmasi.md) içindedir.
 
 ## Amaç ve kapsam
 
 Bir işi yaptırmak isteyen kişilerin ve kurumların, özellikle teknik bilgisi olmayıp işi yapacak birini arayanların, öğrenciler veya öğrenci takımlarıyla ücretli çalışma için buluşması.
 
 Yazılım ve veri işleriyle sınırlı değildir. Tasarım, video düzenleme, çeviri, içerik üretimi ve diğer hizmet alanları da kapsamda olacaktır. Bireysel öğrenciler ve takımlar iş alabilir.
+
+İlk canlı sürüm Türkiye üniversiteleri ve Türkiye'deki işverenlerle başlayacaktır.
+
+## Ürün yönü ve doğrulama aşamaları
+
+- İş alan taraf üniversite öğrencisi olacaktır. Öğrenci doğrulama yöntemi yalnız üniversite e-posta adresine gönderilen doğrulama e-postasıdır; ek öğrenci belgesi veya doğrulama sağlayıcısı seçilmedi.
+- İş oluşturacak taraf için telefon ve T.C. kimlik doğrulaması gibi ek kontroller hedeflenir; kesin kapsam ve yöntem sonraki karardır.
+- İlk ürün test aşamasında yalnız e-posta temelli kayıt/giriş kullanılır. Öğrenci ve işveren ek doğrulamaları ürün hazırlandıktan sonra devreye alınacaktır. Bu bir uygulama veya test çalıştırma kaydı değildir.
+- Üniversite adresine erişim, aktif öğrenciliğin kesin kanıtı değildir. Kabul edilecek öğrenci alan adları, mezuniyet ve yeniden doğrulama kuralları açıktır.
+
+## İlan ve kredi modeli
+
+- İş ilanının başlığı ve açıklaması olur; başvuru ve çalışma akışları Upwork benzeri planlanır.
+- Başvuru, ilan açma ve öne çıkarma kredi harcar. Diğer ücretli platform işlemlerinin tam listesi ve kredi maliyetleri henüz belirlenmedi.
+- Kredi ediniminde başlangıç veya aylık ücretsiz dağıtımın yanında satın alma olacaktır; miktarlar ve periyot açık karardır.
+- İş bedeli platform üzerinden gerçek parayla ödenir; kredi yalnız platform işlemleri içindir. Sabit iş tek veya çok aşamalı olabilir; her aşama önceden fonlanır ve teslim onayıyla ödenir. Komisyon, ödeme sağlayıcısı, onay/itiraz süreleri ve tahsilat/çekim ayrıntıları henüz seçilmedi.
 
 ## Ücret modeli
 
@@ -30,6 +46,6 @@ Konuşulan farklılaşma yönü: Öğrencinin toplulukta üreterek kendini göst
 
 ## Platform üzerinden anlaşma ve çalışma takibi
 
-Sözleşme/anlaşma ve buna bağlı çalışma sürecinin platform üzerinden takip edilmesi düşünülüyor. Çalışma takibinde belirli aralıklarla ekran görüntüsü alma gibi özellikler de genel fikre dahil.
+Hem saatlik hem iş bazlı/sabit ücretli çalışma ve Upwork Desktop App benzeri çalışma takibi ürün yönüne dahildir. Takip istemcisi Windows, macOS ve Linux'u birlikte hedefler. Takip saatlik işte zorunlu, sabit işte tarafların tercihine bağlıdır. Sözleşme, teslimat ve ödeme ayrıntıları ayrıca netleştirilecektir.
 
-Takibin hangi iş modellerinde kullanılacağı, ekran görüntüsü sıklığı, kullanıcı kontrolü, erişim ve saklama koşulları gibi ayrıntılar henüz kararlaştırılmadı. Bu kayıt kesin teknik uygulama veya sözleşme tasarımı değildir.
+Ekran görüntüsü ve çalışma günlüğü ayrıntıları, takipte tutulacak etkinlik bilgisi, sıklık, kullanıcı kontrolü, erişim ve saklama koşulları henüz kararlaştırılmadı. Upwork'ün belirli süre ve veri kuralları otomatik STEP kararı değildir.

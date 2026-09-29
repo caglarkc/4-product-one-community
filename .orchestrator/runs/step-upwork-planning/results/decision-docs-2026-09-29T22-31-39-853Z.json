@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-upwork-planning",
+  "itemId": "decision-docs",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "STEP kullanıcı kararları ve resmî Upwork karşılaştırması yazıldı; ülke, kredi miktarı/iadesi, ödeme ve takip veri politikası açık bırakıldı.",
+  "artifacts": [
+    {
+      "type": "documentation",
+      "path": "STEP/README.md",
+      "change": "modified",
+      "description": "Kullanıcıca kabul edilen STEP yönünü ve açık ayrıntıları kaydeder."
+    },
+    {
+      "type": "documentation",
+      "path": "STEP/kararlar.md",
+      "change": "created",
+      "description": "Kullanıcıca kabul edilen STEP yönünü ve açık ayrıntıları kaydeder."
+    },
+    {
+      "type": "documentation",
+      "path": "STEP/upwork-karsilastirmasi.md",
+      "change": "created",
+      "description": "Kullanıcıca kabul edilen STEP yönünü ve açık ayrıntıları kaydeder."
+    },
+    {
+      "type": "documentation",
+      "path": ".agent/skills/cross/product-boundaries/SKILL.md",
+      "change": "modified",
+      "description": "Kullanıcıca kabul edilen STEP yönünü ve açık ayrıntıları kaydeder."
+    },
+    {
+      "type": "documentation",
+      "path": ".cursor/maps/stack-shared-ai/overview.md",
+      "change": "modified",
+      "description": "Kullanıcıca kabul edilen STEP yönünü ve açık ayrıntıları kaydeder."
+    },
+    {
+      "type": "documentation",
+      "path": ".cursor/maps/stack-shared-ai/products.md",
+      "change": "modified",
+      "description": "Kullanıcıca kabul edilen STEP yönünü ve açık ayrıntıları kaydeder."
+    },
+    {
+      "type": "documentation",
+      "path": ".cursor/maps/stack-shared-ai/technology.md",
+      "change": "modified",
+      "description": "Kullanıcıca kabul edilen STEP yönünü ve açık ayrıntıları kaydeder."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Öğrenci doğrulama ve e-posta test aşaması ayrı yazılır.",
+      "status": "passed",
+      "evidence": "STEP/kararlar.md öğrenci yöntemini yalnız üniversite e-postası, ilk ürün testini e-posta girişi ve sonraki ek doğrulama aşaması olarak ayırır."
+    },
+    {
+      "criterion": "Krediyle ilan/başvuru/öne çıkarma, saatlik/sabit ve tracker yönü kaydedilir.",
+      "status": "passed",
+      "evidence": "STEP/kararlar.md krediyle başvuru/ilan/öne çıkarma; ücretsiz başlangıç veya aylık hak + satın alma; gerçek para iş bedeli ve Windows/macOS/Linux takip yönünü son kullanıcı yanıtlarıyla eşleştirir."
+    },
+    {
+      "criterion": "Referans Upwork davranışları ile STEP kararları ve açık sorular ayrılır.",
+      "status": "passed",
+      "evidence": "STEP/upwork-karsilastirmasi.md tablo ve kaynak linkleriyle Upwork davranışlarını, STEP kabulünü ve açık başlıkları ayrı gösterir."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "STEP yeni belgeleri ve yalnız STEP bağlamını güncelleyen skill/harita diffi okundu."
+    },
+    {
+      "name": "Test/lint/typecheck/tarayıcı",
+      "status": "not_run",
+      "evidence": "Kullanıcı kontrol tercihi; yalnız planlama belgesi değişikliği."
+    }
+  ],
+  "risks": [
+    "Tam ürün iş akışı tamamlanmadı.",
+    "Üniversite e-posta erişimi aktif öğrenciliği doğrudan sorgulamaz."
+  ],
+  "followUps": [
+    "Bağımsız belge incelemesi; kalan ürün kararlarının kullanıcıya sorulması."
+  ],
+  "completedAt": "2026-09-29T22:31:39.853Z"
+}

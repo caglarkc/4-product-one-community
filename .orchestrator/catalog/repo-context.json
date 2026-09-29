@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-09-29T22:14:02.734Z",
+  "generatedAt": "2026-09-29T22:36:26.041Z",
   "repository": {
     "root": ".",
     "name": "4-product-one-community",
-    "commit": "57873a9272d87bab6c834d098fe267fba8e2046e",
+    "commit": "aa55c51631f34adf45b220759f93998de8004030",
     "layers": {
       "FIRST": true,
       "STEP": true,
@@ -19,7 +19,7 @@
       "path": ".agent/skills/cross/product-boundaries/SKILL.md",
       "root": ".agent/skills",
       "disableModelInvocation": false,
-      "fingerprint": "3bf977dbad1c7a6dfec8a06fe2b811da313b97c022ea6de407f6f3574c895551"
+      "fingerprint": "133fda80a7148bfc536fe5bdd2afce3a32e21924d5347bdaefd95db1666ccd0c"
     },
     {
       "name": "shared-integration",
@@ -83,23 +83,23 @@
     "semantic": [
       {
         "path": ".cursor/maps/stack-shared-ai/overview.md",
-        "fingerprint": "6881f052eb7677b4daf73d7d4405d6c2632bf7c2e4b6faffdcdfaac6e07d6a86"
+        "fingerprint": "3ee59935262409275c74c7fb635d1483e700a55be118da6ac30925ef44bc8068"
       },
       {
         "path": ".cursor/maps/stack-shared-ai/products.md",
-        "fingerprint": "478300af8f91f762653105ad8194bb40b15463b3f9c2c87851f47db6ee68e89f"
+        "fingerprint": "c340e9f51b00aac232867c36deb4d3a6235e58c19df01111f3c092a1b86d5641"
       },
       {
         "path": ".cursor/maps/stack-shared-ai/technology.md",
-        "fingerprint": "c2ae34588d96198617de12edf63af3697bf2ef5d34b1b292495082b68639e632"
+        "fingerprint": "f9169e132a03822637f44ee94ea3305bc4f60f138a147f022eb89e14839d757d"
       }
     ],
     "dependency": null
   },
   "mapHealth": {
-    "stale": true,
-    "sourceFingerprint": "acc321888f757f2eb290a8dc7e27c409e31d229f7c8ae286ddecf662249e1f8e",
-    "mapSourceFingerprint": "0f3d1497f3e68a352363092c983b93e656895813689d2b408c33614389c22b97",
+    "stale": false,
+    "sourceFingerprint": "6b76ad99ae6ac25e5f3ba2b5f5e7122627934cf983c0b14dd951093a3ee0619c",
+    "mapSourceFingerprint": "6b76ad99ae6ac25e5f3ba2b5f5e7122627934cf983c0b14dd951093a3ee0619c",
     "dependencyMapGeneratedAt": null,
     "note": "Tazelik, checkout mtime yerine deterministik kaynak ağacı fingerprint’i ile ölçülür."
   },
@@ -138,5 +138,5 @@
       }
     }
   ],
-  "snapshot": "9a421631c45527e2f996e5fef5be77230b04e0b7db61aa5eb74aad6f03d28d31"
+  "snapshot": "6c6a41b3cd4fdc0ace7c1b15f579056bf7817769fe9c97745d4b8bde62ed55eb"
 }
