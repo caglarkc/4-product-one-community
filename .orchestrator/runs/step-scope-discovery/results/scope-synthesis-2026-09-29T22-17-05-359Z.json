@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-scope-discovery",
+  "itemId": "scope-synthesis",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "STEP mevcut kapsamı ve dört ürün içindeki yeri kaynaklardan birleştirildi. Tam ürün kapsamı henüz çıkarılmış veya onaylanmış sayılmıyor; sonraki görüşmenin karar alanları öneri olarak kaydedildi.",
+  "artifacts": [
+    {
+      "type": "analysis",
+      "path": null,
+      "change": "reported",
+      "description": "Kullanıcı anlatımının mevcut kapsam ve sonraki planlama başlıkları extensions alanında kayıtlıdır."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kesin kapsam, genel fikir ve açık karar ayrı gösterilir.",
+      "status": "passed",
+      "evidence": "STEP/README.md:9–17 çekirdek kapsam; :21–35 topluluk/mentor, AI ve anlaşma/takip fikirleri. İki bağımsız keşif sonucu ile karşılaştırıldı."
+    },
+    {
+      "criterion": "STEP ekosistem içindeki yeri FIRST, INTO ve PATH sınırlarıyla açıklanır.",
+      "status": "passed",
+      "evidence": "FIRST/kararlar.md:10–17; STEP/README.md:21–25; INTO/README.md:13–27; PATH/README.md:9–20; FIRST/teknik-kararlar.md:10–11,23 ürün görevleri ve sınırlarını destekler."
+    },
+    {
+      "criterion": "Sonraki planlama başlıkları öneri olarak listelenir; bu tur karar alınmaz.",
+      "status": "passed",
+      "evidence": "extensions.planningTopics başlıkları öneri olarak tutuldu; hiçbir ürün kuralı, ilk sürüm seçimi, ödeme/takip veya mimari kararı alınmadı."
+    },
+    {
+      "criterion": "FIRST ve diğer ürün kaynakları değişmeden yalnız inceleme kayıtları teslim edilir.",
+      "status": "passed",
+      "evidence": "Değişiklik kapsamı yalnız bu run kayıtları ve discover ile güncellenen katalog. STEP/INTO/PATH README ve FIRST kaynaklarına yazılmadı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak tutarlılığı",
+      "status": "passed",
+      "evidence": "STEP README ile özgün STEP fikir bölümü aynı kapsamı taşıyor; ürünler arası bağlar ilgili gerçek belgelerden kontrol edildi."
+    },
+    {
+      "name": "Orchestration kayıt doğrulaması",
+      "status": "passed",
+      "evidence": "Keşif sonuçları CLI record tarafından kabul edildi; run planı validate ile geçerli bulundu."
+    },
+    {
+      "name": "Test/lint/typecheck/tarayıcı",
+      "status": "not_run",
+      "evidence": "Kontrol tercihi gereği çalıştırılmadı; bu sonuç çalışan ürün davranışı kanıtı değildir."
+    }
+  ],
+  "risks": [
+    "Tam kapsam çıkarılmadan geliştirme başlarsa iş yaşam döngüsü, ödeme/teslim ve takım yetkileri uygulama varsayımına dönüşebilir.",
+    "FIRST kaynakları başka AI tarafından geliştiriliyor; gerçek entegrasyon tasarımı ileride güncel kaynak/sözleşmelerle yeniden değerlendirilmeli."
+  ],
+  "followUps": [
+    "Bir sonraki görüşmede önce katılım/roller ve iş ilanından anlaşmaya kadar akışı netleştir; sonraki başlıkları bağımlılık sırasıyla ele al."
+  ],
+  "completedAt": "2026-09-29T22:17:05.359Z",
+  "extensions": {
+    "currentScope": {
+      "purpose": "Öğrenci ve öğrenci takımları için ücretli hizmet işi pazarı.",
+      "participants": [
+        "Kişi/kurum işveren",
+        "Bireysel öğrenci",
+        "Öğrenci takımı"
+      ],
+      "services": [
+        "Yazılım",
+        "Veri",
+        "Tasarım",
+        "Video düzenleme",
+        "Çeviri",
+        "İçerik üretimi",
+        "Diğer hizmetler"
+      ],
+      "pricing": "Profil saatlik ücreti; saatlik veya sabit bütçeli ilan; nihai koşullar tarafların anlaşmasıyla."
+    },
+    "ideas": [
+      "Topluluk üretim/ekip geçmişiyle beceri kanıtı",
+      "AI ile ihtiyacı ilana çevirme ve tahmini planlama",
+      "Platform üzerinden anlaşma ve çalışma takibi",
+      "Ayrıntıları açık ekran görüntüsü takibi",
+      "Gerektiğinde mentor kapsam/teslimat incelemesi"
+    ],
+    "ecosystem": {
+      "FIRST": "Topluluk üretimi, ekip, katkı ve beceri geçmişi; ücretli hizmet işi STEP alanıdır.",
+      "STEP": "Müşteri ihtiyacının ücretli hizmet işi olarak öğrenci veya takımca üstlenilmesi.",
+      "INTO": "Mentorluk; STEP için destek bağlantısı öneri, kabul ve işleyişi açık.",
+      "PATH": "Aynı problem için yarışan çözümler; format/değerlendirme/ödül/altyapı açık.",
+      "shared": "Ayrı siteler ve ileride ortak hesap yönü kabul edilmiş; uygulanmış veri paylaşımı veya ortak backend/SSO kararı değil."
+    },
+    "planningTopics": [
+      {
+        "order": 1,
+        "topic": "Katılım ve roller",
+        "open": [
+          "Öğrenci uygunluğu ve doğrulaması",
+          "Öğrenci olmayanların konumu",
+          "İşveren hesabı/kurum",
+          "Takım temsili",
+          "FIRST geçmişinin katılıma etkisi"
+        ]
+      },
+      {
+        "order": 2,
+        "topic": "İlan, keşif ve anlaşma",
+        "open": [
+          "İlan içeriği ve yayın",
+          "Başvuru/teklif/eşleştirme",
+          "İletişim",
+          "Nihai kapsam/ücret/tarih anlaşması",
+          "AI desteğinin sınırı"
+        ]
+      },
+      {
+        "order": 3,
+        "topic": "İşi yürütme ve kapatma",
+        "open": [
+          "Saatlik/sabit iş süreçleri",
+          "Takip seçimi",
+          "Teslim/revizyon/kabul",
+          "Ödeme",
+          "İptal/uyuşmazlık"
+        ]
+      },
+      {
+        "order": 4,
+        "topic": "Güven, gelir ve ekosistem",
+        "open": [
+          "Portföy/itibar",
+          "Takım yetkisi ve ücret paylaşımı",
+          "Moderasyon",
+          "Platform gelir modeli",
+          "INTO desteği ve FIRST veri referansları"
+        ]
+      },
+      {
+        "order": 5,
+        "topic": "Geliştirme kapsamı",
+        "open": [
+          "Tam ürün kapsamının kabulü",
+          "İlk sürüm ve sonraki aşamalar",
+          "Paylaşılacak kimlik/veri sınırları",
+          "Akışlara göre teknik sözleşme ve geliştirme işleri"
+        ]
+      }
+    ],
+    "delivery": {
+      "yapilanIs": "Mevcut STEP kapsamı ve ilgili ekosistem bağları incelendi.",
+      "degisenDosyalar": "Yalnız .orchestrator/runs/step-scope-discovery kayıtları ve discover katalog snapshotı.",
+      "aktifDavranislar": "Uygulama değişikliği yok; kayıtlı fikirler çalışan özellik olarak sunulmadı.",
+      "beklenenEklemeler": "Kullanıcıyla tam ürün kapsamını netleştirmek için sıralı karar başlıkları.",
+      "manuelKontrol": "Gerçek kaynak belgeleri ve kayıtlar okundu; test/lint/typecheck/tarayıcı çalıştırılmadı."
+    }
+  }
+}

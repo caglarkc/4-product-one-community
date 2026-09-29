@@ -1,0 +1,274 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-scope-discovery",
+  "title": "STEP mevcut kapsam ve ekosistem incelemesi",
+  "goal": "STEP mevcut kararlarını, fikirlerini, FIRST/INTO/PATH bağlantılarını ve sonraki planlama karar başlıklarını kaynaklardan belirlemek; ürün gereksinimi veya uygulama kararı eklememek.",
+  "createdAt": "2026-09-29T22:14:03.348Z",
+  "updatedAt": "2026-09-29T22:17:05.938Z",
+  "revision": 8,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "optionalPaths": [
+      "STEP/README.md",
+      "FIRST/README.md",
+      "FIRST/kararlar.md",
+      "FIRST/teknik-kararlar.md",
+      "INTO/README.md",
+      "PATH/README.md",
+      ".agent/skills/cross/product-boundaries/SKILL.md"
+    ],
+    "catalogSnapshot": ".orchestrator/catalog/repo-context.json",
+    "assumptions": [
+      "Katalog haritaları stale işaretlidir; ürün bilgisi gerçek kaynak belgelerinden doğrulanır.",
+      "FIRST başka AI tarafından geliştiriliyor; FIRST dosyalarına ve mevcut kullanıcı değişikliklerine dokunulmaz."
+    ],
+    "extensions": {
+      "catalogFingerprint": "9a421631c45527e2f996e5fef5be77230b04e0b7db61aa5eb74aad6f03d28d31",
+      "sourceOfTruth": "Ürün README ve karar belgeleri; stale haritalar yalnız başlangıç bağlamıdır."
+    }
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz.",
+    "Bu tur yalnız mevcut kapsam incelemesidir; yeni özellik, ödeme, takip, teknoloji veya ürün şartı onaylanmaz.",
+    "Test, lint, typecheck veya tarayıcı/computer use çalıştırılmaz; alt agentlar salt okunur.",
+    "Yalnız STEP merkezli ilişkiler incelenir; INTO ve PATH tam planlaması sonraki aşamadadır."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "step-planning-focus",
+      "summary": "Aktif planlama odağı ikinci ürün STEP; FIRST yalnız bağlantı bağlamıdır.",
+      "reason": "Kullanıcının bu turdaki kapsam ve anlatım talebi.",
+      "decidedAt": "2026-09-29T22:14:34.140Z",
+      "actor": "manager",
+      "extensions": {
+        "provenance": "user-confirmed"
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "step-inventory",
+      "title": "STEP mevcut kapsam envanteri",
+      "kind": "discovery",
+      "domains": [
+        "product-planning"
+      ],
+      "objective": "STEP kesin kapsamını, genel fikirlerini ve açık kararlarını ayırmak.",
+      "responsibility": "Yalnız kaynakları oku; karar ekleme, dosya yazma veya komutla doğrulama yapma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/README.md"
+        },
+        {
+          "type": "path",
+          "value": "platform-urun-fikirleri.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/step-scope-discovery/results/step-inventory-2026-09-29T22-16-23-737Z.json"
+      ],
+      "acceptanceCriteria": [
+        "Mevcut amaç, aktörler, hizmet alanları ve ücret modeli kaynakla gösterilir.",
+        "AI asistanı, anlaşma ve çalışma takibi fikirlerinin karar sınırları belirtilir.",
+        "Belgede olmayan akışlar mevcut gereksinim gibi sunulmaz."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Salt okunur ürün belgesi keşfi; üretim veya kullanıcı verisi değişikliği yok."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/step-inventory-2026-09-29T22-16-23-737Z.json"
+    },
+    {
+      "id": "product-links",
+      "title": "STEP ürünler arası konumu",
+      "kind": "discovery",
+      "domains": [
+        "product-planning"
+      ],
+      "objective": "STEP ile FIRST, INTO ve PATH ilişkisini ve sınırlarını doğrulamak.",
+      "responsibility": "Ürün bağlarını oku; FIRST geliştirmesine müdahale etme veya ortak teknik sözleşme tasarlama.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/README.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/README.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/kararlar.md"
+        },
+        {
+          "type": "path",
+          "value": "FIRST/teknik-kararlar.md"
+        },
+        {
+          "type": "path",
+          "value": "INTO/README.md"
+        },
+        {
+          "type": "path",
+          "value": "PATH/README.md"
+        },
+        {
+          "type": "path",
+          "value": ".agent/skills/cross/product-boundaries/SKILL.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/step-scope-discovery/results/product-links-2026-09-29T22-16-23-742Z.json"
+      ],
+      "acceptanceCriteria": [
+        "FIRST–STEP ücretli iş sınırı ve topluluk geçmişi bağı kaynağa dayanır.",
+        "INTO mentor desteği önerisi ile PATH yarışma sınırı karıştırılmaz.",
+        "Ayrı siteler ve ileride ortak hesap kararı teknik paylaşım varsayımından ayrılır."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Salt okunur ürün belgesi keşfi; üretim veya kullanıcı verisi değişikliği yok."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/product-links-2026-09-29T22-16-23-742Z.json"
+    },
+    {
+      "id": "scope-synthesis",
+      "title": "Kaynakların birleşimi ve kullanıcı anlatımı",
+      "kind": "integration",
+      "domains": [
+        "product-planning"
+      ],
+      "objective": "Kullanıcıya mevcut STEP kapsamını ve sonraki netleştirme başlıklarını tutarlı biçimde anlatmak.",
+      "responsibility": "İki keşif sonucunu belgelerle karşılaştır; yalnız inceleme kayıtlarını yaz; ürün belgelerini veya uygulamayı değiştirme.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/README.md"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-scope-discovery/results/step-inventory-2026-09-29T22-16-23-737Z.json"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-scope-discovery/results/product-links-2026-09-29T22-16-23-742Z.json"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/step-scope-discovery/results/scope-synthesis-2026-09-29T22-17-05-359Z.json"
+      ],
+      "acceptanceCriteria": [
+        "Kesin kapsam, genel fikir ve açık karar ayrı gösterilir.",
+        "STEP ekosistem içindeki yeri FIRST, INTO ve PATH sınırlarıyla açıklanır.",
+        "Sonraki planlama başlıkları öneri olarak listelenir; bu tur karar alınmaz.",
+        "FIRST ve diğer ürün kaynakları değişmeden yalnız inceleme kayıtları teslim edilir."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "step-inventory",
+          "product-links"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "step-inventory",
+          "product-links"
+        ]
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Salt okunur ürün belgesi keşfi; üretim veya kullanıcı verisi değişikliği yok."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          ".orchestrator/runs/step-scope-discovery"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/scope-synthesis-2026-09-29T22-17-05-359Z.json"
+    }
+  ]
+}

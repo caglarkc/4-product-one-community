@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-scope-discovery",
+  "itemId": "step-inventory",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/step_inventory",
+    "sessionRef": "/root/step_inventory"
+  },
+  "outcome": "pass",
+  "summary": "STEP çekirdek amaç ve ücret modeli kayıtlı; AI, anlaşma ve takip genel fikir, tam iş akışı henüz tanımlı değil.",
+  "artifacts": [
+    {
+      "type": "analysis",
+      "path": null,
+      "change": "reported",
+      "description": "Salt okunur belge keşfi; bulgular extensions.findings içinde kayıtlıdır."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Mevcut amaç, aktörler, hizmet alanları ve ücret modeli kaynakla gösterilir.",
+      "status": "passed",
+      "evidence": "STEP/README.md:9–17 ve platform-urun-fikirleri.md:64–72 amaç, aktörler, hizmet alanları ve ücret modelinde uyumlu."
+    },
+    {
+      "criterion": "AI asistanı, anlaşma ve çalışma takibi fikirlerinin karar sınırları belirtilir.",
+      "status": "passed",
+      "evidence": "STEP/README.md:5,29,33–35 AI tahminlerini ve takip ayrıntılarını açık karar olarak tanımlar."
+    },
+    {
+      "criterion": "Belgede olmayan akışlar mevcut gereksinim gibi sunulmaz.",
+      "status": "passed",
+      "evidence": "Başvuru/teklif, ödeme, teslim, iptal, itibar ve takım temsili belgelerde tanımlı değildir; bunlar açık planlama başlığı olarak listelendi."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak belge incelemesi",
+      "status": "passed",
+      "evidence": "STEP ve yalnız ilgili ekosistem belgeleri gerçek dosyalardan okundu; öneriler mevcut karar sayılmadı."
+    },
+    {
+      "name": "Test/lint/typecheck/tarayıcı",
+      "status": "not_run",
+      "evidence": "Kullanıcının kontrol tercihi; bu tur ürün kapsamı belge incelemesidir."
+    }
+  ],
+  "risks": [
+    "STEP klasöründe yalnız README bulunuyor; tam ürün şartnamesi, kabul ölçütleri veya uygulama kodu yok."
+  ],
+  "followUps": [
+    "Katılım/öğrenci uygunluğu, iş akışı, takım temsili, platform gelir modeli, ödeme/teslim/iptal, iletişim/güven ve ilk sürüm sınırı sonraki planlama alanlarıdır."
+  ],
+  "completedAt": "2026-09-29T22:16:23.737Z",
+  "extensions": {
+    "findings": [
+      {
+        "status": "recorded-scope",
+        "topic": "Amaç ve aktörler",
+        "detail": "Kişi/kurum işverenleri özellikle teknik bilgisi olmayanlar dahil öğrenci ve öğrenci takımlarıyla ücretli iş için buluşur.",
+        "source": "STEP/README.md:9"
+      },
+      {
+        "status": "recorded-scope",
+        "topic": "Hizmetler",
+        "detail": "Yazılım, veri, tasarım, video düzenleme, çeviri, içerik ve diğer hizmet alanları; bireysel veya takım çalışma.",
+        "source": "STEP/README.md:11"
+      },
+      {
+        "status": "recorded-scope",
+        "topic": "Ücret modeli",
+        "detail": "Öğrenci saatlik ücretini belirtir; işveren saatlik veya sabit bütçeli iş açar; nihai ücret ve koşullar taraflarca belirlenir.",
+        "source": "STEP/README.md:15–17"
+      },
+      {
+        "status": "idea",
+        "topic": "AI ilan asistanı",
+        "detail": "İhtiyacı ilan kapsamına çevirme, süre/saat/bütçe planlama desteği; yöntem ve sınırlar açık, tahminler garanti değildir.",
+        "source": "STEP/README.md:29"
+      },
+      {
+        "status": "idea",
+        "topic": "Anlaşma ve takip",
+        "detail": "Platformda anlaşma ve süreci izleme; ekran görüntüsü genel fikri. İş modeline uygulanması, sıklık, kontrol, erişim ve saklama açık.",
+        "source": "STEP/README.md:33–35"
+      }
+    ]
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-scope-discovery",
+  "itemId": "product-links",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/product_links",
+    "sessionRef": "/root/product_links"
+  },
+  "outcome": "pass",
+  "summary": "STEP ücretli hizmet işi alanıdır; FIRST topluluk, INTO mentorluk, PATH yarışma. Ayrı siteler ve gelecekte ortak hesap kararı teknik paylaşım kararından ayrıdır.",
+  "artifacts": [
+    {
+      "type": "analysis",
+      "path": null,
+      "change": "reported",
+      "description": "Salt okunur belge keşfi; bulgular extensions.findings içinde kayıtlıdır."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "FIRST–STEP ücretli iş sınırı ve topluluk geçmişi bağı kaynağa dayanır.",
+      "status": "passed",
+      "evidence": "FIRST/README.md:32–34, FIRST/kararlar.md:12–17, STEP/README.md:21–24 ücretli iş sınırı ve katkı/takım geçmişi bağını açıklar."
+    },
+    {
+      "criterion": "INTO mentor desteği önerisi ile PATH yarışma sınırı karıştırılmaz.",
+      "status": "passed",
+      "evidence": "STEP/README.md:25 mentor incelemesini yalnız öneri sayar; INTO/README.md:13–27 mentor kabulünü ve ücretli/gönüllü kapsamı, PATH/README.md:11 tek anlaşma ile yarışma ayrımını kaydeder."
+    },
+    {
+      "criterion": "Ayrı siteler ve ileride ortak hesap kararı teknik paylaşım varsayımından ayrılır.",
+      "status": "passed",
+      "evidence": "FIRST/teknik-kararlar.md:10–11 ayrı siteler ve gelecekte ortak hesap kararını; :23 ortak DB/backend/SSO tasarımının ayrı konu olduğunu kaydeder."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak belge incelemesi",
+      "status": "passed",
+      "evidence": "STEP ve yalnız ilgili ekosistem belgeleri gerçek dosyalardan okundu; öneriler mevcut karar sayılmadı."
+    },
+    {
+      "name": "Test/lint/typecheck/tarayıcı",
+      "status": "not_run",
+      "evidence": "Kullanıcının kontrol tercihi; bu tur ürün kapsamı belge incelemesidir."
+    }
+  ],
+  "risks": [
+    "FIRST profil/katkı istatistikleri ayrıntıları ertelenmiş; STEP mevcut olmayan katkı kanıtına bağımlı tasarlanmamalı.",
+    "Ürünler zorunlu sıralı yolculuk olarak tanımlanmamış; STEP katılım şartları ayrıca ele alınmalı."
+  ],
+  "followUps": [
+    "STEP üyelik/katılım şartlarını ve ürünler arasında gösterilecek profil, takım ve proje referanslarının kapsamını sonraki karar görüşmesinde ele al."
+  ],
+  "completedAt": "2026-09-29T22:16:23.742Z",
+  "extensions": {
+    "findings": [
+      {
+        "status": "recorded-boundary",
+        "topic": "FIRST–STEP",
+        "detail": "Birlikte üretim/ekip/katkı FIRST; belirli ücretli hizmet işi STEP. Açık veya kapalı repo bu sınırı değiştirmez.",
+        "source": "FIRST/kararlar.md:10–17; FIRST/README.md:34"
+      },
+      {
+        "status": "idea",
+        "topic": "FIRST geçmişi",
+        "detail": "Öğrencinin topluluk üretimi beceri kanıtı olabilir; birlikte çalışan ekip ücretli iş alabilir. STEP aktarımı ve ortak takım/veri paylaşımı tanımlı değildir.",
+        "source": "STEP/README.md:21–24"
+      },
+      {
+        "status": "idea",
+        "topic": "STEP–INTO",
+        "detail": "Kapsam/teslimat için mentor desteği düşünülebilir; zorunlu kontrol veya ödeme onayı kararı yok. Mentorluk kendi başına INTO kapsamındadır.",
+        "source": "STEP/README.md:25; INTO/README.md:13–27"
+      },
+      {
+        "status": "recorded-boundary",
+        "topic": "STEP–PATH",
+        "detail": "STEP bir kişi/takımla iş anlaşması; PATH aynı problem için yarışan çözümler. PATH format/ödül/değerlendirme açık.",
+        "source": "PATH/README.md:9–20"
+      },
+      {
+        "status": "recorded-direction",
+        "topic": "Ortak ekosistem",
+        "detail": "Ayrı siteler ve ileride ortak hesap kabul edilmiş; ortak backend/DB/SSO veya uygulanmış ürünler arası veri erişimi varsayılamaz.",
+        "source": "FIRST/teknik-kararlar.md:10–11,23"
+      }
+    ]
+  }
+}
