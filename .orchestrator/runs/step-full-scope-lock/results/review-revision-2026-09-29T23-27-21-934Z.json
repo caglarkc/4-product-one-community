@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-scope-lock",
+  "itemId": "review-revision",
+  "agent": {
+    "platform": "codex",
+    "identity": "step_inventory",
+    "sessionRef": "/root/step_inventory"
+  },
+  "outcome": "pass",
+  "summary": "Önceki P2 giderildi; 52 karar/dört istisna korundu, P1/P2 yok.",
+  "artifacts": [
+    {
+      "type": "review",
+      "path": null,
+      "change": "reported",
+      "description": "Önceki P2 giderildi; 52 karar/dört istisna korundu, P1/P2 yok."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "52 karar ve dört istisna belgelerle eşleşir; P1/P2 sorun yok.",
+      "status": "passed",
+      "evidence": "Önceki tam 52 karar incelemesi ve yeni üç cümle: README:38, karşılaştırma:14, plan:64; matris39 (:47) ve kararlar:87 ile eşleşiyor. 24/45/47/49 istisnaları korunuyor."
+    },
+    {
+      "criterion": "Süre/ücret/görünürlük/entegrasyon sınırında kullanıcıca onaylanmamış karar yok.",
+      "status": "passed",
+      "evidence": "Ödeme alıcısı ek onay aktörü olmadı; yeni sayı, süre, ücret, yetki veya entegrasyon kararı eklenmedi."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Bağımsız kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "Native alt agent yalnız kaynakları okudu; dosya değiştirmedi."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Planlama görevi; kullanıcı kontrol tercihi."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-29T23:27:21.934526+00:00"
+}

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-scope-lock",
+  "itemId": "scope-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "step-inventory-reviewer",
+    "sessionRef": "/root/step_inventory"
+  },
+  "outcome": "revise",
+  "summary": "52 karar ve istisnalar karşılanıyor; README/karşılaştırma/planın ödeme alıcısı onayı ifadesi P2 belirsizlik içeriyor.",
+  "artifacts": [
+    {
+      "type": "review",
+      "path": null,
+      "change": "reported",
+      "description": "Bağımsız kaynak/diff incelemesi."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "52 karar ve dört istisna belgelerle eşleşir; P1/P2 sorun yok.",
+      "status": "failed",
+      "evidence": "Karar matrisi ve kapsam M01–M12 incelendi; README:38, karşılaştırma:14 ve plan:64 ödeme alıcısını ek onay aktörü gibi okutabiliyor."
+    },
+    {
+      "criterion": "Süre/ücret/görünürlük/entegrasyon sınırında kullanıcıca onaylanmamış karar yok.",
+      "status": "passed",
+      "evidence": "Canonical39 ve kararlar:87 kimliğin onaylanmasını seçiyor; diğer sayı, kapsam, görüntü, kredi, test/canlı sınırları tutarlı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak ve diff incelemesi",
+      "status": "failed",
+      "evidence": "52 karar ve istisnalar karşılanıyor; README/karşılaştırma/planın ödeme alıcısı onayı ifadesi P2 belirsizlik içeriyor."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Yalnız kaynak incelemesi; runtime doğrulanmadı."
+    }
+  ],
+  "risks": [
+    "P2: Ek ödeme alıcısı onay aktörü varsayılmamalı."
+  ],
+  "followUps": [
+    "Ödeme alıcısı ifadelerini kaynak39 ile aynı anlamda düzelt."
+  ],
+  "completedAt": "2026-09-29T23:23:08.441079+00:00",
+  "extensions": {
+    "recordRepair": "İlk record çağrısı read-only artifact path writeScopes dışında olduğu için reddedildi; artifact path null ve reported biçiminde düzeltildi. Belge inceleme sonucu değişmedi."
+  }
+}

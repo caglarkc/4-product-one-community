@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-scope-lock",
+  "itemId": "decision-docs",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Kararlar/README/referans ve P0–P9 planı tamamlandı; yalnız STEP bağlamı ortak skill/haritalara işlendi.",
+  "artifacts": [
+    {
+      "type": "document",
+      "path": "STEP/kararlar.md",
+      "change": "modified",
+      "description": "Toplu kabulün karar, kapsam, özet veya geliştirme haritası entegrasyonu."
+    },
+    {
+      "type": "document",
+      "path": "STEP/README.md",
+      "change": "modified",
+      "description": "Toplu kabulün karar, kapsam, özet veya geliştirme haritası entegrasyonu."
+    },
+    {
+      "type": "document",
+      "path": "STEP/upwork-karsilastirmasi.md",
+      "change": "modified",
+      "description": "Toplu kabulün karar, kapsam, özet veya geliştirme haritası entegrasyonu."
+    },
+    {
+      "type": "document",
+      "path": "STEP/gelistirme-plani.md",
+      "change": "created",
+      "description": "Toplu kabulün karar, kapsam, özet veya geliştirme haritası entegrasyonu."
+    },
+    {
+      "type": "document",
+      "path": ".agent/skills/cross/product-boundaries/SKILL.md",
+      "change": "modified",
+      "description": "Toplu kabulün karar, kapsam, özet veya geliştirme haritası entegrasyonu."
+    },
+    {
+      "type": "document",
+      "path": ".cursor/maps/stack-shared-ai/overview.md",
+      "change": "modified",
+      "description": "Toplu kabulün karar, kapsam, özet veya geliştirme haritası entegrasyonu."
+    },
+    {
+      "type": "document",
+      "path": ".cursor/maps/stack-shared-ai/products.md",
+      "change": "modified",
+      "description": "Toplu kabulün karar, kapsam, özet veya geliştirme haritası entegrasyonu."
+    },
+    {
+      "type": "document",
+      "path": ".cursor/maps/stack-shared-ai/technology.md",
+      "change": "modified",
+      "description": "Toplu kabulün karar, kapsam, özet veya geliştirme haritası entegrasyonu."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "52 kabul edilmiş yanıta ait eski açık karar ifadeleri temizlenir.",
+      "status": "passed",
+      "evidence": "STEP/kararlar.md yeniden düzenlendi; README ve karşılaştırma 52 kabul edilmiş yanıtı yansıtıyor. Önceki açık iş ifadeleri yalnız tutar/sağlayıcı/teknik parametrelerde kalıyor."
+    },
+    {
+      "criterion": "Geliştirme paketleri bağımlılık, dosya sahipliği ve kabul kriterleriyle açıklanır.",
+      "status": "passed",
+      "evidence": "STEP/gelistirme-plani.md P0–P9 bağımlılık/sorumluluk/çıktı tablosu, paket bazlı kabul kriterleri ve tek writer dosya sahipliği şartlarını içeriyor."
+    },
+    {
+      "criterion": "Önerilerde sonraya bırakılan parametre ve teknik keşif yalnız açık iş olarak kalır.",
+      "status": "passed",
+      "evidence": "Kararlar son bölüm, kapsam açık uygulama işleri ve geliştirme P0 seçilmemiş rakam/sağlayıcı/stack/yayın-moderasyon parametrelerini ayrı tutuyor; 24/45/47/49 istisnaları korunuyor."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak ve diff incelemesi",
+      "status": "passed",
+      "evidence": "Root üretilen belgeleri ve değişiklik kapsamını okudu; bağımsız review/verify sonraki düğümlerdedir."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Ürün planlama görevi; kullanıcı kontrol tercihi."
+    }
+  ],
+  "risks": [
+    "Uygulama ve canlı entegrasyon yok; P0 teknik keşif ve ertelenen ayarlar sonraki geliştirme işidir."
+  ],
+  "followUps": [
+    "Bağımsız kapsam incelemesi ve kaynak doğrulaması."
+  ],
+  "completedAt": "2026-09-29T23:21:21.516298+00:00"
+}

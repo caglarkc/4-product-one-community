@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-scope-lock",
+  "itemId": "scope-doc",
+  "agent": {
+    "platform": "codex",
+    "identity": "product-links-writer",
+    "sessionRef": "/root/product_links"
+  },
+  "outcome": "pass",
+  "summary": "Tam kapsam 12 modül ve numaralı kabul kriterleriyle yazıldı; root canonical karşılaştırmasını okudu.",
+  "artifacts": [
+    {
+      "type": "document",
+      "path": "STEP/urun-kapsami.md",
+      "change": "created",
+      "description": "Modül, aktör, ekran, akış ve kabul kriterleri."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "İlk sürüm tüm kabul edilmiş çekirdek modülleri ve üç OS istemcisini kapsar.",
+      "status": "passed",
+      "evidence": "STEP/urun-kapsami.md: ilk canlı aşama tablosu ve M01–M12 tüm modülleri; AK-10.1 üç OS."
+    },
+    {
+      "criterion": "Ekran görüntüsü gizlilik talebi ve ödeme/kredi/takım yetkileri uygulanabilir kabul kriterleriyle açıklanır.",
+      "status": "passed",
+      "evidence": "AK-05 takım, AK-06 kredi, AK-07 ödeme ve AK-10.5/6/7 tüm görüntü kanallarında bekletme kabul kriterleri."
+    },
+    {
+      "criterion": "Test/canlı/sonraki sürüm ayrımı ve ürün erişim sınırları korunur.",
+      "status": "passed",
+      "evidence": "Aktör/erişim tablosu, test/canlı/sonraki aşama tablosu, FIRST/INTO/PATH sınırları ve 10 değişmez."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak kapsam karşılaştırması",
+      "status": "passed",
+      "evidence": "Writer ve root 52 karar matrisiyle belgeyi okudu; bağımsız review/verify sonraki düğümlerdedir."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Yalnız spesifikasyon; kullanıcı kontrol tercihi."
+    }
+  ],
+  "risks": [
+    "Parametre ve teknik keşif işleri belgede ayrıldı; uygulama henüz yok."
+  ],
+  "followUps": [
+    "Karar/README/geliştirme planı entegrasyonu ve bağımsız inceleme."
+  ],
+  "completedAt": "2026-09-29T23:17:30.616594+00:00"
+}

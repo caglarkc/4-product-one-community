@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-scope-lock",
+  "itemId": "scope-verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "step-decision-verifier",
+    "sessionRef": "/root/step_decision_review"
+  },
+  "outcome": "pass",
+  "summary": "Modül/paket/kabul kriteri kapsamı tam; kaynak tutarlılığı doğrulandı.",
+  "artifacts": [
+    {
+      "type": "review",
+      "path": null,
+      "change": "reported",
+      "description": "Bağımsız kaynak/diff incelemesi."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Her çekirdek modülün geliştirme paketi ve kabul kriteri bulunur.",
+      "status": "passed",
+      "evidence": "Kapsam M01–M12 ve izlenebilirlik tablosu; plan P0–P9 bağımlılık ve kabul kriterleri tüm çekirdeği karşılıyor."
+    },
+    {
+      "criterion": "Karar matrisi/README/kararlar/kapsam/plan/referans birbiriyle tutarlıdır.",
+      "status": "passed",
+      "evidence": "Matrix/README/kararlar/kapsam/plan/referans ve ortak skill/maps test-canlı, 24/45/47/49 ve 5/10/90 değerleriyle tutarlı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak ve diff incelemesi",
+      "status": "passed",
+      "evidence": "Modül/paket/kabul kriteri kapsamı tam; kaynak tutarlılığı doğrulandı."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Yalnız kaynak incelemesi; runtime doğrulanmadı."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-29T23:23:08.442718+00:00",
+  "extensions": {
+    "recordRepair": "İlk record çağrısı read-only artifact path writeScopes dışında olduğu için reddedildi; artifact path null ve reported biçiminde düzeltildi. Belge inceleme sonucu değişmedi."
+  }
+}

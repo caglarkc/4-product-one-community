@@ -1,0 +1,655 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-scope-lock",
+  "title": "STEP toplu karar kilidi ve tam ürün kapsamı",
+  "goal": "Kullanıcının 52 öneriye toplu onayını dört istisnasıyla kaydetmek; STEP ilk sürüm kapsamını, ürün sınırlarını ve bağımlı geliştirme paketlerini bağımsız belge incelemesiyle teslim etmek.",
+  "createdAt": "2026-09-29T23:10:22.979Z",
+  "updatedAt": "2026-09-29T23:28:28.566Z",
+  "revision": 25,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md"
+    ],
+    "optionalPaths": [
+      "STEP/soru-karar-eslestirmesi.md",
+      "STEP/kararlar.md",
+      "STEP/README.md",
+      "STEP/upwork-karsilastirmasi.md",
+      "FIRST/README.md",
+      "INTO/README.md",
+      ".agent/skills/cross/product-boundaries/SKILL.md",
+      ".agent/skills/cross/shared-integration/SKILL.md",
+      ".cursor/maps/stack-shared-ai/products.md",
+      ".cursor/maps/stack-shared-ai/technology.md"
+    ],
+    "catalogSnapshot": ".orchestrator/runs/step-full-scope-lock/context-catalog.json",
+    "assumptions": [
+      "Haritalar stale; gerçek ürün belgeleri doğrulandı. FIRST başka AI tarafından aktif geliştiriliyor ve kaynakları değiştirilmez.",
+      "52 öneri kullanıcı tarafından topluca kabul edildi; 24, 45, 47, 49 istisnaları önceliklidir.",
+      "Bu görev ürün spesifikasyonu ve geliştirme planıdır; uygulama, sağlayıcı hesabı veya canlı entegrasyon yapılmaz."
+    ],
+    "extensions": {
+      "snapshot": "1a156bb7204bd484092e4cc6a2e84f235a4dd4d922e2a16960b2e3bcbfc15063",
+      "mapHealthStale": true
+    }
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz.",
+    "Test/lint/typecheck/tarayıcı/computer use yapılmaz; yalnız belge ve diff incelemesi.",
+    "STEP belgelerini tek writer sırayla yazar; FIRST ve diğer AI run dosyaları korunur.",
+    "Tutarlar, sağlayıcı, framework ve sayısal olarak sonraya bırakılmış parametreler uydurulmaz.",
+    "Ortak catalog ve map-manifest diğer AI çalışması için korunur; run kendi context-catalog snapshotını kullanır."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "bulk-acceptance-with-overrides",
+      "summary": "52 sorunun önerilen yanıtları topluca kabul edildi; tüm krediler süresiz, doğrudan görüntü silme yerine yayın öncesi moderasyon talebi, FIRST portföy bağlantısı ilk sürüm, AI desteği sonraki sürüm.",
+      "reason": "Kullanıcının son mesajı toplu kabulü açıkça netleştirdi.",
+      "decidedAt": "2026-09-29T23:10:22.979Z",
+      "actor": "manager",
+      "extensions": {
+        "provenance": "user-confirmed"
+      }
+    },
+    {
+      "id": "p2-payee-wording-repair",
+      "summary": "Ödeme alıcısı ifadesi ek onay aktörü yaratmayacak şekilde netleştirilecek.",
+      "reason": "Bağımsız scope-review tek P2 bulgu verdi; başarısız inceleme kaydı korunarak revision graph eklendi.",
+      "decidedAt": "2026-09-29T23:23:33.101Z",
+      "actor": "manager"
+    }
+  ],
+  "items": [
+    {
+      "id": "decision-lock",
+      "title": "52 yanıtı kaynak karar matrisi olarak kilitle",
+      "kind": "specification",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "52 yanıtı kaynak karar matrisi olarak kilitle",
+      "responsibility": "Kullanıcının 52 kararını dört istisnasıyla koru; uygulama/test/FIRST değişikliği yapma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/soru-karar-eslestirmesi.md"
+        }
+      ],
+      "outputs": [
+        "STEP/soru-karar-eslestirmesi.md"
+      ],
+      "acceptanceCriteria": [
+        "52 numaranın tamamı ve dört istisna mevcut.",
+        "Önceki %10/ön fonlama/lider/üç OS kararları korunur."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Ödeme, takip ve ürünler arası bağlar için spesifikasyon; canlı işlem ve uygulama yok."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/soru-karar-eslestirmesi.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/decision-lock-2026-09-29T23-12-27-041Z.json"
+    },
+    {
+      "id": "scope-doc",
+      "title": "Tam ürün modülleri ve akış kabul kriterlerini yaz",
+      "kind": "specification",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "Tam ürün modülleri ve akış kabul kriterlerini yaz",
+      "responsibility": "Kullanıcının 52 kararını dört istisnasıyla koru; uygulama/test/FIRST değişikliği yapma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/soru-karar-eslestirmesi.md"
+        }
+      ],
+      "outputs": [
+        "STEP/urun-kapsami.md"
+      ],
+      "acceptanceCriteria": [
+        "İlk sürüm tüm kabul edilmiş çekirdek modülleri ve üç OS istemcisini kapsar.",
+        "Ekran görüntüsü gizlilik talebi ve ödeme/kredi/takım yetkileri uygulanabilir kabul kriterleriyle açıklanır.",
+        "Test/canlı/sonraki sürüm ayrımı ve ürün erişim sınırları korunur."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "decision-lock"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Ödeme, takip ve ürünler arası bağlar için spesifikasyon; canlı işlem ve uygulama yok."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/urun-kapsami.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/product_links"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/scope-doc-2026-09-29T23-17-30-616Z.json"
+    },
+    {
+      "id": "decision-docs",
+      "title": "Kararları, özetleri ve geliştirme planını bütünleştir",
+      "kind": "documentation",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "Kararları, özetleri ve geliştirme planını bütünleştir",
+      "responsibility": "Kullanıcının 52 kararını dört istisnasıyla koru; uygulama/test/FIRST değişikliği yapma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/soru-karar-eslestirmesi.md"
+        }
+      ],
+      "outputs": [
+        "STEP/kararlar.md",
+        "STEP/README.md",
+        "STEP/upwork-karsilastirmasi.md",
+        "STEP/gelistirme-plani.md",
+        ".agent/skills/cross/product-boundaries/SKILL.md",
+        ".cursor/maps/stack-shared-ai/overview.md",
+        ".cursor/maps/stack-shared-ai/products.md",
+        ".cursor/maps/stack-shared-ai/technology.md"
+      ],
+      "acceptanceCriteria": [
+        "52 kabul edilmiş yanıta ait eski açık karar ifadeleri temizlenir.",
+        "Geliştirme paketleri bağımlılık, dosya sahipliği ve kabul kriterleriyle açıklanır.",
+        "Önerilerde sonraya bırakılan parametre ve teknik keşif yalnız açık iş olarak kalır."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "scope-doc"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Ödeme, takip ve ürünler arası bağlar için spesifikasyon; canlı işlem ve uygulama yok."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/kararlar.md",
+          "STEP/README.md",
+          "STEP/upwork-karsilastirmasi.md",
+          "STEP/gelistirme-plani.md",
+          ".agent/skills/cross/product-boundaries/SKILL.md",
+          ".cursor/maps/stack-shared-ai/overview.md",
+          ".cursor/maps/stack-shared-ai/products.md",
+          ".cursor/maps/stack-shared-ai/technology.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/decision-docs-2026-09-29T23-21-21-516Z.json"
+    },
+    {
+      "id": "scope-review",
+      "title": "Karar ve kapsam için bağımsız inceleme",
+      "kind": "review",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "Karar ve kapsam için bağımsız inceleme",
+      "responsibility": "Kullanıcının 52 kararını dört istisnasıyla koru; uygulama/test/FIRST değişikliği yapma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/soru-karar-eslestirmesi.md"
+        }
+      ],
+      "outputs": [
+        "Read-only inceleme sonucu"
+      ],
+      "acceptanceCriteria": [
+        "52 karar ve dört istisna belgelerle eşleşir; P1/P2 sorun yok.",
+        "Süre/ücret/görünürlük/entegrasyon sınırında kullanıcıca onaylanmamış karar yok."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "decision-docs"
+        ],
+        "reviews": [
+          "decision-docs",
+          "scope-doc"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Ödeme, takip ve ürünler arası bağlar için spesifikasyon; canlı işlem ve uygulama yok."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/step_inventory"
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/scope-review-2026-09-29T23-23-08-441Z.json"
+    },
+    {
+      "id": "scope-verify",
+      "title": "Karar kapsamı ve geliştirme sırası kaynak doğrulaması",
+      "kind": "verify",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "Karar kapsamı ve geliştirme sırası kaynak doğrulaması",
+      "responsibility": "Kullanıcının 52 kararını dört istisnasıyla koru; uygulama/test/FIRST değişikliği yapma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/soru-karar-eslestirmesi.md"
+        }
+      ],
+      "outputs": [
+        "Read-only doğrulama sonucu"
+      ],
+      "acceptanceCriteria": [
+        "Her çekirdek modülün geliştirme paketi ve kabul kriteri bulunur.",
+        "Karar matrisi/README/kararlar/kapsam/plan/referans birbiriyle tutarlıdır."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "decision-docs"
+        ],
+        "reviews": [],
+        "verifies": [
+          "decision-docs",
+          "scope-doc"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Ödeme, takip ve ürünler arası bağlar için spesifikasyon; canlı işlem ve uygulama yok."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/step_decision_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/scope-verify-2026-09-29T23-23-08-442Z.json"
+    },
+    {
+      "id": "planning-integration",
+      "title": "İncelenmiş tam planı ve Git teslimini kaydet",
+      "kind": "integration",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "İncelenmiş tam planı ve Git teslimini kaydet",
+      "responsibility": "Kullanıcının 52 kararını dört istisnasıyla koru; uygulama/test/FIRST değişikliği yapma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/soru-karar-eslestirmesi.md"
+        }
+      ],
+      "outputs": [
+        ".orchestrator/runs/step-full-scope-lock"
+      ],
+      "acceptanceCriteria": [
+        "İnceleme/doğrulama sonuçları ve tüm kabul kanıtları kaydedilir.",
+        "Yalnız görev dosyaları anlamlı commit/push ile mevcut main dalına teslim edilir ve remote hash doğrulanır."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "review-revision",
+          "verify-revision"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "decision-lock",
+          "scope-doc",
+          "decision-docs",
+          "scope-review",
+          "scope-verify",
+          "decision-revision",
+          "review-revision",
+          "verify-revision"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Ödeme, takip ve ürünler arası bağlar için spesifikasyon; canlı işlem ve uygulama yok."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          ".orchestrator/runs/step-full-scope-lock"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/planning-integration-2026-09-29T23-28-28-356Z.json"
+    },
+    {
+      "id": "decision-revision",
+      "title": "P2 ödeme alıcısı ifade düzeltmesi",
+      "kind": "revision",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "P2 ödeme alıcısı ifade düzeltmesi",
+      "responsibility": "Yalnız ödeme alıcısı kimliğinin açıkça onaylanmasını netleştir; ek onay aktörü/ürün kuralı ekleme.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/soru-karar-eslestirmesi.md"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-full-scope-lock/results/scope-review-2026-09-29T23-23-08-441Z.json"
+        }
+      ],
+      "outputs": [
+        "STEP/README.md",
+        "STEP/upwork-karsilastirmasi.md",
+        "STEP/gelistirme-plani.md"
+      ],
+      "acceptanceCriteria": [
+        "Lider değişimi işveren/yönetim onayı gerektirir; ödeme alıcısının kimliği ayrıca açıkça onaylanır.",
+        "52 karar, dört istisna ve geliştirme kapsamı değişmez."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "scope-verify",
+          "decision-docs"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "decision-docs"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Ödeme, takip ve ürünler arası bağlar için spesifikasyon; canlı işlem ve uygulama yok."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/README.md",
+          "STEP/upwork-karsilastirmasi.md",
+          "STEP/gelistirme-plani.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/decision-revision-2026-09-29T23-26-55-084Z.json"
+    },
+    {
+      "id": "review-revision",
+      "title": "P2 düzeltmesinin bağımsız incelemesi",
+      "kind": "review",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "P2 düzeltmesinin bağımsız incelemesi",
+      "responsibility": "Yalnız ödeme alıcısı kimliğinin açıkça onaylanmasını netleştir; ek onay aktörü/ürün kuralı ekleme.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/soru-karar-eslestirmesi.md"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-full-scope-lock/results/scope-review-2026-09-29T23-23-08-441Z.json"
+        }
+      ],
+      "outputs": [
+        "Read-only inceleme sonucu"
+      ],
+      "acceptanceCriteria": [
+        "52 karar ve dört istisna belgelerle eşleşir; P1/P2 sorun yok.",
+        "Süre/ücret/görünürlük/entegrasyon sınırında kullanıcıca onaylanmamış karar yok."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "decision-revision",
+          "scope-review"
+        ],
+        "reviews": [
+          "decision-revision"
+        ],
+        "verifies": [],
+        "revises": [
+          "scope-review"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Ödeme, takip ve ürünler arası bağlar için spesifikasyon; canlı işlem ve uygulama yok."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/step_inventory"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/review-revision-2026-09-29T23-27-21-934Z.json"
+    },
+    {
+      "id": "verify-revision",
+      "title": "P2 düzeltmesinin kaynak tutarlılığı doğrulaması",
+      "kind": "verify",
+      "domains": [
+        "step-product-planning"
+      ],
+      "objective": "P2 düzeltmesinin kaynak tutarlılığı doğrulaması",
+      "responsibility": "Yalnız ödeme alıcısı kimliğinin açıkça onaylanmasını netleştir; ek onay aktörü/ürün kuralı ekleme.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/soru-karar-eslestirmesi.md"
+        },
+        {
+          "type": "path",
+          "value": ".orchestrator/runs/step-full-scope-lock/results/scope-review-2026-09-29T23-23-08-441Z.json"
+        }
+      ],
+      "outputs": [
+        "Read-only doğrulama sonucu"
+      ],
+      "acceptanceCriteria": [
+        "Her çekirdek modülün geliştirme paketi ve kabul kriteri bulunur.",
+        "Karar matrisi/README/kararlar/kapsam/plan/referans birbiriyle tutarlıdır."
+      ],
+      "capabilities": [
+        "product-boundaries",
+        "repo-context"
+      ],
+      "relations": {
+        "dependsOn": [
+          "decision-revision"
+        ],
+        "reviews": [],
+        "verifies": [
+          "decision-revision"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Ödeme, takip ve ürünler arası bağlar için spesifikasyon; canlı işlem ve uygulama yok."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/step_decision_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-revision-2026-09-29T23-27-21-935Z.json"
+    }
+  ],
+  "extensions": {
+    "historyNote": "Başarısız scope-review kaydı değişmeden korunur; review-revision onu revises ilişkisiyle karşılar. deriveRunStatus geçmişte failed bulunduğunda blocked gösterebilir; güncel teslim kabulü integration sonucu ve revision gate kanıtlarıyla belirlenir."
+  }
+}

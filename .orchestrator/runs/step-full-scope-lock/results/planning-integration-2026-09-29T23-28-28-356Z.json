@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-scope-lock",
+  "itemId": "planning-integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "52 yanıt dört istisnayla kilitlendi; 12 modül/16 ekran ve P0–P9 planı bağımsız review/verify sonrası teslim edildi. İlk P2 revision ile kapatıldı.",
+  "artifacts": [
+    {
+      "type": "metadata",
+      "path": ".orchestrator/runs/step-full-scope-lock",
+      "change": "created",
+      "description": "Karar/kapsam, bağımsız inceleme ve revision kanıtları; Git teslim kaydı."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "İnceleme/doğrulama sonuçları ve tüm kabul kanıtları kaydedilir.",
+      "status": "passed",
+      "evidence": "decision-lock/scope-doc/decision-docs/scope-verify ve decision-revision/review-revision/verify-revision sonuçları kayıtlı. İlk scope-review P2 geçmişi korunuyor; bağımsız revision review ve verify PASS, P1/P2 yok."
+    },
+    {
+      "criterion": "Yalnız görev dosyaları anlamlı commit/push ile mevcut main dalına teslim edilir ve remote hash doğrulanır.",
+      "status": "passed",
+      "evidence": "Yalnız 10 STEP planlama ve STEP bağlam haritası/skill dosyası 5ee73266ff1f6e768a0a2c0d7495789bae21104b (docs(step): lock full product scope and development plan) commitine alındı. git push origin main başarılı; git ls-remote origin main aynı SHA verdi. FIRST session-provider değişikliği çalışma ağacında bırakıldı. Run metadata ayrı takip commitine teslim edilir."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Bağımsız kaynak incelemesi",
+      "status": "passed",
+      "evidence": "step_inventory ve step_decision_review PASS; 52 karar/dört istisna, 12 modül/P0–P9 tutarlılığı."
+    },
+    {
+      "name": "Git görev sınırı ve remote hash",
+      "status": "passed",
+      "evidence": "git commit --only açık 10 dosya listesi; origin/main=5ee73266ff1f6e768a0a2c0d7495789bae21104b."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kullanıcının kontrol tercihi; uygulama değil planlama teslimi."
+    }
+  ],
+  "risks": [
+    "Stack/sağlayıcı ve ertelenmiş sayısal/teknik parametreler P0 ve ilgili paketlerde sonuçlandırılır; uygulama/canlı işlem doğrulaması yapılmadı.",
+    "Tarihî failed scope-review korunmuştur ve revises ilişkili bağımsız PASS ile kapanmıştır; CLI genel durumunda tarihî failed blocked gösterilebilir. Güncel kabul integration PASS ve revision kanıtlarıdır."
+  ],
+  "followUps": [
+    "Kabul edilmiş kararları tekrar sormadan P0 teknik keşif ve sözleşmelerle geliştirme hazırlığı."
+  ],
+  "completedAt": "2026-09-29T23:28:28.356695+00:00"
+}

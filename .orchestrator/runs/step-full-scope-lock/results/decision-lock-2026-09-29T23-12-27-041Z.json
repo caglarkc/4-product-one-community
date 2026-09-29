@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-scope-lock",
+  "itemId": "decision-lock",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Kullanıcının son toplu onayı 52 maddede dört istisnasıyla kaydedildi.",
+  "artifacts": [
+    {
+      "type": "document",
+      "path": "STEP/soru-karar-eslestirmesi.md",
+      "change": "created",
+      "description": "52 kabul edilmiş yanıtın kaynak matrisi."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "52 numaranın tamamı ve dört istisna mevcut.",
+      "status": "passed",
+      "evidence": "STEP/soru-karar-eslestirmesi.md: 1–52 satırlı karar tablosu ve 24/45/47/49 istisnaları kaynak olarak okundu."
+    },
+    {
+      "criterion": "Önceki %10/ön fonlama/lider/üç OS kararları korunur.",
+      "status": "passed",
+      "evidence": "Aynı belgenin Önceki kararlarla birlikte uygulanacak kurallar bölümünde %10 komisyon, ön fonlama, lider ve üç OS/test aşaması korunuyor."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak karar eşleştirmesi",
+      "status": "passed",
+      "evidence": "Konuşmadaki 52 öneri ve kullanıcı istisnaları elle belgeyle karşılaştırıldı."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kullanıcı kontrol tercihi; bu görev yalnız spesifikasyon."
+    }
+  ],
+  "risks": [],
+  "followUps": [
+    "Kapsam ve geliştirme planının yazılması."
+  ],
+  "completedAt": "2026-09-29T23:12:27.041139+00:00"
+}

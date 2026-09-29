@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-scope-lock",
+  "itemId": "decision-revision",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Üç belgede lider değişimi onay aktörleri ile ödeme alıcısı kimliğinin teyidi ayrıştırıldı; yeni ürün kuralı eklenmedi.",
+  "artifacts": [
+    {
+      "type": "document",
+      "path": "STEP/README.md",
+      "change": "modified",
+      "description": "İşveren/yönetim onayı ve ödeme alıcısının kimliği açıkça yazıldı."
+    },
+    {
+      "type": "document",
+      "path": "STEP/upwork-karsilastirmasi.md",
+      "change": "modified",
+      "description": "İşveren/yönetim onayı ve ödeme alıcısının kimliği açıkça yazıldı."
+    },
+    {
+      "type": "document",
+      "path": "STEP/gelistirme-plani.md",
+      "change": "modified",
+      "description": "İşveren/yönetim onayı ve ödeme alıcısının kimliği açıkça yazıldı."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Lider değişimi işveren/yönetim onayı gerektirir; ödeme alıcısının kimliği ayrıca açıkça onaylanır.",
+      "status": "passed",
+      "evidence": "README:38, karşılaştırma:14, geliştirme planı:64 ödeme alıcısının kimliğinin açıkça onaylanmasını şart koşuyor; ekstra onay aktörü yok."
+    },
+    {
+      "criterion": "52 karar, dört istisna ve geliştirme kapsamı değişmez.",
+      "status": "passed",
+      "evidence": "Yalnız üç cümle değişti; 39. kararın kanonik anlamı, 52 karar ve 24/45/47/49 istisnaları korunuyor."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "Üç cümle kanonik 39. karar ile karşılaştırıldı."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Planlama görevi ve kullanıcı kontrol tercihi."
+    }
+  ],
+  "risks": [],
+  "followUps": [
+    "Bağımsız revision review ve verify."
+  ],
+  "completedAt": "2026-09-29T23:26:55.084845+00:00"
+}

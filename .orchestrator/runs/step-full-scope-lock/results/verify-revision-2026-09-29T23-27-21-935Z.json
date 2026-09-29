@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-scope-lock",
+  "itemId": "verify-revision",
+  "agent": {
+    "platform": "codex",
+    "identity": "step_decision_review",
+    "sessionRef": "/root/step_decision_review"
+  },
+  "outcome": "pass",
+  "summary": "M01–M12/P0–P9 kapsamı ve belgeler tutarlı; P1/P2 yok.",
+  "artifacts": [
+    {
+      "type": "review",
+      "path": null,
+      "change": "reported",
+      "description": "M01–M12/P0–P9 kapsamı ve belgeler tutarlı; P1/P2 yok."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Her çekirdek modülün geliştirme paketi ve kabul kriteri bulunur.",
+      "status": "passed",
+      "evidence": "Önceki tam incelemedeki M01–M12 → P0–P9 eşleşmesi korunuyor; plan:64 P5 kapsamını değiştirmiyor, kapsam:144 AK-05.5 ve :259 AK-12.4 ile uyumlu."
+    },
+    {
+      "criterion": "Karar matrisi/README/kararlar/kapsam/plan/referans birbiriyle tutarlıdır.",
+      "status": "passed",
+      "evidence": "README:38, karşılaştırma:14, plan:64; matris39 (:47), kararlar:87 ve kapsam:136,144 onay aktörünü işveren/yönetim, onaylanacak bilgiyi ödeme alıcısının kimliği olarak ayırıyor."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Bağımsız kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "Native alt agent yalnız kaynakları okudu; dosya değiştirmedi."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Planlama görevi; kullanıcı kontrol tercihi."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-29T23:27:21.935233+00:00"
+}
