@@ -33,6 +33,7 @@ Bu belge kabul edilen ürün yönünü kaydeder; uygulanmış veya test edilmiş
 - Saatlik ve iş bazlı/sabit ücretli çalışma birlikte kapsamda olacaktır.
 - Öğrenci profilinde saatlik ücretini belirtir. İşveren saatlik veya sabit bütçeli iş açar; nihai ücret ve koşulları taraflar belirler.
 - Sabit iş tek veya çok aşamalı olabilir. Her aşama önceden fonlanır, teslim onayıyla ödeme yapılır.
+- Sabit ücretli işte ilgili aşamanın tesliminden sonra işveren 14 gün boyunca yanıt vermezse, o aşama için önceden fonlanan ödeme otomatik olarak serbest bırakılır. İşverenin itirazı veya revizyon talebi halinde izlenecek süreç ayrıca belirlenecek; bu karar yanıtsız teslim içindir.
 - Başvurunun teklif metni/ücret/süre içeriği, davet, aday seçimi, karşılıklı kabul, aşama değiştirme, revizyon ve kapanış ayrıntıları henüz tamamlanmadı.
 
 ## Kredi ve iş bedeli
@@ -41,15 +42,17 @@ Bu belge kabul edilen ürün yönünü kaydeder; uygulanmış veya test edilmiş
 - Başvuru ve ilan açma için ilk aşamada sabit kredi maliyeti kullanılır. Bu maliyetler daha sonra belirlenecek kurallara göre ayarlanacaktır; sabit tutarlar, iki işlemin aynı/farklı maliyet kullanması ve kural seti henüz seçilmedi.
 - Ücretsiz başlangıç veya aylık dağıtımın yanında kredi satın alma olacaktır. İkisi birden ücretsiz dağıtım, belirli bir miktar, periyot veya abonelik seçilmiş değildir.
 - İş bedeli platformda gerçek parayla ödenir. Kredi, öğrencinin yaptığı işin ücretinin yerine geçmez.
-- Kredi satın alma fiyatı, işlem başına kredi tutarları, ücretsiz haklar, sürenin dolması, iade, devir, birey/takım bakiyesi ve öne çıkarma yöntemi açık karardır. Kullanıcı son yanıtta kredi iadesi hakkında karar vermedi.
+- İlan iptal edilirse veya moderasyon tarafından kaldırılırsa, ilan açma ve o ilana başvurma için tüketilen krediler ilgili bakiyelere iade edilir.
+- Kredi satın alma fiyatı, işlem başına kredi tutarları, ücretsiz haklar, sürenin dolması, devir, birey/takım bakiyesi ve öne çıkarma yöntemi açık karardır. Satın alınmış kredinin nakit iadesi, öne çıkarma kredisi ve iş anlaşması yapılmış ilanlarda iptal/iade ayrıntıları henüz belirlenmedi.
 - İş bedelinden yalnız freelancer tarafında %10 platform komisyonu kesilir; işveren tarafında iş bedeline ek platform komisyonu alınmaz. İlan açma/öne çıkarma gibi kredi işlemleri bu komisyon kararından ayrı kalır.
 - Gerçek para sağlayıcısı, para birimi, fonun tutulması/serbest bırakılması, çekim, iptal/iade ve uyuşmazlık ayrıntıları ayrıca belirlenecek.
 
-## Takım ödemesi
+## Takım yetkileri ve ödeme
 
+- Takım adına başvuru yapma ve sözleşmeyi kabul etme yetkisi yalnız takım liderindedir.
 - Takım işinin kazancı takım liderine ödenir; platform her üyeye ayrı ödeme yapmaz.
 - Ekip içindeki dağıtım oranı ve yöntemi bu görüşmede belirlenmedi.
-- Bu karar takım adına kimin başvurabileceğini veya sözleşmeyi kabul edebileceğini, hangi kredi bakiyesinin kullanılacağını ve lider değişikliğinde ödemenin nasıl ele alınacağını kesinleştirmez.
+- Takım başvurusunda hangi kredi bakiyesinin kullanılacağı, diğer üye yetkileri ve lider değişikliğinde sözleşme/ödemenin nasıl ele alınacağı henüz belirlenmedi.
 
 ## Çalışma takip istemcisi
 
@@ -72,9 +75,9 @@ Bu belge kabul edilen ürün yönünü kaydeder; uygulanmış veya test edilmiş
 
 1. Türkiye üniversite listesi, kabul edilen öğrenci adresleri ve mezuniyet sonrası kullanım.
 2. İlan alanları, teklif/davet, iletişim ve anlaşmanın karşılıklı kabulü.
-3. Sabit başlangıç kredi tutarları, sonraki maliyet kuralları/ücretsiz haklar, öne çıkarma ve kredi iadesi.
-4. Sabit işte aşama/revizyon ayrıntıları, saatlik limitler, onay süreleri ve otomatik ödeme davranışı.
+3. Sabit başlangıç kredi tutarları, sonraki maliyet kuralları/ücretsiz haklar, öne çıkarma ve kalan kredi iadesi ayrıntıları.
+4. Sabit işte aşama/revizyon/itiraz ayrıntıları, saatlik limitler ve saatlik ödeme/inceleme dönemleri.
 5. İş bedelinin fonlanması, ödeme/çekim, iptal/iade ve uyuşmazlık ayrıntıları.
-6. Takım temsili, kredi hesabı, lider ödeme hesabı/lider değişikliği, ekip içi dağıtım ve üye doğrulaması.
+6. Takımın diğer üye yetkileri, kredi hesabı, lider ödeme hesabı/lider değişikliği, ekip içi dağıtım ve üye doğrulaması.
 7. Takip verisi, manuel/offline süre, erişim/silme ve saklama.
 8. Profil/portföy, değerlendirme, moderasyon, bildirim, AI/mentor bağlantısı ve tam ürünün sürümlere bölünmesi.
