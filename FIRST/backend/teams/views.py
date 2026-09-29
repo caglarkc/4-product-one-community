@@ -65,14 +65,17 @@ class ProjectInput(StrictSerializer):
     project_id = serializers.UUIDField()
 
 
-def target_user(username):
+def target_user(username, public=True):
     if not 3 <= len(username) <= 30:
         raise NotFound()
-    return get_object_or_404(User, username_normalized=username_key(username), is_active=True)
+    from moderation.services import public_users
+    users = public_users(User.objects.all()) if public else User.objects.all()
+    return get_object_or_404(users, username_normalized=username_key(username))
 
 
 def available():
-    return Team.objects.filter(is_active=True, owner__is_active=True).select_related('owner')
+    return Team.objects.filter(is_active=True, owner__is_active=True).exclude(
+        owner__moderation_restriction__suspended=True).select_related('owner')
 
 
 def collection_page(queryset, request, parameter, size=12):
@@ -132,8 +135,13 @@ class TeamDetailView(AuthView):
     def get(self, request, team_id):
         public_read_throttle(request)
         team = get_object_or_404(available(), pk=team_id)
-        members = Membership.objects.filter(team=team, user__is_active=True).select_related('user').order_by('created_at', 'pk')
         manager = s.role(team, request.user) in ['owner', 'admin']
+        members = Membership.objects.filter(team=team, user__is_active=True)
+        if not manager:
+            members = members.exclude(user__moderation_restriction__suspended=True)
+        # Existing restricted memberships remain manageable by this team's
+        # managers, while its public member list omits suspended accounts.
+        members = members.select_related('user').order_by('created_at', 'pk')
         requests = team.requests.filter(user__is_active=True, status='pending').select_related('user', 'team')
         if not manager:
             requests = requests.filter(user=request.user) if request.user.is_authenticated else requests.none()
@@ -148,7 +156,15 @@ class TeamDetailView(AuthView):
             invitations = Participation.objects.filter(user=request.user, kind='invitation').exclude(
                 status__in=['declined', 'withdrawn', 'rejected']).values('project_id')
             visibility |= Q(owner=request.user) | (Q(visibility='selected') & (Q(pk__in=viewers) | Q(pk__in=invitations)))
-        projects = Project.objects.filter(team_link__team=team, is_active=True, owner__is_active=True).filter(visibility).select_related('owner').order_by('-created_at', '-pk')
+        projects = Project.objects.filter(team_link__team=team, is_active=True, owner__is_active=True).filter(visibility).exclude(
+            owner__moderation_restriction__suspended=True)
+        # Hiding is a separate moderation state, so neither team membership nor
+        # selected-viewer access can expose an admin-hidden listing. Its owner
+        # retains the same management exception as project detail.
+        hidden = Q(moderation_visibility__hidden=True)
+        if request.user.is_authenticated:
+            hidden &= ~Q(owner=request.user)
+        projects = projects.exclude(hidden).select_related('owner').order_by('-created_at', '-pk')
         projects, project_meta = collection_page(projects, request, 'projects_page')
         return Response({'team': s.team_data(team, request.user), 'members': [
             {'username': m.user.username, 'full_name': m.user.full_name,
@@ -216,7 +232,8 @@ class RequestActionView(ProtectedView):
         throttle(request)
         action = validated(ActionInput, request)['action']
         initial = get_object_or_404(TeamRequest, pk=request_id, team_id=team_id)
-        with s.locked(request, team_id, target_id=initial.user_id) as (actor, team, users, project):
+        with s.locked(request, team_id, target_id=initial.user_id,
+                      allow_restricted_target=action in ['reject', 'withdraw', 'decline']) as (actor, team, users, project):
             row = get_object_or_404(TeamRequest.objects.select_for_update().select_related('team', 'user'), pk=request_id, team=team)
             if row.status != 'pending':
                 raise s.Conflict('Bu talep artık beklemiyor.')
@@ -263,8 +280,8 @@ class MemberView(ProtectedView):
     def delete(self, request, team_id, username):
         throttle(request)
         validated(StrictSerializer, request)
-        target = target_user(username)
-        with s.locked(request, team_id, target_id=target.pk) as (actor, team, users, project):
+        target = target_user(username, public=False)
+        with s.locked(request, team_id, target_id=target.pk, allow_restricted_target=True) as (actor, team, users, project):
             s.require_manager(team, actor)
             member = get_object_or_404(Membership, team=team, user_id=target.pk)
             if target.pk in [actor.pk, team.owner_id] or (member.role == 'admin' and team.owner_id != actor.pk):

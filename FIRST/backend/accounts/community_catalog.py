@@ -1,6 +1,6 @@
 """Shared, server-owned skills/technology vocabulary and search helpers."""
 import unicodedata
-from django.db.models import F, Q, Value
+from django.db.models import F, Q, Value, TextField
 from django.db.models.functions import Lower, Replace
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -57,8 +57,12 @@ def search(queryset, request, fields):
     for index, field in enumerate(fields):
         alias = f'_community_search_{index}'
         # Normalize I before lower() so database locale cannot change its meaning.
-        expression = Lower(Replace(Replace(F(field), Value('İ'), Value('i')), Value('I'), Value('i')))
-        expression = Replace(expression, Value('ı'), Value('i'))
+        # Description is a TextField while titles/names are CharFields. Django
+        # cannot infer a mixed Replace expression's output type on PostgreSQL.
+        expression = Replace(F(field), Value('İ'), Value('i'), output_field=TextField())
+        expression = Replace(expression, Value('I'), Value('i'), output_field=TextField())
+        expression = Lower(expression, output_field=TextField())
+        expression = Replace(expression, Value('ı'), Value('i'), output_field=TextField())
         queryset = queryset.annotate(**{alias: expression})
         condition |= Q(**{alias + '__contains': value})
     return queryset.filter(condition)

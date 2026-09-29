@@ -1,7 +1,9 @@
 """Public community data uses an explicit allow-list, never account serializers."""
 from urllib.parse import urlsplit
 from django.db import transaction
+from django.db.models import Case, When, Value, IntegerField
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -14,17 +16,22 @@ from .proxy import client_ip
 from .serializers import StrictSerializer
 from .views import AuthView, RateLimited
 from projects.taxonomy import CATEGORIES
+from profiles.services import student_status
+from moderation.services import public_users, public_projects, profile_visible
 
 INTEREST_IDS = [item['value'] for item in CATEGORIES]
 
 
 def public_profile(user):
+    student = student_status(user)
     accounts = connected_accounts(user)
     github = next((item for item in accounts if item['provider'] == 'github'), {})
     avatar = github.get('avatar_url') or next((item['avatar_url'] for item in accounts if item['avatar_url']), '')
     return {'username': user.username, 'full_name': user.full_name, 'bio': user.bio,
         'website': user.website, 'skills': user.skills, 'interests': user.interests,
-        'invitations_open': user.invitations_open, 'github_username': github.get('username', ''),
+        'invitations_open': user.invitations_open,
+        'student_verified': student['verified'], 'student_verified_until': student['expires_at'],
+        'github_username': github.get('username', ''),
         'github_url': github.get('profile_url', ''), 'avatar_url': avatar}
 
 
@@ -83,8 +90,16 @@ class CommunityProfileView(ProtectedView):
 class PeopleView(AuthView):
     def get(self, request):
         public_throttle(request)
-        users = User.objects.filter(is_active=True, discoverable=True,
-            socialaccount__provider='github').distinct().order_by('username_normalized', 'pk')
+        users = public_users(User.objects.filter(is_active=True, discoverable=True,
+            socialaccount__provider='github').select_related('profile_extension')).distinct()
+        student = query_value(request, 'student', ['true', 'false'])
+        valid_students = {'profile_extension__student_verified_until__gt': timezone.now()}
+        if student == 'true':
+            users = users.filter(**valid_students)
+        elif student == 'false':
+            users = users.exclude(**valid_students)
+        users = users.annotate(_student_priority=Case(When(**valid_students, then=Value(0)),
+            default=Value(1), output_field=IntegerField())).order_by('_student_priority', 'username_normalized', 'pk')
         users = search(users, request, ['username', 'full_name'])
         for parameter, field, choices in [('skill', 'skills', SKILL_IDS), ('interest', 'interests', INTEREST_IDS)]:
             value = query_value(request, parameter, choices)
@@ -97,9 +112,12 @@ class PeopleView(AuthView):
 class PersonView(AuthView):
     def get(self, request, username):
         public_throttle(request)
-        user = get_object_or_404(User, username_normalized=username_key(username), is_active=True)
+        user = get_object_or_404(User.objects.select_related('profile_extension'), username_normalized=username_key(username), is_active=True)
+        if not profile_visible(user, request.user):
+            from rest_framework.exceptions import NotFound
+            raise NotFound()
         from projects.views import public_project_summary
         from projects.community import discoverable_projects
-        rows, metadata = page_data(discoverable_projects().filter(owner=user), request)
+        rows, metadata = page_data(public_projects(discoverable_projects().filter(owner=user)), request)
         return Response({'profile': public_profile(user),
             'projects': [public_project_summary(project) for project in rows], **metadata})

@@ -106,11 +106,16 @@ class LoginSerializer(StrictSerializer):
 
 
 def user_data(user):
+    from profiles.services import student_status
+    from moderation.services import administrator
+    student = student_status(user)
     complete = bool(user.full_name and user.username and user.birth_date and user.gender)
     return {'id': user.pk, 'email': user.email, 'username': user.username,
             'full_name': user.full_name, 'birth_date': user.birth_date.isoformat() if user.birth_date else None,
             'gender': user.gender, 'phone': user.phone, 'email_verified': user.email_verified,
             'phone_verified': user.phone_verified, 'profile_complete': complete,
+            'student_verified': student['verified'], 'student_verified_until': student['expires_at'],
+            'is_administrator': administrator(user),
             'providers': list(user.socialaccount_set.values_list('provider', flat=True).distinct()),
             'connected_accounts': connected_accounts(user),
             'has_usable_password': user.has_usable_password(), 'capabilities': {'can_apply': False, 'can_create_listing': bool(user.email_verified and user.socialaccount_set.filter(provider='github').exists())}}

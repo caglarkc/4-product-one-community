@@ -20,7 +20,8 @@ class Conflict(APIException):
 
 
 def eligible(user):
-    if not user.is_active or not user.email_verified:
+    from moderation.services import enabled
+    if not enabled(user) or not user.email_verified:
         raise PermissionDenied({'detail': 'Doğrulanmış e-posta gerekli.', 'code': 'email_verification_required'})
 
 
@@ -43,7 +44,7 @@ def require_owner(team, user):
 
 
 @contextmanager
-def locked(request, team_id, target_id=None, project_id=None):
+def locked(request, team_id, target_id=None, project_id=None, allow_restricted_target=False):
     initial = get_object_or_404(Team, pk=team_id, is_active=True)
     initial_project = get_object_or_404(Project, pk=project_id) if project_id else None
     ids = {initial.owner_id, request.user.pk}
@@ -59,9 +60,10 @@ def locked(request, team_id, target_id=None, project_id=None):
         team = get_object_or_404(Team.objects.select_for_update(), pk=team_id, is_active=True)
         if team.owner_id != initial.owner_id or (project and project.owner_id != initial_project.owner_id):
             raise Conflict()
-        if not users.get(team.owner_id) or not users[team.owner_id].is_active:
+        from moderation.services import enabled
+        if not enabled(users.get(team.owner_id)):
             raise NotFound()
-        if target_id is not None and (target_id not in users or not users[target_id].is_active):
+        if target_id is not None and (target_id not in users or (not allow_restricted_target and not enabled(users.get(target_id)))):
             raise NotFound()
         yield actor, team, users, project
 

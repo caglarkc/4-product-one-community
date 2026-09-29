@@ -63,4 +63,7 @@ urlpatterns += [
     path("teams/", include("teams.urls")),
     path("showcase/", include("showcase.urls")),
     path("tasks/", include("tasks.urls")),
+    path("community/extension/", include("profiles.urls")),
+    path("messages/", include("messaging.urls")),
+    path("administration/", include("moderation.urls")),
 ]

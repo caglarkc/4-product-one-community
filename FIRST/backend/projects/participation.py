@@ -35,7 +35,8 @@ def account_for(user, expected_uid=None):
 
 
 def eligible(user):
-    if not user.is_active or not user.email_verified:
+    from moderation.services import enabled
+    if not enabled(user) or not user.email_verified:
         raise PermissionDenied({'detail': 'Doğrulanmış e-posta gerekli.', 'code': 'email_verification_required'})
     return account_for(user)
 
@@ -59,6 +60,9 @@ def locked(request, project_id, other_user_id=None):
 
 
 def visible(project, user):
+    from moderation.services import project_visible
+    if not project_visible(project, user):
+        return False
     if not project.owner.is_active:
         return False
     own = user.is_authenticated and user.pk == project.owner_id
@@ -184,6 +188,7 @@ def execute(request, participation_id):
         if row.operation_state not in ['pending', 'failed'] or not row.decision:
             raise StateConflict()
         try:
+            require_visible(project, actor)
             owner = users[project.owner_id]
             applicant = users[row.user_id]
             eligible(actor)

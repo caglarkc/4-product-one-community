@@ -26,7 +26,8 @@ class RegistryMiddleware(MiddlewareMixin):
     def process_request(self, request):
         try:
             if request.user.is_authenticated:
-                valid = SessionRecord.objects.filter(user=request.user,
+                from moderation.services import enabled
+                valid = enabled(request.user) and SessionRecord.objects.filter(user=request.user,
                     key_hash=digest(request.session.session_key), revoked=False,
                     security_version=request.user.security_version, expires_at__gt=timezone.now()).exists()
                 if not valid:

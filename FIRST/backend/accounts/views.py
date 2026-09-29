@@ -11,7 +11,7 @@ from django.middleware.csrf import get_token
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
-from rest_framework.exceptions import APIException, ValidationError
+from rest_framework.exceptions import APIException, PermissionDenied, ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView, exception_handler
 from . import security
@@ -78,6 +78,9 @@ class MeView(AuthView):
 
 
 def start_session(request, user, remember=False, *, password_authenticated=False):
+    from moderation.services import enabled
+    if not enabled(user):
+        raise PermissionDenied('Hesap erişimi yönetici tarafından kısıtlandı.')
     if request.session.session_key:
         SessionRecord.objects.filter(key_hash=security.digest(request.session.session_key)).update(revoked=True)
     login(request._request, user, backend='django.contrib.auth.backends.ModelBackend')
@@ -109,7 +112,8 @@ def check_password_proof(request, email, password, user=None):
         # all pass an unchecked failure counter. Success clears the reservation.
         security.count('password-account', email)
         user = user or User.objects.filter(email=email).first()
-        valid = bool(user and user.is_active and user.check_password(password))
+        from moderation.services import enabled
+        valid = bool(user and enabled(user) and user.check_password(password))
         if user is None:
             make_password(password)
         if not valid:

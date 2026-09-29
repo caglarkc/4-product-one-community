@@ -44,8 +44,10 @@ def response_action(row, error=None, status=200):
     return Response(data, status=status)
 
 
-def target_user(data):
-    return get_object_or_404(User, username_normalized=username_key(data['username']), is_active=True)
+def target_user(data, public=True):
+    from moderation.services import public_users
+    users = public_users(User.objects.all()) if public else User.objects.all()
+    return get_object_or_404(users, username_normalized=username_key(data['username']))
 
 
 class DashboardView(AuthView):
@@ -149,6 +151,10 @@ class ActionView(AuthView):
             if not own and not applicant:
                 raise NotFound()
             action = data['action']
+            # Withdrawal/decline/rejection remains available for old records,
+            # but hidden content cannot start or refresh provider operations.
+            if action not in ['withdraw', 'decline', 'reject']:
+                logic.require_visible(project, actor)
             if action == 'refresh':
                 if not row.github_status or row.operation_state != 'succeeded':
                     raise logic.StateConflict('Önce bekleyen GitHub işlemini yeniden deneyin.')
@@ -221,11 +227,14 @@ class ViewersView(AuthView):
     def change(self, request, project_id, add):
         member(request)
         throttle(request)
-        target = target_user(validate(UsernameInput, request.data))
+        target = target_user(validate(UsernameInput, request.data), public=add)
         with logic.locked(request, project_id, target.pk) as (actor, project, users):
             if project.owner_id != actor.pk:
                 raise NotFound()
             if add:
+                from moderation.services import profile_visible
+                if not profile_visible(users[target.pk], actor):
+                    raise NotFound()
                 ProjectViewer.objects.get_or_create(project=project, user=target)
             else:
                 ProjectViewer.objects.filter(project=project, user=target).delete()
