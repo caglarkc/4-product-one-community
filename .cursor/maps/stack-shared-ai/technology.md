@@ -14,7 +14,7 @@ PostgreSQL, Redis oturum/güvenlik verisi, django-allauth, SMTP ve doğrudan HTT
 |---|---|
 | Ortak temel | Profil, takım, proje referansları, rol ve kaynak bazlı erişim; ürünler arası sahiplik |
 | FIRST | Repo/proje keşfi, katkı geçmişi; GitHub bağlantısının kapsamı ve kapalı repo izinleri |
-| STEP | Üniversite e-posta doğrulaması ve ileride işveren kontrolleri; kredi işlemleri ve ayrı gerçek para iş bedeli; ilan/teklif/anlaşma, saatlik/sabit iş; Windows/macOS/Linux takip istemcisi için framework/veri politikası açık. İlk ürün testinde yalnız e-posta girişi. Kaynak: `STEP/kararlar.md` |
+| STEP | E-posta/şifre testi, deneme ödeme/test kredileri; canlı hazırlıkta üniversite e-postası ve birey/kurum işveren kontrolleri. Süresiz kredi ile ayrı TL iş bedeli; %10 freelancer komisyonu; aşama/haftalık ön fonlama ve 14/5 günlük inceleme. Windows/macOS/Linux takip veri türleri, 10 dakikalık rastgele görüntü, 90 gün saklama ve yayın öncesi kişisel bilgi moderasyonu kabul edildi. Stack, sağlayıcı, API/veri/rol sözleşmeleri ve kalan sayısal parametreler teknik keşifte. Kaynak: `STEP/kararlar.md`, `STEP/gelistirme-plani.md` |
 | INTO | Mentor uzmanlığı, müsaitlik, kabul/ret, görüşme ve ücretli/gönüllü ayrımı |
 | PATH | Yarışma formatı belirlendikten sonra veri seti, çözüm teslimi, değerlendirme ve olası güvenli kod/model çalıştırma |
 

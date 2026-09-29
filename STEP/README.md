@@ -1,54 +1,50 @@
 # STEP — Student Talent Entry Platform
 
-Üniversite öğrencilerine özel, Upwork benzeri freelance pazarı.
+Üniversite öğrencilerine özel, Upwork benzeri ücretli iş pazarı.
 
-Durum: 30 Eylül 2026 görüşmesinde ürün yönü, doğrulama aşamaları, kredi modeli, gerçek para ile iş ödemesi ve üç işletim sisteminde çalışma takibi hedefi belirlendi. Tam iş akışı ve ayrıntılı kurallar henüz tamamlanmadı; STEP uygulaması geliştirilmedi. Kabul edilen kararlar [kararlar.md](kararlar.md), resmî kaynak araştırması ve açık başlıklar [upwork-karsilastirmasi.md](upwork-karsilastirmasi.md) içindedir.
+Durum: 30 Eylül 2026 görüşmesinde 52 ürün önerisinin tamamı, kullanıcının 24/45/47/49 değişiklikleriyle kesinleştirildi. STEP uygulaması henüz geliştirilmedi; belgeler kabul edilmiş kapsam ve geliştirme planıdır.
 
-## Amaç ve kapsam
+- [Ürün kararları](kararlar.md)
+- [52 sorunun karar eşleştirmesi](soru-karar-eslestirmesi.md)
+- [Tam ürün kapsamı ve kabul kriterleri](urun-kapsami.md)
+- [Geliştirme paketleri ve sırası](gelistirme-plani.md)
+- [Upwork referansı ve değerlendirmesi](upwork-karsilastirmasi.md)
 
-Bir işi yaptırmak isteyen kişilerin ve kurumların, özellikle teknik bilgisi olmayıp işi yapacak birini arayanların, öğrenciler veya öğrenci takımlarıyla ücretli çalışma için buluşması.
+## İlk canlı sürüm
 
-Yazılım ve veri işleriyle sınırlı değildir. Tasarım, video düzenleme, çeviri, içerik üretimi ve diğer hizmet alanları da kapsamda olacaktır. Bireysel öğrenciler ve takımlar iş alabilir.
+Bütün Türkiye üniversitelerinden 18 yaş ve üzeri önlisans/lisans/yüksek lisans/doktora öğrencileri ile Türkiye'deki bireysel/kurumsal işverenleri buluşturur. Yazılım, veri/AI, tasarım, video, çeviri ve içerik başlangıç kategorileridir; öğrenci takımları da iş alabilir.
 
-İlk canlı sürüm Türkiye üniversiteleri ve Türkiye'deki işverenlerle başlayacaktır.
+İlk sürüm mobil uyumlu web, profil/portföy, ilan/başvuru/davet, takım, kredi, sözleşme, ödeme, yazılı mesaj/dosya, değerlendirme, bildirim, yönetim/destek ve Windows/macOS/Linux takip istemcisini kapsar.
 
-## Ürün yönü ve doğrulama aşamaları
+## Hesap ve doğrulama
 
-- İş alan taraf üniversite öğrencisi olacaktır. Öğrenci doğrulama yöntemi yalnız üniversite e-posta adresine gönderilen doğrulama e-postasıdır; ek öğrenci belgesi veya doğrulama sağlayıcısı seçilmedi.
-- İş oluşturacak taraf için telefon ve T.C. kimlik doğrulaması gibi ek kontroller hedeflenir; kesin kapsam ve yöntem sonraki karardır.
-- İlk ürün test aşamasında yalnız e-posta temelli kayıt/giriş kullanılır. Öğrenci ve işveren ek doğrulamaları ürün hazırlandıktan sonra devreye alınacaktır. Bu bir uygulama veya test çalıştırma kaydı değildir.
-- Üniversite adresine erişim, aktif öğrenciliğin kesin kanıtı değildir. Kabul edilecek öğrenci alan adları, mezuniyet ve yeniden doğrulama kuralları açıktır.
+- E-posta/şifre, şifre sıfırlama ve aynı hesapta öğrenci/işveren rolleri.
+- Öğrenci doğrulaması yalnız üniversite e-postasıyla; yönetim öğrenci alan adlarını tanımlar. Yıllık yenileme vardır; mezuniyet/erişim kaybında mevcut işler tamamlanabilir, yeni başvurular kapanır.
+- Canlı ilan yayımlamada birey için telefon/kimlik, kurum için ayrıca kurum/yetkili doğrulaması.
+- İlk ürün testinde e-posta girişi, deneme ödeme ortamı ve yönetimden test kredileri kullanılır. Ek doğrulamalar ürün hazırlandıktan sonraki canlıya hazırlık aşamasındadır.
 
-## İlan ve kredi modeli
+## Pazar, kredi ve gerçek para
 
-- İş ilanının başlığı ve açıklaması olur; başvuru ve çalışma akışları Upwork benzeri planlanır.
-- Başvuru, ilan açma ve öne çıkarma kredi harcar. Başvuru ve ilan açma ilk aşamada sabit kredi maliyeti kullanır; daha sonra belirlenecek kurallara göre ayarlanacaktır. İki işlemin kredi tutarları ve kural seti henüz seçilmedi. İlan iptal edilir veya moderasyonla kaldırılırsa ilan açma ve başvuru kredileri ilgili bakiyelere iade edilir; diğer iade ayrıntıları açık kalır.
-- Kredi ediniminde başlangıç veya aylık ücretsiz dağıtımın yanında satın alma olacaktır; miktarlar ve periyot açık karardır. Ücretsiz ve satın alınan bütün krediler süresizdir; süre sonunda silinmez.
-- İş bedeli platform üzerinden gerçek parayla ödenir; kredi yalnız platform işlemleri içindir. İş bedelinden yalnız freelancer tarafında %10 platform komisyonu kesilir. Sabit iş tek veya çok aşamalı olabilir; her aşama önceden fonlanır ve teslim onayıyla ödenir. İşveren teslimden sonra 14 gün yanıt vermezse ilgili aşamanın ödemesi otomatik serbest bırakılır. Ödeme sağlayıcısı, itiraz/revizyon ve tahsilat/çekim ayrıntıları henüz seçilmedi.
+- İlan başlık/açıklama, kategori, beceri, çalışma türü, bütçe ve beklenen süre içerir. Teklif metni/ücret/süreyle başvuru, davet ve bir ilandan ayrı sözleşmelerle çoklu işe alım vardır.
+- İlan açma, başvuru ve öne çıkarma kredi kullanır; davete verilen teklif başvuru kredisi harcamaz. İlk maliyetler sabittir; sayısal tutarlar ve sonraki kurallar ayrıca belirlenir.
+- Öğrenci/işveren başlangıç ve aylık ücretsiz kredi alabilir, ayrıca satın alabilir. Bütün krediler süresizdir; hesaplar arasında aktarılmaz.
+- İlan iptali/moderasyonla kaldırmada ilan/başvuru kredileri iade edilir. Ret, geri çekme veya başvuru süresinin dolması iade doğurmaz. Kaldırılan ilanın kullanılmamış öne çıkarma süresi kredi olarak iade edilir.
+- İş bedeli gerçek para ve ilk canlı para birimi TL'dir. Yalnız freelancer iş bedelinden %10 platform komisyonu kesilir.
+- Sabit iş aşamaları önceden fonlanır; onay veya 14 günlük yanıtsızlıkla ödenir. Yeniden teslimde süre yeniden başlar; revizyon/itirazda ödeme bekler, anlaşmazlığı destek ekibi inceler.
+- Saatlik iş haftalık limit ve ön fonlama kullanır. 5 günlük inceleme/itiraz döneminden sonra ödeme yapılır; manuel süre işverenin açık onayını gerektirir. Kazanç için kendi adına banka hesabına çekim talebi vardır.
 
-## Ücret modeli
+## Takım ve takip
 
-- Öğrenci profilinde saatlik ücretini belirler.
-- İşveren sabit bütçeli veya saatlik iş açabilir.
-- Nihai ücret ve çalışma koşulları tarafların anlaşmasıyla belirlenir.
+Lider takım adına başvurur, sözleşmeyi kabul eder ve kazancı alır. Ayrı takım kredi bakiyesini yönetir. Sözleşmede çalışan üyeler ve ayrı saat ücretleri bulunur; üyeler mesajlaşabilir, teslim yükleyebilir ve kendi sürelerini kaydedebilir. Toplam süre takım limitine sayılır. Aktif lider değişikliği işveren ve yönetim onayı gerektirir; mevcut işin ödeme alıcısının kimliği ayrıca açıkça onaylanır. Ekip içi paylaşımı takım yapar.
 
-## Topluluk ve mentorlukla bağlantısı
+Takip saatlikte zorunlu, sabit işte isteğe bağlıdır. Süre/açıklama, her 10 dakikalık bölümde seçili ekrandan rastgele görüntü, etkinlik sayısı ve aktif uygulama bilgisi tutulur. Tuş içeriği/kamera/video kaydı yoktur. Hareketsizlikte duraklama ve çevrimdışı kayıt/senkronizasyon bulunur.
 
-Konuşulan farklılaşma yönü: Öğrencinin toplulukta üreterek kendini göstermesi, ekip bulması ve ücretli işe geçmesi.
+Öğrenci görüntü silemez; kişisel bilgi için işverene gösterilmeden moderasyon talebi açabilir. Talep konusu görüntü inceleme sonuçlanana kadar bütün işveren kanallarında kapalıdır. Görüntü/ayrıntılı etkinlik saklama süresi 90 gündür; açık itirazın ilgili kayıtları sonuçlanana kadar korunur.
 
-- FIRST kullanmak zorunlu değildir. Öğrenci FIRST proje/katkı bağlantılarını STEP portföyüne ekleyebilir; bu özellik ilk sürüme dahildir. Otomatik veri aktarımı ve özel bilgiye erişim ayrıntıları ayrıca planlanır; bağlantı eklemek kaynak ürünün erişim izinlerini değiştirmez.
-- Toplulukta birlikte çalışmış kişiler takım olarak ücretli iş alabilir.
-- Takım adına başvuru ve sözleşme kabulünü yalnız lider yapar. Takım işinin ödemesi takım liderine yapılır; platform her üyeye ayrı ödeme yapmaz. Takımın kredi hesabı, diğer üye yetkileri, lider değişikliği ve ekip içi dağıtım ayrıntıları açık kalır.
-- Gerektiğinde kapsam veya teslimat incelemesi için mentor desteği bağlanabilir; bu bağlantının işleyişi henüz netleştirilmedi.
+## Ürün bağlantıları ve sonraki sürüm
 
-## İşveren için AI ilan asistanı
+FIRST kullanımı zorunlu değildir; FIRST proje/katkı bağlantılarını portföye ekleme ilk sürümdedir. Otomatik veri aktarımı ve ortak giriş ayrı entegrasyon aşamasındadır; kaynak erişim izinleri taşınmaz.
 
-AI ilan desteği ilk sürümden sonraya bırakılmıştır. İşverenin kafasındaki fikir veya ihtiyacı iş ilanına dönüştürmesine yardım etme; kapsam, süre, gereken çalışma saati ve bütçe planlama önceki fikirlerdir. Sonraki sürümün numarası, tahmin yöntemi, özellik kapsamı ve sınırları daha sonra belirlenecek.
+AI ilan desteği ve INTO üzerinden isteğe bağlı kapsam/teslim incelemesi sonraki sürümdedir. Yerel mobil uygulama, hazır hizmet paketleri, abonelik, sesli/görüntülü görüşme ve öne çıkarma açık artırması da sonraya bırakılmıştır.
 
-## Platform üzerinden anlaşma ve çalışma takibi
-
-Hem saatlik hem iş bazlı/sabit ücretli çalışma ve Upwork Desktop App benzeri çalışma takibi ürün yönüne dahildir. Takip istemcisi Windows, macOS ve Linux'u birlikte hedefler. Takip saatlik işte zorunlu, sabit işte tarafların tercihine bağlıdır. Sözleşme, teslimat ve ödeme ayrıntıları ayrıca netleştirilecektir.
-
-Öğrenci ekran görüntüsünü doğrudan silemez; kişisel bilgi içerdiği gerekçesiyle işverene gösterilmeden moderatör incelemesi talep edebilir. Talep konusu görüntü, moderasyon sonuçlanmadan çalışma günlüğü, önizleme, indirme veya bildirim dahil hiçbir kanaldan işverene gösterilmez. Talep açma/yayın akışının zamanı, moderasyon sonucu ve çalışma ücretine etkisi ayrıca belirlenecektir.
-
-Çalışma günlüğünün diğer ayrıntıları, takipte tutulacak etkinlik bilgisi, sıklık, diğer erişim yetkileri ve saklama koşulları henüz kararlaştırılmadı. Upwork'ün belirli süre ve veri kuralları otomatik STEP kararı değildir.
+Kredi rakamları, sağlayıcı/stack seçimleri, çekim takvimi, hareketsizlik süresi ve görüntü moderasyonunun uygulama ayrıntıları geliştirme planındaki ayrı ayar/teknik keşif işleridir.

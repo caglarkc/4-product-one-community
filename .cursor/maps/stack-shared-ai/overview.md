@@ -7,8 +7,11 @@ Bu elle hazırlanmış bağlam haritasıdır; üretilmiş kod haritası değildi
 | `platform-urun-fikirleri.md` | Dört ürünün özgün fikir ve kararları |
 | `FIRST/README.md` | Proje, ekip ve açık kaynak katkısı |
 | `STEP/README.md` | Üniversite öğrencilerine özel Upwork benzeri freelance pazarı |
-| `STEP/kararlar.md` | Doğrulama aşamaları, kredi/gerçek para ve masaüstü takip ürün kararları |
-| `STEP/upwork-karsilastirmasi.md` | Resmî Upwork araştırması ve açık planlama başlıkları |
+| `STEP/kararlar.md` | Topluca kabul edilmiş ürün kararları ve sonraya bırakılmış teknik/ayar işleri |
+| `STEP/soru-karar-eslestirmesi.md` | 52 sorunun yanıtları ve 24/45/47/49 istisnalarının kaynak izi |
+| `STEP/urun-kapsami.md` | Modüller, aktörler, ekranlar, akışlar ve kabul kriterleri |
+| `STEP/gelistirme-plani.md` | Bağımlı geliştirme paketleri, dosya sahipliği ve ilk canlı sürüm sınırı |
+| `STEP/upwork-karsilastirmasi.md` | Resmî Upwork araştırması ve kabul edilmiş STEP modeli |
 | `INTO/README.md` | Proje ve kişisel gelişim mentorluğu |
 | `PATH/README.md` | Son aşamadaki yarışma fikri; kapsam açık |
 | `.orchestrator/` | Ortak CLI, contract, adapter, run ve katalog |
