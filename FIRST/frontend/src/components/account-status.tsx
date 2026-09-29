@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { api, User } from '../lib/api';
 import { RequireSession, useSession } from './session-provider';
+import {StudentSettings,ContributionSettings} from './profile-extension';
 import { AccountReset } from './account-reset';
 import { ConnectedAccounts } from './connected-accounts';
 import { AccountForm, Field, ReauthenticationContext } from './account-form';
@@ -59,13 +60,13 @@ function AccountContent() {
     <PageHeading title="Hesabım" description="Profilinizi, bağlantılarınızı ve güvenlik ayarlarınızı tek yerden yönetin."/>
     <div className="account-summary"><p>{user.full_name || user.username}</p><p className="account-email">{user.email} · {user.email_verified ? 'Doğrulandı' : 'Doğrulama bekliyor'}</p></div>
     <div className="action-row"><ActionLink href="/profil/duzenle" variant="secondary">Topluluk profilimi düzenle</ActionLink><ActionLink href="/kaydedilenler" variant="quiet">Kaydedilen projeler</ActionLink></div>
-    <nav className="section-nav" aria-label="Hesap bölümleri"><a href="#profil">Profil</a><a href="#baglantilar">Bağlantılar</a><a href="#guvenlik">Güvenlik</a><a href="#oturumlar">Oturumlar</a><a href="#hesap-islemleri">Hesap işlemleri</a></nav>
+    <nav className="section-nav" aria-label="Hesap bölümleri"><a href="#profil">Profil</a><a href="#baglantilar">Bağlantılar</a><a href="#ogrenci">Öğrenci e-postası</a><a href="#katkilar">Katkılar</a><a href="#guvenlik">Güvenlik</a><a href="#oturumlar">Oturumlar</a><a href="#hesap-islemleri">Hesap işlemleri</a></nav>
     {!user.email_verified && <EmailReminder/>}
     <div className="account-grid"><div className="account-column">
       <div id="profil"><AccountForm<{user: User}> requireChanges title="Profil bilgileri" path="profile" method="PATCH" fields={fields} submit="Değişiklikleri kaydet" onSuccess={data => updateUser(data.user)}>
         <p>Kullanıcı adınız 3–30 harf, rakam veya alt çizgi içerebilir. En az 13 yaşında olmalısınız. Telefon eklerseniz ülke koduyla birlikte yazın; telefon doğrulaması henüz sunulmuyor.</p>
       </AccountForm></div>
-      <div id="baglantilar"><ConnectedAccounts user={user}/></div>
+      <div id="baglantilar"><ConnectedAccounts user={user}/></div><StudentSettings/><ContributionSettings/>
     </div><section className="account-column" id="guvenlik" aria-labelledby="security-title"><h2 id="security-title">Giriş ve güvenlik</h2>
       <AccountForm title="E-posta adresi" path="email/change" fields={[{name: 'email', label: 'Yeni e-posta', type: 'email', maxLength: 254}]} submit="Doğrulama bağlantısı gönder">
         <p>Yeni adres doğrulanana kadar {user.email} geçerlidir. Eski adresinize bildirim gönderilir; değişiklik onaylandığında tüm oturumlardan çıkış yapılır.</p>

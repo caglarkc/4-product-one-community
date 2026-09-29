@@ -1,7 +1,7 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
 import type {Project} from '../lib/projects';
-import {api} from '../lib/api';
+import {api,apiErrorMessage} from '../lib/api';
 import {Alert,Button,Checkbox,Field,Select,Surface} from './ui';
 
 type Content={kind:string;text?:string;rows?:string[][];images?:{data_url:string;width:number;height:number}[];truncated:boolean;total_pages?:number};
@@ -23,8 +23,8 @@ export function ShowcasePanel({project}:{project:Project}) {
  const [confirmed,setConfirmed]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState(''),[reload,setReload]=useState(0);
  const lock=useRef(false),alive=useRef(true);
  useEffect(()=>{alive.current=true;return()=>{alive.current=false;};},[]);
- useEffect(()=>{let current=true;setFiles(null);setSelected(null);api<{files:FileInfo[]}>(`${base}/files`).then(data=>{if(current)setFiles(data.files);}).catch(caught=>{if(current)setError(caught.message);});return()=>{current=false;};},[base,reload]);
- async function perform(work:()=>Promise<void>){if(lock.current)return;lock.current=true;setBusy(true);setError('');setNotice('');try{await work();}catch(caught){if(alive.current)setError((caught as Error).message);}finally{lock.current=false;if(alive.current)setBusy(false);}}
+ useEffect(()=>{let current=true;setFiles(null);setSelected(null);api<{files:FileInfo[]}>(`${base}/files`).then(data=>{if(current)setFiles(data.files);}).catch(caught=>{if(current)setError(apiErrorMessage(caught));});return()=>{current=false;};},[base,reload]);
+ async function perform(work:()=>Promise<void>){if(lock.current)return;lock.current=true;setBusy(true);setError('');setNotice('');try{await work();}catch(caught){if(alive.current)setError(apiErrorMessage(caught));}finally{lock.current=false;if(alive.current)setBusy(false);}}
  async function browse(path:string){const data=await api<Directory>(`${base}/browse`,undefined,'GET',new URLSearchParams({path}));if(alive.current)setDirectory(data);}
  function refresh(){setSelected(null);setReload(value=>value+1);}
  return <Surface className="project-detail file-showcase"><div className="page-toolbar"><div><h2>Dosya vitrini</h2><p className="field-help">Proje sahibinin yayımladığı dosya sürümleri. Repodaki değişiklikler otomatik aktarılmaz.</p></div>{project.is_owner&&project.is_active&&!editing&&<Button variant="secondary" disabled={busy} onClick={()=>void perform(async()=>{await browse('');if(alive.current)setEditing(true);})}>Dosyaları yönet</Button>}</div>

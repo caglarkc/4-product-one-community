@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/completion_frontend",
+    "sessionRef": "/root/completion_frontend"
+  },
+  "outcome": "pass",
+  "summary": "Bağımsız kaynak incelemesi: yeni ekranlar gerçek typed APIye bağlı; explicit anonymous config/people; protected session sınırı ve admin hedef-user yanıt izolasyonu; dosya okuma identity yarışı ve vitrin validation ayrıntıları uygulanır.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/frontend/src",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Onaylı yeni APIler ortak tasarım diliyle kullanılabilir.",
+      "status": "passed",
+      "evidence": "Bağımsız kaynak incelemesi: yeni ekranlar gerçek typed APIye bağlı; explicit anonymous config/people; protected session sınırı ve admin hedef-user yanıt izolasyonu; dosya okuma identity yarışı ve vitrin validation ayrıntıları uygulanır."
+    },
+    {
+      "criterion": "Expired session public filtreyi engellemez; validation ayrıntıları gösterilir.",
+      "status": "passed",
+      "evidence": "Bağımsız kaynak incelemesi: yeni ekranlar gerçek typed APIye bağlı; explicit anonymous config/people; protected session sınırı ve admin hedef-user yanıt izolasyonu; dosya okuma identity yarışı ve vitrin validation ayrıntıları uygulanır."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Bağımsız kaynak incelemesi: yeni ekranlar gerçek typed APIye bağlı; explicit anonymous config/people; protected session sınırı ve admin hedef-user yanıt izolasyonu; dosya okuma identity yarışı ve vitrin validation ayrıntıları uygulanır."
+    }
+  ],
+  "risks": [
+    "Çalışma zamanı test edilmedi; canlı computer use doğrulaması ayrı düğümdür."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-29T22:56:58.195463+00:00"
+}

@@ -1,5 +1,5 @@
 import type {TaxonomyOption, ProjectSummary} from './projects';
-export type PublicProfile={username:string;full_name:string;bio:string;website:string;skills:string[];interests:string[];invitations_open:boolean;github_username:string;github_url:string;avatar_url:string};
+export type PublicProfile={username:string;full_name:string;bio:string;website:string;skills:string[];interests:string[];invitations_open:boolean;github_username:string;github_url:string;avatar_url:string;student_verified?:boolean;student_verified_until?:string|null};
 export type CommunityConfig={skills:TaxonomyOption[];technologies:TaxonomyOption[];interests:TaxonomyOption[];report_reasons:TaxonomyOption[]};
 export type PageInfo={count:number;next_page:number|null;previous_page:number|null};
 export type ProfilePage=PageInfo & {profile:PublicProfile;projects:ProjectSummary[]};

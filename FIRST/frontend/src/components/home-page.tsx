@@ -1,7 +1,7 @@
 'use client';
 
 import {useEffect, useRef, useState} from 'react';
-import {api, publicProjectFeed} from '../lib/api';
+import {publicApi, publicProjectFeed} from '../lib/api';
 import type {ProjectPage, ProjectConfig} from '../lib/projects';
 import {HomeProjectRow} from './home-project-row';
 import {HomeNavigation} from './home-navigation';
@@ -29,7 +29,7 @@ export function HomePage() {
 
   useEffect(() => {
     let active = true;
-    api<ProjectConfig>('projects/config')
+    publicApi<ProjectConfig>('projects/config')
       .then(data => {if(active) setConfig(data);})
       .catch(error => {if(active) setConfigError((error as Error).message);});
     return () => {active = false;};
@@ -100,7 +100,7 @@ export function HomePage() {
     {configError && <Alert role="alert" tone="error">
       <p>Filtre seçenekleri yüklenemedi: {configError}</p>
       <Button variant="secondary" onClick={async () => {
-        try {setConfig(await api<ProjectConfig>('projects/config')); setConfigError('');}
+        try {setConfig(await publicApi<ProjectConfig>('projects/config')); setConfigError('');}
         catch(error) {setConfigError((error as Error).message);}
       }}>Filtreleri yeniden yükle</Button>
     </Alert>}

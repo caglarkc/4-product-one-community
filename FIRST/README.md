@@ -2,7 +2,7 @@
 
 Proje ve açık kaynak topluluğu.
 
-Durum: Hesap yönetimi, Google/GitHub girişi, GitHub repo bağlantısı, proje paylaşımı, ilan/başvuru/davet akışları ve sayfalı topluluk keşfi uygulanmıştır. Public profil, kişi keşfi, davet tercihleri, proje arama/kaydetme ve şikâyet kaydı [geliştirme run’ı](../.orchestrator/runs/first-community-discovery/run.json) ile izlenir. Bu yeni kapsamın API alanları [topluluk sözleşmesinde](contracts/community-api.md) tutulur. Güncel kabul edilmiş kararlar, açık konular ve askıya alınan mesajlaşma kapsamı [kararlar.md](kararlar.md) dosyasındadır. Ürün kararı ile uygulanmış/test edilmiş davranış ayrı değerlendirilir.
+Durum: Hesap yönetimi, Google/GitHub girişi, GitHub repo bağlantısı, proje paylaşımı, ilan/başvuru/davet akışları ve sayfalı topluluk keşfi uygulanmıştır. Public profil, kişi keşfi, davet tercihleri, proje arama/kaydetme ve şikâyet kaydı [geliştirme run’ı](../.orchestrator/runs/first-community-discovery/run.json) ile izlenir. Bu kapsamın API alanları [topluluk sözleşmesinde](contracts/community-api.md) tutulur. Güncel kabul edilmiş kararlar ve açık konular [kararlar.md](kararlar.md) dosyasındadır. Ürün kararı ile uygulanmış/test edilmiş davranış ayrı değerlendirilir.
 
 ## Amaç
 
@@ -56,4 +56,18 @@ Bağımsız ekip sistemi (`/ekipler`), private repodan seçili dosya vitrini (pr
 
 API sınırları: [ekip](contracts/teams-api.md), [vitrin](contracts/showcase-api.md), [görev](contracts/tasks-api.md). Ortak arayüz daha kompakt yazı, panel ve kart ölçülerine indirildi; hesap bağlantıları menüde toplandı. Bu değişikliklerin kontrolü kaynak/diff incelemesidir; yeni test, tarayıcı veya gerçek GitHub işlem senaryosu çalıştırılmadı. Yayın sonucu ve sınırlar [teslim kaydında](../.orchestrator/runs/first-release-completion/delivery.md) izlenir.
 
-Mesajlaşma, öğrenci doğrulaması, katkı istatistikleri, ayrıntılı profil/sertifika vitrini ve şikâyet yönetim paneli bilerek ertelenmiş kapsam olarak kalır.
+## Tamamlama — 30 Eylül 2026
+
+Doğrudan birebir mesajlaşma (`/mesajlar`), `.edu.tr` okul e-postası onayı (12 ay),
+öğrenci filtresi/rozeti/kişi keşfi önceliği, hesap açılışından başlayan elle katkı
+istatistikleri, isteğe bağlı private katkı toplamları, public repo ve PDF/JPG belge
+vitrini, tek yöneticiye açık şikâyet/yaptırım paneli (`/yonetim`) kaynakta eklendi.
+Belgeler en fazla 10 adet, dosya başına 2 MiB ve toplam 20 MiB; PNG kabul edilmez.
+Öğrenci e-postası onayı aktif öğrencilik belgesi kontrolü değildir.
+
+Arama alan türü, eski oturumun public filtreleri engellemesi, vitrin hata ayrıntıları
+ve bağımsız incelemede bulunan mesaj okundu/ekip görünürlüğü sorunları düzeltildi.
+API [tamamlama sözleşmesinde](contracts/completion-api.md), kaynak kabulü ve canlı
+test sınırları [run'da](../.orchestrator/runs/first-full-completion/run.json) tutulur.
+Bu kayıt kaynak uygulamasını ifade eder; yayın ve gerçek kullanıcı senaryolarının
+kanıtları teslim sırasında ayrıca eklenir. Ayrı moderatör ve grup sohbeti eklenmedi.

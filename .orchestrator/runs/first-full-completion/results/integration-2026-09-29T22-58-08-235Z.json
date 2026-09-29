@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "README/kararlar/öğrenci araştırma override/tamamlama API sözleşmesi kullanıcı kararlarını ve gerçek uygulama sınırlarını kaydeder; diğer ürünlere yazılmadı.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/README.md",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/kararlar.md",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/contracts/completion-api.md",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/ogrenci-dogrulama-arastirmasi.md",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Yeni kullanıcı kararları ve gerçek uygulama sınırları tutarlı kaydedildi.",
+      "status": "passed",
+      "evidence": "README/kararlar/öğrenci araştırma override/tamamlama API sözleşmesi kullanıcı kararlarını ve gerçek uygulama sınırlarını kaydeder; diğer ürünlere yazılmadı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "README/kararlar/öğrenci araştırma override/tamamlama API sözleşmesi kullanıcı kararlarını ve gerçek uygulama sınırlarını kaydeder; diğer ürünlere yazılmadı."
+    }
+  ],
+  "risks": [
+    "Çalışma zamanı test edilmedi; canlı computer use doğrulaması ayrı düğümdür."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-29T22:58:08.235766+00:00"
+}

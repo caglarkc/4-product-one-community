@@ -218,3 +218,16 @@ Kullanıcı bağımsız ekip yapısı, private dosya vitrini ve genel public gö
 - Ekip üyeliği görünürlüğü kısıtlı ilanlara veya private GitHub reposuna otomatik erişim sağlamaz.
 - Mesajlaşma, öğrenci doğrulaması, katkı istatistikleri, ayrıntılı profil/sertifika vitrini ve şikâyet yönetim paneli önceki erteleme kararlarında kalır.
 - Kontrol sınırı: kaynak/diff incelemesi. Eski gerçek davet kabulü/Issue oluşturma/PR merge canlı doğrulama eksikleri bu teslimde otomatik olarak giderilmiş sayılmaz.
+
+## Tamamlama kapsamı — 30 Eylül 2026
+
+Bu görüşmedeki kullanıcı kararları, yukarıdaki mesajlaşma ve profil özelliklerinin erteleme kayıtlarının yerini alır. Önceki ücretli aktif öğrenci doğrulaması yaklaşımı kaldırılmıştır.
+
+- Mesajlaşma doğrudan birebir mesajdır; mesaj isteği kabulü gerekmez. Proje, ekip ve genel sohbet bu kararın kapsamına eklenmedi.
+- Türkiye okul e-postası formatı (`.edu.tr`) kontrol edilir; o adrese gönderilen bağlantının onaylanması yeterlidir. Bu yalnız okul e-postasına erişimi doğrular; aktif öğrencilik kontrolü değildir. Durum 12 ayda bir yenilenir. Rozet, öğrenci filtresi ve kişi keşfinde öncelik uygulanır; okul e-postası public profilde gösterilmez.
+- Kabul edilmiş PR, commit, katkı verilen proje sayısı ve roller gösterilir. Takip hesabın açıldığı tarihten başlar; geçmiş repo kayıtları ayrı aktarılmaz. Güncelleme kullanıcı talebiyle yapılır. Bitiş süresi belirtilmedi; otomatik takip kesimi uygulanmaz. Sağlayıcının erişim/arama sınırları kapsam açıklamasıyla gösterilir.
+- Private repo adı/içeriği açıklanmadan katkı toplamları kullanıcının paylaşım tercihiyle public profilde gösterilebilir; varsayılan paylaşım kapalıdır.
+- FIRST'te ilanı olmayan public repolar için repo sahibi veya kabul edilmiş katkıcı olma koşulu uygulanır.
+- Profil belge/sertifikaları kullanıcı beyanıdır. PDF/JPG/JPEG kabul edilir; PNG kabul edilmez. En fazla 10 belge, dosya başına 2 MiB ve toplam 20 MiB sınırı uygulanır. Güvenli önizleme gösterilir.
+- Platform yönetimini kullanıcı tek başına ve tüm yönetim yetkileriyle yürütür. Ayrı moderatör rolleri sonraya bırakılmıştır. Şikâyetler otomatik yaptırım doğurmaz; yönetici değerlendirmesi, içerik gizleme/geri açma ve hesap kısıtı/geri açma denetlenebilir kayıtlardır.
+- Doğrulama canlı ortamda, kullanıcının belirlediği iki Google test hesabıyla gerçekleştirilir. Giriş bilgileri ve kişisel veri görev/run kayıtlarına kopyalanmaz.

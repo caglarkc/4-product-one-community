@@ -1,7 +1,7 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
 import {useRouter} from 'next/navigation';
-import {api,ApiError} from '../lib/api';
+import {api,publicApi,ApiError} from '../lib/api';
 import {ProjectCard} from './project-card';
 import {RequireSession, SessionPending, useSession} from './session-provider';
 import {githubUrl,GitHubStatus,Project,ProjectConfig,Repository,RepositoryCache,ProjectPreview,repositoryCacheCaption} from '../lib/projects';
@@ -15,7 +15,7 @@ import {ActionLink,Alert,Button,Checkbox,Field,Input,PageHeading,Select,Surface}
 
 function ProjectTags({project}:{project:Project}) {
  const [config,setConfig]=useState<ProjectConfig|null>(null);
- useEffect(()=>{let active=true;api<ProjectConfig>('projects/config').then(value=>{if(active)setConfig(value);}).catch(()=>{});return()=>{active=false;};},[]);
+ useEffect(()=>{let active=true;publicApi<ProjectConfig>('projects/config').then(value=>{if(active)setConfig(value);}).catch(()=>{});return()=>{active=false;};},[]);
  return <dl className="project-taxonomy"><div><dt>Teknolojiler</dt><dd>{labels(project.technologies||[],config?.technologies)||'Belirtilmedi'}</dd></div><div><dt>Aranan beceriler</dt><dd>{labels(project.required_skills||[],config?.skills)||'Belirtilmedi'}</dd></div></dl>;
 }
 function ProjectContent({project}:{project:Project}) {
@@ -70,7 +70,7 @@ function ProjectEditorContent({id}:{id?:string}){
  const [title,setTitle]=useState('');const [category,setCategory]=useState('');const [subcategory,setSubcategory]=useState('');const [stage,setStage]=useState('');const [fieldErrors,setFieldErrors]=useState<Record<string,string[]>>({});const [description,setDescription]=useState('');const [includeExcerpt,setIncludeExcerpt]=useState(true);const [confirmed,setConfirmed]=useState(false);const [error,setError]=useState('');const [busy,setBusy]=useState(false);const [ready,setReady]=useState(false);
  useEffect(()=>{let active=true;(async()=>{try{
    if(!id&&new URLSearchParams(window.location.search).get('github')==='failed')setError('GitHub repo bağlantısı tamamlanamadı. Yeniden deneyin.');
-   const settings=await api<ProjectConfig>('projects/config');if(!active)return;setConfig(settings);
+   const settings=await publicApi<ProjectConfig>('projects/config');if(!active)return;setConfig(settings);
    if(id){const data=await api<{projects:Project[]}>('projects/mine');if(!active)return;const owned=data.projects.find(item=>item.id===id);if(!owned)throw new Error('Düzenleyebileceğiniz paylaşım bulunamadı.');setExisting(owned);setTechnologies(owned.technologies||[]);setRequiredSkills(owned.required_skills||[]);setNeed(owned.need_type || '');setMode(owned.participation_mode || '');setVisibility(owned.visibility);setApplicationsOpen(owned.applications_open);setCurrentState(owned.current_state);setDesiredOutcome(owned.desired_outcome);setTitle(owned.title);setCategory(owned.category);setSubcategory(owned.subcategory || '');setStage(owned.stage || '');setDescription(owned.description);}
    else {const data=await api<GitHubStatus>('projects/github/status');if(!active)return;setStatus(data);if(data.connected){const repos=await api<RepositoryCache>('projects/github/repositories');if(active){setRepositories(repos.repositories);setCachedAt(repos.cached_at ?? null);}}}
  }catch(err){if(active)setError((err as Error).message);}finally{if(active)setReady(true);}})();return()=>{active=false;};},[id,retry]);
@@ -89,7 +89,7 @@ function ProjectEditorContent({id}:{id?:string}){
  const eligible=!!user?.email_verified&&(!!id||!!user?.providers.includes('github'));
  return <div className={`account-page project-page project-editor${!id&&!preview?' project-editor--start':''}`}><header className="project-editor-header"><PageHeading title={id?'Paylaşımı düzenle':'Proje paylaş'} eyebrow="FIRST / PROJELER"/><ActionLink variant="quiet" href="/projelerim">Projelerime dön</ActionLink></header>
  {error&&<Alert role="alert" tone="error"><p>{error}</p>{Object.entries(fieldErrors).filter(([name])=>!['title','category','subcategory','stage','description'].includes(name)).map(([name,messages])=><p key={name}>{messages.join(' ')}</p>)}{ready&&!busy&&Object.keys(fieldErrors).length===0&&(id?!existing:!config||!status)&&<Button variant="secondary" onClick={()=>{setError('');setRetry(value=>value+1);}}>Yeniden dene</Button>}</Alert>} {!ready&&<Alert role="status">Paylaşım bilgileri yükleniyor…</Alert>}
- {ready&&config&&!taxonomyReady&&<Alert role="status"><p>Proje kategorileri ve durumları hazırlanıyor. Seçenekler hazır olduğunda paylaşımınızı kaydedebilirsiniz.</p><Button variant="secondary" disabled={busy} onClick={()=>perform(async()=>{setConfig(await api<ProjectConfig>('projects/config'));})}>Seçenekleri yeniden yükle</Button></Alert>}
+ {ready&&config&&!taxonomyReady&&<Alert role="status"><p>Proje kategorileri ve durumları hazırlanıyor. Seçenekler hazır olduğunda paylaşımınızı kaydedebilirsiniz.</p><Button variant="secondary" disabled={busy} onClick={()=>perform(async()=>{setConfig(await publicApi<ProjectConfig>('projects/config'));})}>Seçenekleri yeniden yükle</Button></Alert>}
  {ready&&user===null&&<Alert><p>Proje paylaşmak için giriş yapın.</p><ActionLink href="/giris">Giriş yap</ActionLink></Alert>}
  {user&&!eligible&&<Alert><p>{id?'Paylaşımı düzenlemek için e-posta adresinizi doğrulayın.':'Yeni paylaşım için e-posta adresiniz doğrulanmış ve GitHub hesabınız bağlı olmalıdır.'} Hesabım bölümünden gerekli adımları tamamlayabilirsiniz.</p><ActionLink href="/hesap">Hesabımı düzenle</ActionLink></Alert>}
  {ready&&user&&!id&&eligible&&<Surface className="project-editor-repository">{preview&&!repoEditing?<div className="project-editor-repo-summary"><div><span className="field-help">GitHub reposu</span><p><strong>{preview.repository.full_name}</strong> <span className="connection-status">{preview.repository.private?'Gizli':'Açık'}</span></p></div><Button variant="secondary" disabled={busy} onClick={()=>setRepoEditing(true)}>Repoyu değiştir</Button></div>:<><div className="project-editor-repo-heading"><h2>Repo seç</h2><div className="project-editor-repo-tools">{status?.enabled&&config?.github_app_enabled&&<> {status.connected ? <ActionLink href="/github-kurulum?next=%2Fprojelerim%2Fyeni&manage=1" variant="quiet">Repo izinlerini yönet</ActionLink> : <ActionLink href="/github-kurulum?next=%2Fprojelerim%2Fyeni">GitHub repo izinlerini tamamla</ActionLink>}

@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import {useEffect,useRef,useState} from 'react';
-import {api,ApiError} from '../lib/api';
+import {api,publicApi,ApiError} from '../lib/api';
 import {labels,profileHref,type CommunityConfig} from '../lib/community';
 import type {Project} from '../lib/projects';
 import {organizationHref,teamRequestStatus,teamRoles,type Team,type TeamDetail,type TeamDraft,type TeamMine,type TeamPage,type TeamRequest} from '../lib/teams';
@@ -53,7 +53,7 @@ function TeamsContent(){
  const [data,setData]=useState<TeamPage|TeamMine|null>(null),[config,setConfig]=useState<CommunityConfig|null>(null),[error,setError]=useState('');
  useEffect(()=>{let active=true;setData(null);setError('');const query=new URLSearchParams({q,page:String(page),invitations_page:String(invitationsPage)});if(recruiting)query.set('recruiting','1');
  const request=tab==='create'?Promise.resolve(null):api<TeamPage|TeamMine>(tab==='mine'?'teams/mine':tab==='saved'?'teams/bookmarks':'teams',undefined,'GET',query);
- Promise.all([api<CommunityConfig>('community/config'),request]).then(([c,d])=>{if(active){setConfig(c);setData(d);}}).catch(e=>{if(active)setError(errorText(e));});return()=>{active=false;};},[tab,q,recruiting,page,invitationsPage,retry]);
+ Promise.all([publicApi<CommunityConfig>('community/config'),request]).then(([c,d])=>{if(active){setConfig(c);setData(d);}}).catch(e=>{if(active)setError(errorText(e));});return()=>{active=false;};},[tab,q,recruiting,page,invitationsPage,retry]);
  const refresh=()=>setRetry(v=>v+1);const canWrite=!!user?.email_verified;
  return <div className="community-page"><PageHeading eyebrow="FIRST / EKİPLER" title="Birlikte üretecek ekibini bul" description="Ekipler projelerden bağımsızdır. Ekip üyeliği GitHub erişimi sağlamaz."/>
  <nav className="action-row" aria-label="Ekip görünümleri">{([['discover','Keşfet'],['mine','Ekiplerim ve davetler'],['saved','Kaydedilenler'],['create','Ekip oluştur']] as const).filter(([key])=>user||key==='discover').map(([key,label])=><Button key={key} variant={tab===key?'primary':'quiet'} disabled={action.busy} aria-pressed={tab===key} onClick={()=>{setTab(key);setPage(1);}}>{label}</Button>)}{!user&&<ActionLink href="/giris" variant="secondary">Ekip kurmak için giriş yap</ActionLink>}</nav>
@@ -74,7 +74,7 @@ function TeamDetailContent({id}:{id:string}){
  const [explanation,setExplanation]=useState(''),[invite,setInvite]=useState(''),[selectedProject,setSelectedProject]=useState(''),[confirmExit,setConfirmExit]=useState(false);
  const [membersPage,setMembersPage]=useState(1),[requestsPage,setRequestsPage]=useState(1),[projectsPage,setProjectsPage]=useState(1);
  const [ownProjects,setOwnProjects]=useState<Project[]|null>(null),[projectError,setProjectError]=useState(''),[projectRetry,setProjectRetry]=useState(0);
- useEffect(()=>{let active=true;setData(null);setError('');Promise.all([api<TeamDetail>(`teams/${id}`,undefined,'GET',new URLSearchParams({members_page:String(membersPage),requests_page:String(requestsPage),projects_page:String(projectsPage)})),api<CommunityConfig>('community/config')]).then(([d,c])=>{if(active){setData(d);setConfig(c);}}).catch(e=>{if(active)setError(errorText(e));});return()=>{active=false;};},[id,retry,membersPage,requestsPage,projectsPage]);
+ useEffect(()=>{let active=true;setData(null);setError('');Promise.all([api<TeamDetail>(`teams/${id}`,undefined,'GET',new URLSearchParams({members_page:String(membersPage),requests_page:String(requestsPage),projects_page:String(projectsPage)})),publicApi<CommunityConfig>('community/config')]).then(([d,c])=>{if(active){setData(d);setConfig(c);}}).catch(e=>{if(active)setError(errorText(e));});return()=>{active=false;};},[id,retry,membersPage,requestsPage,projectsPage]);
  const manager=data?.team.my_role==='owner'||data?.team.my_role==='admin';
  useEffect(()=>{let active=true;setOwnProjects(null);setProjectError('');if(manager&&user)api<{projects:Project[]}>('projects/mine').then(d=>{if(active)setOwnProjects(d.projects.filter(p=>p.is_active));}).catch(e=>{if(active)setProjectError(errorText(e));});return()=>{active=false;};},[manager,user?.id,projectRetry]);
  const refresh=()=>{setConfirmExit(false);setRetry(v=>v+1);};

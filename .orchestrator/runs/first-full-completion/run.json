@@ -1,0 +1,844 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "title": "FIRST tam kapsam tamamlama",
+  "goal": "Onaylanan mesajlaşma, öğrenci e-postası, katkı profili, belge vitrini, yönetim ve canlı QA eksiklerini tamamla",
+  "createdAt": "2026-09-29T22:42:40.364Z",
+  "updatedAt": "2026-09-29T23:00:10.900Z",
+  "revision": 25,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/rules.md",
+      "FIRST/README.md",
+      "FIRST/kararlar.md",
+      "FIRST/teknik-kararlar.md",
+      "FIRST/auth-kararlari.md",
+      "FIRST/contracts/completion-api.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": "12e813cf2bf941bcc7da835fcca8086174fe3fb0d2d133366f9eda0bfd35c572",
+    "assumptions": [
+      "Katkı takibi hesap açılışından başlar; süre belirtilmediğinden otomatik bitiş uygulanmaz.",
+      "Doğrudan birebir mesajlaşma uygulanır; proje/ekip/genel sohbet eklenmez.",
+      "Öğrenci durumu .edu.tr e-posta erişim doğrulamasıdır, aktif öğrencilik kanıtı değildir."
+    ]
+  },
+  "constraints": [
+    "Yalnız FIRST kapsamı; diğer ürünlere yazma.",
+    "Writerlar farklı dosya kapsamlarında; ortak config ve route dosyaları root sahibi.",
+    "Root dışında commit/push yok; ilgisiz değişiklikleri koru.",
+    "Yeni test/lint/typecheck veya yerel production build yok; kullanıcı canlı computer use testini yetkilendirdi.",
+    "Secret/token/kişisel veri run kayıtlarına yazılmaz."
+  ],
+  "policy": {
+    "requiresIntegration": true,
+    "extensions": {
+      "maxParallelWriters": 3,
+      "liveQaAuthorized": true
+    }
+  },
+  "decisions": [
+    {
+      "id": "user-completion-scope",
+      "summary": "Doğrudan DM; Türkiye ücretsiz okul e-posta kontrolü 12 ay; profil katkıları hesap açılışından; private toplamlar isteğe bağlı; public vitrin owner/kabul edilmiş katkıcı; belgeler PDF/JPG10 adet2MiB ve20MiB toplam; sole admin; canlı iki hesap QA.",
+      "reason": "Kullanıcı bu görüşmede kararları onayladı.",
+      "decidedAt": "2026-09-29T22:43:52.970606+00:00",
+      "actor": "human-user"
+    }
+  ],
+  "items": [
+    {
+      "id": "profile-backend",
+      "title": "Öğrenci, katkı, vitrin ve belge backend",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Öğrenci, katkı, vitrin ve belge backend",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/backend/profiles",
+        "FIRST/backend/accounts/community_views.py",
+        "FIRST/backend/accounts/serializers.py"
+      ],
+      "acceptanceCriteria": [
+        "Okul e-posta doğrulama ve12ay süre, private adres sızıntısı yok.",
+        "Manuel katkı istatistikleri hesap tarihinden; public vitrin uygunluğu ve belge kotaları sunucuda uygulanır."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/profiles",
+          "FIRST/backend/accounts/community_views.py",
+          "FIRST/backend/accounts/serializers.py"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/profile_backend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/profile-backend-2026-09-29T22-56-57-420Z.json"
+    },
+    {
+      "id": "messages-admin-backend",
+      "title": "Doğrudan mesaj ve sole-admin backend",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Doğrudan mesaj ve sole-admin backend",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/backend/messaging",
+        "FIRST/backend/moderation"
+      ],
+      "acceptanceCriteria": [
+        "Mesajlar yalnız katılımcılara; gönderme/sayfalama/okundu.",
+        "Yönetim yalnız superuser; rapor inceleme ve geri alınabilir yaptırımlar audit edilir."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/messaging",
+          "FIRST/backend/moderation"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/messaging_admin_backend"
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/messages-admin-backend-2026-09-29T22-54-25-854Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "Tamamlama arayüzleri ve public okuma/hata düzeltmeleri",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Tamamlama arayüzleri ve public okuma/hata düzeltmeleri",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/frontend/src"
+      ],
+      "acceptanceCriteria": [
+        "Onaylı yeni APIler ortak tasarım diliyle kullanılabilir.",
+        "Expired session public filtreyi engellemez; validation ayrıntıları gösterilir."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/src"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/completion_frontend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-29T22-56-58-195Z.json"
+    },
+    {
+      "id": "core-bugs",
+      "title": "Arama düzeltmesi ve ortak backend entegrasyon noktaları",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Arama düzeltmesi ve ortak backend entegrasyon noktaları",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/backend/projects",
+        "FIRST/backend/config",
+        "FIRST/backend/accounts/urls.py",
+        "FIRST/backend/accounts/middleware.py",
+        "FIRST/backend/accounts/authentication.py",
+        "FIRST/backend/accounts/community_catalog.py",
+        "send-machine",
+        "FIRST/backend/accounts/account_views.py",
+        "FIRST/backend/accounts/views.py",
+        "FIRST/backend/teams/views.py",
+        "FIRST/backend/teams/services.py",
+        "FIRST/backend/projects/participation_views.py"
+      ],
+      "acceptanceCriteria": [
+        "Arama Postgres alan tiplerini açıkça belirtir.",
+        "Yeni uygulamalar register edilir; yönetim gizleme/yetki kontrolleri ortak erişim yollarında korunur."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/projects",
+          "FIRST/backend/config",
+          "FIRST/backend/accounts/urls.py",
+          "FIRST/backend/accounts/middleware.py",
+          "FIRST/backend/accounts/authentication.py",
+          "FIRST/backend/accounts/community_catalog.py",
+          "send-machine",
+          "FIRST/backend/accounts/account_views.py",
+          "FIRST/backend/accounts/views.py",
+          "FIRST/backend/teams/views.py",
+          "FIRST/backend/teams/services.py"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/core-bugs-2026-09-29T22-54-26-642Z.json"
+    },
+    {
+      "id": "review",
+      "title": "Bağımsız kaynak güvenlik/API incelemesi",
+      "kind": "review",
+      "domains": [
+        "first"
+      ],
+      "objective": "Bağımsız kaynak güvenlik/API incelemesi",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "source-review-report"
+      ],
+      "acceptanceCriteria": [
+        "Yazılan kaynaklar bağımsız incelendi; P0/P1 bulgu kalmadı."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "profile-backend",
+          "messages-admin-revision",
+          "frontend",
+          "core-revision"
+        ],
+        "reviews": [
+          "profile-backend",
+          "messages-admin-revision",
+          "frontend",
+          "core-revision",
+          "messages-admin-backend",
+          "core-bugs"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/review-2026-09-29T22-57-46-930Z.json"
+    },
+    {
+      "id": "verify",
+      "title": "Bağımsız acceptance kaynak doğrulaması",
+      "kind": "verify",
+      "domains": [
+        "first"
+      ],
+      "objective": "Bağımsız acceptance kaynak doğrulaması",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "source-review-report"
+      ],
+      "acceptanceCriteria": [
+        "Her API ve ürün kabul maddesi gerçek kaynaklarla eşleşir."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "review"
+        ],
+        "reviews": [],
+        "verifies": [
+          "profile-backend",
+          "messages-admin-revision",
+          "frontend",
+          "core-revision"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/verify-2026-09-29T22-57-50-711Z.json"
+    },
+    {
+      "id": "integration",
+      "title": "FIRST doküman ve sözleşme entegrasyonu",
+      "kind": "integration",
+      "domains": [
+        "first"
+      ],
+      "objective": "FIRST doküman ve sözleşme entegrasyonu",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/README.md",
+        "FIRST/kararlar.md",
+        "FIRST/contracts/completion-api.md",
+        "FIRST/ogrenci-dogrulama-arastirmasi.md"
+      ],
+      "acceptanceCriteria": [
+        "Yeni kullanıcı kararları ve gerçek uygulama sınırları tutarlı kaydedildi."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "profile-backend",
+          "messages-admin-revision",
+          "frontend",
+          "core-revision"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/README.md",
+          "FIRST/kararlar.md",
+          "FIRST/contracts/completion-api.md",
+          "FIRST/ogrenci-dogrulama-arastirmasi.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/integration-2026-09-29T22-58-08-235Z.json"
+    },
+    {
+      "id": "deploy",
+      "title": "Commit push ve mevcut FIRST yayın akışı",
+      "kind": "deployment",
+      "domains": [
+        "first"
+      ],
+      "objective": "Commit push ve mevcut FIRST yayın akışı",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/deployment.md"
+      ],
+      "acceptanceCriteria": [
+        "Task-owned commit push remote hash ve backend health doğrulanır; Vercel otomatik yayın sonucu kaydedilir."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/deployment.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "active",
+      "attempt": 1,
+      "resultRef": null
+    },
+    {
+      "id": "deploy-review",
+      "title": "Yayın komut ve release kaynak incelemesi",
+      "kind": "review",
+      "domains": [
+        "first"
+      ],
+      "objective": "Yayın komut ve release kaynak incelemesi",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "source-review-report"
+      ],
+      "acceptanceCriteria": [
+        "Yayın komutları mevcut veri/anahtarları korur."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "deploy"
+        ],
+        "reviews": [
+          "deploy"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "deploy-verify",
+      "title": "Yayın sağlık doğrulaması",
+      "kind": "verify",
+      "domains": [
+        "first"
+      ],
+      "objective": "Yayın sağlık doğrulaması",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "source-review-report"
+      ],
+      "acceptanceCriteria": [
+        "Aynı commit release ve sağlık kanıtı kayıtlı."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "deploy"
+        ],
+        "reviews": [],
+        "verifies": [
+          "deploy"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "live-qa",
+      "title": "İki hesaplı canlı computer use QA",
+      "kind": "verify",
+      "domains": [
+        "first"
+      ],
+      "objective": "İki hesaplı canlı computer use QA",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "source-review-report"
+      ],
+      "acceptanceCriteria": [
+        "Canlı kullanıcı akışları ve sınırlar açık kanıtla raporlanır."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "deploy-verify"
+        ],
+        "reviews": [],
+        "verifies": [
+          "integration"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": null
+      },
+      "status": "draft",
+      "attempt": 0,
+      "resultRef": null
+    },
+    {
+      "id": "messages-admin-revision",
+      "title": "Doğrudan mesaj ve sole-admin backend — bulgu revizyonu",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Doğrudan mesaj ve sole-admin backend",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/backend/messaging",
+        "FIRST/backend/moderation"
+      ],
+      "acceptanceCriteria": [
+        "Mesajlar yalnız katılımcılara; gönderme/sayfalama/okundu.",
+        "Yönetim yalnız superuser; rapor inceleme ve geri alınabilir yaptırımlar audit edilir."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "messages-admin-backend"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "messages-admin-backend"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/messaging",
+          "FIRST/backend/moderation"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/messages-admin-revision-2026-09-29T22-57-24-007Z.json"
+    },
+    {
+      "id": "core-revision",
+      "title": "Arama düzeltmesi ve ortak backend entegrasyon noktaları — bulgu revizyonu",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Arama düzeltmesi ve ortak backend entegrasyon noktaları",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "FIRST/backend/projects",
+        "FIRST/backend/config",
+        "FIRST/backend/accounts/urls.py",
+        "FIRST/backend/accounts/middleware.py",
+        "FIRST/backend/accounts/authentication.py",
+        "FIRST/backend/accounts/community_catalog.py",
+        "send-machine",
+        "FIRST/backend/accounts/account_views.py",
+        "FIRST/backend/accounts/views.py",
+        "FIRST/backend/teams/views.py",
+        "FIRST/backend/teams/services.py",
+        "FIRST/backend/projects/participation_views.py"
+      ],
+      "acceptanceCriteria": [
+        "Arama Postgres alan tiplerini açıkça belirtir.",
+        "Yeni uygulamalar register edilir; yönetim gizleme/yetki kontrolleri ortak erişim yollarında korunur."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "core-bugs"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "core-bugs"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/backend/projects",
+          "FIRST/backend/config",
+          "FIRST/backend/accounts/urls.py",
+          "FIRST/backend/accounts/middleware.py",
+          "FIRST/backend/accounts/authentication.py",
+          "FIRST/backend/accounts/community_catalog.py",
+          "send-machine",
+          "FIRST/backend/accounts/account_views.py",
+          "FIRST/backend/accounts/views.py",
+          "FIRST/backend/teams/views.py",
+          "FIRST/backend/teams/services.py"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/core-revision-2026-09-29T22-57-24-711Z.json"
+    }
+  ],
+  "extensions": {
+    "revisionHistory": "İlk iki uygulama denemesi bağımsız inceleme bulgularıyla failed olarak korunur; kabul edilen revisionlar teslim kapsamıdır."
+  }
+}

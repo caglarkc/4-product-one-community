@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "core-revision",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Bağımsız final_source_gate kabulü: TextField arama; ortak route/app/deploy payload; hidden proje erişim gate; ekip liste bypass ve restricted üyelik/viewer cleanup revizyonları kapandı.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/config",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/urls.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/middleware.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/authentication.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/community_catalog.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "send-machine",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/account_views.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/views.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/teams/views.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/teams/services.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects/participation_views.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Arama Postgres alan tiplerini açıkça belirtir.",
+      "status": "passed",
+      "evidence": "Bağımsız final_source_gate kabulü: TextField arama; ortak route/app/deploy payload; hidden proje erişim gate; ekip liste bypass ve restricted üyelik/viewer cleanup revizyonları kapandı."
+    },
+    {
+      "criterion": "Yeni uygulamalar register edilir; yönetim gizleme/yetki kontrolleri ortak erişim yollarında korunur.",
+      "status": "passed",
+      "evidence": "Bağımsız final_source_gate kabulü: TextField arama; ortak route/app/deploy payload; hidden proje erişim gate; ekip liste bypass ve restricted üyelik/viewer cleanup revizyonları kapandı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Bağımsız final_source_gate kabulü: TextField arama; ortak route/app/deploy payload; hidden proje erişim gate; ekip liste bypass ve restricted üyelik/viewer cleanup revizyonları kapandı."
+    }
+  ],
+  "risks": [
+    "Çalışma zamanı test edilmedi; canlı computer use doğrulaması ayrı düğümdür."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-29T22:57:24.711911+00:00"
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "messages-admin-revision",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Bağımsız final_source_gate kabulü: katılımcı DM; görülen IDye kadar monotonic okundu; sole-admin report/gizleme/kısıtlama audit ve revoke kaynakta doğrulandı.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/backend/messaging",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/moderation",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Mesajlar yalnız katılımcılara; gönderme/sayfalama/okundu.",
+      "status": "passed",
+      "evidence": "Bağımsız final_source_gate kabulü: katılımcı DM; görülen IDye kadar monotonic okundu; sole-admin report/gizleme/kısıtlama audit ve revoke kaynakta doğrulandı."
+    },
+    {
+      "criterion": "Yönetim yalnız superuser; rapor inceleme ve geri alınabilir yaptırımlar audit edilir.",
+      "status": "passed",
+      "evidence": "Bağımsız final_source_gate kabulü: katılımcı DM; görülen IDye kadar monotonic okundu; sole-admin report/gizleme/kısıtlama audit ve revoke kaynakta doğrulandı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Bağımsız final_source_gate kabulü: katılımcı DM; görülen IDye kadar monotonic okundu; sole-admin report/gizleme/kısıtlama audit ve revoke kaynakta doğrulandı."
+    }
+  ],
+  "risks": [
+    "Çalışma zamanı test edilmedi; canlı computer use doğrulaması ayrı düğümdür."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-29T22:57:24.007384+00:00"
+}

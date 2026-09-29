@@ -1,5 +1,12 @@
 # FIRST — Öğrenci doğrulaması araştırma notu
 
+**30 Eylül 2026 güncel karar:** Kullanıcı ücretli servis yaklaşımını kaldırdı.
+Türkiye odaklı `.edu.tr` okul e-postası formatı kontrol edilerek bu adrese onay
+bağlantısı gönderilir. Bağlantı onayı okul e-postasına erişimi kanıtlar; güncel
+öğrencilik veya öğrenci belgesi kontrolü yapılmaz. Rozet bu ayrımı açıkça ifade
+eder. Durum 12 ay geçerli olur; yenileme aynı e-posta onayıyla yapılır. Aşağıdaki
+servis karşılaştırmaları tarihsel araştırmadır, uygulanacak servis seçimi değildir.
+
 Araştırma: 16 Eylül 2026. Kayda aktarım: 17 Eylül 2026. Fiyatlar bu görüşmedeki resmî kaynak bulgularıdır; satın alma sırasında yeniden doğrulanmalıdır. Hiçbir servis seçilmedi, iletişim/abonelik/ödeme yapılmadı.
 
 ## Amaç ve ayrım

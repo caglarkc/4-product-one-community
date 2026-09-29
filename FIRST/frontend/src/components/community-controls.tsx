@@ -1,6 +1,6 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
-import {api} from '../lib/api';
+import {api,publicApi} from '../lib/api';
 import type {TaxonomyOption} from '../lib/projects';
 import type {CommunityConfig,PageInfo} from '../lib/community';
 import {useSession} from './session-provider';
@@ -27,6 +27,6 @@ export function ReportForm({type,id,own=false}:{type:'project'|'profile';id:stri
 }
 function ReportContent({type,id}:{type:'project'|'profile';id:string}){
  const [open,setOpen]=useState(false);const [config,setConfig]=useState<CommunityConfig|null>(null);const [reason,setReason]=useState('');const [description,setDescription]=useState('');const [error,setError]=useState('');const [message,setMessage]=useState('');const [busy,setBusy]=useState(false);const lock=useRef(false);
- async function load(){setError('');try{setConfig(await api<CommunityConfig>('community/config'));}catch(e){setError((e as Error).message);}}
+ async function load(){setError('');try{setConfig(await publicApi<CommunityConfig>('community/config'));}catch(e){setError((e as Error).message);}}
  return <div className="community-report"><Button variant="quiet" aria-expanded={open} onClick={()=>{setOpen(!open);if(!open&&!config)void load();}}>Şikâyet bildir</Button>{open&&<form onSubmit={async event=>{event.preventDefault();if(lock.current)return;lock.current=true;setBusy(true);setError('');setMessage('');try{const data=await api<{created:boolean}>('reports',{target_type:type,target_id:id,reason,description:description.trim()});setMessage(data.created?'Şikâyetiniz kaydedildi.':'Bu içerik için şikâyetiniz zaten kaydedilmiş.');setDescription('');}catch(e){setError((e as Error).message);}finally{lock.current=false;setBusy(false);}}}>{error&&<Alert role="alert" tone="error">{error}</Alert>}{message&&<Alert role="status" tone="success">{message}</Alert>}{!config?<Button variant="secondary" onClick={()=>void load()}>Nedenleri yükle</Button>:<fieldset disabled={busy}><Field id={`report-reason-${id}`} label="Şikâyet nedeni"><Select id={`report-reason-${id}`} value={reason} onChange={e=>setReason(e.target.value)} required><option value="">Bir neden seçin</option>{config.report_reasons.map(item=><option key={item.value} value={item.value}>{item.label}</option>)}</Select></Field><Field id={`report-description-${id}`} label="Açıklama"><textarea className="input" id={`report-description-${id}`} rows={3} minLength={10} maxLength={2000} required value={description} onChange={e=>setDescription(e.target.value)}/></Field><Button type="submit" loading={busy} disabled={description.trim().length<10}>Şikâyeti gönder</Button></fieldset>}</form>}</div>;
 }

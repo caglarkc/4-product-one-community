@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "messages-admin-backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/messaging_admin_backend",
+    "sessionRef": "/root/messaging_admin_backend"
+  },
+  "outcome": "revise",
+  "summary": "Bağımsız inceleme gösterilmeyen eşzamanlı mesajların okunmuş sayılabildiğini buldu; düzeltme ayrı revision olarak korunur.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/backend/messaging",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/moderation",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Mesajlar yalnız katılımcılara; gönderme/sayfalama/okundu.",
+      "status": "failed",
+      "evidence": "Bağımsız inceleme gösterilmeyen eşzamanlı mesajların okunmuş sayılabildiğini buldu; düzeltme ayrı revision olarak korunur."
+    },
+    {
+      "criterion": "Yönetim yalnız superuser; rapor inceleme ve geri alınabilir yaptırımlar audit edilir.",
+      "status": "failed",
+      "evidence": "Bağımsız inceleme gösterilmeyen eşzamanlı mesajların okunmuş sayılabildiğini buldu; düzeltme ayrı revision olarak korunur."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "failed",
+      "evidence": "Bağımsız inceleme gösterilmeyen eşzamanlı mesajların okunmuş sayılabildiğini buldu; düzeltme ayrı revision olarak korunur."
+    }
+  ],
+  "risks": [
+    "Çalışma zamanı test edilmedi; canlı computer use doğrulaması ayrı düğümdür."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-29T22:54:25.854216+00:00"
+}

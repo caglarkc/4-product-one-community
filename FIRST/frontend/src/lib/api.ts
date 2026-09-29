@@ -1,5 +1,5 @@
 export type ConnectedAccount = {provider: 'google' | 'github'; display_name: string; username: string; email: string; avatar_url: string; profile_url: string};
-export type User = {id:number;email:string;username:string;full_name:string;birth_date:string|null;gender:string;phone:string;email_verified:boolean;phone_verified:boolean;profile_complete:boolean;providers:string[];connected_accounts?:ConnectedAccount[];has_usable_password?:boolean;capabilities:{can_apply:boolean;can_create_listing:boolean}};
+export type User = {id:number;email:string;username:string;full_name:string;birth_date:string|null;gender:string;phone:string;email_verified:boolean;is_administrator?:boolean;phone_verified:boolean;profile_complete:boolean;student_verified?:boolean;student_verified_until?:string|null;providers:string[];connected_accounts?:ConnectedAccount[];has_usable_password?:boolean;capabilities:{can_apply:boolean;can_create_listing:boolean}};
 export class ApiError extends Error {
   constructor(message:string, public status:number, public errors:Record<string,string[]> = {}, public code?:string, public redirectTo?:string){super(message);}
 }
@@ -23,9 +23,9 @@ function origin():string {
 function sessionChanged():ApiError {return new ApiError('Oturumunuz değişti. Lütfen işlemi yeniden başlatın.',409,{},'session_changed');}
 // Variable username segments remain encoded and validated, never raw URLs/paths.
 function validPeoplePath(path:string):boolean {
-  const match = /^(?:people\/|teams\/[a-f0-9-]{36}\/members\/)([^/]+)(?:\/role)?$/.exec(path);
-  if(!match || (path.startsWith('people/') && path.endsWith('/role'))) return false;
-  const segment=match[1];
+  const match = /^(?:(?:people|community\/extension\/people)\/([^/]+)|teams\/[a-f0-9-]{36}\/members\/([^/]+)(?:\/role)?)$/.exec(path);
+  if(!match) return false;
+  const segment=match[1]||match[2];
   try {const username=decodeURIComponent(segment);return /^[\p{L}\p{N}_]{3,30}$/u.test(username)&&encodeURIComponent(username)===segment;} catch{return false;}
 }
 async function request<T>(path:string, options:RequestInit = {}, query?:URLSearchParams, session?:{expected:string|null; accepted?:(token:string|null)=>void}):Promise<T> {
@@ -52,7 +52,8 @@ async function request<T>(path:string, options:RequestInit = {}, query?:URLSearc
   if(!response.ok && body?.code === 'invalid_session') {
     localStorage.removeItem(sessionKey);
     window.dispatchEvent(new CustomEvent<SessionChange>(sessionChangedEvent, {detail: {user: null}}));
-  } else if(response.ok && path !== 'me' && body && Object.hasOwn(body, 'user')) {
+  // Administration returns the managed user's data, not the current identity.
+  } else if(response.ok && path !== 'me' && !path.startsWith('administration/') && body && Object.hasOwn(body, 'user')) {
     window.dispatchEvent(new CustomEvent<SessionChange>(sessionChangedEvent, {detail: {user: body.user}}));
   } else if((changed && path !== 'csrf') || (response.ok && options.method && /^(logout|password\/(change|reset)|email\/verify|sessions(?:\/|$)|account$)/.test(path))) {
     // Revoking another device or verifying this email does not replace the
@@ -127,4 +128,28 @@ export function oauthDestination(value:unknown):string {
   for(const next of ['/','/hesap','/projelerim/yeni']) fixed.push(`/github-kurulum?github=connected&next=${encodeURIComponent(next)}`);
   if(typeof value !== 'string' || !fixed.includes(value)) throw new ApiError('Geçersiz yönlendirme yanıtı.',502);
   return value;
+}
+
+/** Explicit anonymous metadata read: never use this for account data or mutations. */
+export function publicApi<T>(path:'config'|'projects/config'|'community/config'|'people', query?:URLSearchParams):Promise<T> {
+  return boundary(async()=> {
+    if(!['config','projects/config','community/config','people'].includes(path)) throw new ApiError('Geçersiz public API adresi.',400);
+    const response = await fetch(`${origin()}/api/auth/${path}/${query?.size ? `?${query}` : ''}`, {
+      method:'GET',headers:{Accept:'application/json'},credentials:'omit',cache:'no-store',redirect:'error',signal:AbortSignal.timeout(30000),
+    });
+    const body = await response.json().catch(()=>null);
+    if(!response.ok) throw new ApiError(body?.detail || 'Bilgiler yüklenemedi. Lütfen tekrar deneyin.',response.status,body?.errors,body?.code);
+    if(!body) throw new ApiError('Sunucudan geçersiz yanıt alındı.',502);
+    return body as T;
+  });
+}
+export function apiErrorMessage(error:unknown):string {
+  if(!(error instanceof ApiError)) return error instanceof Error ? error.message : 'İşlem tamamlanamadı.';
+  function messages(value:unknown):string[] {
+    if(typeof value === 'string') return [value];
+    if(Array.isArray(value)) return value.flatMap(messages);
+    if(value && typeof value === 'object') return Object.values(value).flatMap(messages);
+    return [];
+  }
+  return [...new Set([error.message,...messages(error.errors)])].join(' ');
 }

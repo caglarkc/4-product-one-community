@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "core-bugs",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": "/root"
+  },
+  "outcome": "revise",
+  "summary": "Bağımsız inceleme ekip detayında gizlenmiş proje bypass ve mevcut kısıtlı üyeyi kaldırma engelini buldu; revision ile düzeltilir.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/backend/projects",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/config",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/urls.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/middleware.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/authentication.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/community_catalog.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "send-machine",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/account_views.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/views.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/teams/views.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/teams/services.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Arama Postgres alan tiplerini açıkça belirtir.",
+      "status": "failed",
+      "evidence": "Bağımsız inceleme ekip detayında gizlenmiş proje bypass ve mevcut kısıtlı üyeyi kaldırma engelini buldu; revision ile düzeltilir."
+    },
+    {
+      "criterion": "Yeni uygulamalar register edilir; yönetim gizleme/yetki kontrolleri ortak erişim yollarında korunur.",
+      "status": "failed",
+      "evidence": "Bağımsız inceleme ekip detayında gizlenmiş proje bypass ve mevcut kısıtlı üyeyi kaldırma engelini buldu; revision ile düzeltilir."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "failed",
+      "evidence": "Bağımsız inceleme ekip detayında gizlenmiş proje bypass ve mevcut kısıtlı üyeyi kaldırma engelini buldu; revision ile düzeltilir."
+    }
+  ],
+  "risks": [
+    "Çalışma zamanı test edilmedi; canlı computer use doğrulaması ayrı düğümdür."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-29T22:54:26.642750+00:00"
+}

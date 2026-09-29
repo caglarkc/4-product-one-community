@@ -1,0 +1,12 @@
+import type {PageInfo} from './community';
+export type ReportStatus='received'|'in_review'|'resolved'|'dismissed';
+export const reportStatuses:Record<ReportStatus,string>={received:'Alındı',in_review:'İnceleniyor',resolved:'Çözüldü',dismissed:'İşlem gerekmiyor'};
+export type AdminReport={id:string;reason:string;description:string;created_at:string;reporter:{username:string;full_name:string};target:{type:'project'|'profile';id:string;title:string;username:string;hidden:boolean;suspended:boolean};status:ReportStatus;note:string;reviewed_at:string|null};
+export type AdminUser={id:string;username:string;full_name:string;email:string;is_active:boolean;is_administrator:boolean;profile_hidden:boolean;suspended:boolean;restriction_reason:string;profile_visibility_reason?:string};
+export type AdminProject={id:string;title:string;owner_username:string;is_active:boolean;hidden:boolean;restriction_reason:string};
+export type AuditEvent={id:string;actor_username:string;action:string;target_type:string;target_id:string;reason:string;created_at:string};
+export type AdministrationSummary={received_reports:number;in_review_reports:number;hidden_projects:number;hidden_profiles:number;suspended_users:number};
+export type ReportsPage=PageInfo&{reports:AdminReport[]};
+export type UsersPage=PageInfo&{users:AdminUser[]};
+export type ProjectsPage=PageInfo&{projects:AdminProject[]};
+export type AuditPage=PageInfo&{events:AuditEvent[]};

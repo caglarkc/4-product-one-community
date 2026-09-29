@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { api } from '../lib/api';
+import { api, publicApi } from '../lib/api';
 import { Alert, Button } from './ui';
 
 export function GoogleButton({remember = false, purpose = 'login', disabled = false, onBusyChange}: {remember?: boolean; purpose?: 'login' | 'reauth'; disabled?: boolean; onBusyChange?: (busy: boolean) => void}) {
@@ -11,7 +11,7 @@ export function GoogleButton({remember = false, purpose = 'login', disabled = fa
   useEffect(() => {
     if (purpose === 'reauth') return;
     let active = true;
-    api<{providers: {google: boolean}}>('config').then(data => {if(active) setEnabled(data.providers?.google === true);}).catch(() => {});
+    publicApi<{providers: {google: boolean}}>('config').then(data => {if(active) setEnabled(data.providers?.google === true);}).catch(() => {});
     return () => {active = false;};
   }, [purpose]);
   if (!enabled) return null;

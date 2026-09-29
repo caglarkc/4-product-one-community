@@ -440,3 +440,35 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 @media (max-width: 640px) { .nav-account-links { right: auto; left: 0; } }
 .task-list { display: grid; gap: var(--space-3); margin-block: var(--space-4); }
 .task-card .project-text { max-height: 24rem; overflow: auto; }
+
+/* Profile extensions, direct messages and administration share the existing surfaces. */
+.extension-stack { display: grid; gap: var(--space-4); min-width: 0; }
+.extension-stack .account-section form, .account-section > form { margin-top: var(--space-4); }
+.extension-stack h2, .extension-stack h3 { margin-bottom: var(--space-3); }
+.contribution-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); margin-block: var(--space-4); }
+.contribution-grid dt { color: var(--color-muted); font-size: var(--font-size-small); }
+.contribution-grid dd { margin: var(--space-1) 0 0; font-size: var(--font-size-section); font-weight: 650; overflow-wrap: anywhere; }
+.portfolio-list { list-style: none; margin: var(--space-4) 0; padding: 0; }
+.portfolio-list li { display: flex; justify-content: space-between; gap: var(--space-3); align-items: flex-start; border-bottom: var(--border-width) solid var(--color-border); padding-block: var(--space-3); }
+.portfolio-list li > div { min-width: 0; }
+.portfolio-list .project-text { margin-bottom: 0; }
+.messages-layout { display: grid; grid-template-columns: minmax(14rem, .8fr) minmax(0, 2fr); gap: var(--space-4); margin-block: var(--space-4); align-items: start; }
+.message-start { display: flex; gap: var(--space-3); align-items: flex-end; width: 100%; }
+.message-start .field { flex: 1; margin-bottom: 0; }
+.conversation-list, .message-list { list-style: none; margin: var(--space-4) 0; padding: 0; }
+.conversation-list li { border-bottom: var(--border-width) solid var(--color-border); }
+.conversation-button { width: 100%; text-align: left; justify-content: space-between; }
+.conversation-button > span:first-child { display: grid; gap: var(--space-1); min-width: 0; }
+.conversation-button[aria-pressed=true] { background: var(--color-elevated); color: var(--color-ink); }
+.conversation-excerpt { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-muted); font-size: var(--font-size-small); }
+.message-list { display: grid; gap: var(--space-3); max-height: 34rem; overflow: auto; padding: var(--space-1); }
+.message-bubble { max-width: 90%; padding: var(--space-3); border-radius: var(--radius-control); background: var(--color-elevated); min-width: 0; }
+.message-bubble--mine { justify-self: end; background: var(--color-info-surface); }
+.message-bubble p { white-space: pre-wrap; overflow-wrap: anywhere; margin-top: var(--space-2); }
+@media (max-width: 800px) { .messages-layout { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 640px) {
+ .contribution-grid { grid-template-columns: minmax(0, 1fr); }
+ .message-start, .portfolio-list li { flex-direction: column; align-items: stretch; }
+ .message-start .field { width: 100%; }
+ .message-bubble { max-width: 100%; }
+}

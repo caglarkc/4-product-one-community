@@ -1,6 +1,6 @@
 'use client';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { api, ApiError } from '../lib/api';
+import { api, publicApi, ApiError } from '../lib/api';
 import { AccountForm, ReauthenticationContext, ReauthenticationOptions } from './account-form';
 import { Alert, Button } from './ui';
 
@@ -13,7 +13,7 @@ export function GitHubButton({remember = false, purpose = 'login', disabled = fa
   const lock = useRef(false);
   useEffect(() => {
     let active = true;
-    api<{providers: {github: boolean}}>('config').then(data => {if(active) setEnabled(data.providers?.github === true);}).catch(() => {});
+    publicApi<{providers: {github: boolean}}>('config').then(data => {if(active) setEnabled(data.providers?.github === true);}).catch(() => {});
     return () => {active = false;};
   }, []);
   if (!enabled) return null;

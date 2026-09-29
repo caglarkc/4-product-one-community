@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "profile-backend",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/profile_backend",
+    "sessionRef": "/root/profile_backend"
+  },
+  "outcome": "pass",
+  "summary": "Kaynak ve bağımsız inceleme: .edu.tr token/12ay/allow-list; manuel istatistik ve private opt-in; owner/katkıcı public vitrin; PDF/JPG decoded boyut/sayı/toplam kota ve izole raster kaynakta uygulanır.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "FIRST/backend/profiles",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/community_views.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    },
+    {
+      "type": "source",
+      "path": "FIRST/backend/accounts/serializers.py",
+      "change": "reported",
+      "description": "Kaynak/diff kabul kanıtı; runtime iddiası değildir."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Okul e-posta doğrulama ve12ay süre, private adres sızıntısı yok.",
+      "status": "passed",
+      "evidence": "Kaynak ve bağımsız inceleme: .edu.tr token/12ay/allow-list; manuel istatistik ve private opt-in; owner/katkıcı public vitrin; PDF/JPG decoded boyut/sayı/toplam kota ve izole raster kaynakta uygulanır."
+    },
+    {
+      "criterion": "Manuel katkı istatistikleri hesap tarihinden; public vitrin uygunluğu ve belge kotaları sunucuda uygulanır.",
+      "status": "passed",
+      "evidence": "Kaynak ve bağımsız inceleme: .edu.tr token/12ay/allow-list; manuel istatistik ve private opt-in; owner/katkıcı public vitrin; PDF/JPG decoded boyut/sayı/toplam kota ve izole raster kaynakta uygulanır."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-inspection",
+      "status": "passed",
+      "evidence": "Kaynak ve bağımsız inceleme: .edu.tr token/12ay/allow-list; manuel istatistik ve private opt-in; owner/katkıcı public vitrin; PDF/JPG decoded boyut/sayı/toplam kota ve izole raster kaynakta uygulanır."
+    }
+  ],
+  "risks": [
+    "Çalışma zamanı test edilmedi; canlı computer use doğrulaması ayrı düğümdür."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-29T22:56:57.420115+00:00"
+}
