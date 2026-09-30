@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "backend-revision-r2",
+  "agent": {
+    "platform": "codex",
+    "identity": "backend_revision_final",
+    "sessionRef": "backend_revision_final-source-turn"
+  },
+  "outcome": "pass",
+  "summary": "Bireysel worker rate, lider baseline/küme ve dar case teslim erişimi ile payout proof DTO tamamlandı.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "STEP/backend",
+      "change": "created",
+      "description": "contracts.py sameatomic individual worker hourly_rate acceptedrate, previous Week unchanged; market.py Team→LeaderChange→Contract locks baseline_leader+complete current active set, stale409; target submitted milestone asset download requires open permitted casegrant/contract binding; serialization bank_transfer_proven only bound real livepaid settlements total. models/0001_initial sourceupdated notapplied, no runtime."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Bireysel ücret kabulü worker rate ve yeni hafta hesabını aynı işlemde günceller, önceki snapshot korunur.",
+      "status": "passed",
+      "evidence": "contracts.py sameatomic individual worker hourly_rate acceptedrate, previous Week unchanged; market.py Team→LeaderChange→Contract locks baseline_leader+complete current active set, stale409; target submitted milestone asset download requires open permitted casegrant/contract binding; serialization bank_transfer_proven only bound real livepaid settlements total. models/0001_initial sourceupdated notapplied, no runtime."
+    },
+    {
+      "criterion": "Aktif takım lider/küme baselineı final lock altında uyuşmadan lider değişimi kesinleşmez.",
+      "status": "passed",
+      "evidence": "contracts.py sameatomic individual worker hourly_rate acceptedrate, previous Week unchanged; market.py Team→LeaderChange→Contract locks baseline_leader+complete current active set, stale409; target submitted milestone asset download requires open permitted casegrant/contract binding; serialization bank_transfer_proven only bound real livepaid settlements total. models/0001_initial sourceupdated notapplied, no runtime."
+    },
+    {
+      "criterion": "Case operator teslim dosyasını yalnız hedef açık aşama/grant kapsamıyla indirebilir; Payout DTO gerçek bound proof içerir.",
+      "status": "passed",
+      "evidence": "contracts.py sameatomic individual worker hourly_rate acceptedrate, previous Week unchanged; market.py Team→LeaderChange→Contract locks baseline_leader+complete current active set, stale409; target submitted milestone asset download requires open permitted casegrant/contract binding; serialization bank_transfer_proven only bound real livepaid settlements total. models/0001_initial sourceupdated notapplied, no runtime."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "contracts.py sameatomic individual worker hourly_rate acceptedrate, previous Week unchanged; market.py Team→LeaderChange→Contract locks baseline_leader+complete current active set, stale409; target submitted milestone asset download requires open permitted casegrant/contract binding; serialization bank_transfer_proven only bound real livepaid settlements total. models/0001_initial sourceupdated notapplied, no runtime."
+    },
+    {
+      "name": "Runtime/test/lint/typecheck/build/browser/native capture",
+      "status": "not_run",
+      "evidence": "Kullanıcının yalnız kaynak inceleme tercihi."
+    }
+  ],
+  "risks": [
+    "Kaynak teslimi çalışma zamanı, sağlayıcı veya OS paket doğrulaması değildir."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:34:49.366389+00:00"
+}

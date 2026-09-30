@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "runtime-contract-revision",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "root"
+  },
+  "outcome": "pass",
+  "summary": "Son category/team/terms/fixture bank APIleri gerçek kaynakla hizalandı.",
+  "artifacts": [
+    {
+      "type": "file",
+      "path": "STEP/contracts/api.md",
+      "change": "modified",
+      "description": "STEP source artifact"
+    },
+    {
+      "type": "file",
+      "path": "STEP/contracts/providers.md",
+      "change": "modified",
+      "description": "STEP source artifact"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Fixture/alıcı/çekim resultları gerçek banka kanıtından ayrı sözleşmede tanımlıdır.",
+      "status": "passed",
+      "evidence": "api.md son kaynak uyumu, provider bank fixture falseproof/blocked operation; isimdegrade id/readonlyslug; all material counterpartyterms canonical; live on-demand sağlayıcı kanıtlanmış gösterilmez."
+    },
+    {
+      "criterion": "Son kategori/özel dosya/koşul/takım DTOları gerçek tüketicilerle tutarlıdır.",
+      "status": "passed",
+      "evidence": "api.md son kaynak uyumu, provider bank fixture falseproof/blocked operation; isimdegrade id/readonlyslug; all material counterpartyterms canonical; live on-demand sağlayıcı kanıtlanmış gösterilmez."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak incelemesi",
+      "status": "passed",
+      "evidence": "api.md son kaynak uyumu, provider bank fixture falseproof/blocked operation; isimdegrade id/readonlyslug; all material counterpartyterms canonical; live on-demand sağlayıcı kanıtlanmış gösterilmez."
+    },
+    {
+      "name": "Native/build/test/runtime/provider",
+      "status": "not_run",
+      "evidence": "Kalıcı kaynak kontrolü tercihi; gerçek OS/sağlayıcı/derleme kanıtı yok."
+    }
+  ],
+  "risks": [
+    "OS imza/notarization/paketler fiziksel sistemde doğrulanmadı.",
+    "Gerçek on-demand PSP/bank transfer kabiliyeti dış kanıt bekliyor."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:17:17.506714+00:00"
+}

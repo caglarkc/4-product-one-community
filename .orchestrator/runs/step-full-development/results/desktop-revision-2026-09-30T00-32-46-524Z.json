@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "desktop-revision",
+  "agent": {
+    "platform": "codex",
+    "identity": "product_links",
+    "sessionRef": "product_links-source-turn"
+  },
+  "outcome": "pass",
+  "summary": "Native probe cleanup ve kabul edilen otomatik idle pause/resume kaynakları tamamlandı.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "STEP/desktop",
+      "change": "created",
+      "description": "engine._probe_native cleanup allgrant paths; idle_waiting no capture/app/draft/billing, last input snapshot completessegment; activity waits previousblock/privacy/stop ACK then freshonline fundedgrant; manualstop/native/storage/networkfault closeswatcher continuingfalse; native counters preserve lastactivity acrossgrant probes; README/UI distinction explicit. No runtime/native OS proof."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Her grant probe başarısızlığı counters/listener cleanup yapar ve açık devam gerektirir.",
+      "status": "passed",
+      "evidence": "engine._probe_native cleanup allgrant paths; idle_waiting no capture/app/draft/billing, last input snapshot completessegment; activity waits previousblock/privacy/stop ACK then freshonline fundedgrant; manualstop/native/storage/networkfault closeswatcher continuingfalse; native counters preserve lastactivity acrossgrant probes; README/UI distinction explicit. No runtime/native OS proof."
+    },
+    {
+      "criterion": "Kabul edilen hareketsizlik duraklama/devamı yeni fonlanmış grant ve ACK sınırlarıyla otomatik yürür; hata/stop otomatik devam etmez.",
+      "status": "passed",
+      "evidence": "engine._probe_native cleanup allgrant paths; idle_waiting no capture/app/draft/billing, last input snapshot completessegment; activity waits previousblock/privacy/stop ACK then freshonline fundedgrant; manualstop/native/storage/networkfault closeswatcher continuingfalse; native counters preserve lastactivity acrossgrant probes; README/UI distinction explicit. No runtime/native OS proof."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "engine._probe_native cleanup allgrant paths; idle_waiting no capture/app/draft/billing, last input snapshot completessegment; activity waits previousblock/privacy/stop ACK then freshonline fundedgrant; manualstop/native/storage/networkfault closeswatcher continuingfalse; native counters preserve lastactivity acrossgrant probes; README/UI distinction explicit. No runtime/native OS proof."
+    },
+    {
+      "name": "Runtime/test/lint/typecheck/build/browser/native capture",
+      "status": "not_run",
+      "evidence": "Kullanıcının yalnız kaynak inceleme tercihi."
+    }
+  ],
+  "risks": [
+    "Kaynak teslimi çalışma zamanı, sağlayıcı veya OS paket doğrulaması değildir."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:32:46.524902+00:00"
+}

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "desktop-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "independent-source-read"
+  },
+  "outcome": "revise",
+  "summary": "P2 otomatik grant probe hatası listenerları açık bırakıyor.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "engine.py _request_grant native probe has no cleanup; sync exception only stops kind=start. Native API official source verified; listener/capture/runtime not run."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "P1/P2 bulgular yoktur; kabul edilen kapsam/yetki/para/gizlilik sınırları korunur.",
+      "status": "failed",
+      "evidence": "engine.py _request_grant native probe has no cleanup; sync exception only stops kind=start. Native API official source verified; listener/capture/runtime not run."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak incelemesi",
+      "status": "failed",
+      "evidence": "engine.py _request_grant native probe has no cleanup; sync exception only stops kind=start. Native API official source verified; listener/capture/runtime not run."
+    },
+    {
+      "name": "Runtime/test/build/listener/capture",
+      "status": "not_run",
+      "evidence": "Kullanıcı kaynak-only tercihi."
+    }
+  ],
+  "risks": [
+    "Native OS/paket runtime doğrulanmadı."
+  ],
+  "followUps": [
+    "desktop-revision"
+  ],
+  "completedAt": "2026-09-30T00:24:00Z"
+}

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "contract-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "step_inventory",
+    "sessionRef": "/root/step_inventory"
+  },
+  "outcome": "revise",
+  "summary": "P2: atomic offline privacy intent alanı upload payloadında yok.",
+  "artifacts": [
+    {
+      "type": "review",
+      "path": null,
+      "change": "reported",
+      "description": "P2: atomic offline privacy intent alanı upload payloadında yok."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez.",
+      "status": "failed",
+      "evidence": "P2: atomic offline privacy intent alanı upload payloadında yok. api.md tracker/payments; domain.md:14 ve desktop.md:8 ile karşılaştırma."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak review/verify",
+      "status": "failed",
+      "evidence": "P2: atomic offline privacy intent alanı upload payloadında yok."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kullanıcı tercihi."
+    }
+  ],
+  "risks": [
+    "P2: atomic offline privacy intent alanı upload payloadında yok."
+  ],
+  "followUps": [
+    "API payload/cevap ve device scope düzeltmesi; bağımsız revision gate."
+  ],
+  "completedAt": "2026-09-29T23:41:30.979030+00:00"
+}

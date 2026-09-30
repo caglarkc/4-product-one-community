@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "backend-verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "manager-source-turn"
+  },
+  "outcome": "revise",
+  "summary": "P1 bireysel rate worker hesabına yansımıyor; lider son aktif sözleşme kümesini yeniden kontrol etmiyor; P2 scoped teslim dosyası indirilemiyor.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "contracts.py change_accept c.rate vs ContractWorker oldrate/new Week snapshot; market.py leadership request baseline/current active set absent finalapproval; tracking.file_response lacks target-scoped milestone submission asset permission for assigned staff. Fresh wholebackend review and root source verification confirmed. Runtime/test not run."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Acceptance modülleri kaynakta eşleşir; çalışma zamanı veya canlı başarı iddiası yapılmaz.",
+      "status": "failed",
+      "evidence": "contracts.py change_accept c.rate vs ContractWorker oldrate/new Week snapshot; market.py leadership request baseline/current active set absent finalapproval; tracking.file_response lacks target-scoped milestone submission asset permission for assigned staff. Fresh wholebackend review and root source verification confirmed. Runtime/test not run."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "failed",
+      "evidence": "contracts.py change_accept c.rate vs ContractWorker oldrate/new Week snapshot; market.py leadership request baseline/current active set absent finalapproval; tracking.file_response lacks target-scoped milestone submission asset permission for assigned staff. Fresh wholebackend review and root source verification confirmed. Runtime/test not run."
+    },
+    {
+      "name": "Runtime/test/lint/typecheck/build/browser/native capture",
+      "status": "not_run",
+      "evidence": "Kullanıcının yalnız kaynak inceleme tercihi."
+    }
+  ],
+  "risks": [
+    "Kaynak teslimi çalışma zamanı, sağlayıcı veya OS paket doğrulaması değildir."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:32:34.967573+00:00"
+}

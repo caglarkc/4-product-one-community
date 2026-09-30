@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "operations-contract",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "native-agent-source-inspection"
+  },
+  "outcome": "pass",
+  "summary": "Terminal checkout tekrar, operator uzlaştırma, hedefli milestone/manual kanıtı ve native idle resume ortak sözleşmeleri tamamlandı.",
+  "artifacts": [
+    {
+      "type": "document",
+      "path": "STEP/contracts/api.md",
+      "change": "created",
+      "description": "Actual routes api.py/payments.py/accounts.py and serializers Contract current leader object; worklog scoped milestones summary basis; no fabricated bank proof, no blind unknown retry; desktop accepted idle/new-input/ACK/onlinegrant vs explicit manual/fault resume boundary. API/providers/desktop docs exact actor/body/DTO conditions."
+    },
+    {
+      "type": "document",
+      "path": "STEP/contracts/providers.md",
+      "change": "created",
+      "description": "Actual routes api.py/payments.py/accounts.py and serializers Contract current leader object; worklog scoped milestones summary basis; no fabricated bank proof, no blind unknown retry; desktop accepted idle/new-input/ACK/onlinegrant vs explicit manual/fault resume boundary. API/providers/desktop docs exact actor/body/DTO conditions."
+    },
+    {
+      "type": "document",
+      "path": "STEP/contracts/desktop.md",
+      "change": "created",
+      "description": "Actual routes api.py/payments.py/accounts.py and serializers Contract current leader object; worklog scoped milestones summary basis; no fabricated bank proof, no blind unknown retry; desktop accepted idle/new-input/ACK/onlinegrant vs explicit manual/fault resume boundary. API/providers/desktop docs exact actor/body/DTO conditions."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kesin başarısız checkout tekrarları ve operator kanıt uzlaştırması gerçek kaynak/DTO ile tutarlıdır.",
+      "status": "passed",
+      "evidence": "Actual routes api.py/payments.py/accounts.py and serializers Contract current leader object; worklog scoped milestones summary basis; no fabricated bank proof, no blind unknown retry; desktop accepted idle/new-input/ACK/onlinegrant vs explicit manual/fault resume boundary. API/providers/desktop docs exact actor/body/DTO conditions."
+    },
+    {
+      "criterion": "Dispute hedefli milestone/manuel süre kanıtı ve stale lider teklif sınırı tüketicilerde ortaktır.",
+      "status": "passed",
+      "evidence": "Actual routes api.py/payments.py/accounts.py and serializers Contract current leader object; worklog scoped milestones summary basis; no fabricated bank proof, no blind unknown retry; desktop accepted idle/new-input/ACK/onlinegrant vs explicit manual/fault resume boundary. API/providers/desktop docs exact actor/body/DTO conditions."
+    },
+    {
+      "criterion": "Hareketsizlik otomatik devamı ile manuel stop/native hata yeniden başlatma sınırları accepted tracker kapsamıyla tutarlıdır.",
+      "status": "passed",
+      "evidence": "Actual routes api.py/payments.py/accounts.py and serializers Contract current leader object; worklog scoped milestones summary basis; no fabricated bank proof, no blind unknown retry; desktop accepted idle/new-input/ACK/onlinegrant vs explicit manual/fault resume boundary. API/providers/desktop docs exact actor/body/DTO conditions."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "Actual routes api.py/payments.py/accounts.py and serializers Contract current leader object; worklog scoped milestones summary basis; no fabricated bank proof, no blind unknown retry; desktop accepted idle/new-input/ACK/onlinegrant vs explicit manual/fault resume boundary. API/providers/desktop docs exact actor/body/DTO conditions."
+    },
+    {
+      "name": "Runtime/test/lint/typecheck/build/browser/native capture",
+      "status": "not_run",
+      "evidence": "Kullanıcının yalnız kaynak inceleme tercihi."
+    }
+  ],
+  "risks": [
+    "Kaynak teslimi çalışma zamanı, sağlayıcı veya OS paket doğrulaması değildir."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:26:04.684736+00:00"
+}

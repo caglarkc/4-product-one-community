@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "consumer-contract",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "root"
+  },
+  "outcome": "pass",
+  "summary": "Davet, staff seçimi, case erişimi ve etkin/üretim ödeme readiness DTOları kesinleştirildi.",
+  "artifacts": [
+    {
+      "type": "file",
+      "path": "STEP/contracts/api.md",
+      "change": "modified",
+      "description": "STEP kapsamındaki kaynak/artifact"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Davet, yönetim kullanıcı/inceleme ve ödeme readiness alanları tüketicilerde aynı biçimde tanımlıdır.",
+      "status": "passed",
+      "evidence": "STEP/contracts/api.md son tüketici bölümü; backend/frontend writer bildirimleri, source DTO/route uyumu inceleme kapılarında ayrıca değerlendirilecek."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak incelemesi",
+      "status": "passed",
+      "evidence": "STEP/contracts/api.md son tüketici bölümü; backend/frontend writer bildirimleri, source DTO/route uyumu inceleme kapılarında ayrıca değerlendirilecek."
+    },
+    {
+      "name": "Runtime/provider/build",
+      "status": "not_run",
+      "evidence": "Kullanıcının kaynak incelemesi tercihi; kaynak teslimi çalışma zamanı kanıtı değildir."
+    }
+  ],
+  "risks": [
+    "Canlı provider/SMTP/OTP değerleri alınmadı.",
+    "OS paketleme/izinleri gerçek sistemlerde denenmedi."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:06:42.543854+00:00"
+}

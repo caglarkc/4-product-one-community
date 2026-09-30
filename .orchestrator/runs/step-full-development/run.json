@@ -1,0 +1,2878 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "title": "STEP full product implementation",
+  "goal": "Kabul edilen M01–M12/P0–P9 STEP kapsamını backend web masaüstü uygulamasıyla geliştirmek ve bağımsız kaynak incelemesi sonrası teslim etmek",
+  "createdAt": "2026-09-29T23:31:30.388Z",
+  "updatedAt": "2026-09-30T00:36:32.907Z",
+  "revision": 104,
+  "context": {
+    "requiredPaths": [
+      "AGENTS.md",
+      ".agent/skills/meta/repo-context/SKILL.md",
+      ".agent/skills/SKILL-MAP.md",
+      ".cursor/maps/stack-shared-ai/overview.md",
+      ".agent/rules.md",
+      "platform-urun-fikirleri.md",
+      "STEP/kararlar.md",
+      "STEP/urun-kapsami.md",
+      "STEP/gelistirme-plani.md"
+    ],
+    "optionalPaths": [],
+    "catalogSnapshot": ".orchestrator/runs/step-full-development/context-catalog.json",
+    "assumptions": [
+      "Kaynaklar yönetilen STEP worktree içinde geliştirilir; FIRST mevcut çalışma ağacına dokunulmaz.",
+      "52 karar kesin; sonraya bırakılan sayılar yapılandırılabilir test değerleri ve canlı hazırlık gate olarak tutulur."
+    ]
+  },
+  "constraints": [
+    "Kullanıcı aksini söylemediyse accepted entegrasyon mantıksal commitlerle main branch'e push edilir; alt writerlar bağımsız push yapmaz ve force-push yasaktır.",
+    "Backend servisleri ve lokal Docker agent makinesinde başlatılmaz.",
+    "Test/lint/typecheck/browser/computer use yazma veya çalıştırma yok; bağımsız kaynak review/verify.",
+    "Provider hesabı/ücret/secret uydurma yok; gerçek sağlayıcı ayarı olmadan canlı başarı yok.",
+    "Alt agent commit/push yapmaz. Entegrasyon sahibi task-only commitleri mevcut main dalına taşır ve pushlar."
+  ],
+  "policy": {
+    "requiresIntegration": true
+  },
+  "decisions": [
+    {
+      "id": "public-remote-env-safety",
+      "summary": "GitHub hedef metadata private=false; gerçek env yalnız yerel/host runtime, secret Git teslimi dışında.",
+      "reason": "Private repo için geçmiş env push yetkisi bu public hedefe genellenmez.",
+      "actor": "manager",
+      "at": "2026-09-30T00:00:00Z"
+    },
+    {
+      "id": "disjoint-native-writers",
+      "summary": "Backend web ve desktop native alt agentlar ayrı STEP alt dizinlerinde; FIRST izole yönetilen worktree ile korunur.",
+      "reason": "Ortak sözleşmeler bağımsız gate geçti; ready desktop batch yalnız kendi dosyalarını yazar, mevcut writer scope çakışması yok.",
+      "decidedAt": "2026-09-29T23:52:45.916Z",
+      "actor": "manager"
+    },
+    {
+      "id": "accepted-revision-gates",
+      "summary": "Entegrasyon yalnız son accepted kaynak review/verify kapılarına bağlıdır; başarısız ilk kapılar ve bütün resultRef/events geçmişi korunur.",
+      "reason": "Revizyonlara bağlı bağımsız kabul tamamlandı; tarihsel başarısızlık son kaynak blockerı diye yeniden açılmaz.",
+      "actor": "manager",
+      "at": "2026-09-30T00:36:30Z"
+    },
+    {
+      "id": "public-push-approval-rejection",
+      "summary": "Kaynak uygulaması yerel main e90f85425d80f8ecb4a10bdd5e6283c6e3142487 ile teslim edildi; public hedef push otomatik onay incelemesi tarafından reddedildi.",
+      "reason": "Public GitHub caglarkc/4-product-one-community üzerinde STEP kaynaklarının yayımlanması için payload-hedefe özgü açık insan onayı isteniyor. Dolaylı yol veya tekrar push denenmedi. Gerçek env yerelde ve ignore dışında tutuldu.",
+      "actor": "manager",
+      "at": "2026-09-30T00:40:00Z"
+    }
+  ],
+  "items": [
+    {
+      "id": "discovery-architecture",
+      "title": "P0 web/backend mimari keşfi",
+      "kind": "discovery",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "P0 web/backend mimari keşfi",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "step_inventory"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/discovery-architecture-2026-09-29T23-38-37-620Z.json"
+    },
+    {
+      "id": "discovery-payments",
+      "title": "P0 Türkiye sağlayıcı keşfi",
+      "kind": "discovery",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "P0 Türkiye sağlayıcı keşfi",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "step_decision_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/discovery-payments-2026-09-29T23-38-37-625Z.json"
+    },
+    {
+      "id": "discovery-tracker",
+      "title": "P0 üç OS tracker keşfi",
+      "kind": "discovery",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "P0 üç OS tracker keşfi",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "product_links"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/discovery-tracker-2026-09-29T23-38-37-632Z.json"
+    },
+    {
+      "id": "technical-contract",
+      "title": "P0 teknik/API/veri/rol sözleşmeleri",
+      "kind": "api-contract",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "P0 teknik/API/veri/rol sözleşmeleri",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/teknik-kararlar.md",
+        "STEP/contracts"
+      ],
+      "acceptanceCriteria": [
+        "Stack/sağlayıcı kabiliyetleri resmi kaynaklarla seçilir; eksik dış yapılandırma görünürdür.",
+        "Backend/web/desktop veri ve API/rol sözleşmeleri ilk tüketici işlerinden önce ortaklaştırılır."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "discovery-architecture",
+          "discovery-payments",
+          "discovery-tracker"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/teknik-kararlar.md",
+          "STEP/contracts"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/technical-contract-2026-09-29T23-39-22-713Z.json"
+    },
+    {
+      "id": "contract-review",
+      "title": "Teknik sözleşme bağımsız incelemesi",
+      "kind": "review",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Teknik sözleşme bağımsız incelemesi",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "technical-contract"
+        ],
+        "reviews": [
+          "technical-contract"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "step_inventory"
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/contract-review-2026-09-29T23-41-30-979Z.json"
+    },
+    {
+      "id": "contract-verify",
+      "title": "Teknik sözleşme kaynak doğrulaması",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Teknik sözleşme kaynak doğrulaması",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "technical-contract"
+        ],
+        "reviews": [],
+        "verifies": [
+          "technical-contract"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "step_decision_review"
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/contract-verify-2026-09-29T23-41-30-980Z.json"
+    },
+    {
+      "id": "backend",
+      "title": "backend tam çekirdek uygulaması",
+      "kind": "implement",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "backend tam çekirdek uygulaması",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/backend"
+      ],
+      "acceptanceCriteria": [
+        "Sahiplik kapsamındaki M01–M12/P0–P9 davranışları gerçek API/işlem kaynaklarıyla uygulanır.",
+        "Özel veri/yetki/para/test-canlı sınırları korunur; eksik sağlayıcı ve OS yetkisi başarı sayılmaz."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "contract-review-r1",
+          "contract-verify-r1"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/backend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "step_inventory"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-2026-09-30T00-25-40-793Z.json"
+    },
+    {
+      "id": "backend-review",
+      "title": "backend bağımsız kaynak incelemesi",
+      "kind": "review",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "backend bağımsız kaynak incelemesi",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "P1/P2 bulgular yoktur; kabul edilen kapsam/yetki/para/gizlilik sınırları korunur."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "clarification-review",
+          "clarification-verify",
+          "backend-revision"
+        ],
+        "reviews": [
+          "backend",
+          "backend-revision"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "final_source_review"
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/backend-review-2026-09-30T00-32-30-096Z.json"
+    },
+    {
+      "id": "backend-verify",
+      "title": "backend bağımsız kaynak doğrulaması",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "backend bağımsız kaynak doğrulaması",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "Acceptance modülleri kaynakta eşleşir; çalışma zamanı veya canlı başarı iddiası yapılmaz."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "clarification-review",
+          "clarification-verify",
+          "backend-revision"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "backend-revision"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/backend-verify-2026-09-30T00-32-34-967Z.json"
+    },
+    {
+      "id": "frontend",
+      "title": "frontend tam çekirdek uygulaması",
+      "kind": "implement",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "frontend tam çekirdek uygulaması",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/frontend"
+      ],
+      "acceptanceCriteria": [
+        "Sahiplik kapsamındaki M01–M12/P0–P9 davranışları gerçek API/işlem kaynaklarıyla uygulanır.",
+        "Özel veri/yetki/para/test-canlı sınırları korunur; eksik sağlayıcı ve OS yetkisi başarı sayılmaz."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "contract-review-r1",
+          "contract-verify-r1"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/frontend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "step_decision_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-2026-09-30T00-11-00-606Z.json"
+    },
+    {
+      "id": "frontend-review",
+      "title": "frontend bağımsız kaynak incelemesi",
+      "kind": "review",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "frontend bağımsız kaynak incelemesi",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "P1/P2 bulgular yoktur; kabul edilen kapsam/yetki/para/gizlilik sınırları korunur."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "frontend",
+          "clarification-review",
+          "clarification-verify"
+        ],
+        "reviews": [
+          "frontend"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "independent-reviewer"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-review-2026-09-30T00-11-49-901Z.json"
+    },
+    {
+      "id": "frontend-verify",
+      "title": "frontend bağımsız kaynak doğrulaması",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "frontend bağımsız kaynak doğrulaması",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "Acceptance modülleri kaynakta eşleşir; çalışma zamanı veya canlı başarı iddiası yapılmaz."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "frontend",
+          "clarification-review",
+          "clarification-verify"
+        ],
+        "reviews": [],
+        "verifies": [
+          "frontend"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "source_acceptance"
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/frontend-verify-2026-09-30T00-15-13-525Z.json"
+    },
+    {
+      "id": "desktop",
+      "title": "desktop tam çekirdek uygulaması",
+      "kind": "implement",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "desktop tam çekirdek uygulaması",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/desktop"
+      ],
+      "acceptanceCriteria": [
+        "Sahiplik kapsamındaki M01–M12/P0–P9 davranışları gerçek API/işlem kaynaklarıyla uygulanır.",
+        "Özel veri/yetki/para/test-canlı sınırları korunur; eksik sağlayıcı ve OS yetkisi başarı sayılmaz."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "contract-review-r1",
+          "contract-verify-r1",
+          "clarification-review",
+          "clarification-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/desktop"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "product_links"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/desktop-2026-09-30T00-17-17-506Z.json"
+    },
+    {
+      "id": "desktop-review",
+      "title": "desktop bağımsız kaynak incelemesi",
+      "kind": "review",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "desktop bağımsız kaynak incelemesi",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "P1/P2 bulgular yoktur; kabul edilen kapsam/yetki/para/gizlilik sınırları korunur."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "desktop"
+        ],
+        "reviews": [
+          "desktop"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/desktop-review-2026-09-30T00-24-00-000Z.json"
+    },
+    {
+      "id": "desktop-verify",
+      "title": "desktop bağımsız kaynak doğrulaması",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "desktop bağımsız kaynak doğrulaması",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "Acceptance modülleri kaynakta eşleşir; çalışma zamanı veya canlı başarı iddiası yapılmaz."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "desktop"
+        ],
+        "reviews": [],
+        "verifies": [
+          "desktop"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "source_acceptance"
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/desktop-verify-2026-09-30T00-24-00-000Z.json"
+    },
+    {
+      "id": "product-integration",
+      "title": "P9 tam STEP entegrasyonu ve kaynak teslimi",
+      "kind": "integration",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "P9 tam STEP entegrasyonu ve kaynak teslimi",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/README.md",
+        "STEP/uygulama-durumu.md",
+        "STEP/deployment.md",
+        "STEP/compose.yaml",
+        "STEP/.env",
+        ".cursor/maps/stack-shared-ai",
+        ".orchestrator/runs/step-full-development",
+        "STEP/gelistirme-plani.md"
+      ],
+      "acceptanceCriteria": [
+        "Katman sözleşmeleri ve ilk canlı kapsamın kaynak uygulaması birlikte izlenebilir.",
+        "Yalnız görev dosyaları anlamlı commit/push ile main dalına teslim edilir; remote hash doğrulanır.",
+        "Dış provider/SMTP/OS izinleri ve yapılmamış çalışma zamanı kontrolleri dürüst raporlanır."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "frontend-review",
+          "consumer-review",
+          "consumer-verify",
+          "packaging-review",
+          "packaging-verify",
+          "frontend-review-r1",
+          "runtime-contract-review",
+          "runtime-contract-verify",
+          "desktop-review-r1",
+          "desktop-verify-r1",
+          "operations-contract-review",
+          "operations-contract-verify",
+          "frontend-verify-r2",
+          "backend-review-r1",
+          "backend-verify-r1"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "technical-contract",
+          "backend",
+          "frontend",
+          "desktop",
+          "contract-revision",
+          "contract-clarification",
+          "consumer-contract",
+          "packaging",
+          "runtime-contract-revision",
+          "frontend-revision",
+          "desktop-revision",
+          "operations-contract",
+          "backend-revision",
+          "frontend-revision-r2",
+          "backend-revision-r2"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/README.md",
+          "STEP/uygulama-durumu.md",
+          "STEP/deployment.md",
+          "STEP/compose.yaml",
+          "STEP/.env",
+          ".cursor/maps/stack-shared-ai",
+          ".orchestrator/runs/step-full-development",
+          "STEP/gelistirme-plani.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "active",
+      "attempt": 1,
+      "resultRef": null
+    },
+    {
+      "id": "contract-revision",
+      "title": "API privacy payload ve payment DTO revizyonu",
+      "kind": "revision",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "API privacy payload ve payment DTO revizyonu",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/contracts/api.md"
+      ],
+      "acceptanceCriteria": [
+        "Atomik privacy intent/reason ve Block cevabı/device scope ortak APIde bulunur.",
+        "Payment/Payout/settlement/checkout DTOları ayrı durumlarla tanımlanır."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "technical-contract"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "technical-contract"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/contracts/api.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/contract-revision-2026-09-29T23-43-21-121Z.json"
+    },
+    {
+      "id": "contract-review-r1",
+      "title": "Teknik sözleşme bağımsız incelemesi revision",
+      "kind": "review",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Teknik sözleşme bağımsız incelemesi",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "contract-revision",
+          "contract-review"
+        ],
+        "reviews": [
+          "technical-contract",
+          "contract-revision"
+        ],
+        "verifies": [],
+        "revises": [
+          "contract-review"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "step_inventory"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/contract-review-r1-2026-09-29T23-43-21-122Z.json"
+    },
+    {
+      "id": "contract-verify-r1",
+      "title": "Teknik sözleşme kaynak doğrulaması revision",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Teknik sözleşme kaynak doğrulaması",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "contract-revision",
+          "contract-verify"
+        ],
+        "reviews": [],
+        "verifies": [
+          "technical-contract",
+          "contract-revision"
+        ],
+        "revises": [
+          "contract-verify"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "step_decision_review"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/contract-verify-r1-2026-09-29T23-43-21-123Z.json"
+    },
+    {
+      "id": "contract-clarification",
+      "title": "Tüketici DTO ve güvenli offline grant ayrıntıları",
+      "kind": "api-contract",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Tüketici DTO ve güvenli offline grant ayrıntıları",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/contracts"
+      ],
+      "acceptanceCriteria": [
+        "Eksik tüketici DTOları ortak APIde typed field/state biçiminde bulunur.",
+        "Shared team offline grant ve immutable upload-timeout privacy race teknik sözleşmede giderilir."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "contract-review-r1",
+          "contract-verify-r1"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/contracts"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/contract-clarification-2026-09-29T23-49-50-300Z.json"
+    },
+    {
+      "id": "clarification-review",
+      "title": "Tüketici clarification review",
+      "kind": "review",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Teknik sözleşme bağımsız incelemesi",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "contract-clarification"
+        ],
+        "reviews": [
+          "contract-clarification"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "product_links"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/clarification-review-2026-09-29T23-49-50-302Z.json"
+    },
+    {
+      "id": "clarification-verify",
+      "title": "Tüketici clarification verify",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Teknik sözleşme kaynak doğrulaması",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "contract-clarification"
+        ],
+        "reviews": [],
+        "verifies": [
+          "contract-clarification"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "step_decision_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/clarification-verify-2026-09-29T23-52-04-062Z.json"
+    },
+    {
+      "id": "consumer-contract",
+      "title": "Tüketici yönetim/davet/readiness sözleşmesi",
+      "kind": "api-contract",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Tüketici yönetim/davet/readiness sözleşmesi",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/contracts/api.md"
+      ],
+      "acceptanceCriteria": [
+        "Davet, yönetim kullanıcı/inceleme ve ödeme readiness alanları tüketicilerde aynı biçimde tanımlıdır."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "clarification-review",
+          "clarification-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/contracts/api.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/consumer-contract-2026-09-30T00-06-42-543Z.json"
+    },
+    {
+      "id": "consumer-review",
+      "title": "Tüketici sözleşmesi review",
+      "kind": "review",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Tüketici sözleşmesi review",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı rapor"
+      ],
+      "acceptanceCriteria": [
+        "Tüketici sözleşmesi gerçek katman kaynaklarıyla tutarlıdır; yetki sınırlarını açmaz."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "consumer-contract"
+        ],
+        "reviews": [
+          "consumer-contract"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "final_source_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/consumer-review-2026-09-30T00-34-37-055Z.json"
+    },
+    {
+      "id": "consumer-verify",
+      "title": "Tüketici sözleşmesi verify",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Tüketici sözleşmesi verify",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı rapor"
+      ],
+      "acceptanceCriteria": [
+        "Tüketici sözleşmesi gerçek katman kaynaklarıyla tutarlıdır; yetki sınırlarını açmaz."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "consumer-contract"
+        ],
+        "reviews": [],
+        "verifies": [
+          "consumer-contract"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "final_source_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/consumer-verify-2026-09-30T00-34-41-523Z.json"
+    },
+    {
+      "id": "packaging",
+      "title": "STEP yerel ortam ve dağıtım kaynakları",
+      "kind": "deployment",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "STEP yerel ortam ve dağıtım kaynakları",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/compose.yaml",
+        "STEP/deploy",
+        "STEP/deployment.md",
+        "STEP/.env",
+        "STEP/.gitignore"
+      ],
+      "acceptanceCriteria": [
+        "Yerel test ortamı gerçek .env ile oluşturulur, public remote gizli değer içermez.",
+        "Backend/web/worker/Postgres servisleri gerçek manifestlerle bağlanır; canlı provider ve imzalı OS paketleri doğrulanmış gösterilmez."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "clarification-review",
+          "clarification-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/compose.yaml",
+          "STEP/deploy",
+          "STEP/deployment.md",
+          "STEP/.env",
+          "STEP/.gitignore"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/packaging-2026-09-30T00-06-42-544Z.json"
+    },
+    {
+      "id": "packaging-review",
+      "title": "Dağıtım kaynakları review",
+      "kind": "review",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Dağıtım kaynakları review",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı rapor"
+      ],
+      "acceptanceCriteria": [
+        "Dağıtım kaynakları gerçek manifestlerle tutarlıdır; gizli veri ve FIRST kaynakları korunur."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "packaging"
+        ],
+        "reviews": [
+          "packaging"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "source_acceptance"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/packaging-review-2026-09-30T00-15-13-526Z.json"
+    },
+    {
+      "id": "packaging-verify",
+      "title": "Dağıtım kaynakları verify",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Dağıtım kaynakları verify",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı rapor"
+      ],
+      "acceptanceCriteria": [
+        "Dağıtım kaynakları gerçek manifestlerle tutarlıdır; gizli veri ve FIRST kaynakları korunur."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "packaging"
+        ],
+        "reviews": [],
+        "verifies": [
+          "packaging"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "final_source_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/packaging-verify-2026-09-30T00-34-45-284Z.json"
+    },
+    {
+      "id": "runtime-contract-revision",
+      "title": "Fixture çekim ve son gerçek DTO/API ayrıntıları",
+      "kind": "revision",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Fixture çekim ve son gerçek DTO/API ayrıntıları",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/contracts/api.md",
+        "STEP/contracts/providers.md"
+      ],
+      "acceptanceCriteria": [
+        "Fixture/alıcı/çekim resultları gerçek banka kanıtından ayrı sözleşmede tanımlıdır.",
+        "Son kategori/özel dosya/koşul/takım DTOları gerçek tüketicilerle tutarlıdır."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "consumer-contract"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "consumer-contract"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/contracts/api.md",
+          "STEP/contracts/providers.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/runtime-contract-revision-2026-09-30T00-17-17-506Z.json"
+    },
+    {
+      "id": "runtime-contract-review",
+      "title": "Son tüketici sözleşmesi review",
+      "kind": "review",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Son tüketici sözleşmesi review",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı rapor"
+      ],
+      "acceptanceCriteria": [
+        "Son tüketici sözleşmesi uygulama kaynakları ve yetki/para/gizlilik sınırlarıyla tutarlıdır."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "runtime-contract-revision"
+        ],
+        "reviews": [
+          "runtime-contract-revision",
+          "consumer-contract"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "final_source_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/runtime-contract-review-2026-09-30T00-35-50-542Z.json"
+    },
+    {
+      "id": "runtime-contract-verify",
+      "title": "Son tüketici sözleşmesi verify",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Son tüketici sözleşmesi verify",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı rapor"
+      ],
+      "acceptanceCriteria": [
+        "Son tüketici sözleşmesi uygulama kaynakları ve yetki/para/gizlilik sınırlarıyla tutarlıdır."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "runtime-contract-revision"
+        ],
+        "reviews": [],
+        "verifies": [
+          "runtime-contract-revision",
+          "consumer-contract"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "final_source_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/runtime-contract-verify-2026-09-30T00-35-54-273Z.json"
+    },
+    {
+      "id": "frontend-revision",
+      "title": "Onayda tüm şartlar, tam takım seçimi ve dispute kanıtları",
+      "kind": "revision",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Onayda tüm şartlar, tam takım seçimi ve dispute kanıtları",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/frontend"
+      ],
+      "acceptanceCriteria": [
+        "Karşı taraf bütün maddi koşulları, çalışan ücretlerini ve aşamaları görerek onaylar.",
+        "Takım seçimi tüm sayfaları kapsar; doğru actor başvuru/davet işlemlerini görür.",
+        "Dispute manuel süre/hafta/özet kanıtları ve fixture ödeme durumu dürüst gösterilir."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "frontend",
+          "frontend-verify",
+          "runtime-contract-revision",
+          "operations-contract"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "frontend",
+          "frontend-verify"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/frontend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "step_decision_review"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/frontend-revision-2026-09-30T00-28-45-202Z.json"
+    },
+    {
+      "id": "frontend-review-r1",
+      "title": "Frontend revizyonu bağımsız review",
+      "kind": "review",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Frontend revizyonu bağımsız review",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı rapor"
+      ],
+      "acceptanceCriteria": [
+        "P1/P2 bulgular yoktur; kabul edilen kapsam/yetki/para/gizlilik sınırları korunur."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "frontend-revision",
+          "frontend-revision-r2"
+        ],
+        "reviews": [
+          "frontend",
+          "frontend-revision",
+          "frontend-revision-r2"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "final_source_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-review-r1-2026-09-30T00-33-49-454Z.json"
+    },
+    {
+      "id": "frontend-verify-r1",
+      "title": "Frontend revizyonu bağımsız verify",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Frontend revizyonu bağımsız verify",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı rapor"
+      ],
+      "acceptanceCriteria": [
+        "Acceptance modülleri kaynakta eşleşir; çalışma zamanı veya canlı başarı iddiası yapılmaz."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "frontend-revision"
+        ],
+        "reviews": [],
+        "verifies": [
+          "frontend",
+          "frontend-revision"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "failed",
+      "attempt": 1,
+      "resultRef": "results/frontend-verify-r1-2026-09-30T00-31-20-169Z.json"
+    },
+    {
+      "id": "desktop-revision",
+      "title": "Native grant probe başarısızlığında bütün listenerları temizle",
+      "kind": "revision",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Native grant probe başarısızlığında bütün listenerları temizle",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/desktop"
+      ],
+      "acceptanceCriteria": [
+        "Her grant probe başarısızlığı counters/listener cleanup yapar ve açık devam gerektirir.",
+        "Kabul edilen hareketsizlik duraklama/devamı yeni fonlanmış grant ve ACK sınırlarıyla otomatik yürür; hata/stop otomatik devam etmez."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "desktop",
+          "desktop-review",
+          "desktop-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "desktop",
+          "desktop-review",
+          "desktop-verify"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/desktop"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "product_links"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/desktop-revision-2026-09-30T00-32-46-524Z.json"
+    },
+    {
+      "id": "desktop-review-r1",
+      "title": "Desktop hata revizyonu bağımsız review",
+      "kind": "review",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Desktop hata revizyonu bağımsız review",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı rapor"
+      ],
+      "acceptanceCriteria": [
+        "P1/P2 açık bulgu yok; tracker/privacy/offline/native yetki sınırları kaynakta korunur."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "desktop-revision"
+        ],
+        "reviews": [
+          "desktop",
+          "desktop-revision"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/desktop-review-r1-2026-09-30T00-34-32-211Z.json"
+    },
+    {
+      "id": "desktop-verify-r1",
+      "title": "Desktop hata revizyonu bağımsız verify",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Desktop hata revizyonu bağımsız verify",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı rapor"
+      ],
+      "acceptanceCriteria": [
+        "P1/P2 açık bulgu yok; tracker/privacy/offline/native yetki sınırları kaynakta korunur."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "desktop-revision"
+        ],
+        "reviews": [],
+        "verifies": [
+          "desktop",
+          "desktop-revision"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "final_source_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/desktop-verify-r1-2026-09-30T00-33-55-843Z.json"
+    },
+    {
+      "id": "operations-contract",
+      "title": "Ödeme tekrar/operatör uzlaştırması ve hedefli iş kanıtı sözleşmesi",
+      "kind": "api-contract",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Ödeme tekrar/operatör uzlaştırması ve hedefli iş kanıtı sözleşmesi",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/contracts/api.md",
+        "STEP/contracts/providers.md",
+        "STEP/contracts/desktop.md"
+      ],
+      "acceptanceCriteria": [
+        "Kesin başarısız checkout tekrarları ve operator kanıt uzlaştırması gerçek kaynak/DTO ile tutarlıdır.",
+        "Dispute hedefli milestone/manuel süre kanıtı ve stale lider teklif sınırı tüketicilerde ortaktır.",
+        "Hareketsizlik otomatik devamı ile manuel stop/native hata yeniden başlatma sınırları accepted tracker kapsamıyla tutarlıdır."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "runtime-contract-revision"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/contracts/api.md",
+          "STEP/contracts/providers.md",
+          "STEP/contracts/desktop.md"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/operations-contract-2026-09-30T00-26-04-684Z.json"
+    },
+    {
+      "id": "operations-contract-review",
+      "title": "Operasyon tüketici sözleşmesi bağımsız review",
+      "kind": "review",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Operasyon tüketici sözleşmesi bağımsız review",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı rapor"
+      ],
+      "acceptanceCriteria": [
+        "Operasyon sözleşmesi gerçek backend/web kaynaklarıyla ve yetki/para/gizlilik sınırlarıyla tutarlıdır."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "operations-contract"
+        ],
+        "reviews": [
+          "operations-contract"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "final_source_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/operations-contract-review-2026-09-30T00-35-57-993Z.json"
+    },
+    {
+      "id": "operations-contract-verify",
+      "title": "Operasyon tüketici sözleşmesi bağımsız verify",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Operasyon tüketici sözleşmesi bağımsız verify",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı rapor"
+      ],
+      "acceptanceCriteria": [
+        "Operasyon sözleşmesi gerçek backend/web kaynaklarıyla ve yetki/para/gizlilik sınırlarıyla tutarlıdır."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "operations-contract"
+        ],
+        "reviews": [],
+        "verifies": [
+          "operations-contract"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "final_source_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/operations-contract-verify-2026-09-30T00-36-00-992Z.json"
+    },
+    {
+      "id": "backend-revision",
+      "title": "Son finansal snapshot ve açık grant teslim sınırları",
+      "kind": "revision",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Son finansal snapshot ve açık grant teslim sınırları",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/backend"
+      ],
+      "acceptanceCriteria": [
+        "Para alıcısı release intent snapshotıyla korunur; eşzamanlı terminal çekim debit üretmez.",
+        "Açık native grant teslim/çalışan değişiminde kaybolmaz; dönemde rate bulunmaması açık readiness hatasıdır."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "backend",
+          "operations-contract"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "backend"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/backend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "step_inventory"
+      },
+      "status": "done",
+      "attempt": 2,
+      "resultRef": "results/backend-revision-2026-09-30T00-27-42-312Z.json"
+    },
+    {
+      "id": "frontend-revision-r2",
+      "title": "Sabit iş koşul onayında uygulanmayan haftalık limit",
+      "kind": "revision",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Sabit iş koşul onayında uygulanmayan haftalık limit",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/frontend"
+      ],
+      "acceptanceCriteria": [
+        "Sabit sözleşme koşulları null haftalık limit nedeniyle kabul dışı kalmaz; saatlik zorunlu limit ve tüm şart kapıları korunur.",
+        "Bireysel ücret değişikliğinin etkin worker rate etkisi kabul öncesi tutarlı gösterilir."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "frontend-revision",
+          "frontend-verify-r1"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "frontend-revision",
+          "frontend-verify-r1"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/frontend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 3,
+      "resultRef": "results/frontend-revision-r2-2026-09-30T00-31-51-781Z.json"
+    },
+    {
+      "id": "frontend-verify-r2",
+      "title": "Sabit iş onay düzeltmesi bağımsız source verify",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Sabit iş onay düzeltmesi bağımsız source verify",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı rapor"
+      ],
+      "acceptanceCriteria": [
+        "Acceptance modülleri kaynakta eşleşir; çalışma zamanı veya canlı başarı iddiası yapılmaz."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "frontend-revision-r2"
+        ],
+        "reviews": [],
+        "verifies": [
+          "frontend",
+          "frontend-revision",
+          "frontend-revision-r2"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "final_source_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/frontend-verify-r2-2026-09-30T00-33-52-536Z.json"
+    },
+    {
+      "id": "backend-revision-r2",
+      "title": "Bağımsız review finans/aktif lider kümesi/teslim dosyası düzeltmesi",
+      "kind": "revision",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Bağımsız review finans/aktif lider kümesi/teslim dosyası düzeltmesi",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "STEP/backend"
+      ],
+      "acceptanceCriteria": [
+        "Bireysel ücret kabulü worker rate ve yeni hafta hesabını aynı işlemde günceller, önceki snapshot korunur.",
+        "Aktif takım lider/küme baselineı final lock altında uyuşmadan lider değişimi kesinleşmez.",
+        "Case operator teslim dosyasını yalnız hedef açık aşama/grant kapsamıyla indirebilir; Payout DTO gerçek bound proof içerir."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "backend-revision",
+          "backend-review",
+          "backend-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [
+          "backend-revision",
+          "backend-review",
+          "backend-verify"
+        ],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "STEP/backend"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "backend_revision_final"
+      },
+      "status": "done",
+      "attempt": 3,
+      "resultRef": "results/backend-revision-r2-2026-09-30T00-34-49-366Z.json"
+    },
+    {
+      "id": "backend-review-r1",
+      "title": "Backend son revizyonu bağımsız review",
+      "kind": "review",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Backend son revizyonu bağımsız review",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "P1/P2 bulgular yoktur; kabul edilen kapsam/yetki/para/gizlilik sınırları korunur."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "backend-revision-r2"
+        ],
+        "reviews": [
+          "backend",
+          "backend-revision",
+          "backend-revision-r2"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "final_source_review"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-review-r1-2026-09-30T00-35-40-921Z.json"
+    },
+    {
+      "id": "backend-verify-r1",
+      "title": "Backend son revizyonu bağımsız verify",
+      "kind": "verify",
+      "domains": [
+        "step-development"
+      ],
+      "objective": "Backend son revizyonu bağımsız verify",
+      "responsibility": "Kabul edilmiş STEP kapsamını koru; FIRST değiştirme. Kaynak incelemesi dışı kontrol çalıştırma.",
+      "inputs": [
+        {
+          "type": "path",
+          "value": "STEP/urun-kapsami.md"
+        }
+      ],
+      "outputs": [
+        "Kaynak kanıtlı teknik rapor"
+      ],
+      "acceptanceCriteria": [
+        "Acceptance modülleri kaynakta eşleşir; çalışma zamanı veya canlı başarı iddiası yapılmaz."
+      ],
+      "capabilities": [
+        "repo-context",
+        "product-boundaries"
+      ],
+      "relations": {
+        "dependsOn": [
+          "backend-revision-r2"
+        ],
+        "reviews": [],
+        "verifies": [
+          "backend",
+          "backend-revision",
+          "backend-revision-r2"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Yeni ürün auth/veri/ödeme ve gizlilik sorumlulukları."
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "worktree",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "manager"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/backend-verify-r1-2026-09-30T00-35-45-026Z.json"
+    }
+  ]
+}

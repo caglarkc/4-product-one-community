@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "frontend-revision",
+  "agent": {
+    "platform": "codex",
+    "identity": "step_decision_review",
+    "sessionRef": "native-agent-source-inspection"
+  },
+  "outcome": "pass",
+  "summary": "Maddi şart onayı, tüm takım sayfaları, scoped dispute kanıtları ve ödeme/operator UI revizyonu tamamlandı.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "STEP/frontend",
+      "change": "created",
+      "description": "contract-terms.tsx complete before/after terms/membernames/rates/stages readiness; credits/market useCollection and actor checks; admin target worklog milestones/manual/weeks basis and case expiry guard; payments failed retry, simulatedbankproof distinction, operator reconcile; stale pending reoffer current_team_leader DTO. All source only, runtime/build/test not run."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Karşı taraf bütün maddi koşulları, çalışan ücretlerini ve aşamaları görerek onaylar.",
+      "status": "passed",
+      "evidence": "contract-terms.tsx complete before/after terms/membernames/rates/stages readiness; credits/market useCollection and actor checks; admin target worklog milestones/manual/weeks basis and case expiry guard; payments failed retry, simulatedbankproof distinction, operator reconcile; stale pending reoffer current_team_leader DTO. All source only, runtime/build/test not run."
+    },
+    {
+      "criterion": "Takım seçimi tüm sayfaları kapsar; doğru actor başvuru/davet işlemlerini görür.",
+      "status": "passed",
+      "evidence": "contract-terms.tsx complete before/after terms/membernames/rates/stages readiness; credits/market useCollection and actor checks; admin target worklog milestones/manual/weeks basis and case expiry guard; payments failed retry, simulatedbankproof distinction, operator reconcile; stale pending reoffer current_team_leader DTO. All source only, runtime/build/test not run."
+    },
+    {
+      "criterion": "Dispute manuel süre/hafta/özet kanıtları ve fixture ödeme durumu dürüst gösterilir.",
+      "status": "passed",
+      "evidence": "contract-terms.tsx complete before/after terms/membernames/rates/stages readiness; credits/market useCollection and actor checks; admin target worklog milestones/manual/weeks basis and case expiry guard; payments failed retry, simulatedbankproof distinction, operator reconcile; stale pending reoffer current_team_leader DTO. All source only, runtime/build/test not run."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "contract-terms.tsx complete before/after terms/membernames/rates/stages readiness; credits/market useCollection and actor checks; admin target worklog milestones/manual/weeks basis and case expiry guard; payments failed retry, simulatedbankproof distinction, operator reconcile; stale pending reoffer current_team_leader DTO. All source only, runtime/build/test not run."
+    },
+    {
+      "name": "Runtime/test/lint/typecheck/build/browser/native capture",
+      "status": "not_run",
+      "evidence": "Kullanıcının yalnız kaynak inceleme tercihi."
+    }
+  ],
+  "risks": [
+    "Kaynak teslimi çalışma zamanı, sağlayıcı veya OS paket doğrulaması değildir."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:28:45.202104+00:00"
+}

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "technical-contract",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "Django/DRF/PostgreSQL, Next/TS ve PySide6 seçildi; API/domain/desktop/provider sözleşmeleri hazır.",
+  "artifacts": [
+    {
+      "type": "document",
+      "path": "STEP/teknik-kararlar.md",
+      "change": "created",
+      "description": "Ortak teknik ve tüketici sözleşmesi."
+    },
+    {
+      "type": "document",
+      "path": "STEP/contracts/api.md",
+      "change": "created",
+      "description": "Ortak teknik ve tüketici sözleşmesi."
+    },
+    {
+      "type": "document",
+      "path": "STEP/contracts/domain.md",
+      "change": "created",
+      "description": "Ortak teknik ve tüketici sözleşmesi."
+    },
+    {
+      "type": "document",
+      "path": "STEP/contracts/desktop.md",
+      "change": "created",
+      "description": "Ortak teknik ve tüketici sözleşmesi."
+    },
+    {
+      "type": "document",
+      "path": "STEP/contracts/providers.md",
+      "change": "created",
+      "description": "Ortak teknik ve tüketici sözleşmesi."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Stack/sağlayıcı kabiliyetleri resmi kaynaklarla seçilir; eksik dış yapılandırma görünürdür.",
+      "status": "passed",
+      "evidence": "teknik-kararlar.md ve providers.md resmî kaynak/linkleri, liveKYC/underwriting/withdraw capability ve key olmayan sandbox sınırlarını açıklıyor."
+    },
+    {
+      "criterion": "Backend/web/desktop veri ve API/rol sözleşmeleri ilk tüketici işlerinden önce ortaklaştırılır.",
+      "status": "passed",
+      "evidence": "api.md field/endpoint/response/sessionCSRF/device scope; domain.md state/ledger/privacy/retention; desktop.md encryption/capture/offline/preview tek kaynakları tüketici başlamadan yazıldı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak sözleşme incelemesi",
+      "status": "passed",
+      "evidence": "52 karar/M01–M12 sınırları karşılaştırıldı; rakamlar nullable, provider ve OS başarısı uydurulmadı."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kullanıcı tercihi."
+    }
+  ],
+  "risks": [
+    "Live provider ve üç OS dağıtım koşulları dış kabiliyet gerektirir."
+  ],
+  "followUps": [
+    "Bağımsız contract review/verify sonrası backend/web/desktop implement."
+  ],
+  "completedAt": "2026-09-29T23:39:22.713041+00:00"
+}

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "discovery-payments",
+  "agent": {
+    "platform": "codex",
+    "identity": "step_decision_review",
+    "sessionRef": "/root/step_decision_review"
+  },
+  "outcome": "pass",
+  "summary": "iyzico Marketplace PERSONAL/TRY/heldapprove/refund ve Mass Payout API resmi docs doğrulandı. On-demand financing/underwriting/merchantKYC live dış koşuldur; NetgsmOTP ve identityexternalcase önerildi. STEP/contracts/providers.md kanıt linkleri.",
+  "artifacts": [
+    {
+      "type": "research",
+      "path": null,
+      "change": "reported",
+      "description": "iyzico Marketplace PERSONAL/TRY/heldapprove/refund ve Mass Payout API resmi docs doğrulandı. On-demand financing/underwriting/merchantKYC live dış koşuldur; NetgsmOTP ve identityexternalcase önerildi. STEP/contracts/providers.md kanıt linkleri."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez.",
+      "status": "passed",
+      "evidence": "iyzico Marketplace PERSONAL/TRY/heldapprove/refund ve Mass Payout API resmi docs doğrulandı. On-demand financing/underwriting/merchantKYC live dış koşuldur; NetgsmOTP ve identityexternalcase önerildi. STEP/contracts/providers.md kanıt linkleri."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Resmi kaynak keşfi",
+      "status": "passed",
+      "evidence": "Native alt agent resmî documentation/release kaynaklarını web ile okudu; FIRST yalnız read-only."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kullanıcı kontrol tercihi."
+    }
+  ],
+  "risks": [
+    "Canlı provider/OS/paket çalışma zamanı doğrulanmadı."
+  ],
+  "followUps": [
+    "Ortak teknik sözleşme ve bağımsız gate."
+  ],
+  "completedAt": "2026-09-29T23:38:37.625691+00:00"
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "desktop-review-r1",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "manager-source-turn"
+  },
+  "outcome": "pass",
+  "summary": "Takip cleanup/idle revizyonu bağımsız root kaynak incelemesinde kabul edildi.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "engine._probe_native counters start/probe failure cleanup; _tick last input boundary; _idle_tick no capture/app/draft/billing and ACK before onlinegrant; _pause/_fail/_quit listeners cleanup; securequeue/native/sync privatepublication boundaries retained. Whole changed source read; no OS execution."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "P1/P2 açık bulgu yok; tracker/privacy/offline/native yetki sınırları kaynakta korunur.",
+      "status": "passed",
+      "evidence": "engine._probe_native counters start/probe failure cleanup; _tick last input boundary; _idle_tick no capture/app/draft/billing and ACK before onlinegrant; _pause/_fail/_quit listeners cleanup; securequeue/native/sync privatepublication boundaries retained. Whole changed source read; no OS execution."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "engine._probe_native counters start/probe failure cleanup; _tick last input boundary; _idle_tick no capture/app/draft/billing and ACK before onlinegrant; _pause/_fail/_quit listeners cleanup; securequeue/native/sync privatepublication boundaries retained. Whole changed source read; no OS execution."
+    },
+    {
+      "name": "Runtime/test/lint/typecheck/build/browser/native capture",
+      "status": "not_run",
+      "evidence": "Kullanıcının yalnız kaynak inceleme tercihi."
+    }
+  ],
+  "risks": [
+    "Kaynak teslimi çalışma zamanı, sağlayıcı veya OS paket doğrulaması değildir."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:34:32.211195+00:00"
+}

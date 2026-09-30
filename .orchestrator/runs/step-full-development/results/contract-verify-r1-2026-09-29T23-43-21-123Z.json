@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "contract-verify-r1",
+  "agent": {
+    "platform": "codex",
+    "identity": "step_decision_review",
+    "sessionRef": "/root/step_decision_review"
+  },
+  "outcome": "pass",
+  "summary": "PASS: öncekiP1/P2 giderildi; M01–M12 ve state/config/team/weekly/gizliliktest-live sınırları korunuyor.",
+  "artifacts": [
+    {
+      "type": "review",
+      "path": null,
+      "change": "reported",
+      "description": "PASS: öncekiP1/P2 giderildi; M01–M12 ve state/config/team/weekly/gizliliktest-live sınırları korunuyor."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez.",
+      "status": "passed",
+      "evidence": "PASS: öncekiP1/P2 giderildi; M01–M12 ve state/config/team/weekly/gizliliktest-live sınırları korunuyor."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff",
+      "status": "passed",
+      "evidence": "PASS: öncekiP1/P2 giderildi; M01–M12 ve state/config/team/weekly/gizliliktest-live sınırları korunuyor."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kullanıcı tercihi."
+    }
+  ],
+  "risks": [],
+  "followUps": [
+    "Backend/web/desktop implement."
+  ],
+  "completedAt": "2026-09-29T23:43:21.123329+00:00"
+}

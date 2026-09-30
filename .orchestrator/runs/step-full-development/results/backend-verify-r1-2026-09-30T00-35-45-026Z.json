@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "backend-verify-r1",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "manager-source-turn"
+  },
+  "outcome": "pass",
+  "summary": "Bağımsız kaynak kabulünde P1/P2 açık bulgu yok; dış canlı kabiliyetler başarı sayılmadı.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Root source verification reread contracts rates and Team lock activation/cancel/complete, market final storedbaselineleader/currentset locking, scoped evidencepredicate actualsubmission/permission/open/unexpired binding; models initialmigration baselineFK and payee/ledger unchanged. No runtime."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Acceptance modülleri kaynakta eşleşir; çalışma zamanı veya canlı başarı iddiası yapılmaz.",
+      "status": "passed",
+      "evidence": "Root source verification reread contracts rates and Team lock activation/cancel/complete, market final storedbaselineleader/currentset locking, scoped evidencepredicate actualsubmission/permission/open/unexpired binding; models initialmigration baselineFK and payee/ledger unchanged. No runtime."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "Root source verification reread contracts rates and Team lock activation/cancel/complete, market final storedbaselineleader/currentset locking, scoped evidencepredicate actualsubmission/permission/open/unexpired binding; models initialmigration baselineFK and payee/ledger unchanged. No runtime."
+    },
+    {
+      "name": "Runtime/test/lint/typecheck/build/browser/native capture",
+      "status": "not_run",
+      "evidence": "Kullanıcının yalnız kaynak inceleme tercihi."
+    }
+  ],
+  "risks": [
+    "Kaynak teslimi çalışma zamanı, sağlayıcı veya OS paket doğrulaması değildir."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:35:45.026900+00:00"
+}

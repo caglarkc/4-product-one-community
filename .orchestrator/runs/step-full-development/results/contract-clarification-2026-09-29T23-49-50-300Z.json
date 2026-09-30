@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "contract-clarification",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "api.md son DTOları; tracker sessions reserved_seconds/authorized_until, monitor/capabilities; publication_ready initial null ve immutable pendingaction timeout/retry açık.",
+  "artifacts": [
+    {
+      "type": "document",
+      "path": "STEP/contracts/api.md",
+      "change": "modified",
+      "description": "api.md son DTOları; tracker sessions reserved_seconds/authorized_until, monitor/capabilities; publication_ready initial null ve immutable pendingaction timeout/retry açık."
+    },
+    {
+      "type": "document",
+      "path": "STEP/contracts/domain.md",
+      "change": "modified",
+      "description": "api.md son DTOları; tracker sessions reserved_seconds/authorized_until, monitor/capabilities; publication_ready initial null ve immutable pendingaction timeout/retry açık."
+    },
+    {
+      "type": "document",
+      "path": "STEP/contracts/desktop.md",
+      "change": "modified",
+      "description": "api.md son DTOları; tracker sessions reserved_seconds/authorized_until, monitor/capabilities; publication_ready initial null ve immutable pendingaction timeout/retry açık."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Eksik tüketici DTOları ortak APIde typed field/state biçiminde bulunur.",
+      "status": "passed",
+      "evidence": "api.md son DTOları; tracker sessions reserved_seconds/authorized_until, monitor/capabilities; publication_ready initial null ve immutable pendingaction timeout/retry açık."
+    },
+    {
+      "criterion": "Shared team offline grant ve immutable upload-timeout privacy race teknik sözleşmede giderilir.",
+      "status": "passed",
+      "evidence": "api.md son DTOları; tracker sessions reserved_seconds/authorized_until, monitor/capabilities; publication_ready initial null ve immutable pendingaction timeout/retry açık."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak incelemesi",
+      "status": "passed",
+      "evidence": "api.md son DTOları; tracker sessions reserved_seconds/authorized_until, monitor/capabilities; publication_ready initial null ve immutable pendingaction timeout/retry açık."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kullanıcı tercihi."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-29T23:49:50.300084+00:00"
+}

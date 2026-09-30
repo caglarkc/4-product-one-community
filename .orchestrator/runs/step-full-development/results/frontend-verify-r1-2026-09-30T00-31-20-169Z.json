@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "frontend-verify-r1",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "manager-source-turn"
+  },
+  "outcome": "revise",
+  "summary": "P2 bütün sabit iş değişiklikleri null haftalık limit nedeniyle kabul dışı kalıyor.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "contract-terms.tsx scalarReady required numberReady(terms.weekly_limit) for fixed contracts whose limit is null. Failed evidence refers original source read before correction; reviewrecord root distinct from frontend writer. Correction onlyhourly requires weeklylimit and fixed UI Uygulanmaz."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Acceptance modülleri kaynakta eşleşir; çalışma zamanı veya canlı başarı iddiası yapılmaz.",
+      "status": "failed",
+      "evidence": "contract-terms.tsx scalarReady required numberReady(terms.weekly_limit) for fixed contracts whose limit is null. Failed evidence refers original source read before correction; reviewrecord root distinct from frontend writer. Correction onlyhourly requires weeklylimit and fixed UI Uygulanmaz."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "failed",
+      "evidence": "contract-terms.tsx scalarReady required numberReady(terms.weekly_limit) for fixed contracts whose limit is null. Failed evidence refers original source read before correction; reviewrecord root distinct from frontend writer. Correction onlyhourly requires weeklylimit and fixed UI Uygulanmaz."
+    },
+    {
+      "name": "Runtime/test/lint/typecheck/build/browser/native capture",
+      "status": "not_run",
+      "evidence": "Kullanıcının yalnız kaynak inceleme tercihi."
+    }
+  ],
+  "risks": [
+    "Kaynak teslimi çalışma zamanı, sağlayıcı veya OS paket doğrulaması değildir."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:31:20.169919+00:00"
+}

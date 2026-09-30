@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "runtime-contract-verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "final_source_review",
+    "sessionRef": "final_source_review-source-turn"
+  },
+  "outcome": "pass",
+  "summary": "Bağımsız kaynak kabulünde P1/P2 açık bulgu yok; dış canlı kabiliyetler başarı sayılmadı.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Canonical runtime/API latestDTO and actualconsumer identity/category/contracts/attachments/proof fields match; unprovenproviderbankcapability explicitfailclosed."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Son tüketici sözleşmesi uygulama kaynakları ve yetki/para/gizlilik sınırlarıyla tutarlıdır.",
+      "status": "passed",
+      "evidence": "Canonical runtime/API latestDTO and actualconsumer identity/category/contracts/attachments/proof fields match; unprovenproviderbankcapability explicitfailclosed."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "Canonical runtime/API latestDTO and actualconsumer identity/category/contracts/attachments/proof fields match; unprovenproviderbankcapability explicitfailclosed."
+    },
+    {
+      "name": "Runtime/test/lint/typecheck/build/browser/native capture",
+      "status": "not_run",
+      "evidence": "Kullanıcının yalnız kaynak inceleme tercihi."
+    }
+  ],
+  "risks": [
+    "Kaynak teslimi çalışma zamanı, sağlayıcı veya OS paket doğrulaması değildir."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:35:54.273748+00:00"
+}

@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "contract-revision",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "/root"
+  },
+  "outcome": "pass",
+  "summary": "API privacy intent/reason/Block DTO/device scope ve Payment/Payout DTOları düzeltildi.",
+  "artifacts": [
+    {
+      "type": "document",
+      "path": "STEP/contracts/api.md",
+      "change": "modified",
+      "description": "API privacy intent/reason/Block DTO/device scope ve Payment/Payout DTOları düzeltildi."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Atomik privacy intent/reason ve Block cevabı/device scope ortak APIde bulunur.",
+      "status": "passed",
+      "evidence": "API privacy intent/reason/Block DTO/device scope ve Payment/Payout DTOları düzeltildi."
+    },
+    {
+      "criterion": "Payment/Payout/settlement/checkout DTOları ayrı durumlarla tanımlanır.",
+      "status": "passed",
+      "evidence": "API privacy intent/reason/Block DTO/device scope ve Payment/Payout DTOları düzeltildi."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff",
+      "status": "passed",
+      "evidence": "API privacy intent/reason/Block DTO/device scope ve Payment/Payout DTOları düzeltildi."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kullanıcı tercihi."
+    }
+  ],
+  "risks": [],
+  "followUps": [
+    "Backend/web/desktop implement."
+  ],
+  "completedAt": "2026-09-29T23:43:21.121817+00:00"
+}

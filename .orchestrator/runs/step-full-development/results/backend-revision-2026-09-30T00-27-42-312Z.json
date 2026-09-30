@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "backend-revision",
+  "agent": {
+    "platform": "codex",
+    "identity": "step_inventory",
+    "sessionRef": "native-agent-source-inspection"
+  },
+  "outcome": "pass",
+  "summary": "Release alıcısı snapshotı ve açık grant teslim/çalışan/dönem sınırları kaynakta kapatıldı.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "STEP/backend",
+      "change": "created",
+      "description": "contracts.py submit/removal pending_offline_grants; tracking.py rate_not_in_period for old week snapshot; payments.py durable payee release intent and earned ledger to immutable recipient; provider seller_price subMerchantKey/net binding; payout terminal state after reserve lock; source-only, no runtime verification."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Para alıcısı release intent snapshotıyla korunur; eşzamanlı terminal çekim debit üretmez.",
+      "status": "passed",
+      "evidence": "contracts.py submit/removal pending_offline_grants; tracking.py rate_not_in_period for old week snapshot; payments.py durable payee release intent and earned ledger to immutable recipient; provider seller_price subMerchantKey/net binding; payout terminal state after reserve lock; source-only, no runtime verification."
+    },
+    {
+      "criterion": "Açık native grant teslim/çalışan değişiminde kaybolmaz; dönemde rate bulunmaması açık readiness hatasıdır.",
+      "status": "passed",
+      "evidence": "contracts.py submit/removal pending_offline_grants; tracking.py rate_not_in_period for old week snapshot; payments.py durable payee release intent and earned ledger to immutable recipient; provider seller_price subMerchantKey/net binding; payout terminal state after reserve lock; source-only, no runtime verification."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "contracts.py submit/removal pending_offline_grants; tracking.py rate_not_in_period for old week snapshot; payments.py durable payee release intent and earned ledger to immutable recipient; provider seller_price subMerchantKey/net binding; payout terminal state after reserve lock; source-only, no runtime verification."
+    },
+    {
+      "name": "Runtime/test/lint/typecheck/build/browser/native capture",
+      "status": "not_run",
+      "evidence": "Kullanıcının yalnız kaynak inceleme tercihi."
+    }
+  ],
+  "risks": [
+    "Kaynak teslimi çalışma zamanı, sağlayıcı veya OS paket doğrulaması değildir."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:27:42.312466+00:00"
+}

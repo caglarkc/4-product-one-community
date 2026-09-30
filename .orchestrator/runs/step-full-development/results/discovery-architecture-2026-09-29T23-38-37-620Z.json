@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "discovery-architecture",
+  "agent": {
+    "platform": "codex",
+    "identity": "step_inventory",
+    "sessionRef": "/root/step_inventory"
+  },
+  "outcome": "pass",
+  "summary": "Django5.2.17/DRF3.18.1/PG18.6 ve Next16.3.5/TS6.0.3 resmi kaynaklar; sessionCSRF/scopeddevice, atomicledger/outbox ve privatefiles önerildi.",
+  "artifacts": [
+    {
+      "type": "research",
+      "path": null,
+      "change": "reported",
+      "description": "Django5.2.17/DRF3.18.1/PG18.6 ve Next16.3.5/TS6.0.3 resmi kaynaklar; sessionCSRF/scopeddevice, atomicledger/outbox ve privatefiles önerildi."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez.",
+      "status": "passed",
+      "evidence": "Django5.2.17/DRF3.18.1/PG18.6 ve Next16.3.5/TS6.0.3 resmi kaynaklar; sessionCSRF/scopeddevice, atomicledger/outbox ve privatefiles önerildi."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Resmi kaynak keşfi",
+      "status": "passed",
+      "evidence": "Native alt agent resmî documentation/release kaynaklarını web ile okudu; FIRST yalnız read-only."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kullanıcı kontrol tercihi."
+    }
+  ],
+  "risks": [
+    "Canlı provider/OS/paket çalışma zamanı doğrulanmadı."
+  ],
+  "followUps": [
+    "Ortak teknik sözleşme ve bağımsız gate."
+  ],
+  "completedAt": "2026-09-29T23:38:37.620935+00:00"
+}

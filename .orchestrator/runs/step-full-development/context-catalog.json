@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-09-29T23:31:26.890Z",
+  "repository": {
+    "root": ".",
+    "name": "4-product-one-community",
+    "commit": "27d6516759d4cbf4818fa5b3f4a85344c97e02f6",
+    "layers": {
+      "FIRST": true,
+      "STEP": true,
+      "INTO": true,
+      "PATH": true
+    }
+  },
+  "skills": [
+    {
+      "name": "product-boundaries",
+      "description": "Preserve FIRST, STEP, INTO, and PATH business boundaries when defining features or connecting community, paid work, mentoring, and competitions.",
+      "path": ".agent/skills/cross/product-boundaries/SKILL.md",
+      "root": ".agent/skills",
+      "disableModelInvocation": false,
+      "fingerprint": "5687c3ba537471c7ba045956d39b43fcf503a7d62fdc68c8652c54b3b1a10a28"
+    },
+    {
+      "name": "shared-integration",
+      "description": "Plan and check shared API, identity, project references, and access boundaries across FIRST, STEP, INTO, and PATH without assuming an unchosen stack.",
+      "path": ".agent/skills/cross/shared-integration/SKILL.md",
+      "root": ".agent/skills",
+      "disableModelInvocation": false,
+      "fingerprint": "49275dce327848d7c10d6482fac88663865a9f3bc5511fa13e592b01101bdf21"
+    },
+    {
+      "name": "frontend-implementation",
+      "description": "Implement or review frontend pages in this repository using the selected product's design rules, shared tokens and reusable UI components; preserve real workflows and accessibility.",
+      "path": ".agent/skills/frontend/frontend-implementation/SKILL.md",
+      "root": ".agent/skills",
+      "disableModelInvocation": false,
+      "fingerprint": "f5dfc1c559a806b33516c52a9bb017cf6b6239fcc972dfff92442939a04355f7"
+    },
+    {
+      "name": "code-implementation-mode",
+      "description": "Implement, review, or verify scoped changes in the four-product repository using product evidence and the established run result contract.",
+      "path": ".agent/skills/meta/code-implementation-mode/SKILL.md",
+      "root": ".agent/skills",
+      "disableModelInvocation": false,
+      "fingerprint": "e818c0ca94cdd5e90f0d6171ca8df7db74a348e4e998c782b434817274b74f36"
+    },
+    {
+      "name": "repo-context",
+      "description": "Read product scope and repository evidence before planning or implementing FIRST, STEP, INTO, PATH, or their shared integration.",
+      "path": ".agent/skills/meta/repo-context/SKILL.md",
+      "root": ".agent/skills",
+      "disableModelInvocation": false,
+      "fingerprint": "b49e66ff6043fe96c95325174d4fa2081f3d9ab25e44673ea0141ad42dabe906"
+    },
+    {
+      "name": "orchestrate-project",
+      "description": "Orchestrate complex repository work with dynamic task decomposition, dependency graphs, risk-based independent review and verification, native subagent/worktree use when available, portable handoffs when unavailable, and resumable run history. Use for project-manager, multi-agent, cross-layer, long-running, interrupted, high-risk, or multi-platform Codex/Cursor/Claude Code work; do not use for a single obvious low-risk edit.",
+      "path": ".agents/skills/orchestrate-project/SKILL.md",
+      "root": ".agents/skills",
+      "disableModelInvocation": false,
+      "fingerprint": "801f77259a99c74730ebf018feb180e53e78606b9340a8e12704f764fd922fb2"
+    },
+    {
+      "name": "project-manager-mode",
+      "description": "Manage requested product work in PM mode, including a FIRST-only (1st product) start with scoped context; route complex work to the shared run graph.",
+      "path": ".cursor/skills/project-manager-mode/SKILL.md",
+      "root": ".cursor/skills",
+      "disableModelInvocation": true,
+      "fingerprint": "dd9fa744578f03da45b1a6d0811ded09c28f817c4f15638e24b146eee8de276b"
+    }
+  ],
+  "capabilities": [
+    "code-implementation-mode",
+    "frontend-implementation",
+    "orchestrate-project",
+    "product-boundaries",
+    "project-manager-mode",
+    "repo-context",
+    "shared-integration"
+  ],
+  "maps": {
+    "semantic": [
+      {
+        "path": ".cursor/maps/stack-shared-ai/overview.md",
+        "fingerprint": "87fedfcb556e47847964765888d0b4369188185e803f1a9195edba9723e9db73"
+      },
+      {
+        "path": ".cursor/maps/stack-shared-ai/products.md",
+        "fingerprint": "f2fa89fb3b9ac5fab03db533bdb8fbe5180090d8018592b030ed7614908eb476"
+      },
+      {
+        "path": ".cursor/maps/stack-shared-ai/technology.md",
+        "fingerprint": "98b7e8da76c51c8f90fabbf37616adefd796a9ee6aa723af602536c7e4cc922b"
+      }
+    ],
+    "dependency": null
+  },
+  "mapHealth": {
+    "stale": true,
+    "sourceFingerprint": "76fb955feafdbdeef3b598d609acb0184dd3eec267b56992c3cc01b0b4a4b7bd",
+    "mapSourceFingerprint": "6b76ad99ae6ac25e5f3ba2b5f5e7122627934cf983c0b14dd951093a3ee0619c",
+    "dependencyMapGeneratedAt": null,
+    "note": "Tazelik, checkout mtime yerine deterministik kaynak ağacı fingerprint’i ile ölçülür."
+  },
+  "adapters": [
+    {
+      "id": "claude-code",
+      "path": ".orchestrator/adapters/claude-code.json",
+      "capabilities": {
+        "subagents": "custom project agents under .claude/agents with foreground/background execution",
+        "agentTeams": "experimental shared task list and peer messaging, disabled by default",
+        "worktrees": "session and subagent worktree isolation",
+        "approvals": "permission modes and allow/deny rules; background requests surface to the lead in supported versions",
+        "resume": "sessions and some subagents can resume; experimental teams have resumption limitations"
+      }
+    },
+    {
+      "id": "codex",
+      "path": ".orchestrator/adapters/codex.json",
+      "capabilities": {
+        "subagents": "available in current local releases when requested or required by AGENTS.md/skills",
+        "customAgents": ".codex/agents/*.toml",
+        "worktrees": "native in the ChatGPT desktop app; availability differs by surface",
+        "approvals": "sandbox and approval policy are inherited by subagents",
+        "resume": "agent threads and app tasks are inspectable; persisted run files remain the portable source of truth"
+      }
+    },
+    {
+      "id": "cursor",
+      "path": ".orchestrator/adapters/cursor.json",
+      "capabilities": {
+        "subagents": "foreground/background Task delegation with isolated context",
+        "customAgents": ".cursor/agents/*.md, with compatibility loading for Claude and Codex agent locations",
+        "worktrees": "managed isolated checkouts for parallel/background work",
+        "approvals": "run modes and command/tool approval policies are surface configuration",
+        "resume": "subagent IDs and agent sessions can be resumed when supported"
+      }
+    }
+  ],
+  "snapshot": "a18df4c31fe8f51df95c45e0efff4bf05164fecfb16731e88eace360c8838612"
+}

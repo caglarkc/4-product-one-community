@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "contract-review-r1",
+  "agent": {
+    "platform": "codex",
+    "identity": "step_inventory",
+    "sessionRef": "/root/step_inventory"
+  },
+  "outcome": "pass",
+  "summary": "PASS: api.md:122 atomic hold, :87 Block DTO, :5 device allowlist, :83 Payment/Payout; önceki52kapsamkorundu.",
+  "artifacts": [
+    {
+      "type": "review",
+      "path": null,
+      "change": "reported",
+      "description": "PASS: api.md:122 atomic hold, :87 Block DTO, :5 device allowlist, :83 Payment/Payout; önceki52kapsamkorundu."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez.",
+      "status": "passed",
+      "evidence": "PASS: api.md:122 atomic hold, :87 Block DTO, :5 device allowlist, :83 Payment/Payout; önceki52kapsamkorundu."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff",
+      "status": "passed",
+      "evidence": "PASS: api.md:122 atomic hold, :87 Block DTO, :5 device allowlist, :83 Payment/Payout; önceki52kapsamkorundu."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kullanıcı tercihi."
+    }
+  ],
+  "risks": [],
+  "followUps": [
+    "Backend/web/desktop implement."
+  ],
+  "completedAt": "2026-09-29T23:43:21.122955+00:00"
+}

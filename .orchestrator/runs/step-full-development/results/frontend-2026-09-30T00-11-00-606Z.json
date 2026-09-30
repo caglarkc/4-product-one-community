@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "frontend",
+  "agent": {
+    "platform": "codex",
+    "identity": "step_decision_review",
+    "sessionRef": "native-frontend-writer"
+  },
+  "outcome": "pass",
+  "summary": "31 App Router ekranı, responsive STEP web tüketicisi, scoped medya ve yönetim kaynakları tamamlandı.",
+  "artifacts": [
+    {
+      "type": "directory",
+      "path": "STEP/frontend",
+      "change": "created",
+      "description": "Next.js API/session ve kapsam ekranları; secret olmayan API .env.local yerel ve ignored."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Sahiplik kapsamındaki M01–M12/P0–P9 davranışları gerçek API/işlem kaynaklarıyla uygulanır.",
+      "status": "passed",
+      "evidence": "STEP/frontend/src/lib/api.ts/hooks.ts: credentials+CSRF, stable unknown retry UUID, definite reject reset; screens account/market/contracts/teams/credits/payments/worklog/communication/admin/support gerçek endpointler; readonly code/source incelemesi, runtime iddiası yok."
+    },
+    {
+      "criterion": "Özel veri/yetki/para/test-canlı sınırları korunur; eksik sağlayıcı ve OS yetkisi başarı sayılmaz.",
+      "status": "passed",
+      "evidence": "STEP/frontend/src/lib/api.ts/hooks.ts: credentials+CSRF, stable unknown retry UUID, definite reject reset; screens account/market/contracts/teams/credits/payments/worklog/communication/admin/support gerçek endpointler; readonly code/source incelemesi, runtime iddiası yok."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak okuması",
+      "status": "passed",
+      "evidence": "STEP/frontend/src/lib/api.ts/hooks.ts: credentials+CSRF, stable unknown retry UUID, definite reject reset; screens account/market/contracts/teams/credits/payments/worklog/communication/admin/support gerçek endpointler; readonly code/source incelemesi, runtime iddiası yok."
+    },
+    {
+      "name": "Install/build/test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kalıcı kaynak incelemesi sınırı."
+    }
+  ],
+  "risks": [
+    "Gerçek render/derleme ve server davranışı çalıştırılarak doğrulanmadı.",
+    "Live dış sağlayıcı/SMTP/OTP ayarları eksik."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:11:00.606320+00:00"
+}

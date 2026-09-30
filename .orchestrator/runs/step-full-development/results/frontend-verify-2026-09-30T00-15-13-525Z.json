@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "frontend-verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "source_acceptance",
+    "sessionRef": "fresh-independent-source-agent"
+  },
+  "outcome": "revise",
+  "summary": "P1 onayda görünmeyen revizyon/takip/çalışan/aşama şartları; P2 ilk30 takım seçimi, manuel dispute kanıtları ve yanlış actor başvuru/davet aksiyonları.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "P1 onayda görünmeyen revizyon/takip/çalışan/aşama şartları; P2 ilk30 takım seçimi, manuel dispute kanıtları ve yanlış actor başvuru/davet aksiyonları. contracts.tsx151–161, credits.tsx12, market.tsx123/202, admin.tsx81–95; bütün frontend kaynakları ve API/kapsam/52matris bağımsız source_acceptance tarafından okundu."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Acceptance modülleri kaynakta eşleşir; çalışma zamanı veya canlı başarı iddiası yapılmaz.",
+      "status": "failed",
+      "evidence": "contracts.tsx151–161, credits.tsx12, market.tsx123/202, admin.tsx81–95; bütün frontend kaynakları ve API/kapsam/52matris bağımsız source_acceptance tarafından okundu."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Bağımsız kaynak incelemesi",
+      "status": "failed",
+      "evidence": "P1 onayda görünmeyen revizyon/takip/çalışan/aşama şartları; P2 ilk30 takım seçimi, manuel dispute kanıtları ve yanlış actor başvuru/davet aksiyonları. contracts.tsx151–161, credits.tsx12, market.tsx123/202, admin.tsx81–95; bütün frontend kaynakları ve API/kapsam/52matris bağımsız source_acceptance tarafından okundu."
+    },
+    {
+      "name": "Runtime/build/test/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kullanıcı kaynak incelemesi sınırı."
+    }
+  ],
+  "risks": [
+    "Kaynak incelemesi runtime/derleme/sağlayıcı kanıtı değildir."
+  ],
+  "followUps": [
+    "frontend-revision"
+  ],
+  "completedAt": "2026-09-30T00:15:13.525542+00:00"
+}

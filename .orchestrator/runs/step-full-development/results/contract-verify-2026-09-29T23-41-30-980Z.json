@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "contract-verify",
+  "agent": {
+    "platform": "codex",
+    "identity": "step_decision_review",
+    "sessionRef": "/root/step_decision_review"
+  },
+  "outcome": "revise",
+  "summary": "P1 atomic offline privacy intent alanı yok; P2 Payment/Payout cevap DTOları eksik.",
+  "artifacts": [
+    {
+      "type": "review",
+      "path": null,
+      "change": "reported",
+      "description": "P1 atomic offline privacy intent alanı yok; P2 Payment/Payout cevap DTOları eksik."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez.",
+      "status": "failed",
+      "evidence": "P1 atomic offline privacy intent alanı yok; P2 Payment/Payout cevap DTOları eksik. api.md tracker/payments; domain.md:14 ve desktop.md:8 ile karşılaştırma."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak review/verify",
+      "status": "failed",
+      "evidence": "P1 atomic offline privacy intent alanı yok; P2 Payment/Payout cevap DTOları eksik."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kullanıcı tercihi."
+    }
+  ],
+  "risks": [
+    "P1 atomic offline privacy intent alanı yok; P2 Payment/Payout cevap DTOları eksik."
+  ],
+  "followUps": [
+    "API payload/cevap ve device scope düzeltmesi; bağımsız revision gate."
+  ],
+  "completedAt": "2026-09-29T23:41:30.980814+00:00"
+}

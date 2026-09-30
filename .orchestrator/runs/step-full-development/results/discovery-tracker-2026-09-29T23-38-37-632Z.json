@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "discovery-tracker",
+  "agent": {
+    "platform": "codex",
+    "identity": "product_links",
+    "sessionRef": "/root/product_links"
+  },
+  "outcome": "pass",
+  "summary": "PySide6+mss+pynput+OSnative activeapp resmi API kaynakları; Windows/macOS/LinuxX11, Wayland/inputpermission yetersizliğinde failclosed. AESGCM/securekeyring ve ownerpreview. STEP/contracts/desktop.md, teknik-kararlar.md kaynakları.",
+  "artifacts": [
+    {
+      "type": "research",
+      "path": null,
+      "change": "reported",
+      "description": "PySide6+mss+pynput+OSnative activeapp resmi API kaynakları; Windows/macOS/LinuxX11, Wayland/inputpermission yetersizliğinde failclosed. AESGCM/securekeyring ve ownerpreview. STEP/contracts/desktop.md, teknik-kararlar.md kaynakları."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Kapsam ve kaynak kanıtları raporlanır; uygulanmış gibi gösterilmez.",
+      "status": "passed",
+      "evidence": "PySide6+mss+pynput+OSnative activeapp resmi API kaynakları; Windows/macOS/LinuxX11, Wayland/inputpermission yetersizliğinde failclosed. AESGCM/securekeyring ve ownerpreview. STEP/contracts/desktop.md, teknik-kararlar.md kaynakları."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Resmi kaynak keşfi",
+      "status": "passed",
+      "evidence": "Native alt agent resmî documentation/release kaynaklarını web ile okudu; FIRST yalnız read-only."
+    },
+    {
+      "name": "Test/lint/typecheck/browser",
+      "status": "not_run",
+      "evidence": "Kullanıcı kontrol tercihi."
+    }
+  ],
+  "risks": [
+    "Canlı provider/OS/paket çalışma zamanı doğrulanmadı."
+  ],
+  "followUps": [
+    "Ortak teknik sözleşme ve bağımsız gate."
+  ],
+  "completedAt": "2026-09-29T23:38:37.632024+00:00"
+}

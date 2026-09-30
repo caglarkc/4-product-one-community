@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "frontend-revision-r2",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "manager-source-turn"
+  },
+  "outcome": "pass",
+  "summary": "Sabit iş null limit onayı ve bireysel rate/worker gösterimi kaynakta düzeltildi.",
+  "artifacts": [
+    {
+      "type": "source",
+      "path": "STEP/frontend/src/screens/contract-terms.tsx",
+      "change": "created",
+      "description": "contract-terms.tsx scalarReady only requires weeklylimit for hourly; fixed row Uygulanmaz; no team individual effective members hourly_rate follows proposed contract.rate as backend sameatomicacceptance nowrequires. All remaining material readiness intact. Fresh independent review and verify pending, no runtime."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Sabit sözleşme koşulları null haftalık limit nedeniyle kabul dışı kalmaz; saatlik zorunlu limit ve tüm şart kapıları korunur.",
+      "status": "passed",
+      "evidence": "contract-terms.tsx scalarReady only requires weeklylimit for hourly; fixed row Uygulanmaz; no team individual effective members hourly_rate follows proposed contract.rate as backend sameatomicacceptance nowrequires. All remaining material readiness intact. Fresh independent review and verify pending, no runtime."
+    },
+    {
+      "criterion": "Bireysel ücret değişikliğinin etkin worker rate etkisi kabul öncesi tutarlı gösterilir.",
+      "status": "passed",
+      "evidence": "contract-terms.tsx scalarReady only requires weeklylimit for hourly; fixed row Uygulanmaz; no team individual effective members hourly_rate follows proposed contract.rate as backend sameatomicacceptance nowrequires. All remaining material readiness intact. Fresh independent review and verify pending, no runtime."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak/diff incelemesi",
+      "status": "passed",
+      "evidence": "contract-terms.tsx scalarReady only requires weeklylimit for hourly; fixed row Uygulanmaz; no team individual effective members hourly_rate follows proposed contract.rate as backend sameatomicacceptance nowrequires. All remaining material readiness intact. Fresh independent review and verify pending, no runtime."
+    },
+    {
+      "name": "Runtime/test/lint/typecheck/build/browser/native capture",
+      "status": "not_run",
+      "evidence": "Kullanıcının yalnız kaynak inceleme tercihi."
+    }
+  ],
+  "risks": [
+    "Kaynak teslimi çalışma zamanı, sağlayıcı veya OS paket doğrulaması değildir."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:31:51.781548+00:00"
+}

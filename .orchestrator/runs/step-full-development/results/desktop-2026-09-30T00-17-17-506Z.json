@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "desktop",
+  "agent": {
+    "platform": "codex",
+    "identity": "product_links",
+    "sessionRef": "native-source-writer"
+  },
+  "outcome": "pass",
+  "summary": "Üç OS native takip, şifreli offline queue, owner privacy ve native paket kaynakları yazıldı.",
+  "artifacts": [
+    {
+      "type": "directory",
+      "path": "STEP/desktop",
+      "change": "created",
+      "description": "STEP source artifact"
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Sahiplik kapsamındaki M01–M12/P0–P9 davranışları gerçek API/işlem kaynaklarıyla uygulanır.",
+      "status": "passed",
+      "evidence": "native.py OS/X11/private selected monitor + counter/app; engine.py grant600/monotonic/idle/verifiedcheckpoint; api/storage/sync encrypted idempotent unknown retry/ACK; ui.py explicit personal preview/privacy; README/build/spec unbuiltOS/signinghonesty."
+    },
+    {
+      "criterion": "Özel veri/yetki/para/test-canlı sınırları korunur; eksik sağlayıcı ve OS yetkisi başarı sayılmaz.",
+      "status": "passed",
+      "evidence": "native.py OS/X11/private selected monitor + counter/app; engine.py grant600/monotonic/idle/verifiedcheckpoint; api/storage/sync encrypted idempotent unknown retry/ACK; ui.py explicit personal preview/privacy; README/build/spec unbuiltOS/signinghonesty."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak incelemesi",
+      "status": "passed",
+      "evidence": "native.py OS/X11/private selected monitor + counter/app; engine.py grant600/monotonic/idle/verifiedcheckpoint; api/storage/sync encrypted idempotent unknown retry/ACK; ui.py explicit personal preview/privacy; README/build/spec unbuiltOS/signinghonesty."
+    },
+    {
+      "name": "Native/build/test/runtime/provider",
+      "status": "not_run",
+      "evidence": "Kalıcı kaynak kontrolü tercihi; gerçek OS/sağlayıcı/derleme kanıtı yok."
+    }
+  ],
+  "risks": [
+    "OS imza/notarization/paketler fiziksel sistemde doğrulanmadı.",
+    "Gerçek on-demand PSP/bank transfer kabiliyeti dış kanıt bekliyor."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:17:17.506035+00:00"
+}

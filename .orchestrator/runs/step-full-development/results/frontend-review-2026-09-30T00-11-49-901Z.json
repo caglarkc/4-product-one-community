@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "step-full-development",
+  "itemId": "frontend-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "manager",
+    "sessionRef": "root-independent-source-review"
+  },
+  "outcome": "pass",
+  "summary": "Frontend bütün ekran/API/güvenli medya kaynakları yazardan bağımsız okundu.",
+  "artifacts": [
+    {
+      "type": "report",
+      "path": null,
+      "change": "reported",
+      "description": "Root frontend writer değildir. src/lib/api.ts/hooks.ts ve components session/ui/shell, bütün screens ve route/manifest kaynakları okundu. Fixed tracker checkbox, FIRST portföy kinds, yerel deadline, bütün seçim sayfaları, definite-vs-unknown retry, FilePicker reset düzeltmeleri kaynakta yeniden okundu. Özel görüntü blob API; student delete yok, staff case claim; ödeme state ve test banner servera bağlı. Kaynakta açık frontend-owned P1/P2 bulunmadı; backend/cross-layer alanlar ikinci bağımsız verifierda değerlendirilecek."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "P1/P2 bulgular yoktur; kabul edilen kapsam/yetki/para/gizlilik sınırları korunur.",
+      "status": "passed",
+      "evidence": "Root frontend writer değildir. src/lib/api.ts/hooks.ts ve components session/ui/shell, bütün screens ve route/manifest kaynakları okundu. Fixed tracker checkbox, FIRST portföy kinds, yerel deadline, bütün seçim sayfaları, definite-vs-unknown retry, FilePicker reset düzeltmeleri kaynakta yeniden okundu. Özel görüntü blob API; student delete yok, staff case claim; ödeme state ve test banner servera bağlı. Kaynakta açık frontend-owned P1/P2 bulunmadı; backend/cross-layer alanlar ikinci bağımsız verifierda değerlendirilecek."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Kaynak incelemesi",
+      "status": "passed",
+      "evidence": "Root frontend writer değildir. src/lib/api.ts/hooks.ts ve components session/ui/shell, bütün screens ve route/manifest kaynakları okundu. Fixed tracker checkbox, FIRST portföy kinds, yerel deadline, bütün seçim sayfaları, definite-vs-unknown retry, FilePicker reset düzeltmeleri kaynakta yeniden okundu. Özel görüntü blob API; student delete yok, staff case claim; ödeme state ve test banner servera bağlı. Kaynakta açık frontend-owned P1/P2 bulunmadı; backend/cross-layer alanlar ikinci bağımsız verifierda değerlendirilecek."
+    },
+    {
+      "name": "Runtime/build/typecheck",
+      "status": "not_run",
+      "evidence": "Kullanıcı kaynak incelemesi tercihi."
+    }
+  ],
+  "risks": [
+    "Kaynak incelemesi derleme/render/çalışma zamanı kanıtı değildir."
+  ],
+  "followUps": [],
+  "completedAt": "2026-09-30T00:11:49.901493+00:00"
+}
