@@ -4,8 +4,8 @@
   "title": "STEP full product implementation",
   "goal": "Kabul edilen M01–M12/P0–P9 STEP kapsamını backend web masaüstü uygulamasıyla geliştirmek ve bağımsız kaynak incelemesi sonrası teslim etmek",
   "createdAt": "2026-09-29T23:31:30.388Z",
-  "updatedAt": "2026-09-30T00:36:32.907Z",
-  "revision": 104,
+  "updatedAt": "2026-09-30T00:47:55.088Z",
+  "revision": 106,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -63,6 +63,13 @@
       "reason": "Public GitHub caglarkc/4-product-one-community üzerinde STEP kaynaklarının yayımlanması için payload-hedefe özgü açık insan onayı isteniyor. Dolaylı yol veya tekrar push denenmedi. Gerçek env yerelde ve ignore dışında tutuldu.",
       "actor": "manager",
       "at": "2026-09-30T00:40:00Z"
+    },
+    {
+      "id": "private-repository-separate-delivery",
+      "summary": "Kullanıcı private dönüşümü ve ayrı push talimatı verdi; GitHub PRIVATE doğrulandı, STEP kaynak ve kabul commitleri ayrı ayrı main dalına push edildi.",
+      "reason": "İnsan talimatı: repoyu private yap ve hrşeyi ayrı ayrı pushla. isPrivate=true/visibility=PRIVATE sonrasında e90f85425d80f8ecb4a10bdd5e6283c6e3142487 ve 5b031646b495adf5f1e2d887e656cd5750c457bc ayrı pushlandı ve her biri git ls-remote ile doğrulandı. FIRST dirty dosyası ve gerçek envler Git teslimine dahil edilmedi.",
+      "decidedAt": "2026-09-30T00:47:39.100Z",
+      "actor": "manager"
     }
   ],
   "items": [
@@ -1049,9 +1056,9 @@
         ],
         "owner": "manager"
       },
-      "status": "active",
+      "status": "done",
       "attempt": 1,
-      "resultRef": null
+      "resultRef": "results/product-integration-2026-09-30T00-47-54-878Z.json"
     },
     {
       "id": "contract-revision",

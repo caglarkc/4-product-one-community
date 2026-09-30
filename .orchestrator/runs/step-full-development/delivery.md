@@ -10,8 +10,15 @@ Gerçek modül izi `STEP/uygulama-durumu.md`, kurulum `STEP/deployment.md` için
 
 ## Git ve izin durumu
 
-Kaynak commit yerel main'e taşındı. FIRST kaynakları, aynı checkout'taki mevcut FIRST session-provider değişikliği ve diğer AI runları bu task commitine alınmadı. Yalnız STEP ve STEP harita diffları stage edildi. Gerçek `.env` ve `.env.local` primary checkout'ta 0600 olarak korundu, ignore edildi ve Git'e eklenmedi.
+Kaynak commit main'e taşındı. FIRST kaynakları, aynı checkout'taki mevcut FIRST session-provider değişikliği ve diğer AI runları bu task commitine alınmadı. Yalnız STEP, STEP harita diffları ve bu run'ın kayıtları stage edildi. Gerçek `.env` ve `.env.local` primary checkout'ta 0600 olarak korundu, ignore edildi ve Git'e eklenmedi.
 
-`git push origin main` otomatik onay incelemesi tarafından reddedildi: uzak repo herkese açık ve yeni STEP payloadının bu hedefe yayımlanması için ayrıca açık insan onayı istendi. Dolaylı push veya kısıtı aşma yolu denenmedi. Kaynak ve bütün inceleme kayıtları yerelde review edilebilir. Public hedef `https://github.com/caglarkc/4-product-one-community`, dal `main`.
+İlk public push otomatik onay incelemesi tarafından reddedildi ve o aşamada durduruldu. Kullanıcının sonraki açık talimatı: “repoyu private yap ve hrşeyi ayrı ayrı pushla”. Bu talimatla `caglarkc/4-product-one-community` görünürlüğü PRIVATE yapıldı; GitHub `isPrivate: true`, `visibility: PRIVATE` yanıtıyla doğrulandı.
 
-Push/uzak SHA doğrulaması tamamlanmadığından product-integration sonucu henüz complete/PASS değildir. Son publish onayı bekleniyor; 52 ürün kararının tekrar açılması gerekmiyor.
+İki commit ayrı push işlemleriyle `main` dalına gönderildi ve her işlemin ardından `git ls-remote origin refs/heads/main` sonucu doğrulandı:
+
+- `e90f85425d80f8ecb4a10bdd5e6283c6e3142487` — `feat(step): implement student freelance platform and native tracker`.
+- `5b031646b495adf5f1e2d887e656cd5750c457bc` — `docs(step): record independent source acceptance and delivery`.
+
+Kaynak uygulaması ve bağımsız inceleme kayıtlarının private depoya teslimi tamamlandı; `product-integration` kabulü bu kanıtlara dayanır. Bu kapanış kaydı ayrıca bir takip commitinde teslim edilir. Önceki başarısız gate sonuçları ve public push ret kararı tarihsel kayıt olarak korunur; son kaynak kabul kapıları PASS'tir. Çalışma zamanı kontrolleri ve canlı dış entegrasyonlar yukarıda belirtilen durumdadır.
+
+Kapanışta run/event doğrulaması geçerlidir; aktif iş sayısı sıfır, `product-integration` done, `approvalBlockers` ve `qualityGateBlockers` boştur. CLI genel özeti geçmişteki sekiz failed kayıt korunduğu için `blocked` görünür; bu tarihsel sonuçların revizyonları kabul edilmiş ve teslimin bağımlılıkları tamamlanmıştır.
