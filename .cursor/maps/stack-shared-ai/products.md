@@ -5,7 +5,7 @@ Kaynak: `platform-urun-fikirleri.md`, dört ürün README'si; STEP için `STEP/k
 | Ürün | Mevcut kapsam | Açık konular |
 |---|---|---|
 | FIRST | Proje keşfi, ekip/ortak, açık kaynak katkısı | Ayrıntılı özellikler ve GitHub entegrasyon biçimi |
-| STEP | 52 karar kabul edildi: Türkiye öğrenci pazarı, süresiz kredi, TL/%10 freelancer komisyonu, ön fonlanan sabit/saatlik iş, lider/üye yetkileri, Windows/macOS/Linux takip ve görüntü moderasyonu; FIRST portföy linkleri ilk sürüm | Kredi rakamları, sağlayıcı/stack, alan adı listesinin hazırlanması, çekim/idle/yayın/moderasyon uygulama ayrıntıları; AI/INTO/ortak giriş ve otomatik FIRST aktarımı sonraki sürüm |
+| STEP | 52 karar kabul edildi: Türkiye öğrenci pazarı, süresiz kredi, TL/%10 freelancer komisyonu, ön fonlanan sabit/saatlik iş, lider/üye yetkileri, Windows/macOS/Linux takip ve görüntü moderasyonu; FIRST portföy linkleri ilk sürüm | Kaynak backend/web/üç OS istemcisi geliştirildi; kredi/idle/preview/çekim politikası, gerçek provider banka kabiliyeti/hesapları, öğrenci alan adı listesi ve imzalı OS dağıtımı canlıya hazırlıkta; AI/INTO/ortak giriş ve otomatik FIRST aktarımı sonraki sürüm |
 | INTO | Ücretli/gönüllü proje mentorluğu; ücretli kişisel gelişim; kabul gerektiren öneri | Görüşme, ücretlendirme, eşleştirme ayrıntıları |
 | PATH | Tek probleme yarışan farklı çözümler; son ürün | Format, ölçüm, ödül, veri ve teknik altyapı |
 

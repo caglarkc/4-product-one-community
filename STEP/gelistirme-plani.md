@@ -1,6 +1,6 @@
 # STEP — Geliştirme planı
 
-Tarih: 30 Eylül 2026 (Europe/Istanbul). Bu plan [52 kabul edilmiş kararı](soru-karar-eslestirmesi.md) ve [tam ürün kapsamını](urun-kapsami.md) bağımlılıkları belli geliştirme paketlerine ayırır. Kapsam kaynağı [kararlar.md](kararlar.md) dosyasıdır. Uygulama geliştirilmiş, test edilmiş veya yayımlanmış değildir.
+Tarih: 30 Eylül 2026 (Europe/Istanbul). Bu plan [52 kabul edilmiş kararı](soru-karar-eslestirmesi.md) ve [tam ürün kapsamını](urun-kapsami.md) bağımlılıkları belli geliştirme paketlerine ayırır. Kapsam kaynağı [kararlar.md](kararlar.md) dosyasıdır. Backend/web/masaüstü kaynakları geliştirildi; modül kanıtları [uygulama durumu](uygulama-durumu.md) belgesindedir. Test, build, çalışma zamanı veya yayın doğrulanmadı; dış canlı kapıları ayrı kalır.
 
 İlk canlı sürüm P0–P9'un birlikte tamamlanmasıdır. Paketler geliştirme sırasıdır; saatlik işin, takımın veya üç OS takip istemcisinin ilk canlı sürümden çıkarılması anlamına gelmez. Test aşaması e-posta/şifre, deneme ödemeleri ve test kredileriyle yürür; ek doğrulamalar ürün hazırlandıktan sonra canlıya hazırlıkta etkinleştirilir.
 
@@ -19,7 +19,7 @@ Tarih: 30 Eylül 2026 (Europe/Istanbul). Bu plan [52 kabul edilmiş kararı](sor
 | P8 — Saatlik hesap ve ödeme | P5, P6, P7 | Haftalık fon/saat limitleri, üye ücretleri, manuel süre ve inceleme dönemi | Takip kayıtlarından saatlik kazanç hesabı |
 | P9 — Çekirdeğin tamamlanması ve canlı hazırlık | P1–P8 | Modül entegrasyonu, FIRST portföy bağlantıları, canlı doğrulama ve operasyon | İlk canlı kapsamın bütünleştirilmiş teslimi |
 
-STEP uygulama klasörleri ve manifestleri henüz yoktur. Uygulama dosya yolları P0'da seçilen mimariye göre oluşturulur; tablo gerçek olmayan backend/frontend/masaüstü yollarını mevcut kaynak gibi göstermez. Her alt görev başlayınca gerçek okuma/yazma yolları, tek sahip, bağımlılık ve kabul kriteri run graph'ında belirtilir.
+Gerçek uygulama dizinleri `STEP/backend`, `STEP/frontend`, `STEP/desktop`; ortak sözleşmeler `STEP/contracts`, dağıtım `STEP/compose.yaml` ve `STEP/deploy` altındadır. Dosya sahipliği, bağımlılık, revizyonlar ve bağımsız source kabul kanıtları `.orchestrator/runs/step-full-development/` içinde korunur.
 
 Ortak sözleşme ve ortak dosyaların tek writer'ı vardır. Sözleşmeler kabul edilmeden farklı tüketicilere paralel yazım verilmez. Bağımlılığı bitmiş, dosya kapsamları ayrılmış işler native alt agentlara devredilebilir; sabit ürün başına agent kadrosu kurulmaz. Bağımsız review/verify kaynak/diff incelemesi yapar. Auth/yetki/API/ödeme/veri saklama işlerinde gerekli kalite kapıları ve ürünler arası integration düğümü korunur.
 
@@ -112,4 +112,4 @@ Haftalık saat sınırı ve artış onayı, haftalık ön fonlama, kullanılmam�
 | INTO inceleme bağlantısı | İsteğe bağlı kapsam/teslim incelemesi; tarafların bilgi paylaşım onayı ve mentor kabulü. STEP uyuşmazlık desteğinden ayrı mentorluk ilişkisidir. |
 | Diğer ürün genişlemeleri | Yerel mobil uygulama, hazır hizmet paketleri, abonelik, sesli/görüntülü görüşme, öne çıkarma açık artırması ve diğer para birimleri için ayrı teknik/ürün paketleri. |
 
-Bu planlama tesliminden sonraki hazır geliştirme işi P0'dır. 52 ürün sorusunu tekrar açmak yerine, kabul edilen davranışları karşılayacak teknik sözleşmeler ve sağlayıcı kabiliyetleri çıkarılır.
+P0–P9 için kaynak uygulaması ve bağımsız inceleme teslimi yapıldı. İlk canlı kabul için gerçek sağlayıcı/banka kabiliyetleri, doğrulama hesapları/alan adı listesi, onaylı politika ve OS paket dağıtımı tamamlanmalıdır. Kaynak teslimi bu dış kapıların veya çalışma zamanı doğrulamasının tamamlandığını göstermez.

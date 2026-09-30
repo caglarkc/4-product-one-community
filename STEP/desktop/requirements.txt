@@ -1,0 +1,12 @@
+PySide6>=6.9,<7
+mss>=11,<12
+pynput>=1.8,<2
+cryptography>=46,<52
+keyring>=25,<26
+requests>=2.32,<3
+platformdirs>=4,<5
+pyobjc-framework-Cocoa>=11,<13; sys_platform == 'darwin'
+pyobjc-framework-ApplicationServices>=11,<13; sys_platform == 'darwin'
+pyobjc-framework-Quartz>=11,<13; sys_platform == 'darwin'
+python-xlib>=0.33,<0.34; sys_platform == 'linux'
+SecretStorage>=3.3,<4; sys_platform == 'linux'

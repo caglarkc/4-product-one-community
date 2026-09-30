@@ -2,13 +2,17 @@
 
 Üniversite öğrencilerine özel, Upwork benzeri ücretli iş pazarı.
 
-Durum: 30 Eylül 2026 görüşmesinde 52 ürün önerisinin tamamı, kullanıcının 24/45/47/49 değişiklikleriyle kesinleştirildi. STEP uygulaması henüz geliştirilmedi; belgeler kabul edilmiş kapsam ve geliştirme planıdır.
+Durum: 30 Eylül 2026 görüşmesinde 52 ürün önerisinin tamamı, kullanıcının 24/45/47/49 değişiklikleriyle kesinleştirildi. STEP backend, web ve üç OS takip istemcisi kaynakları geliştirildi ve bağımsız kaynak incelemesinden geçti. Test/build/çalışma zamanı ve canlı sağlayıcı doğrulaması yapılmadı; ilk canlı sürüm hazır veya yayımlanmış sayılmaz.
 
 - [Ürün kararları](kararlar.md)
 - [52 sorunun karar eşleştirmesi](soru-karar-eslestirmesi.md)
 - [Tam ürün kapsamı ve kabul kriterleri](urun-kapsami.md)
 - [Geliştirme paketleri ve sırası](gelistirme-plani.md)
 - [Upwork referansı ve değerlendirmesi](upwork-karsilastirmasi.md)
+- [Uygulama durumu ve M01–M12 kapsam izi](uygulama-durumu.md)
+- [Teknik kararlar](teknik-kararlar.md) ve [API sözleşmesi](contracts/api.md)
+- [Kurulum ve dağıtım](deployment.md)
+- [Backend](backend/README.md), [web](frontend/README.md), [masaüstü takip](desktop/README.md)
 
 ## İlk canlı sürüm
 
@@ -47,4 +51,4 @@ FIRST kullanımı zorunlu değildir; FIRST proje/katkı bağlantılarını portf
 
 AI ilan desteği ve INTO üzerinden isteğe bağlı kapsam/teslim incelemesi sonraki sürümdedir. Yerel mobil uygulama, hazır hizmet paketleri, abonelik, sesli/görüntülü görüşme ve öne çıkarma açık artırması da sonraya bırakılmıştır.
 
-Kredi rakamları, sağlayıcı/stack seçimleri, çekim takvimi, hareketsizlik süresi ve görüntü moderasyonunun uygulama ayrıntıları geliştirme planındaki ayrı ayar/teknik keşif işleridir.
+Stack, API ve görüntü moderasyonu kaynakları teknik kararlarda tanımlandı. Kredi rakamları, çekim takvimi ve idle/preview politikası yönetimden yapılandırılır. Gerçek sağlayıcı banka çekim kabiliyeti, hesap/anahtarları ve imzalı OS paketleri canlıya hazırlıkta tamamlanmalıdır; ayrıntılar uygulama durumu belgesindedir.

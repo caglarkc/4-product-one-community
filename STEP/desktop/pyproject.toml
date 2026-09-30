@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "step-tracker"
+version = "0.1.0"
+description = "STEP private native work tracker"
+requires-python = ">=3.13"
+dynamic = ["dependencies"]
+
+[project.scripts]
+step-tracker = "step_tracker.ui:main"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+include = ["step_tracker*"]
