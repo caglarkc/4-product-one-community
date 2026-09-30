@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "confirmation-integration",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Dört frontend dosyası bağımsız review/verify kapılarıyla kabul edildi; API/backend değişmedi.",
+  "artifacts": [
+    {
+      "type": "integration",
+      "path": null,
+      "change": "reported",
+      "description": "Final diff root tarafından okundu; yalnız dört görev dosyası."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Native onaylar isimli hedef, sonuç, checkbox ve ayrı son düğme ile korunur; vazgeç/Escape/hedef değişimi reset sağlar.",
+      "status": "passed",
+      "evidence": "Root final diff + iki bağımsız source PASS: ConfirmationAction tüm hedef eylemlerde mevcut, final Checkbox ref düzeltildi, API ve permission predicates aynı."
+    },
+    {
+      "criterion": "API ve yetki semantiği korunur; gerçek Promise bitene kadar tekrar gönderim kilitlidir; ortak UI tipleriyle uyumludur.",
+      "status": "passed",
+      "evidence": "Root final diff + iki bağımsız source PASS: ConfirmationAction tüm hedef eylemlerde mevcut, final Checkbox ref düzeltildi, API ve permission predicates aynı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-gates",
+      "status": "passed",
+      "evidence": "confirmation-review ve confirmation-verify done/PASS."
+    },
+    {
+      "name": "live-ui",
+      "status": "not_run",
+      "evidence": "Yeni onay davranışı push/Vercel sonrası canlı sınanacak."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-29T23:51:59.062884+00:00"
+}

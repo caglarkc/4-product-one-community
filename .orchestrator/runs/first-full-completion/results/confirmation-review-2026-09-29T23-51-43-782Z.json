@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "confirmation-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/remaining_qa_plan",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Final kaynak/diff bağımsız incelendi; önceki Checkbox ref tip bulgusu düzeltilmiş, kalan P0/P1/P2 yok.",
+  "artifacts": [
+    {
+      "type": "source-review",
+      "path": null,
+      "change": "reported",
+      "description": "Dört scoped dosyanın bağımsız kaynak incelemesi."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Native onaylar isimli hedef, sonuç, checkbox ve ayrı son düğme ile korunur; vazgeç/Escape/hedef değişimi reset sağlar.",
+      "status": "passed",
+      "evidence": "Final confirmation-action native group ref kullanır; cancel/Escape/remount key explicit unchecked onay sağlar. await onConfirm ve parent Promise returns duplicate kilidini korur. Mevcut API/payload/permission koşulları ve ekip anlamları aynı."
+    },
+    {
+      "criterion": "API ve yetki semantiği korunur; gerçek Promise bitene kadar tekrar gönderim kilitlidir; ortak UI tipleriyle uyumludur.",
+      "status": "passed",
+      "evidence": "Final confirmation-action native group ref kullanır; cancel/Escape/remount key explicit unchecked onay sağlar. await onConfirm ve parent Promise returns duplicate kilidini korur. Mevcut API/payload/permission koşulları ve ekip anlamları aynı."
+    }
+  ],
+  "checks": [
+    {
+      "name": "independent-source",
+      "status": "passed",
+      "evidence": "/root/remaining_qa_plan final source PASS; kalan blocker yok."
+    },
+    {
+      "name": "runtime-suites",
+      "status": "not_run",
+      "evidence": "Bağımsız agent test/lint/typecheck/build/browser çalıştırmadı."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-29T23:51:43.782870+00:00"
+}

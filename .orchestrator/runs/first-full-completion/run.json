@@ -4,8 +4,8 @@
   "title": "FIRST tam kapsam tamamlama",
   "goal": "Onaylanan mesajlaşma, öğrenci e-postası, katkı profili, belge vitrini, yönetim ve canlı QA eksiklerini tamamla",
   "createdAt": "2026-09-29T22:42:40.364Z",
-  "updatedAt": "2026-09-29T23:22:54.305Z",
-  "revision": 43,
+  "updatedAt": "2026-09-30T00:12:47.338Z",
+  "revision": 65,
   "context": {
     "requiredPaths": [
       "AGENTS.md",
@@ -1004,6 +1004,452 @@
       "status": "done",
       "attempt": 1,
       "resultRef": "results/qa-labels-verify-2026-09-29T23-20-55-030Z.json"
+    },
+    {
+      "id": "live-qa-continuation",
+      "title": "Öğrenci e-postası dışındaki kalan canlı QA",
+      "kind": "test",
+      "domains": [
+        "first"
+      ],
+      "objective": "Onaylanan sentetik belge, geçici kısıtlama, mesaj sınırları ve hesap/GitHub akışlarını canlı UI ile doğrula",
+      "responsibility": "Root canlı UI operatörü; alt agentlar yalnız kaynak ve kanıt incelemesi yapar.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/contracts/completion-api.md"
+        }
+      ],
+      "outputs": [
+        "source-review-report"
+      ],
+      "acceptanceCriteria": [
+        "Öğrenci e-postası hariç kapsam için yapılan, başarısız ve işlem devri gerektiren canlı kontroller kanıtla ayrılır."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration",
+          "qa-labels-verify"
+        ],
+        "reviews": [],
+        "verifies": [
+          "integration"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "API/yetki/veri saklama veya yayın sınırı"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root"
+      },
+      "status": "blocked",
+      "attempt": 1,
+      "resultRef": "results/live-qa-continuation-2026-09-30T00-12-47-000Z.json"
+    },
+    {
+      "id": "confirmation-ui",
+      "title": "FIRST sayfa içi onay implement",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Canlı QA sırasında tarayıcı native onay penceresi engelini explicit erişilebilir onayla çöz",
+      "responsibility": "Belirtilen dört frontend dosyası; backend/API/yetki değişmez.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/ui/confirmation-action.tsx"
+        },
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/administration.tsx"
+        },
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/teams.tsx"
+        },
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/profile-extension.tsx"
+        }
+      ],
+      "outputs": [
+        "FIRST/frontend/src/components/ui/confirmation-action.tsx",
+        "FIRST/frontend/src/components/administration.tsx",
+        "FIRST/frontend/src/components/teams.tsx",
+        "FIRST/frontend/src/components/profile-extension.tsx"
+      ],
+      "acceptanceCriteria": [
+        "Native onaylar isimli hedef, sonuç, checkbox ve ayrı son düğme ile korunur; vazgeç/Escape/hedef değişimi reset sağlar.",
+        "API ve yetki semantiği korunur; gerçek Promise bitene kadar tekrar gönderim kilitlidir; ortak UI tipleriyle uyumludur."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "integration",
+          "qa-labels-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "high",
+        "reasons": [
+          "Moderasyon ve silme işlemlerinin kullanıcı onayını koruyan arayüz değişikliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/src/components/ui/confirmation-action.tsx",
+          "FIRST/frontend/src/components/administration.tsx",
+          "FIRST/frontend/src/components/teams.tsx",
+          "FIRST/frontend/src/components/profile-extension.tsx"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/confirmation_frontend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/confirmation-ui-2026-09-29T23-51-42-454Z.json"
+    },
+    {
+      "id": "confirmation-review",
+      "title": "FIRST sayfa içi onay review",
+      "kind": "review",
+      "domains": [
+        "first"
+      ],
+      "objective": "Canlı QA sırasında tarayıcı native onay penceresi engelini explicit erişilebilir onayla çöz",
+      "responsibility": "Belirtilen dört frontend dosyası; backend/API/yetki değişmez.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/ui/confirmation-action.tsx"
+        },
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/administration.tsx"
+        },
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/teams.tsx"
+        },
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/profile-extension.tsx"
+        }
+      ],
+      "outputs": [
+        "source-review-report"
+      ],
+      "acceptanceCriteria": [
+        "Native onaylar isimli hedef, sonuç, checkbox ve ayrı son düğme ile korunur; vazgeç/Escape/hedef değişimi reset sağlar.",
+        "API ve yetki semantiği korunur; gerçek Promise bitene kadar tekrar gönderim kilitlidir; ortak UI tipleriyle uyumludur."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "confirmation-ui"
+        ],
+        "reviews": [
+          "confirmation-ui"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Moderasyon ve silme işlemlerinin kullanıcı onayını koruyan arayüz değişikliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/remaining_qa_plan"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/confirmation-review-2026-09-29T23-51-43-782Z.json"
+    },
+    {
+      "id": "confirmation-verify",
+      "title": "FIRST sayfa içi onay verify",
+      "kind": "verify",
+      "domains": [
+        "first"
+      ],
+      "objective": "Canlı QA sırasında tarayıcı native onay penceresi engelini explicit erişilebilir onayla çöz",
+      "responsibility": "Belirtilen dört frontend dosyası; backend/API/yetki değişmez.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/ui/confirmation-action.tsx"
+        },
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/administration.tsx"
+        },
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/teams.tsx"
+        },
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/profile-extension.tsx"
+        }
+      ],
+      "outputs": [
+        "source-review-report"
+      ],
+      "acceptanceCriteria": [
+        "Native onaylar isimli hedef, sonuç, checkbox ve ayrı son düğme ile korunur; vazgeç/Escape/hedef değişimi reset sağlar.",
+        "API ve yetki semantiği korunur; gerçek Promise bitene kadar tekrar gönderim kilitlidir; ortak UI tipleriyle uyumludur."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "confirmation-ui"
+        ],
+        "reviews": [],
+        "verifies": [
+          "confirmation-ui"
+        ],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Moderasyon ve silme işlemlerinin kullanıcı onayını koruyan arayüz değişikliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/remaining_flow_plan"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/confirmation-verify-2026-09-29T23-51-44-438Z.json"
+    },
+    {
+      "id": "confirmation-integration",
+      "title": "FIRST sayfa içi onay integration",
+      "kind": "integration",
+      "domains": [
+        "first"
+      ],
+      "objective": "Canlı QA sırasında tarayıcı native onay penceresi engelini explicit erişilebilir onayla çöz",
+      "responsibility": "Belirtilen dört frontend dosyası; backend/API/yetki değişmez.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/ui/confirmation-action.tsx"
+        },
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/administration.tsx"
+        },
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/teams.tsx"
+        },
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/profile-extension.tsx"
+        }
+      ],
+      "outputs": [
+        "source-review-report"
+      ],
+      "acceptanceCriteria": [
+        "Native onaylar isimli hedef, sonuç, checkbox ve ayrı son düğme ile korunur; vazgeç/Escape/hedef değişimi reset sağlar.",
+        "API ve yetki semantiği korunur; gerçek Promise bitene kadar tekrar gönderim kilitlidir; ortak UI tipleriyle uyumludur."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "confirmation-review",
+          "confirmation-verify"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": [
+          "confirmation-ui"
+        ]
+      },
+      "risk": {
+        "level": "medium",
+        "reasons": [
+          "Moderasyon ve silme işlemlerinin kullanıcı onayını koruyan arayüz değişikliği"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "inline",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": false,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/confirmation-integration-2026-09-29T23-51-59-062Z.json"
+    },
+    {
+      "id": "team-error-label",
+      "title": "FIRST ekip detay 404 Türkçe implement",
+      "kind": "implement",
+      "domains": [
+        "first"
+      ],
+      "objective": "Kısıtlı veya bulunmayan ekip için ham İngilizce 404 yerine genel Türkçe mesaj göster",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/teams.tsx"
+        }
+      ],
+      "outputs": [
+        "FIRST/frontend/src/components/teams.tsx"
+      ],
+      "acceptanceCriteria": [
+        "Yalnız ekip detay yükleme 404 mesajı Türkçeleşir; diğer hata/API/yetki davranışı korunur."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "confirmation-integration"
+        ],
+        "reviews": [],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Yalnız genel hata metni, permission/API değişmiyor"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": false,
+        "independent": false,
+        "writeScopes": [
+          "FIRST/frontend/src/components/teams.tsx"
+        ],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/confirmation_frontend"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/team-error-label-2026-09-29T23-55-10-042Z.json"
+    },
+    {
+      "id": "team-error-review",
+      "title": "FIRST ekip detay 404 Türkçe review",
+      "kind": "review",
+      "domains": [
+        "first"
+      ],
+      "objective": "Kısıtlı veya bulunmayan ekip için ham İngilizce 404 yerine genel Türkçe mesaj göster",
+      "responsibility": "Yalnız belirtilen dosya kapsamı; mevcut ürün kararlarını koru.",
+      "inputs": [
+        {
+          "type": "file",
+          "value": "FIRST/frontend/src/components/teams.tsx"
+        }
+      ],
+      "outputs": [
+        "source-review-report"
+      ],
+      "acceptanceCriteria": [
+        "Yalnız ekip detay yükleme 404 mesajı Türkçeleşir; diğer hata/API/yetki davranışı korunur."
+      ],
+      "capabilities": [],
+      "relations": {
+        "dependsOn": [
+          "team-error-label"
+        ],
+        "reviews": [
+          "team-error-label"
+        ],
+        "verifies": [],
+        "revises": [],
+        "integrates": []
+      },
+      "risk": {
+        "level": "low",
+        "reasons": [
+          "Yalnız genel hata metni, permission/API değişmiyor"
+        ],
+        "approvalBoundaries": []
+      },
+      "execution": {
+        "mode": "delegate",
+        "isolation": "shared",
+        "readOnly": true,
+        "independent": true,
+        "writeScopes": [],
+        "preferredPlatforms": [
+          "codex"
+        ],
+        "owner": "/root/remaining_qa_plan"
+      },
+      "status": "done",
+      "attempt": 1,
+      "resultRef": "results/team-error-review-2026-09-29T23-55-10-706Z.json"
     }
   ],
   "extensions": {
@@ -1016,6 +1462,7 @@
       "identity": "/root/final_source_gate",
       "outcome": "pass",
       "scope": "Kaynak, yayın çıktısı ve sağlanan UI gözlem notlarının tutarlılığı; bağımsız canlı test değildir."
-    }
+    },
+    "liveQaContinuationAuthorization": "Kullanıcı öğrenci e-postası hariç kalan canlı testleri ve önce sorulan sentetik dosya/geçici kısıtlama işlemlerini onayladı; yeni credential ve yeni GitHub erişimi platform işlem kurallarına tabidir."
   }
 }

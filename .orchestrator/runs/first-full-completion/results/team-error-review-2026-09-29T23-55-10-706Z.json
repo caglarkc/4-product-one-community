@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "team-error-review",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root/remaining_qa_plan",
+    "sessionRef": null
+  },
+  "outcome": "pass",
+  "summary": "Ekip detayındaki 404 genel Türkçe mesaja çevrildi; diğer hata ve erişim davranışları korunuyor.",
+  "artifacts": [
+    {
+      "type": "source-review",
+      "path": null,
+      "change": "reported",
+      "description": "Tek detail-load catch koşulu."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Yalnız ekip detay yükleme 404 mesajı Türkçeleşir; diğer hata/API/yetki davranışı korunur.",
+      "status": "passed",
+      "evidence": "ApiError gerçek public status:number alanı api.ts içinde mevcut; yalnız status404 catch Türkçe genel mesaj, diğerleri errorText ve retry korunuyor."
+    }
+  ],
+  "checks": [
+    {
+      "name": "source-diff",
+      "status": "passed",
+      "evidence": "Implementer + independent reviewer final source PASS."
+    },
+    {
+      "name": "runtime-suites",
+      "status": "not_run",
+      "evidence": "Test/build/typecheck/browser alt agentlar tarafından çalıştırılmadı."
+    }
+  ],
+  "risks": [],
+  "followUps": [],
+  "completedAt": "2026-09-29T23:55:10.706679+00:00"
+}

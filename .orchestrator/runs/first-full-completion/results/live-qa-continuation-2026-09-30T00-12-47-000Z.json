@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "first-full-completion",
+  "itemId": "live-qa-continuation",
+  "outcome": "blocked",
+  "summary": "Öğrenci e-postası dışındaki canlı devam QA'sında belge kotaları, mesaj sınırları, kısıtlama/geri açma, gerçek PR merge, katkıcı portfolyosu ve katkı yenilemesi geçti. Yeni GitHub yazma daveti için işlem anı onayı, credential handoff ve gerçek yeni kayıt açık; tüm QA tamamlandı denmiyor.",
+  "agent": {
+    "platform": "codex",
+    "identity": "/root",
+    "sessionRef": null
+  },
+  "artifacts": [
+    {
+      "type": "source-review-report",
+      "path": null,
+      "change": "reported",
+      "description": "FIRST canonical canlı UI gözlemleri güvenli teslim özetinde tutuldu. GitHub sentetik PR https://github.com/caglarkc/Data-Structures-Algorithms/pull/1 oluşturuldu, chat'e bağlandı ve FIRST üzerinden merge edildi. Screenshot ve sentetik fixture dosyaları repoya eklenmedi."
+    }
+  ],
+  "acceptance": [
+    {
+      "criterion": "Öğrenci e-postası hariç kapsam için yapılan, başarısız ve işlem devri gerektiren canlı kontroller kanıtla ayrılır.",
+      "status": "passed",
+      "evidence": "Canlı sonuçlar ile kaynak incelemesi ayrıldı; client dosya reddi backend reddi olarak sunulmadı. Yeni grant, reset/new signup ve silme onayları tamamlanmış sayılmadı; dar eşzamanlı yarışlar ayrıca doğrulanmadı olarak kaydedildi."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Belge yükleme, raster önizleme ve kota",
+      "status": "passed",
+      "evidence": "10 sentetik tam 2 MiB PDF/JPG kabul edildi; toplam 20 MiB. Public raster önizleme görüldü, 11. yükleme formu engellendi. PNG ve 2 MiB+1 istemcide reddedildi. 5/dakika reddinde dosya korundu ve bekleme sonrası retry geçti."
+    },
+    {
+      "name": "Mesaj sayfalama, gönderim sınırı ve görünür okundu durumu",
+      "status": "passed",
+      "evidence": "32 mesajda son 30 ve eski mesajları yükleme duplicatesız/kronolojik; 30/dakika reddinde composer korundu, retry bir kez kabul edildi. 34. mesaj eski açık konuşmada görünmedi; inbox yenilemesinde 1 okunmamış, mesaj yenilemesinde içerik görüldü ve sayaç sıfırlandı."
+    },
+    {
+      "name": "Geçici kısıtlama ve geri açma",
+      "status": "passed",
+      "evidence": "İki hesap ayrı browser bağlamlarında doğrulandı. Kısıtlama eski oturumu iptal etti, fresh Google girişi reddedildi; profil/ekip 404 ve DM disabled. Kısıtlı üyelik/viewer temizlendi. Geri açma eski oturumu canlandırmadı; fresh Google giriş başarılı, kısıtlı hesap toplamı sıfır."
+    },
+    {
+      "name": "Sayfa içi onay ve Türkçe ekip 404",
+      "status": "passed",
+      "evidence": "Canlıda hedef/gerekçe, başlangıçta boş kutu ve kapalı son düğme, Vazgeç/Escape, focus return, gerekçe değişince onay sıfırlama ve async disabled görüldü; suspend/reactivate başarılı. Belge kaldırma onayı Escape ile iptal edildi, 10 belge kaldı. Ekip 404 Türkçe mesajı görüldü. Kod bağımsız kaynak review/verify'dan geçti."
+    },
+    {
+      "name": "Gerçek PR merge, kabul edilmiş katkıcı ve katkı yenileme",
+      "status": "passed",
+      "evidence": "Public fork/QA branch üzerindeki sekiz dokümantasyon satırından PR #1 oluşturuldu. FIRST gerçek head SHA'yı aldı; geçersiz SHA'da onay sıfırlandı/düğme kapandı. Doğru SHA ile merge-only sonrası FIRST kabul edildi/PR birleştirildi ve GitHub Merged. Yeni GitHub izni verilmedi. İkinci hesap vitrinde ve public profilde kabul edilmiş katkıcı; yenilenen public katkılar 1 PR, 1 commit, 1 proje."
+    },
+    {
+      "name": "Başvuru ve mevcut erişim durumu",
+      "status": "passed",
+      "evidence": "Vehicle-Inventory-System sentetik başvurusu ikinci hesap ve sahibinde değerlendirme bekliyor; yeni yetki verilmedi. Sport-Application mevcut accepted/active ilişkisinin yenilenmesi geçti; yeni grant kanıtı olarak sunulmadı."
+    },
+    {
+      "name": "Şifre sıfırlama ve kayıt formu ara adımları",
+      "status": "passed",
+      "evidence": "Reset e-postası Gmail'e geldi ve bağlantı doğru sıfırlama formunu açtı. Yeni kayıt boş zorunlu alanlar/geçersiz e-posta ile native form validasyonunda reddedildi. Yeni credential girilmedi; tam kayıt veya başarılı reset iddiası yok."
+    },
+    {
+      "name": "Yeni GitHub write daveti ve kabul",
+      "status": "not_run",
+      "evidence": "Public caglarkc/Vehicle-Inventory-System için ghostworker13 pending başvuru hazır; yeni write erişimi oluşturabilecek düğmeden önce gereken somut işlem onayı yanıt bekliyor."
+    },
+    {
+      "name": "Başarılı reset, tek kullanımlılık ve gerçek yeni üyelik",
+      "status": "not_run",
+      "evidence": "Yeni credential giriş/gönderimi kullanıcı handoff gerektiriyor. Reset formunda başarı gözlenmedi. Yeni üyelik için test adresi seçimi ve credential handoff yanıt bekliyor."
+    },
+    {
+      "name": "Kalıcı sentetik belge temizliği",
+      "status": "not_run",
+      "evidence": "10 QA belgesinin kalıcı silinmesi için işlem anı onayı yanıtlanmadı; belgeler public profilde toplam 20 MiB olarak kaldı."
+    },
+    {
+      "name": "Dar eşzamanlı yarış ve ayrı toplam limit aşımı",
+      "status": "not_run",
+      "evidence": "Değişen gerçek geçerli PR head SHA ve dar GET/read scheduler yarışı UI'da deterministik tetiklenmedi; kaynak sınırları incelendi. 10 dosya ve her biri 2 MiB koşulunda ayrı 20 MiB üstü senaryo matematiksel olarak mümkün değil."
+    },
+    {
+      "name": "Gerçek öğrenci posta döngüsü",
+      "status": "not_run",
+      "evidence": "Kullanıcının son talimatıyla gerçek .edu.tr posta testi bu turdan çıkarıldı."
+    },
+    {
+      "name": "Yerel product suite/lint/typecheck/build",
+      "status": "not_run",
+      "evidence": "Bu turda kaynak/diff ve açıkça yetkilendirilmiş canlı Computer Use kullanıldı. Yerel suite/lint/typecheck/build çalıştırılmadı; mevcut Vercel otomatik yayın success kanıtı ayrı tutuldu."
+    }
+  ],
+  "risks": [
+    "Tüm canlı QA tamamlanmadı; kullanıcı girdisi veya işlem onayı isteyen kontroller açık.",
+    "İki QA ekibi, 34 test DM'i, 10 sentetik belge, portfolyo fixture'ları, merge edilmiş QA dokümanı/fork/branch/PR ve pending Vehicle başvurusu duruyor; cleanup yapılmış sayılmıyor."
+  ],
+  "followUps": [
+    "Somut yeni GitHub write daveti onayını al; FIRST davet, GitHub kabul ve aktif durum döngüsünü kontrol et.",
+    "Kullanıcı yeni credential adımlarını tamamladığında başarılı reset/oturum iptali ve yeni kayıt döngülerini doğrula.",
+    "10 sentetik belgenin kalıcı silme onayı gelirse yalnız belirtilen QA belgelerini kaldır ve 0/10 sonucu kontrol et.",
+    "Gerçek öğrenci posta testi bu turda kapsam dışı; sonraki açık talimat olmadan başlatma."
+  ],
+  "completedAt": "2026-09-30T00:12:47Z"
+}
