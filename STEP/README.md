@@ -52,3 +52,9 @@ FIRST kullanımı zorunlu değildir; FIRST proje/katkı bağlantılarını portf
 AI ilan desteği ve INTO üzerinden isteğe bağlı kapsam/teslim incelemesi sonraki sürümdedir. Yerel mobil uygulama, hazır hizmet paketleri, abonelik, sesli/görüntülü görüşme ve öne çıkarma açık artırması da sonraya bırakılmıştır.
 
 Stack, API ve görüntü moderasyonu kaynakları teknik kararlarda tanımlandı. Kredi rakamları, çekim takvimi ve idle/preview politikası yönetimden yapılandırılır. Gerçek sağlayıcı banka çekim kabiliyeti, hesap/anahtarları ve imzalı OS paketleri canlıya hazırlıkta tamamlanmalıdır; ayrıntılar uygulama durumu belgesindedir.
+
+## Geliştirme notu — UI tasarım portföyü
+
+2 Ekim 2026 kullanıcı notu: Freelance bölümünde öğrenciler, Dribbble ve Figma gibi kaynaklardaki UI tasarım çalışmalarını bağlantıyla profil/portföylerine ekleyebilmeli ve STEP içinde gösterebilmelidir. İşverenler bu tasarım örneklerini freelancer'ın portföyünde inceleyebilmelidir.
+
+Bu gereksinim henüz uygulanmış özellik değildir. Önizleme/gömülü gösterim yöntemi ve hangi sürümde ekleneceği uygulama planlamasında netleştirilecektir.
