@@ -7,7 +7,6 @@ from django.conf import settings
 from django.utils import timezone
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import APIException, AuthenticationFailed
-from rest_framework.views import exception_handler as drf_handler
 from .models import DeviceCredential, RateWindow
 
 class Problem(APIException):
@@ -42,6 +41,8 @@ class DeviceAuthentication(BaseAuthentication):
         return 'Bearer'
 
 def exception_handler(exc, context):
+    # DRF imports authentication classes while initializing views/schemas.
+    from rest_framework.views import exception_handler as drf_handler
     response = drf_handler(exc, context)
     if response is not None and not isinstance(response.data, dict):
         response.data = {'code':'invalid', 'detail':str(response.data)}

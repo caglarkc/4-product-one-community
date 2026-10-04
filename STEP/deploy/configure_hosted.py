@@ -20,7 +20,8 @@ def main():
         'STEP_ALLOWED_HOSTS': 'step-api.ack-techs.com,127.0.0.1,localhost',
         'STEP_WEB_ORIGINS': 'https://step.ack-techs.com',
         'STEP_WEB_URL': 'https://step.ack-techs.com',
-        'STEP_API_URL': 'https://step-api.ack-techs.com/api/v1/',
+        # Payment callbacks append /api/v1/ themselves; this is the API origin.
+        'STEP_API_URL': 'https://step-api.ack-techs.com',
         'STEP_COOKIE_SAMESITE': 'Lax',
         'STEP_DB_NAME': 'step',
         'STEP_DB_USER': 'step',
