@@ -1,7 +1,9 @@
 import hashlib
+import ipaddress
 import re
 from datetime import timedelta
 from django.db import transaction
+from django.conf import settings
 from django.utils import timezone
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import APIException, AuthenticationFailed
@@ -49,7 +51,14 @@ def exception_handler(exc, context):
 
 def rate_limit(request, operation, maximum=12, seconds=300):
     # Security throttles are technical limits, not product credit policies.
-    key = digest(operation + ':' + request.META.get('REMOTE_ADDR', 'unknown'))
+    address = request.META.get('REMOTE_ADDR', 'unknown')
+    if settings.SECURE_PROXY_SSL_HEADER:
+        # Hosted Nginx overwrites X-Real-IP; direct/local deployments ignore it.
+        try:
+            address = str(ipaddress.ip_address(request.META.get('HTTP_X_REAL_IP', '')))
+        except ValueError:
+            pass
+    key = digest(operation + ':' + address)
     with transaction.atomic():
         row, _ = RateWindow.objects.get_or_create(key=key)
         row = RateWindow.objects.select_for_update().get(pk=row.pk)

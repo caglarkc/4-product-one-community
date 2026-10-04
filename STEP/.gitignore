@@ -1,4 +1,5 @@
 .env
 .env.*
 private/
+static/
 *.sqlite3

@@ -20,6 +20,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [{'BACKEND':'django.template.backends.django.DjangoTemplates','DIRS':[],'APP_DIRS':True,'OPTIONS':{'context_processors':['django.template.context_processors.request','django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages']}}]
 WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {'default': {'ENGINE': 'django.db.backends.postgresql', 'NAME': os.environ.get('STEP_DB_NAME', 'step'), 'USER': os.environ.get('STEP_DB_USER', 'step'), 'PASSWORD': os.environ.get('STEP_DB_PASSWORD', ''), 'HOST': os.environ.get('STEP_DB_HOST', 'db'), 'PORT': os.environ.get('STEP_DB_PORT', '5432')}}
+DATABASES['default'].update(CONN_MAX_AGE=60, CONN_HEALTH_CHECKS=True)
 AUTH_USER_MODEL = 'core.User'
 AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'}, {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'}, {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'}, {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'}]
 LANGUAGE_CODE = 'tr'
@@ -45,6 +46,11 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = ['accept','authorization','content-type','x-csrftoken','idempotency-key']
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
+# Only enable behind a proxy that overwrites this header and a loopback-only API.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https') if os.environ.get('STEP_TRUST_PROXY') == '1' else None
+SECURE_SSL_REDIRECT = not DEBUG
+SECURE_HSTS_SECONDS = 0 if DEBUG else 31536000
+SECURE_REFERRER_POLICY = 'same-origin'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('STEP_SMTP_HOST', '')
 EMAIL_PORT = int(os.environ.get('STEP_SMTP_PORT', '587'))
