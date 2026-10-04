@@ -6,7 +6,9 @@ Bağımsız Next.js 16.3.5 / React 19.3.0 / TypeScript 6.0.3 istemcisi. Node 22 
 
 ## Vercel yayını
 
-Kaynak repo `caglarkc/4-product-one-community`, dal `main`, Root Directory `STEP/frontend`, framework Next.js ve Node sürümü 22.x olarak seçilir. STEP, FIRST'ın Vercel projesinden ayrı yayımlanır. Hedef frontend domaini `step.ack-techs.com`, hesap GhostWorker'dır.
+Kaynak repo `caglarkc/4-product-one-community`, dal `main`, frontend kökü `STEP/frontend`, framework Next.js ve Node sürümü 22.x'tir. STEP, FIRST'ın Vercel projesinden ayrı yayımlanır. Hedef frontend domaini `step.ack-techs.com`, hesap GhostWorker'dır. `vercel.json` fonksiyon bölgesini Frankfurt (`fra1`) olarak sabitler.
+
+GhostWorker'ın bağlı GitHub hesabı `ghostworker13`, kaynak reponun sahibi ise `caglarkc` olduğundan 4 Ekim 2026 hazırlığında bu hesaptan özel repo içe aktarılamadı. Vercel Drop için yalnız takip edilen frontend dosyaları, repo kökünden `git archive --format=zip --output=/tmp/step.zip HEAD:STEP/frontend` ile paketlenir. Bu ZIP Vercel'e yüklenir; `.env.local`, `.next`, `node_modules`, backend ve diğer ürünler pakete girmez. Bu yayın yöntemi otomatik GitHub push yayını sağlamaz; sonraki sürümler güncel commit'ten tekrar paketlenip aynı projeye yayımlanmalıdır. ZIP üretmeden önce kaynak checkout'un güncel `main` commit'inde olduğundan emin olun.
 
 Üretim build'inde `NEXT_PUBLIC_STEP_API_URL=https://step-api.ack-techs.com/api/v1/` kullanılır. Env belirtilmezse üretim varsayılanı da bu HTTPS adresidir; geliştirme varsayılanı yerel API olarak kalır. Yerel `.env.local` Vercel'e yüklenmez. `npm ci` ve `npm run build` ile kurulum/yayın derlemesi yapılır.
 
