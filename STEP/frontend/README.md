@@ -2,9 +2,17 @@
 
 Bağımsız Next.js 16.3.5 / React 19.3.0 / TypeScript 6.0.3 istemcisi. Node 22 LTS gerekir. FIRST kaynağı, paleti, hesabı veya veritabanı kullanılmaz. API tek kaynağı `STEP/contracts/api.md` dosyasıdır.
 
-`NEXT_PUBLIC_STEP_API_URL` yalnız browser-visible backend API adresidir. Yerel `.env.local` mevcut backend için `http://localhost:8002/api/v1/` içerir ve Git dışında tutulur; örnek `.env.example` dosyasındadır. Sağlayıcı/SMTP/kimlik anahtarı burada tutulmaz. Browser frontend ve backend aynı `localhost` host'unu kullanmalı; Django frontend origin/credentials CORS, CSRF_TRUSTED_ORIGINS ve session cookie ayarlarını sağlamalı. Uzak ortam HTTPS gerektirir. Cookie HttpOnly; client token/localStorage ile giriş saklamaz.
+`NEXT_PUBLIC_STEP_API_URL` yalnız browser-visible backend API adresidir. Yerel `.env.local` mevcut backend için `http://localhost:8002/api/v1/` içerir ve Git dışında tutulur. Sağlayıcı/SMTP/kimlik anahtarı burada tutulmaz. Browser frontend ve backend aynı `localhost` host'unu kullanmalı; Django frontend origin/credentials CORS, CSRF_TRUSTED_ORIGINS ve session cookie ayarlarını sağlamalı. Uzak ortam HTTPS gerektirir. Cookie HttpOnly; client token/localStorage ile giriş saklamaz.
 
-Kurulum için Node 22 ile `npm install`; geliştirme `npm run dev` (3001), üretim `npm run build` ve `npm run start`. Dockerfile standalone çıktı hazırlar; API URL build arg `NEXT_PUBLIC_STEP_API_URL` üzerinden sağlanır. Bu geliştirme turunda install, build, test, lint, typecheck veya tarayıcı çalıştırılmamıştır; sürüm çözümü, gerçek render, ödeme/SMTP ve erişim davranışı runtime'da doğrulanmış değildir.
+## Vercel yayını
+
+Kaynak repo `caglarkc/4-product-one-community`, dal `main`, Root Directory `STEP/frontend`, framework Next.js ve Node sürümü 22.x olarak seçilir. STEP, FIRST'ın Vercel projesinden ayrı yayımlanır. Hedef frontend domaini `step.ack-techs.com`, hesap GhostWorker'dır.
+
+Üretim build'inde `NEXT_PUBLIC_STEP_API_URL=https://step-api.ack-techs.com/api/v1/` kullanılır. Env belirtilmezse üretim varsayılanı da bu HTTPS adresidir; geliştirme varsayılanı yerel API olarak kalır. Yerel `.env.local` Vercel'e yüklenmez. `npm ci` ve `npm run build` ile kurulum/yayın derlemesi yapılır.
+
+Bu API adresi dağıtım hedefidir: 4 Ekim 2026 kontrolünde STEP backend'i Hetzner'de çalışmıyor ve API domaini henüz bağlanmamıştı. Frontend yayını tek başına giriş, ilanlar, ödeme veya diğer API akışlarının çalıştığını göstermez. Backend için ayrı HTTPS/origin/session yapılandırması ve ürünün canlıya geçiş koşulları `../deployment.md` içinde açıklanır.
+
+Kurulum için Node 22 ile `npm ci`; geliştirme `npm run dev` (3001), üretim `npm run build` ve `npm run start`. Dockerfile standalone çıktı hazırlar; API URL build arg `NEXT_PUBLIC_STEP_API_URL` üzerinden sağlanır. 4 Ekim 2026 yayın hazırlığında bağımlılıklar çözüldü, lockfile eklendi ve Node 22 ile HTTPS API adresini kullanan Next üretim derlemesi (derlemenin TypeScript kontrolü dahil) geçti. Bu sonuç backend, ödeme/SMTP veya giriş akışlarının runtime doğrulaması değildir.
 
 ## Ekranlar ve kapsam
 

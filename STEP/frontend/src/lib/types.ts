@@ -1,7 +1,7 @@
 export type Decimal = string;
 export interface Page<T> { results: T[]; count: number; next: string | null }
 export interface Named { id: string; name?: string; display_name?: string; title?: string }
-export interface Category extends Named { slug?: string }
+export interface Category extends Named { name: string; slug?: string }
 export interface Profile { university?: string; department?: string; bio?: string; skills?: string[]; hourly_rate?: Decimal; photo?: string; portfolio_links?: { title: string; url: string; kind: string }[] }
 export interface Verification { student?: { status?: string; verified_until?: string; student_email?: string }; employer?: { status?: string; kind?: string }; phone?: { status?: string }; payment?: { status?: string; provider_ready?: boolean; provider_verified?: boolean } }
 export interface User extends Named { email: string; roles: string[]; is_staff: boolean; profile?: Profile; verification?: Verification; preferences?: { in_app: boolean; email: boolean } }

@@ -1,5 +1,8 @@
 import type { Page } from "./types";
-export const API_BASE = (process.env.NEXT_PUBLIC_STEP_API_URL || "http://localhost:8002/api/v1/").replace(/\/?$/, "/");
+const defaultApiBase = process.env.NODE_ENV === "production"
+  ? "https://step-api.ack-techs.com/api/v1/"
+  : "http://localhost:8002/api/v1/";
+export const API_BASE = (process.env.NEXT_PUBLIC_STEP_API_URL || defaultApiBase).replace(/\/?$/, "/");
 export class ApiError extends Error {
   constructor(public status: number, public code: string, message: string, public fields?: Record<string, unknown>) { super(message); this.name = "ApiError"; }
 }
